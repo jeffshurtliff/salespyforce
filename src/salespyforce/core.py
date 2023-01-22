@@ -272,6 +272,49 @@ class Salesforce(object):
         return self.api_call_with_payload('put', endpoint, payload, params=params, headers=headers, timeout=timeout,
                                           show_full_error=show_full_error, return_json=return_json)
 
+    def get_api_versions(self):
+        """This method returns the API versions for the Salesforce releases.
+        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm
+        """
+        return self.get('/services/data')
+
+    def get_all_sobjects(self):
+        """This method returns a list of all Salesforce objects. (i.e. sObjects)
+        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm
+        """
+        return self.get(f'/services/data/{self.version}/sobjects')
+
+    def get_sobject(self, object_name, describe=False):
+        """This method returns basic information or the full (describe) information for a specific sObject.
+        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info_get.htm
+        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm
+
+        :param object_name: The name of the Salesforce object
+        :type object_name: str
+        :param describe: Determines if the full (i.e. ``describe``) data should be returned (defaults to ``False``)
+        :type describe: bool
+        :returns: The Salesforce object data
+        """
+        uri = f'/services/data/{self.version}/sobjects/{object_name}'
+        uri = f'{uri}/describe' if describe else uri
+        return self.get(uri)
+
+    def describe_object(self, object_name):
+        """This method returns the full (describe) information for a specific sObject.
+        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm
+
+        :param object_name: The name of the Salesforce object
+        :type object_name: str
+        :returns: The Salesforce object data
+        """
+        return self.get_sobject(object_name, describe=True)
+
+    def get_rest_resources(self):
+        """This method returns a list of all available REST resources.
+        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm
+        """
+        return self.get(f'/services/data/{self.version}')
+
 
 def define_connection_info():
     """This function prompts the user for the connection information.
