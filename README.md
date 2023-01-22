@@ -1,2 +1,2 @@
 # salespyforce
-Toolset for performing Salesforce API calls
+A Python toolset for performing Salesforce API calls
