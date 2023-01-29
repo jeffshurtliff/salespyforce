@@ -6,11 +6,12 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Jan 2023
+:Modified Date:     29 Jan 2023
 """
 
 import requests
 
+from .utils import core_utils
 
 # Define constants
 CURRENT_SFDC_VERSION = '55.0'
@@ -314,6 +315,22 @@ class Salesforce(object):
         Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm
         """
         return self.get(f'/services/data/{self.version}')
+
+    def soql_query(self, query, replace_quotes=True):
+        """This method performs a SOQL query and returns the results in JSON format.
+        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
+        Reference: https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm
+
+        :param query: The SOQL query to perform
+        :type query: str
+        :param replace_quotes: Determines if double-quotes should be replaced with single-quotes (``true`` by default)
+        :type replace_quotes: bool
+        :returns: The result of the SOQL query
+        """
+        if replace_quotes:
+            query = query.replace('"', "'")
+        query = core_utils.url_encode(query)
+        return self.get(f'/services/data/{self.version}/query/?q={query}')
 
 
 def define_connection_info():
