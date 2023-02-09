@@ -12,6 +12,12 @@ Table of Contents
 
    changelog
 
+.. toctree::
+
+   core-object-methods
+   primary-modules
+   supporting-modules
+
 ***********************
 Module Index and Search
 ***********************
