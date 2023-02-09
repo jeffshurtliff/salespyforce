@@ -6,15 +6,20 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 Jan 2023
+:Modified Date:     09 Feb 2023
 """
 
 import requests
 
-from .utils import core_utils
+from . import api
+from . import knowledge as knowledge_module
+from .utils import core_utils, log_utils
 
 # Define constants
 CURRENT_SFDC_VERSION = '55.0'
+
+# Initialize logging
+logger = log_utils.initialize_logging(__name__)
 
 
 class Salesforce(object):
@@ -70,6 +75,13 @@ class Salesforce(object):
         self.instance_url = auth_response.get('instance_url')
         self.signature = auth_response.get('signature')
 
+        # Import inner object classes so their methods can be called from the primary object
+        self.knowledge = self._import_knowledge_class()
+
+    def _import_knowledge_class(self):
+        """This method allows the :py:class:`highspot.core.Highspot.Domain` class to be utilized in the core object."""
+        return Salesforce.Knowledge(self)
+
     @staticmethod
     def _get_empty_connection_info():
         """This function returns an empty connection_info dictionary with all blank values."""
@@ -93,7 +105,7 @@ class Salesforce(object):
 
     def connect(self):
         """This method connects to the Salesforce instance to obtain the access token.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        Reference: `https://jereze.com/code/authentification-salesforce-rest-api-python/`_
 
         :returns: The API call response with the authorization information
         """
@@ -111,7 +123,7 @@ class Salesforce(object):
 
     def get(self, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a GET request against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        Reference: `https://jereze.com/code/authentification-salesforce-rest-api-python/`_
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -126,32 +138,12 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        # Define the parameters as an empty dictionary if none are provided
-        params = {} if params is None else params
-
-        # Define the headers
-        default_headers = self._get_headers()
-        headers = default_headers if not headers else headers
-
-        # Make sure the endpoint begins with a slash
-        endpoint = f'/{endpoint}' if not endpoint.startswith('/') else endpoint
-
-        # Perform the API call
-        response = requests.get(f'{self.instance_url}{endpoint}', headers=headers, params=params, timeout=timeout)
-        if response.status_code >= 300:
-            if show_full_error:
-                raise RuntimeError(f'The GET request failed with a {response.status_code} status code.\n'
-                                   f'{response.text}')
-            else:
-                raise RuntimeError(f'The GET request failed with a {response.status_code} status code.')
-        if return_json:
-            response = response.json()
-        return response
+        return api.get(self, endpoint, params, headers, timeout, show_full_error, return_json)
 
     def api_call_with_payload(self, method, endpoint, payload, params=None, headers=None, timeout=30,
                               show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        Reference: `https://jereze.com/code/authentification-salesforce-rest-api-python/`_
 
         :param method: The API method (``post``, ``put``, or ``patch``)
         :type method: str
@@ -170,46 +162,12 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        # Define the parameters as an empty dictionary if none are provided
-        params = {} if params is None else params
-
-        # Define the headers
-        default_headers = self._get_headers()
-        headers = default_headers if not headers else headers
-
-        # Make sure the endpoint begins with a slash
-        endpoint = f'/{endpoint}' if not endpoint.startswith('/') else endpoint
-
-        # Perform the API call
-        if method.lower() == 'post':
-            response = requests.post(f'{self.instance_url}{endpoint}', json=payload, headers=headers, params=params,
-                                     timeout=timeout)
-        elif method.lower() == 'patch':
-            response = requests.patch(f'{self.instance_url}{endpoint}', json=payload, headers=headers, params=params,
-                                      timeout=timeout)
-        elif method.lower() == 'put':
-            response = requests.put(f'{self.instance_url}{endpoint}', json=payload, headers=headers, params=params,
-                                    timeout=timeout)
-        else:
-            raise ValueError('The API call method (POST or PATCH OR PUT) must be defined.')
-
-        # Examine the result
-        if response.status_code >= 300:
-            if show_full_error:
-                raise RuntimeError(f'The POST request failed with a {response.status_code} status code.\n'
-                                   f'{response.text}')
-            else:
-                raise RuntimeError(f'The POST request failed with a {response.status_code} status code.')
-        if return_json:
-            try:
-                response = response.json()
-            except Exception as exc:
-                print(f'Failed to convert the API response to JSON format due to the following exception: {exc}')
-        return response
+        return api.api_call_with_payload(self, method, endpoint, payload, params, headers, timeout, show_full_error,
+                                         return_json)
 
     def post(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        Reference: `https://jereze.com/code/authentification-salesforce-rest-api-python/`_
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -226,12 +184,12 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        return self.api_call_with_payload('post', endpoint, payload, params=params, headers=headers, timeout=timeout,
-                                          show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(self, 'post', endpoint, payload, params=params, headers=headers,
+                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json)
 
     def patch(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=False):
         """This method performs a PATCH call against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        Reference: `https://jereze.com/code/authentification-salesforce-rest-api-python/`_
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -248,12 +206,12 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        return self.api_call_with_payload('patch', endpoint, payload, params=params, headers=headers, timeout=timeout,
-                                          show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(self, 'patch', endpoint, payload, params=params, headers=headers,
+                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json)
 
     def put(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a PUT call against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        Reference: `https://jereze.com/code/authentification-salesforce-rest-api-python/`_
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -270,25 +228,25 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        return self.api_call_with_payload('put', endpoint, payload, params=params, headers=headers, timeout=timeout,
-                                          show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(self, 'put', endpoint, payload, params=params, headers=headers,
+                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json)
 
     def get_api_versions(self):
         """This method returns the API versions for the Salesforce releases.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm
+        Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm`_
         """
         return self.get('/services/data')
 
     def get_all_sobjects(self):
         """This method returns a list of all Salesforce objects. (i.e. sObjects)
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm
+        Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm`_
         """
         return self.get(f'/services/data/{self.version}/sobjects')
 
     def get_sobject(self, object_name, describe=False):
         """This method returns basic information or the full (describe) information for a specific sObject.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info_get.htm
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm
+        Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info_get.htm`_
+        Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm`_
 
         :param object_name: The name of the Salesforce object
         :type object_name: str
@@ -302,7 +260,7 @@ class Salesforce(object):
 
     def describe_object(self, object_name):
         """This method returns the full (describe) information for a specific sObject.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm
+        Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm`_
 
         :param object_name: The name of the Salesforce object
         :type object_name: str
@@ -312,14 +270,14 @@ class Salesforce(object):
 
     def get_rest_resources(self):
         """This method returns a list of all available REST resources.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm
+        Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm`_
         """
         return self.get(f'/services/data/{self.version}')
 
     def soql_query(self, query, replace_quotes=True):
         """This method performs a SOQL query and returns the results in JSON format.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm
+        Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm`_
+        Reference: `https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm`_
 
         :param query: The SOQL query to perform
         :type query: str
@@ -332,67 +290,49 @@ class Salesforce(object):
         query = core_utils.url_encode(query)
         return self.get(f'/services/data/{self.version}/query/?q={query}')
 
-    def check_for_existing_article(self, title, sobject=None, return_id=False, return_id_and_number=False):
-        """This method checks to see if an article already exists with a given title and returns its article number.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm
+    class Knowledge(object):
+        """This class includes methods associated with Highspot domains."""
+        def __init__(self, sfdc_object):
+            """This method initializes the :py:class:`salespyforce.core.Salesforce.Knowledge` inner class object.
 
-        :param title: The title of the knowledge article for which to check
-        :type title: str
-        :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
-        :type sobject: str, None
-        :param return_id: Determines if the Article ID should be returned (``False`` by default)
-        :type return_id: bool
-        :param return_id_and_number: Determines if Article ID and Article Number should be returned (``False`` by default)
-        :type return_id_and_number: bool
-        :returns: The Article Number, Article ID, or both, if found, or a blank string if not found
-        """
-        sobject = 'Knowledge__kav' if sobject is None else sobject
-        query = f"SELECT Id,ArticleNumber FROM {sobject} WHERE Title = '{title}'"
-        response = self.soql_query(query, replace_quotes=False)
-        return_value = ''
-        if response.get('totalSize') > 0:
-            if return_id:
-                return_value = response['records'][0]['Id']
-            elif return_id_and_number:
-                return_value = (response['records'][0]['Id'], response['records'][0]['ArticleNumber'])
-            else:
-                return_value = response['records'][0]['ArticleNumber']
-        elif return_id_and_number:
-            return_value = ('', '')
-        return return_value
+            :param sfdc_object: The core :py:class:`salespyforce.Salesforce` object
+            :type sfdc_object: class[salespyforce.Salesforce]
+            """
+            self.sfdc_object = sfdc_object
 
-    def get_article_id_from_number(self, article_number, sobject=None, return_uri=False):
-        """This method returns the Article ID when an article number is provided.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm
+        def check_for_existing_article(self, title, sobject=None, return_id=False, return_id_and_number=False):
+            """This method checks to see if an article already exists with a given title and returns its article number.
+            Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm`_
+            Reference: `https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm`_
 
-        :param article_number: The Article Number to query
-        :type article_number: str, int
-        :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
-        :type sobject: str, None
-        :param return_uri: Determines if the URI of the article should be returned rather than the ID (``False`` by default)
-        :type return_uri: bool
-        :returns: The Article ID or Article URI, or a blank string if no article is found
-        :raises: :py:exc:`ValueError`
-        """
-        sobject = 'Knowledge__kav' if sobject is None else sobject
-        if sobject is None:
-            raise ValueError('The sObject must be defined for the Article Type in order to query for the ID.')
-        if len(str(article_number)) < 9:
-            query = f"SELECT Id FROM {sobject} WHERE ArticleNumber LIKE '%0{article_number}'"
-        else:
-            query = f"SELECT Id FROM {sobject} WHERE ArticleNumber = '{article_number}'"
-        response = self.soql_query(query)
-        if response.get('totalSize') > 0:
-            if return_uri:
-                return_value = response['records'][0]['attributes']['url']
-            else:
-                return_value = response['records'][0]['Id']
-        else:
-            return_value = ''
-            print(f'No results were returned when querying for the article number {article_number}')
-        return return_value
+            :param title: The title of the knowledge article for which to check
+            :type title: str
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
+            :param return_id: Determines if the Article ID should be returned (``False`` by default)
+            :type return_id: bool
+            :param return_id_and_number: Determines if Article ID and Article Number should be returned (``False`` by default)
+            :type return_id_and_number: bool
+            :returns: The Article Number, Article ID, or both, if found, or a blank string if not found
+            """
+            return knowledge_module.check_for_existing_article(self.sfdc_object, title, sobject, return_id,
+                                                               return_id_and_number)
+
+        def get_article_id_from_number(self, article_number, sobject=None, return_uri=False):
+            """This method returns the Article ID when an article number is provided.
+            Reference: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm`_
+            Reference: `https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm`_
+
+            :param article_number: The Article Number to query
+            :type article_number: str, int
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
+            :param return_uri: Determines if the URI of the article should be returned rather than the ID (``False`` by default)
+            :type return_uri: bool
+            :returns: The Article ID or Article URI, or a blank string if no article is found
+            :raises: :py:exc:`ValueError`
+            """
+            return knowledge_module.get_article_id_from_number(self.sfdc_object, article_number, sobject, return_uri)
 
     def get_articles_list(self, query=None, sort=None, order=None, page_size=20, page_num=1):
         """This method retrieves a list of knowledge articles.
