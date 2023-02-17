@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     09 Feb 2023
+:Modified Date:     17 Feb 2023
 """
 
 import requests
@@ -16,7 +16,7 @@ from . import knowledge as knowledge_module
 from .utils import core_utils, log_utils
 
 # Define constants
-CURRENT_SFDC_VERSION = '55.0'
+CURRENT_SFDC_VERSION = '57.0'
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -31,7 +31,7 @@ class Salesforce(object):
 
         :param connection_info: The information for connecting to the Salesforce instance
         :type connection_info: dict, None
-        :param version: The Salesforce API version to utilize (Default: ``55.0``)
+        :param version: The Salesforce API version to utilize (Default: ``57.0``)
         :type version: str
         :param base_url: The base URL of the Salesforce instance
         :type base_url: str, None
@@ -138,7 +138,8 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        return api.get(self, endpoint, params, headers, timeout, show_full_error, return_json)
+        return api.get(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
+                       show_full_error=show_full_error, return_json=return_json)
 
     def api_call_with_payload(self, method, endpoint, payload, params=None, headers=None, timeout=30,
                               show_full_error=True, return_json=True):
@@ -162,8 +163,9 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        return api.api_call_with_payload(self, method, endpoint, payload, params, headers, timeout, show_full_error,
-                                         return_json)
+        return api.api_call_with_payload(self, method=method, endpoint=endpoint, payload=payload, params=params,
+                                         headers=headers, timeout=timeout, show_full_error=show_full_error,
+                                         return_json=return_json)
 
     def post(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
@@ -184,8 +186,9 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        return api.api_call_with_payload(self, 'post', endpoint, payload, params=params, headers=headers,
-                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(self, 'post', endpoint=endpoint, payload=payload, params=params,
+                                         headers=headers, timeout=timeout, show_full_error=show_full_error,
+                                         return_json=return_json)
 
     def patch(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=False):
         """This method performs a PATCH call against the Salesforce instance.
@@ -206,8 +209,9 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        return api.api_call_with_payload(self, 'patch', endpoint, payload, params=params, headers=headers,
-                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(self, 'patch', endpoint=endpoint, payload=payload, params=params,
+                                         headers=headers, timeout=timeout, show_full_error=show_full_error,
+                                         return_json=return_json)
 
     def put(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a PUT call against the Salesforce instance.
@@ -228,8 +232,9 @@ class Salesforce(object):
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
         """
-        return api.api_call_with_payload(self, 'put', endpoint, payload, params=params, headers=headers,
-                                         timeout=timeout, show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(self, 'put', endpoint=endpoint, payload=payload, params=params,
+                                         headers=headers, timeout=timeout, show_full_error=show_full_error,
+                                         return_json=return_json)
 
     def get_api_versions(self):
         """This method returns the API versions for the Salesforce releases.
@@ -315,8 +320,9 @@ class Salesforce(object):
             :type return_id_and_number: bool
             :returns: The Article Number, Article ID, or both, if found, or a blank string if not found
             """
-            return knowledge_module.check_for_existing_article(self.sfdc_object, title, sobject, return_id,
-                                                               return_id_and_number)
+            return knowledge_module.check_for_existing_article(self.sfdc_object, title=title,
+                                                               sobject=sobject, return_id=return_id,
+                                                               return_id_and_number=return_id_and_number)
 
         def get_article_id_from_number(self, article_number, sobject=None, return_uri=False):
             """This method returns the Article ID when an article number is provided.
@@ -332,86 +338,39 @@ class Salesforce(object):
             :returns: The Article ID or Article URI, or a blank string if no article is found
             :raises: :py:exc:`ValueError`
             """
-            return knowledge_module.get_article_id_from_number(self.sfdc_object, article_number, sobject, return_uri)
+            return knowledge_module.get_article_id_from_number(self.sfdc_object, article_number=article_number,
+                                                               sobject=sobject, return_uri=return_uri)
 
-    def get_articles_list(self, query=None, sort=None, order=None, page_size=20, page_num=1):
-        """This method retrieves a list of knowledge articles.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm
+        def get_articles_list(self, query=None, sort=None, order=None, page_size=20, page_num=1):
+            """This method retrieves a list of knowledge articles.
+            Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm
 
-        :param query: A SOQL query with which to filter the results (optional)
-        :type query: str, None
-        :param sort: One of the following optional values: ``LastPublishedDate``, ``CreatedDate``, ``Title``, or ``ViewScore``
-        :type sort: str, None
-        :param order: Optionally define the ORDER BY as ``ASC`` or ``DESC``
-        :type order: str, None
-        :param page_size: The number of results per page (``20`` by default)
-        :type page_size: int
-        :param page_num: The starting page number (``1`` by default)
-        :type page_num: int
-        :returns: The list of retrieved knowledge articles
-        """
-        # Define the headers
-        headers = self._get_headers('articles')
+            :param query: A SOQL query with which to filter the results (optional)
+            :type query: str, None
+            :param sort: One of the following optional values: ``LastPublishedDate``, ``CreatedDate``, ``Title``, or ``ViewScore``
+            :type sort: str, None
+            :param order: Optionally define the ORDER BY as ``ASC`` or ``DESC``
+            :type order: str, None
+            :param page_size: The number of results per page (``20`` by default)
+            :type page_size: int
+            :param page_num: The starting page number (``1`` by default)
+            :type page_num: int
+            :returns: The list of retrieved knowledge articles
+            """
+            return knowledge_module.get_articles_list(self.sfdc_object, query=query, sort=sort, order=order,
+                                                      page_size=page_size, page_num=page_num)
 
-        # Validate the sort field
-        valid_sort_options = ['LastPublishedDate', 'CreatedDate', 'Title', 'ViewScore']
-        if sort and sort not in valid_sort_options:
-            # TODO: Use an eprint function
-            print(f'The sort value {sort} is not valid and will be ignored.')
-            sort = None
+        def get_article_details(self, article_id, sobject=None):
+            """This method retrieves details for a single knowledge article.
+            Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm
 
-        # Validate the order field
-        if order and order.upper() not in ['ASC', 'DESC']:
-            # TODO: Use an eprint function
-            print(f'The order value {order} is not valid and will be ignored.')
-            order = None
-
-        # Validate the page size field
-        if page_size > 100:
-            # TODO: Use an eprint function
-            print(f'The pageSize value exceeds the maximum and will default to 100.')
-            page_size = 100
-
-        # Validate the pageNumber field
-        if page_num < 1:
-            # TODO: Use an eprint function
-            print(f'The pageNumber value is not valid and will default to 1.')
-            page_num = 1
-
-        # Add values to the parameters dictionary if they have been defined
-        params = {}
-        if query:
-            params['q'] = query
-        if sort:
-            params['sort'] = sort
-        if order:
-            params['order'] = order
-        params['pageSize'] = page_size
-        params['pageNumber'] = page_num
-
-        # Perform the query
-        return self.get(f'/services/data/{self.version}/support/knowledgeArticles', params=params, headers=headers)
-
-    def get_article_details(self, article_id, sobject=None):
-        """This method retrieves details for a single knowledge article.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm
-
-        :param article_id: The Article ID for which to retrieve details
-        :type article_id: str
-        :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
-        :type sobject: str, None
-        :returns: The details for the knowledge article
-        """
-        # Define the headers
-        headers = self._get_headers('articles')
-
-        # Perform the query and return the data
-        sobject = 'Knowledge__kav' if sobject is None else sobject
-        if sobject is not None:
-            data = self.get(f'/services/data/{self.version}/sobjects/{sobject}/{article_id}')
-        else:
-            data = self.get(f'/services/data/{self.version}/support/knowledgeArticles/{article_id}', headers=headers)
-        return data
+            :param article_id: The Article ID for which to retrieve details
+            :type article_id: str
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
+            :returns: The details for the knowledge article
+            """
+            return knowledge_module.get_article_details(self.sfdc_object, article_id=article_id, sobject=sobject)
 
 
 def define_connection_info():
