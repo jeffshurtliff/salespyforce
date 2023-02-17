@@ -4,15 +4,20 @@
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     09 Feb 2023
+:Modified Date:     17 Feb 2023
 """
 
 import requests
 
+from .utils import log_utils
+
+# Initialize logging
+logger = log_utils.initialize_logging(__name__)
+
 
 def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
     """This method performs a GET request against the Salesforce instance.
-    Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+    (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :param endpoint: The API endpoint to query
@@ -54,7 +59,7 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_
 def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, headers=None, timeout=30,
                           show_full_error=True, return_json=True):
     """This method performs a POST call against the Salesforce instance.
-    Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+    (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :param method: The API method (``post``, ``put``, or ``patch``)

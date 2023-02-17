@@ -92,20 +92,13 @@ class Salesforce(object):
             _connection_info[_field] = ''
         return _connection_info
 
-    def _get_headers(self, header_type='default'):
+    def _get_headers(self, _header_type='default'):
         """This method returns the appropriate HTTP headers to use for different types of API calls."""
-        headers = {
-            'content-type': 'application/json',
-            'accept-encoding': 'gzip',
-            'authorization': f'Bearer {self.access_token}'
-        }
-        if header_type == 'articles':
-            headers['accept-language'] = 'en-US'
-        return headers
+        return api._get_headers(_access_token=self.access_token, _header_type=_header_type)
 
     def connect(self):
         """This method connects to the Salesforce instance to obtain the access token.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
         :returns: The API call response with the authorization information
         """
@@ -123,7 +116,7 @@ class Salesforce(object):
 
     def get(self, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a GET request against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -144,7 +137,7 @@ class Salesforce(object):
     def api_call_with_payload(self, method, endpoint, payload, params=None, headers=None, timeout=30,
                               show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
         :param method: The API method (``post``, ``put``, or ``patch``)
         :type method: str
@@ -169,7 +162,7 @@ class Salesforce(object):
 
     def post(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -192,7 +185,7 @@ class Salesforce(object):
 
     def patch(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=False):
         """This method performs a PATCH call against the Salesforce instance.
-        Reference: https://jereze.com/code/authentification-salesforce-rest-api-python/
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -215,7 +208,7 @@ class Salesforce(object):
 
     def put(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a PUT call against the Salesforce instance.
-        Reference: `https://jereze.com/code/authentification-salesforce-rest-api-python/`_
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -238,20 +231,20 @@ class Salesforce(object):
 
     def get_api_versions(self):
         """This method returns the API versions for the Salesforce releases.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm>`_)
         """
         return self.get('/services/data')
 
     def get_all_sobjects(self):
         """This method returns a list of all Salesforce objects. (i.e. sObjects)
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm>`_)
         """
         return self.get(f'/services/data/{self.version}/sobjects')
 
     def get_sobject(self, object_name, describe=False):
         """This method returns basic information or the full (describe) information for a specific sObject.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info_get.htm
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm
+        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info_get.htm>`_,
+        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm>`_)
 
         :param object_name: The name of the Salesforce object
         :type object_name: str
@@ -265,7 +258,7 @@ class Salesforce(object):
 
     def describe_object(self, object_name):
         """This method returns the full (describe) information for a specific sObject.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm>`_)
 
         :param object_name: The name of the Salesforce object
         :type object_name: str
@@ -275,14 +268,14 @@ class Salesforce(object):
 
     def get_rest_resources(self):
         """This method returns a list of all available REST resources.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm>`_)
         """
         return self.get(f'/services/data/{self.version}')
 
     def soql_query(self, query, replace_quotes=True):
         """This method performs a SOQL query and returns the results in JSON format.
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
-        Reference: https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm
+        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
+        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
         :param query: The SOQL query to perform
         :type query: str
@@ -307,8 +300,8 @@ class Salesforce(object):
 
         def check_for_existing_article(self, title, sobject=None, return_id=False, return_id_and_number=False):
             """This method checks to see if an article already exists with a given title and returns its article number.
-            Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
-            Reference: https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm
+            (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_.
+            `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
             :param title: The title of the knowledge article for which to check
             :type title: str
@@ -326,8 +319,8 @@ class Salesforce(object):
 
         def get_article_id_from_number(self, article_number, sobject=None, return_uri=False):
             """This method returns the Article ID when an article number is provided.
-            Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
-            Reference: https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm
+            (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
+            `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
             :param article_number: The Article Number to query
             :type article_number: str, int
@@ -343,7 +336,7 @@ class Salesforce(object):
 
         def get_articles_list(self, query=None, sort=None, order=None, page_size=20, page_num=1):
             """This method retrieves a list of knowledge articles.
-            Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`_)
 
             :param query: A SOQL query with which to filter the results (optional)
             :type query: str, None
@@ -362,7 +355,7 @@ class Salesforce(object):
 
         def get_article_details(self, article_id, sobject=None):
             """This method retrieves details for a single knowledge article.
-            Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str

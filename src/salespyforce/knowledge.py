@@ -47,8 +47,8 @@ def check_for_existing_article(sfdc_object, title, sobject=None, return_id=False
 
 def get_article_id_from_number(sfdc_object, article_number, sobject=None, return_uri=False):
     """This method returns the Article ID when an article number is provided.
-    Reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm
-    Reference: https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm
+    (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
+    `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :param article_number: The Article Number to query
