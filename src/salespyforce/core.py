@@ -403,6 +403,21 @@ class Salesforce(object):
             """
             return knowledge_module.get_article_version(self.sfdc_object, article_id=article_id)
 
+        def get_article_url(self, article_id=None, article_number=None, sobject=None):
+            """This function constructs the URL to view a knowledge article in Lightning or Classic.
+
+            :param article_id: The Article ID for which to retrieve details
+            :type article_id: str, None
+            :param article_number: The article number for which to retrieve details
+            :type article_number: str, int, None
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
+            :returns: The article URL as a string
+            :raises: :py:exc:`ValueError`
+            """
+            return knowledge_module.get_article_url(self.sfdc_object, article_id=article_id,
+                                                    article_number=article_number, sobject=sobject)
+
 
 def define_connection_info():
     """This function prompts the user for the connection information.

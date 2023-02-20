@@ -214,3 +214,28 @@ def get_article_version(sfdc_object, article_id):
     """
     endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleversions/masterVersions/{article_id}'
     return sfdc_object.get(endpoint)
+
+
+def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=None):
+    """This function constructs the URL to view a knowledge article in Lightning or Classic.
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :param article_id: The Article ID for which to retrieve details
+    :type article_id: str, None
+    :param article_number: The article number for which to retrieve details
+    :type article_number: str, int, None
+    :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+    :type sobject: str, None
+    :returns: The article URL as a string
+    :raises: :py:exc:`ValueError`
+    """
+    if not any((article_id, article_number)):
+        raise ValueError('An article ID or an article number must be provided to retrieve the article URL.')
+    if article_number and not article_id:
+        article_id = get_article_id_from_number(sfdc_object, article_number, sobject)
+    if 'lightning' in sfdc_object.base_url:
+        article_url = f'{sfdc_object.base_url}/lightning/r/Knowledge__kav/{article_id}/view'
+    else:
+        article_url = f'{sfdc_object.base_url}/knowledge/publishing/articleDraftDetail.apexp?id={article_id}'
+    return article_url
+
