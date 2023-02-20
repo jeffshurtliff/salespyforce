@@ -392,6 +392,17 @@ class Salesforce(object):
             """
             return knowledge_module.get_article_metadata(self.sfdc_object, article_id=article_id)
 
+        def get_article_version(self, article_id):
+            """This method retrieves the version ID for a given master article ID.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`_)
+
+            :param article_id: The Article ID for which to retrieve details
+            :type article_id: str
+            :returns: The version ID for the given master article ID
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.get_article_version(self.sfdc_object, article_id=article_id)
+
 
 def define_connection_info():
     """This function prompts the user for the connection information.

@@ -200,3 +200,17 @@ def get_article_metadata(sfdc_object, article_id):
     :raises: :py:exc:`RuntimeError`
     """
     return sfdc_object.get(f'/services/data/{sfdc_object.version}/knowledgeManagement/articles/{article_id}')
+
+
+def get_article_version(sfdc_object, article_id):
+    """This function retrieves the version ID for a given master article ID.
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`_)
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :param article_id: The Article ID for which to retrieve details
+    :type article_id: str
+    :returns: The version ID for the given master article ID
+    :raises: :py:exc:`RuntimeError`
+    """
+    endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleversions/masterVersions/{article_id}'
+    return sfdc_object.get(endpoint)
