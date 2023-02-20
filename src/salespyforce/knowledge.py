@@ -187,3 +187,16 @@ def get_validation_status(sfdc_object, article_id=None, article_details=None, so
 
     # Identify the validation status
     return article_details.get('ValidationStatus')
+
+
+def get_article_metadata(sfdc_object, article_id):
+    """This function retrieves metadata for a specific knowledge article.
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`_)
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :param article_id: The Article ID for which to retrieve details
+    :type article_id: str
+    :returns: The article metadata as a dictionary
+    :raises: :py:exc:`RuntimeError`
+    """
+    return sfdc_object.get(f'/services/data/{sfdc_object.version}/knowledgeManagement/articles/{article_id}')

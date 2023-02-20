@@ -381,6 +381,17 @@ class Salesforce(object):
             return knowledge_module.get_validation_status(self.sfdc_object, article_id=article_id,
                                                           article_details=article_details, sobject=sobject)
 
+        def get_article_metadata(self, article_id):
+            """This method retrieves metadata for a specific knowledge article.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`_)
+
+            :param article_id: The Article ID for which to retrieve details
+            :type article_id: str
+            :returns: The article metadata as a dictionary
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.get_article_metadata(self.sfdc_object, article_id=article_id)
+
 
 def define_connection_info():
     """This function prompts the user for the connection information.
