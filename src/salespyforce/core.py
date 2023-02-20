@@ -288,6 +288,46 @@ class Salesforce(object):
         query = core_utils.url_encode(query)
         return self.get(f'/services/data/{self.version}/query/?q={query}')
 
+    def create_sobject_record(self, sobject, payload):
+        """This method creates a new record for a specific sObject.
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
+
+        :param sobject: The sObject under which to create the new record
+        :type sobject: str
+        :param payload: The JSON payload with the record details
+        :type payload: dict
+        :returns: The API response from the POST request
+        :raises: :py:exc:`RuntimeError`, :py:exc:`TypeError`
+        """
+        # Ensure the payload is in the appropriate format
+        if not isinstance(payload, dict):
+            raise TypeError('The sObject payload must be provided as a dictionary.')
+
+        # Perform the API call and return the response
+        response = self.post(f'/services/data/{self.version}/sobjects/{sobject}', payload=payload)
+        return response
+
+    def update_sobject_record(self, sobject, record_id, payload):
+        """This method updates an existing sObject record.
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
+
+        :param sobject: The sObject under which to update the record
+        :type sobject: str
+        :param record_id: The ID of the record to be updated
+        :type record_id: str
+        :param payload: The JSON payload with the record details to be updated
+        :type payload: dict
+        :returns: The API response from the PATCH request
+        :raises: :py:exc:`RuntimeError`, :py:exc:`TypeError`
+        """
+        # Ensure the payload is in the appropriate format
+        if not isinstance(payload, dict):
+            raise TypeError('The sObject payload must be provided as a dictionary.')
+
+        # Perform the API call and return the response
+        response = self.patch(f'/services/data/{self.version}/sobjects/{sobject}/{record_id}', payload=payload)
+        return response
+
     class Knowledge(object):
         """This class includes methods associated with Highspot domains."""
         def __init__(self, sfdc_object):
