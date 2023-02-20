@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     17 Feb 2023
+:Modified Date:     20 Feb 2023
 """
 
 import requests
@@ -364,6 +364,22 @@ class Salesforce(object):
             :returns: The details for the knowledge article
             """
             return knowledge_module.get_article_details(self.sfdc_object, article_id=article_id, sobject=sobject)
+
+        def get_validation_status(self, article_id=None, article_details=None, sobject=None):
+            """This method retrieves the Validation Status for a given Article ID.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+
+            :param article_id: The Article ID for which to retrieve details
+            :type article_id: str, None
+            :param article_details: The dictionary of article details for the given article
+            :type article_details: dict, None
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
+            :returns: The validation status as a text string
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.get_validation_status(self.sfdc_object, article_id=article_id,
+                                                          article_details=article_details, sobject=sobject)
 
 
 def define_connection_info():

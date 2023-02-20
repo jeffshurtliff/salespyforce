@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     17 Feb 2023
+:Modified Date:     20 Feb 2023
 """
 
 from .utils import log_utils
@@ -162,3 +162,28 @@ def get_article_details(sfdc_object, article_id, sobject=None):
         data = sfdc_object.get(f'/services/data/{sfdc_object.version}/support/knowledgeArticles/{article_id}',
                                headers=headers)
     return data
+
+
+def get_validation_status(sfdc_object, article_id=None, article_details=None, sobject=None):
+    """This function retrieves the Validation Status for a given Article ID.
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :param article_id: The Article ID for which to retrieve details
+    :type article_id: str, None
+    :param article_details: The dictionary of article details for the given article
+    :type article_details: dict, None
+    :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+    :type sobject: str, None
+    :returns: The validation status as a text string
+    :raises: :py:exc:`RuntimeError`
+    """
+    if not any((article_id, article_details)):
+        raise RuntimeError('The article ID or article details must be provided.')
+
+    # Retrieve the article details if not already supplied
+    if not article_details:
+        article_details = get_article_details(sfdc_object, article_id, sobject)
+
+    # Identify the validation status
+    return article_details.get('ValidationStatus')
