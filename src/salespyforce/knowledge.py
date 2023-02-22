@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     20 Feb 2023
+:Modified Date:     22 Feb 2023
 """
 
 from .utils import log_utils
@@ -239,3 +239,78 @@ def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=N
         article_url = f'{sfdc_object.base_url}/knowledge/publishing/articleDraftDetail.apexp?id={article_id}'
     return article_url
 
+
+def create_article(sfdc_object, article_data, sobject=None, full_response=False):
+    """This function creates a new knowledge article draft.
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :param article_data: The article data used to populate the article
+    :type article_data: dict
+    :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+    :type sobject: str, None
+    :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
+    :returns: The API response or the ID of the article draft
+    :raises: :py:exc:`ValueError`, :py:exc:`TypeError`, :py:exc:`RuntimeError`
+    """
+    # Get the appropriate sObject to call
+    sobject = 'Knowledge__kav' if sobject is None else sobject
+
+    # Ensure the payload is in the appropriate format
+    if not isinstance(article_data, dict):
+        raise TypeError('The article data must be provided as a dictionary.')
+
+    # Ensure that the required fields have been provided
+    required_fields = ['Title', 'UrlName']
+    for field in required_fields:
+        if field not in article_data:
+            raise ValueError(f'The following required field is missing from the article data: {field}')
+
+    # Perform the API call
+    response = sfdc_object.post(f'/services/data/{sfdc_object.version}/sobjects/{sobject}', payload=article_data)
+
+    # Return the full response or just the article ID
+    if not full_response:
+        response = response.get('id')
+    return response
+
+
+def update_article(sfdc_object, record_id, article_data, sobject=None, include_status_code=False):
+    """This function updates an existing knowledge article draft.
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :param record_id: The ID of the article draft record to be updated
+    :type record_id: str
+    :param article_data: The article data used to update the article
+    :type article_data: dict
+    :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+    :type sobject: str, None
+    :param include_status_code: Determines if the API response status code should be returned (``False`` by default)
+    :returns: A Boolean indicating if the update operation was successful, and optionally the API response status code
+    :raises: :py:exc:`ValueError`, :py:exc:`TypeError`, :py:exc:`RuntimeError`
+    """
+    # Get the appropriate sObject to call
+    sobject = 'Knowledge__kav' if sobject is None else sobject
+
+    # Ensure the payload is in the appropriate format
+    if not isinstance(article_data, dict):
+        raise TypeError('The article data must be provided as a dictionary.')
+
+    # Ensure that the required fields have been provided
+    required_fields = ['Title', 'UrlName']
+    for field in required_fields:
+        if field not in article_data:
+            raise ValueError(f'The following required field is missing from the article data: {field}')
+
+    # Perform the API call
+    response = sfdc_object.patch(f'/services/data/{sfdc_object.version}/sobjects/{sobject}/{record_id}',
+                                 payload=article_data)
+
+    # Determine whether the call was successful
+    successful = True if response.status_code == 204 else False
+
+    # Return the success determination and optionally the status code
+    if include_status_code:
+        return successful, response.status_code
+    return successful

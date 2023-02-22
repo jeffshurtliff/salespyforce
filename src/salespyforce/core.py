@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     20 Feb 2023
+:Modified Date:     22 Feb 2023
 """
 
 import requests
@@ -457,6 +457,38 @@ class Salesforce(object):
             """
             return knowledge_module.get_article_url(self.sfdc_object, article_id=article_id,
                                                     article_number=article_number, sobject=sobject)
+
+        def create_article(self, article_data, sobject=None, full_response=False):
+            """This method creates a new knowledge article draft.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
+
+            :param article_data: The article data used to populate the article
+            :type article_data: dict
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
+            :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
+            :returns: The API response or the ID of the article draft
+            :raises: :py:exc:`ValueError`, :py:exc:`TypeError`
+            """
+            return knowledge_module.create_article(self.sfdc_object, article_data=article_data, sobject=sobject,
+                                                   full_response=full_response)
+
+        def update_article(self, record_id, article_data, sobject=None, include_status_code=False):
+            """This method updates an existing knowledge article draft.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
+
+            :param record_id: The ID of the article draft record to be updated
+            :type record_id: str
+            :param article_data: The article data used to update the article
+            :type article_data: dict
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
+            :param include_status_code: Determines if the API response status code should be returned (``False`` by default)
+            :returns: A Boolean indicating if the update operation was successful, and optionally the API response status code
+            :raises: :py:exc:`ValueError`, :py:exc:`TypeError`, :py:exc:`RuntimeError`
+            """
+            return knowledge_module.update_article(self.sfdc_object, record_id=record_id, article_data=article_data,
+                                                   sobject=sobject, include_status_code=include_status_code)
 
 
 def define_connection_info():
