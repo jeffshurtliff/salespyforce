@@ -467,6 +467,7 @@ class Salesforce(object):
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
             :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
+            :type full_response: bool
             :returns: The API response or the ID of the article draft
             :raises: :py:exc:`ValueError`, :py:exc:`TypeError`
             """
@@ -484,11 +485,77 @@ class Salesforce(object):
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
             :param include_status_code: Determines if the API response status code should be returned (``False`` by default)
+            :type include_status_code: bool
             :returns: A Boolean indicating if the update operation was successful, and optionally the API response status code
             :raises: :py:exc:`ValueError`, :py:exc:`TypeError`, :py:exc:`RuntimeError`
             """
             return knowledge_module.update_article(self.sfdc_object, record_id=record_id, article_data=article_data,
                                                    sobject=sobject, include_status_code=include_status_code)
+
+        def create_draft_from_online_article(self, article_id, unpublish=False):
+            """This method creates a draft knowledge article from an online article.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`_)
+
+            :param article_id: The ID of the online article from which to create the draft
+            :type article_id: str
+            :param unpublish: Determines if the online article should be unpublished when the draft is created (``False`` by default)
+            :type unpublish: bool
+            :returns: The API response from the POST request
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.create_draft_from_online_article(self.sfdc_object, article_id=article_id,
+                                                                     unpublish=unpublish)
+
+        def create_draft_from_master_version(self, article_id=None, knowledge_article_id=None, article_data=None,
+                                             sobject=None, full_response=False):
+            """This method creates an online version of a master article.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`_)
+
+            :param article_id: The Article ID from which to create the draft
+            :type article_id: str, None
+            :param knowledge_article_id: The Knowledge Article ID (``KnowledgeArticleId``) from which to create the draft
+            :type knowledge_article_id: str, None
+            :param article_data: The article data associated with the article from which to create the draft
+            :type article_data: dict, None
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
+            :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
+            :type full_response: bool
+            :returns: The API response or the ID of the article draft
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.create_draft_from_master_version(self.sfdc_object, article_id=article_id,
+                                                                     knowledge_article_id=knowledge_article_id,
+                                                                     article_data=article_data, sobject=sobject,
+                                                                     full_response=full_response)
+
+        def publish_article(self, article_id, major_version=True):
+            """This method publishes a draft knowledge article as a major or minor version.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`_)
+
+            :param article_id: The Article ID to publish
+            :type article_id: str
+            :param major_version: Determines if the published article should be a major version (``True`` by default)
+            :type major_version: bool
+            :returns: The API response from the PATCH request
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.publish_article(self.sfdc_object, article_id=article_id,
+                                                    major_version=major_version)
+
+        def publish_multiple_articles(self, article_id_list, major_version=True):
+            """This method publishes multiple knowledge article drafts at one time.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`_)
+
+            :param article_id_list: A list of Article IDs to be published
+            :type article_id_list: list
+            :param major_version: Determines if the published article should be a major version (``True`` by default)
+            :type major_version: bool
+            :returns: The API response from the POST request
+            :raises: :py:exc:`RuntimeError`, :py:exc:`TypeError`, :py:exc:`ValueError`
+            """
+            return knowledge_module.publish_multiple_articles(self.sfdc_object, article_id_list=article_id_list,
+                                                              major_version=major_version)
 
 
 def define_connection_info():
