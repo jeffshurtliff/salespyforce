@@ -12,6 +12,7 @@
 import requests
 
 from . import api, errors
+from . import chatter as chatter_module
 from . import knowledge as knowledge_module
 from .utils import core_utils, log_utils
 
@@ -76,10 +77,15 @@ class Salesforce(object):
         self.signature = auth_response.get('signature')
 
         # Import inner object classes so their methods can be called from the primary object
+        self.chatter = self._import_chatter_class()
         self.knowledge = self._import_knowledge_class()
 
+    def _import_chatter_class(self):
+        """This method allows the :py:class:`salespyforce.core.Salesforce.Chatter` class to be utilized in the core object."""
+        return Salesforce.Chatter(self)
+
     def _import_knowledge_class(self):
-        """This method allows the :py:class:`highspot.core.Highspot.Domain` class to be utilized in the core object."""
+        """This method allows the :py:class:`salespyforce.core.Salesforce.Knowledge` class to be utilized in the core object."""
         return Salesforce.Knowledge(self)
 
     @staticmethod
@@ -367,6 +373,53 @@ class Salesforce(object):
         except RuntimeError as exc:
             errors.handlers.eprint(exc)
         return image_path
+
+    class Chatter(object):
+        """This class includes methods associated with Salesforce Chatter."""
+        def __init__(self, sfdc_object):
+            """This method initializes the :py:class:`salespyforce.core.Salesforce.Chatter` inner class object.
+
+            :param sfdc_object: The core :py:class:`salespyforce.Salesforce` object
+            :type sfdc_object: class[salespyforce.Salesforce]
+            """
+            self.sfdc_object = sfdc_object
+
+        def get_my_news_feed(self, site_id=None):
+            """This method retrieves the news feed for the user calling the function.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`_)
+
+            :param site_id: The ID of an Experience Cloud site against which to query (optional)
+            :type site_id: str, None
+            :returns: The news feed data
+            :raises: :py:exc:`RuntimeError`
+            """
+            return chatter_module.get_my_news_feed(self.sfdc_object, site_id=site_id)
+
+        def get_user_news_feed(self, user_id, site_id=None):
+            """This method retrieves another user's news feed.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`_)
+
+            :param user_id: The ID of the user whose feed you wish to return
+            :type user_id: str
+            :param site_id: The ID of an Experience Cloud site against which to query (optional)
+            :type site_id: str, None
+            :returns: The news feed data
+            :raises: :py:exc:`RuntimeError`
+            """
+            return chatter_module.get_user_news_feed(self.sfdc_object, user_id=user_id, site_id=site_id)
+
+        def get_group_feed(self, group_id, site_id=None):
+            """This method retrieves a group's news feed.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`_)
+
+            :param group_id: The ID of the group whose feed you wish to return
+            :type group_id: str
+            :param site_id: The ID of an Experience Cloud site against which to query (optional)
+            :type site_id: str, None
+            :returns: The news feed data
+            :raises: :py:exc:`RuntimeError`
+            """
+            return chatter_module.get_group_feed(self.sfdc_object, group_id=group_id, site_id=site_id)
 
     class Knowledge(object):
         """This class includes methods associated with Salesforce Knowledge."""

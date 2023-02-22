@@ -7,6 +7,7 @@ within the core object for the **salespyforce** package, which are listed below.
 * `Init Module (salespyforce)`_
 * `Core Module (salespyforce.core)`_
     * `Core Functionality Subclasses (salespyforce.core.Salesforce)`_
+        * `Chatter Subclass (salespyforce.core.Salesforce.Chatter)`_
         * `Knowledge Subclass (salespyforce.core.Salesforce.Knowledge)`_
 
 |
@@ -47,6 +48,18 @@ These classes below are inner/nested classes within the core :py:class:`salespyf
           the names used to call the inner class methods are all *lowercase* (or *snake_case*) and plural.
           (e.g. ``core_object.knowledge.check_for_existing_article()``, etc.)
 
+|
+
+Chatter Subclass (salespyforce.core.Salesforce.Chatter)
+-------------------------------------------------------
+.. autoclass:: salespyforce.core::Salesforce.Chatter
+   :members:
+   :noindex:
+
+:doc:`Return to Top <core-object-methods>`
+
+|
+
 Knowledge Subclass (salespyforce.core.Salesforce.Knowledge)
 -----------------------------------------------------------
 .. autoclass:: salespyforce.core::Salesforce.Knowledge
@@ -54,3 +67,5 @@ Knowledge Subclass (salespyforce.core.Salesforce.Knowledge)
    :noindex:
 
 :doc:`Return to Top <core-object-methods>`
+
+|
