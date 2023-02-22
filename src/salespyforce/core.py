@@ -328,8 +328,50 @@ class Salesforce(object):
         response = self.patch(f'/services/data/{self.version}/sobjects/{sobject}/{record_id}', payload=payload)
         return response
 
+    def download_image(self, image_url, record_id, field_name, file_path=None, sobject=None):
+        """This method downloads an image using the sObject Rich Text Image Retrieve functionality.
+        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`_,
+        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`_)
+
+        :param image_url: The URL for the image to be downloaded
+        :type image_url: str
+        :param record_id: The Record ID where the image is found
+        :type record_id: str
+        :param field_name: The field name within the record where the image is found
+        :type field_name: str
+        :param file_path: The path to the directory where the image should be saved (current directory if not defined)
+        :type file_path: str, None
+        :param sobject: The sObject for the record where the image is found (``Knowledge__kav`` by default)
+        :type sobject: str
+        :returns: The full path to the downloaded image
+        :raises: :py:exc:`RuntimeError`
+        """
+        # Ensure a valid sObject is defined (SFDC Knowledge unless otherwise specified)
+        sobject = 'Knowledge__kav' if not sobject else sobject
+
+        # Retrieve the reference ID for the image
+        ref_id = core_utils.get_image_ref_id(image_url)
+
+        # Define the URI and perform the API call
+        image_path = None
+        try:
+            uri = f'/services/data/{self.version}/sobjects/{sobject}/{record_id}/richTextImageFields/{field_name}/{ref_id}'
+            response = self.get(uri, return_json=False)
+
+            # Save the image as an image file
+            try:
+                image_path = core_utils.download_image(file_name=f'{ref_id}.jpeg', file_path=file_path,
+                                                       response=response)
+            except RuntimeError:
+                # TODO: Replace with eprint function
+                print(f'Failed to download the image with refid {ref_id}.')
+        except RuntimeError as exc:
+            # TODO: Replace with eprint function
+            print(exc)
+        return image_path
+
     class Knowledge(object):
-        """This class includes methods associated with Highspot domains."""
+        """This class includes methods associated with Salesforce Knowledge."""
         def __init__(self, sfdc_object):
             """This method initializes the :py:class:`salespyforce.core.Salesforce.Knowledge` inner class object.
 

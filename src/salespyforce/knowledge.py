@@ -19,6 +19,7 @@ def check_for_existing_article(sfdc_object, title, sobject=None, return_id=False
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param title: The title of the knowledge article for which to check
     :type title: str
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
@@ -51,6 +52,7 @@ def get_article_id_from_number(sfdc_object, article_number, sobject=None, return
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_number: The Article Number to query
     :type article_number: str, int
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
@@ -84,6 +86,7 @@ def get_articles_list(sfdc_object, query=None, sort=None, order=None, page_size=
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param query: A SOQL query with which to filter the results (optional)
     :type query: str, None
     :param sort: One of the following optional values: ``LastPublishedDate``, ``CreatedDate``, ``Title``, or ``ViewScore``
@@ -145,6 +148,7 @@ def get_article_details(sfdc_object, article_id, sobject=None):
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
     :type article_id: str
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
@@ -169,6 +173,7 @@ def get_validation_status(sfdc_object, article_id=None, article_details=None, so
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
     :type article_id: str, None
     :param article_details: The dictionary of article details for the given article
@@ -194,6 +199,7 @@ def get_article_metadata(sfdc_object, article_id):
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
     :type article_id: str
     :returns: The article metadata as a dictionary
@@ -207,6 +213,7 @@ def get_article_version(sfdc_object, article_id):
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
     :type article_id: str
     :returns: The version ID for the given master article ID
@@ -220,6 +227,7 @@ def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=N
     """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
     :type article_id: str, None
     :param article_number: The article number for which to retrieve details
@@ -245,6 +253,7 @@ def create_article(sfdc_object, article_data, sobject=None, full_response=False)
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_data: The article data used to populate the article
     :type article_data: dict
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
@@ -281,6 +290,7 @@ def update_article(sfdc_object, record_id, article_data, sobject=None, include_s
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param record_id: The ID of the article draft record to be updated
     :type record_id: str
     :param article_data: The article data used to update the article
@@ -323,6 +333,7 @@ def create_draft_from_online_article(sfdc_object, article_id, unpublish=False):
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The ID of the online article from which to create the draft
     :type article_id: str
     :param unpublish: Determines if the online article should be unpublished when the draft is created (``False`` by default)
@@ -352,6 +363,7 @@ def create_draft_from_master_version(sfdc_object, article_id=None, knowledge_art
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID from which to create the draft
     :type article_id: str, None
     :param knowledge_article_id: The Knowledge Article ID (``KnowledgeArticleId``) from which to create the draft
@@ -392,6 +404,7 @@ def publish_article(sfdc_object, article_id, major_version=True):
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID to publish
     :type article_id: str
     :param major_version: Determines if the published article should be a major version (``True`` by default)
@@ -416,6 +429,7 @@ def publish_multiple_articles(sfdc_object, article_id_list, major_version=True):
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id_list: A list of Article IDs to be published
     :type article_id_list: list
     :param major_version: Determines if the published article should be a major version (``True`` by default)
