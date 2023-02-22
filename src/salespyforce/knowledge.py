@@ -7,6 +7,7 @@
 :Modified Date:     22 Feb 2023
 """
 
+from . import errors
 from .utils import log_utils
 
 # Initialize logging
@@ -105,26 +106,22 @@ def get_articles_list(sfdc_object, query=None, sort=None, order=None, page_size=
     # Validate the sort field
     valid_sort_options = ['LastPublishedDate', 'CreatedDate', 'Title', 'ViewScore']
     if sort and sort not in valid_sort_options:
-        # TODO: Use an eprint function
-        print(f'The sort value {sort} is not valid and will be ignored.')
+        errors.handlers.eprint(f'The sort value {sort} is not valid and will be ignored.')
         sort = None
 
     # Validate the order field
     if order and order.upper() not in ['ASC', 'DESC']:
-        # TODO: Use an eprint function
-        print(f'The order value {order} is not valid and will be ignored.')
+        errors.handlers.eprint(f'The order value {order} is not valid and will be ignored.')
         order = None
 
     # Validate the page size field
     if page_size > 100:
-        # TODO: Use an eprint function
-        print(f'The pageSize value exceeds the maximum and will default to 100.')
+        errors.handlers.eprint(f'The pageSize value exceeds the maximum and will default to 100.')
         page_size = 100
 
     # Validate the pageNumber field
     if page_num < 1:
-        # TODO: Use an eprint function
-        print(f'The pageNumber value is not valid and will default to 1.')
+        errors.handlers.eprint(f'The pageNumber value is not valid and will default to 1.')
         page_num = 1
 
     # Add values to the parameters dictionary if they have been defined

@@ -11,7 +11,7 @@
 
 import requests
 
-from . import api
+from . import api, errors
 from . import knowledge as knowledge_module
 from .utils import core_utils, log_utils
 
@@ -363,11 +363,9 @@ class Salesforce(object):
                 image_path = core_utils.download_image(file_name=f'{ref_id}.jpeg', file_path=file_path,
                                                        response=response)
             except RuntimeError:
-                # TODO: Replace with eprint function
-                print(f'Failed to download the image with refid {ref_id}.')
+                errors.handlers.eprint(f'Failed to download the image with refid {ref_id}.')
         except RuntimeError as exc:
-            # TODO: Replace with eprint function
-            print(exc)
+            errors.handlers.eprint(exc)
         return image_path
 
     class Knowledge(object):
