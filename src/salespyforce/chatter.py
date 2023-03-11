@@ -76,3 +76,51 @@ def get_group_feed(sfdc_object, group_id, site_id=None):
     return sfdc_object.get(endpoint)
 
 
+def post_feed_item(sfdc_object, subject_id, message_text=None, message_segments=None, site_id=None):
+    """This function publishes a new Chatter feed item.
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
+    :param subject_id: The Subject ID against which to publish the feed item (e.g. ``0F9B000000000W2``)
+    :type subject_id: str
+    :param message_text: Plaintext to be used as the message body
+    :type message_segments: str, None
+    :param message_segments: Collection of message segments to use instead of a plaintext message
+    :type message_segments: list, None
+    :param site_id: The ID of an Experience Cloud site against which to query (optional)
+    :type site_id: str, None
+    :returns: The response of the POST request
+    :raises: :py:exc:`RuntimeError`
+    """
+    site_segment = _get_site_endpoint_segment(site_id)
+    if not any((message_text, message_segments)):
+        raise RuntimeError('Message text or message segments are required to post a feed item.')
+    if not message_segments:
+        message_segments = _construct_simple_message_segment(message_text)
+    body = {
+        'body': {
+            'messageSegments': message_segments
+        },
+        'feedElementType': 'FeedItem',
+        'subjectId': subject_id,
+    }
+    endpoint = f'/services/data/{sfdc_object.version}{site_segment}/chatter/feed-elements?' \
+               f'feedElementType=FeedItem&subjectId={subject_id}&text=New+post'
+    return sfdc_object.post(endpoint=endpoint, payload=body)
+
+
+def _construct_simple_message_segment(_message_text):
+    """This function constructs a simple message segments collection to be used in an API payload.
+
+    :param _message_text: The plaintext message to be embedded in a message segment.
+    :type _message_text: str
+    :returns: The constructed message segments payload
+    """
+    _message_segments = [
+        {
+            'type': 'text',
+            'text': _message_text
+        }
+    ]
+    return _message_segments
+

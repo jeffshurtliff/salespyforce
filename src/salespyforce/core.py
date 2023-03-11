@@ -421,6 +421,23 @@ class Salesforce(object):
             """
             return chatter_module.get_group_feed(self.sfdc_object, group_id=group_id, site_id=site_id)
 
+        def post_feed_item(self, subject_id, message_text=None, message_segments=None, site_id=None):
+            """This function publishes a new Chatter feed item.
+
+            :param subject_id: The Subject ID against which to publish the feed item (e.g. ``0F9B000000000W2``)
+            :type subject_id: str
+            :param message_text: Plaintext to be used as the message body
+            :type message_segments: str, None
+            :param message_segments: Collection of message segments to use instead of a plaintext message
+            :type message_segments: list, None
+            :param site_id: The ID of an Experience Cloud site against which to query (optional)
+            :type site_id: str, None
+            :returns: The response of the POST request
+            :raises: :py:exc:`RuntimeError`
+            """
+            return chatter_module.post_feed_item(self.sfdc_object, subject_id=subject_id, message_text=message_text,
+                                                 message_segments=message_segments, site_id=site_id)
+
     class Knowledge(object):
         """This class includes methods associated with Salesforce Knowledge."""
         def __init__(self, sfdc_object):
