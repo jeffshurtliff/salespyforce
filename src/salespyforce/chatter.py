@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Chatter-related functions associated with the Salesforce Connect API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Feb 2023
+:Modified Date:     13 Mar 2023
 """
 
 from .utils import log_utils
@@ -76,8 +76,9 @@ def get_group_feed(sfdc_object, group_id, site_id=None):
     return sfdc_object.get(endpoint)
 
 
-def post_feed_item(sfdc_object, subject_id, message_text=None, message_segments=None, site_id=None):
+def post_feed_item(sfdc_object, subject_id, message_text=None, message_segments=None, site_id=None, created_by_id=None):
     """This function publishes a new Chatter feed item.
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`_)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -89,6 +90,8 @@ def post_feed_item(sfdc_object, subject_id, message_text=None, message_segments=
     :type message_segments: list, None
     :param site_id: The ID of an Experience Cloud site against which to query (optional)
     :type site_id: str, None
+    :param created_by_id: The ID of the user to impersonate (**Experimental**)
+    :type created_by_id: str, None
     :returns: The response of the POST request
     :raises: :py:exc:`RuntimeError`
     """
@@ -104,8 +107,46 @@ def post_feed_item(sfdc_object, subject_id, message_text=None, message_segments=
         'feedElementType': 'FeedItem',
         'subjectId': subject_id,
     }
+    if created_by_id:
+        body['createdById'] = created_by_id
     endpoint = f'/services/data/{sfdc_object.version}{site_segment}/chatter/feed-elements?' \
-               f'feedElementType=FeedItem&subjectId={subject_id}&text=New+post'
+               f'feedElementType=FeedItem&subjectId={subject_id}'
+    return sfdc_object.post(endpoint=endpoint, payload=body)
+
+
+def post_comment(sfdc_object, feed_element_id, message_text=None, message_segments=None, site_id=None, created_by_id=None):
+    """This function publishes a comment on a Chatter feed item.
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`_)
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
+    :param feed_element_id: The ID of the feed element on which to post the comment
+    :type feed_element_id: str
+    :param message_text: Plaintext to be used as the message body
+    :type message_segments: str, None
+    :param message_segments: Collection of message segments to use instead of a plaintext message
+    :type message_segments: list, None
+    :param site_id: The ID of an Experience Cloud site against which to query (optional)
+    :type site_id: str, None
+    :param created_by_id: The ID of the user to impersonate (**Experimental**)
+    :type created_by_id: str, None
+    :returns: The response of the POST request
+    :raises: :py:exc:`RuntimeError`
+    """
+    site_segment = _get_site_endpoint_segment(site_id)
+    if not any((message_text, message_segments)):
+        raise RuntimeError('Message text or message segments are required to post a feed comment.')
+    if not message_segments:
+        message_segments = _construct_simple_message_segment(message_text)
+    body = {
+        'body': {
+            'messageSegments': message_segments
+        }
+    }
+    if created_by_id:
+        body['createdById'] = created_by_id
+    endpoint = f'/services/data/{sfdc_object.version}{site_segment}/chatter/feed-elements/' \
+               f'{feed_element_id}/capabilities/comments/items'
     return sfdc_object.post(endpoint=endpoint, payload=body)
 
 

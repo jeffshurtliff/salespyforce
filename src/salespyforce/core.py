@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Feb 2023
+:Modified Date:     13 Mar 2023
 """
 
 import requests
@@ -421,8 +421,9 @@ class Salesforce(object):
             """
             return chatter_module.get_group_feed(self.sfdc_object, group_id=group_id, site_id=site_id)
 
-        def post_feed_item(self, subject_id, message_text=None, message_segments=None, site_id=None):
-            """This function publishes a new Chatter feed item.
+        def post_feed_item(self, subject_id, message_text=None, message_segments=None, site_id=None, created_by_id=None):
+            """This method publishes a new Chatter feed item.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`_)
 
             :param subject_id: The Subject ID against which to publish the feed item (e.g. ``0F9B000000000W2``)
             :type subject_id: str
@@ -432,11 +433,35 @@ class Salesforce(object):
             :type message_segments: list, None
             :param site_id: The ID of an Experience Cloud site against which to query (optional)
             :type site_id: str, None
+            :param created_by_id: The ID of the user to impersonate (**Experimental**)
+            :type created_by_id: str, None
             :returns: The response of the POST request
             :raises: :py:exc:`RuntimeError`
             """
             return chatter_module.post_feed_item(self.sfdc_object, subject_id=subject_id, message_text=message_text,
-                                                 message_segments=message_segments, site_id=site_id)
+                                                 message_segments=message_segments, site_id=site_id,
+                                                 created_by_id=created_by_id)
+
+        def post_comment(self, feed_element_id, message_text=None, message_segments=None, site_id=None, created_by_id=None):
+            """This method publishes a comment on a Chatter feed item.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`_)
+
+            :param feed_element_id: The ID of the feed element on which to post the comment
+            :type feed_element_id: str
+            :param message_text: Plaintext to be used as the message body
+            :type message_segments: str, None
+            :param message_segments: Collection of message segments to use instead of a plaintext message
+            :type message_segments: list, None
+            :param site_id: The ID of an Experience Cloud site against which to query (optional)
+            :type site_id: str, None
+            :param created_by_id: The ID of the user to impersonate (**Experimental**)
+            :type created_by_id: str, None
+            :returns: The response of the POST request
+            :raises: :py:exc:`RuntimeError`
+            """
+            return chatter_module.post_comment(self.sfdc_object, feed_element_id=feed_element_id,
+                                               message_text=message_text, message_segments=message_segments,
+                                               site_id=site_id, created_by_id=created_by_id)
 
     class Knowledge(object):
         """This class includes methods associated with Salesforce Knowledge."""
