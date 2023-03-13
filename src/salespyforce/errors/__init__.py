@@ -4,9 +4,9 @@
 :Synopsis:          This module includes custom exceptions and handlers
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Feb 2023
+:Modified Date:     13 Mar 2023
 """
 
-__all__ = ['handlers']
+__all__ = ['exceptions', 'handlers']
 
-from . import handlers
+from . import exceptions, handlers
