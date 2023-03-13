@@ -72,7 +72,8 @@ setuptools.setup(
     install_requires=[
         "urllib3>=1.26.7",
         "requests>=2.26.0",
-        "setuptools~=52.0.0"
+        "setuptools>=67.6.0",
+        "PyYAML~=6.0"
     ],
     extras_require={
         'sphinx': [
