@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     13 Mar 2023
+:Modified Date:     14 Mar 2023
 """
 
 import requests
@@ -15,6 +15,7 @@ from . import api, errors
 from . import chatter as chatter_module
 from . import knowledge as knowledge_module
 from .utils import core_utils, log_utils
+from .utils.helper import get_helper_settings
 
 # Define constants
 CURRENT_SFDC_VERSION = '57.0'
@@ -27,7 +28,7 @@ class Salesforce(object):
     """This is the class for the core object leveraged in this module."""
     # Define the function that initializes the object instance (i.e. instantiates the object)
     def __init__(self, connection_info=None, version=CURRENT_SFDC_VERSION, base_url=None, org_id=None, username=None,
-                 password=None, endpoint_url=None, client_id=None, client_secret=None, security_token=None):
+                 password=None, endpoint_url=None, client_id=None, client_secret=None, security_token=None, helper=None):
         """This method instantiates the core Salesforce object.
 
         :param connection_info: The information for connecting to the Salesforce instance
@@ -50,10 +51,33 @@ class Salesforce(object):
         :type client_secret: str, None
         :param security_token: The Security Token for the Salesforce instance
         :type security_token: str, None
+        :param helper: The file path of a helper file
+        :type helper: str, None
+        :returns: The instantiated object
+        :raises: :py:exc:`TypeError`
         """
+        # Define the default settings
+        self._helper_settings = {}
+
         # Check for provided connection info
         if connection_info is None:
-            if not any((base_url, org_id, username, password, endpoint_url, client_id, client_secret, security_token)):
+            # Check for a supplied helper file
+            if helper:
+                # Parse the helper file contents
+                self.helper_path = helper
+                if any((isinstance(helper, tuple), isinstance(helper, list), isinstance(helper, set))):
+                    helper_file_path, helper_file_type = helper
+                elif isinstance(helper, str):
+                    helper_file_path, helper_file_type = (helper, 'yaml')
+                elif isinstance(helper, dict):
+                    helper_file_path, helper_file_type = helper.values()
+                else:
+                    error_msg = "The 'helper' argument can only be supplied as tuple, string, list, set or dict."
+                    logger.error(error_msg)
+                    raise TypeError(error_msg)
+                self._helper_settings = get_helper_settings(helper_file_path, helper_file_type)
+                connection_info = self._parse_helper_connection_info()
+            elif not any((base_url, org_id, username, password, endpoint_url, client_id, client_secret, security_token)):
                 # Prompt for the connection info if not defined
                 connection_info = define_connection_info()
             else:
@@ -90,12 +114,22 @@ class Salesforce(object):
 
     @staticmethod
     def _get_empty_connection_info():
-        """This function returns an empty connection_info dictionary with all blank values."""
+        """This method returns an empty connection_info dictionary with all blank values."""
         _connection_info = {}
         _fields = ['username', 'password', 'base_url', 'endpoint_url',
                    'client_key', 'client_secret', 'org_id', 'security_token']
         for _field in _fields:
             _connection_info[_field] = ''
+        return _connection_info
+
+    def _parse_helper_connection_info(self):
+        """This method parses the helper content to populate the connection info."""
+        _connection_info = {}
+        _fields = ['username', 'password', 'base_url', 'endpoint_url',
+                   'client_key', 'client_secret', 'org_id', 'security_token']
+        for _field in _fields:
+            if _field in self._helper_settings['connection']:
+                _connection_info[_field] = self._helper_settings['connection'][_field]
         return _connection_info
 
     def _get_headers(self, _header_type='default'):
