@@ -55,7 +55,8 @@ def _convert_yaml_to_bool(_yaml_bool_value):
 def _get_connection_info(_helper_cfg):
     """This function parses any connection information found in the helper file."""
     _connection_info = {}
-    _connection_keys = ['community_url', 'tenant_id', 'default_auth_type']
+    _connection_keys = ['username', 'password', 'base_url', 'endpoint_url',
+                        'client_key', 'client_secret', 'org_id', 'security_token']
     for _key in _connection_keys:
         if _key in _helper_cfg['connection']:
             _connection_info[_key] = _helper_cfg['connection'][_key]
