@@ -1,0 +1,20 @@
+# Helper configuration file for the SalesPyForce package
+
+# Define how to obtain the connection information
+connection:
+    # Define the credentials
+    username: xxxxx
+    password: xxxxx
+
+    # Define the org information
+    org_id: xxxxx
+    base_url: xxxxx
+    endpoint_url: xxxxx
+
+    # Define the API connection info
+    client_key: xxxxx
+    client_secret: xxxxx
+    security_token: xxxxx
+
+# Define if SSL certificates should be verified when making API calls
+ssl_verify: yes
