@@ -6,7 +6,7 @@
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     13 Mar 2023
+:Modified Date:     16 Mar 2023
 """
 
 import random
@@ -18,6 +18,7 @@ import urllib.parse
 import requests
 
 from . import log_utils
+from .. import errors
 
 # Initialize the logger for this module
 logger = log_utils.initialize_logging(__name__)
