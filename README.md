@@ -56,9 +56,6 @@ A Python toolset for performing Salesforce API calls
         <td>
             <a href="https://github.com/marketplace/actions/python-security-check-using-bandit">
                 <img alt="Bandit" src="https://img.shields.io/badge/security-bandit-yellow.svg">
-            </a><br />
-            <a href="https://github.com/marketplace/actions/pycharm-python-security-scanner">
-                <img alt="PyCharm Security Scanner" src="https://img.shields.io/badge/security-pycharm%20security%20scanner-green">
             </a>
         </td>
     </tr>
