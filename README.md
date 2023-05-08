@@ -5,7 +5,7 @@ A Python toolset for performing Salesforce API calls
     <tr>
         <td>Latest Stable Release</td>
         <td>
-            <a href='https://pypi.org/project/khoros/'>
+            <a href='https://pypi.org/project/salespyforce/'>
                 <img alt="PyPI" src="https://img.shields.io/pypi/v/salespyforce">
             </a>
         </td>
@@ -30,7 +30,7 @@ A Python toolset for performing Salesforce API calls
     <tr>
         <td>Supported Versions</td>
         <td>
-            <a href='https://pypi.org/project/khoros/'>
+            <a href='https://pypi.org/project/salespyforce/'>
                 <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/salespyforce">
             </a>
         </td>
@@ -90,3 +90,36 @@ A Python toolset for performing Salesforce API calls
         </td>
     </tr>
 </table>
+
+## Installation
+The package can be installed via pip using the syntax below.
+
+```sh
+pip install salespyforce --upgrade
+```
+
+You may also clone the repository and install from source using below.
+
+```sh
+git clone git://github.com/jeffshurtliff/salespyforce.git
+cd salespyforce/
+python setup.py install
+```
+
+## Change Log
+The change log can be found in the [documentation](https://salespyforce.readthedocs.io/en/latest/changelog.html).
+
+## Documentation
+The documentation is located here: [https://salespyforce.readthedocs.io/en/latest/](https://salespyforce.readthedocs.io/en/latest/)
+
+## License
+[MIT License](https://github.com/jeffshurtliff/salespyforce/blob/master/LICENSE)
+
+## Reporting Issues
+Issues can be reported within the [GitHub repository](https://github.com/jeffshurtliff/salespyforce/issues).
+
+## Donations
+If you would like to donate to this project then you can do so using [this PayPal link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=XDZ8M6UV6EFK6&item_name=SalesPyForce+Python+API&currency_code=USD).
+
+## Disclaimer
+This package is considered unofficial and is in no way endorsed or supported by [Salesforce Inc](https://www.salesforce.com).
