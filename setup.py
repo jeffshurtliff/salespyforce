@@ -4,7 +4,7 @@
 :Synopsis:          This script is the primary configuration file for the salespyforce project
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Jan 2023
+:Modified Date:     08 May 2023
 """
 
 import setuptools
@@ -70,9 +70,9 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        "urllib3>=1.26.7",
-        "requests>=2.26.0",
-        "setuptools>=67.6.0",
+        "urllib3>=1.26.15",
+        "requests>=2.27.1",
+        "setuptools>=59.6.0",
         "PyYAML~=6.0"
     ],
     extras_require={
