@@ -58,14 +58,14 @@ jobs:
 #        codecov -t e30bdae3-2111-4f8e-a603-ec8457f934a6
 
     - name: Python security check using Bandit
-      if: ${{ (matrix.os != 'macos-latest') && (matrix.os != 'macos-11') }}
+      if: ${{ (matrix.os != 'macos-latest') && (matrix.os != 'macos-11') && (matrix.python-version != '3.6') }}
       uses: Joel-hanson/bandit-report-artifacts@V1
       with:
         ignore_failure: true
 
 
     - name: PyCharm Python Security Scanner
-      if: ${{ (matrix.os != 'macos-latest') && (matrix.os != 'macos-11') }}
+      if: ${{ (matrix.os != 'macos-latest') && (matrix.os != 'macos-11') && (matrix.python-version != '3.6') }}
       uses: tonybaloney/pycharm-security@1.14.0
       with:
         ignore_failure: true
