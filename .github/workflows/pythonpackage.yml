@@ -63,9 +63,3 @@ jobs:
       with:
         ignore_failure: true
 
-
-    - name: PyCharm Python Security Scanner
-      if: ${{ (matrix.os != 'macos-latest') && (matrix.os != 'macos-11') && (matrix.python-version != '3.6') }}
-      uses: tonybaloney/pycharm-security@1.14.0
-      with:
-        ignore_failure: true
