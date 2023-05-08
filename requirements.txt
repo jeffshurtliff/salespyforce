@@ -1,4 +1,4 @@
 urllib3~=1.26.15
-requests~=2.28.2
+requests>=2.27.1
 setuptools>=67.6.0
 PyYAML~=6.0
