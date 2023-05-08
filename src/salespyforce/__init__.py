@@ -4,9 +4,10 @@
 :Synopsis:          This is the ``__init__`` module for the salespyforce package
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Jan 2023
+:Modified Date:     08 May 2023
 """
 
+from . import core
 from .core import Salesforce
 from .utils import version
 
