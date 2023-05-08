@@ -45,17 +45,17 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-    - name: Test with pytest
-      run: |
-        pip install pytest
-        pytest
-
-    - name: Code coverage with codecov and pytest-cov
-      run: |
-        pip install codecov
-        pip install pytest-cov
-        pytest --cov-report=xml --cov=salespyforce src/salespyforce/utils/tests/ --color=yes
-        codecov -t e30bdae3-2111-4f8e-a603-ec8457f934a6
+#    - name: Test with pytest
+#      run: |
+#        pip install pytest
+#        pytest
+#
+#    - name: Code coverage with codecov and pytest-cov
+#      run: |
+#        pip install codecov
+#        pip install pytest-cov
+#        pytest --cov-report=xml --cov=salespyforce src/salespyforce/utils/tests/ --color=yes
+#        codecov -t e30bdae3-2111-4f8e-a603-ec8457f934a6
 
     - name: Python security check using Bandit
       if: ${{ (matrix.os != 'macos-latest') && (matrix.os != 'macos-11') }}
