@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "salespyforce"
+version = "1.0.0"
+description = "A Python toolset for performing Salesforce API calls"
+authors = ["Jeff Shurtliff <jeff.shurtliff@rsa.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+urllib3 = ">=1.26.15,<1.27.0"
+requests = ">=2.27.1"
+setuptools = {version = ">=65.5.1,<65.6.0", markers = "python_version > \"3.6\""}
+pytest = {version = ">=7.2.0", markers = "python_version > \"3.7\""}
+pyyaml = ">=6.0,<7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
