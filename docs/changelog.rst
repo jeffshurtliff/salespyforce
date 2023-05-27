@@ -3,3 +3,26 @@ Change Log
 ##########
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
+******
+v1.1.0
+******
+**Release Date: TBD**
+
+Added
+=====
+
+Supporting Modules
+------------------
+Additions to the :doc:`supporting modules <supporting-modules>`.
+
+* Added the :py:mod:`salespyforce.utils.tests.resources` module with the following functions and classes:
+    * :py:class:`salespyforce.utils.tests.resources.MockResponse`
+    * :py:func:`salespyforce.utils.tests.resources.mock_success_post`
+    * :py:func:`salespyforce.utils.tests.resources.mock_error_post`
+    * :py:func:`salespyforce.utils.tests.resources.set_package_path`
+    * :py:func:`salespyforce.utils.tests.resources.import_modules`
+    * :py:func:`salespyforce.utils.tests.resources.secrets_helper_exists`
+    * :py:func:`salespyforce.utils.tests.resources.local_helper_exists`
+    * :py:func:`salespyforce.utils.tests.resources.get_core_object`
+    * :py:func:`salespyforce.utils.tests.resources.instantiate_with_secrets_helper`
+    * :py:func:`salespyforce.utils.tests.resources.instantiate_with_local_helper`
