@@ -4,7 +4,7 @@
 :Synopsis:       This module is used by pytest to test instantiating the core object
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff
-:Modified Date:  27 May 2023
+:Modified Date:  29 May 2023
 """
 
 from . import resources
@@ -17,3 +17,23 @@ def test_instantiate_core_object():
     """
     sfdc_object = resources.get_core_object()
     assert 'force.com' in sfdc_object.base_url
+
+
+def test_get_api_versions():
+    """This function tests the get_api_versions() method in the core object.
+
+    .. versionadded:: 1.1.0
+    """
+    sfdc_object = resources.get_core_object()
+    api_versions = sfdc_object.get_api_versions()
+    assert isinstance(api_versions, list) and 'version' in api_versions[0]
+
+
+def test_get_rest_resources():
+    """This function tests the get_rest_resources() method in the core object.
+
+    .. versionadded:: 1.1.0
+    """
+    sfdc_object = resources.get_core_object()
+    rest_resources = sfdc_object.get_rest_resources()
+    assert 'metadata' in rest_resources
