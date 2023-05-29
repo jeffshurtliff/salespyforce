@@ -6,7 +6,7 @@
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     16 Mar 2023
+:Modified Date:     29 May 2023
 """
 
 import random
@@ -56,8 +56,6 @@ def display_warning(warn_msg):
 
 def get_file_type(file_path):
     """This function attempts to identify if a given file path is for a YAML or JSON file.
-
-    .. versionadded:: 2.2.0
 
     :param file_path: The full path to the file
     :type file_path: str
