@@ -11,6 +11,12 @@ v1.1.0
 Added
 =====
 
+Core Object
+-----------
+Additions to the :doc:`core-object-methods`.
+
+* Added the :py:meth:`salespyforce.core.Salesforce.get_org_limits` method.
+
 Supporting Modules
 ------------------
 Additions to the :doc:`supporting modules <supporting-modules>`.
@@ -30,6 +36,7 @@ Additions to the :doc:`supporting modules <supporting-modules>`.
     * :py:func:`salespyforce.utils.tests.test_instantiate_object.test_instantiate_core_object`
     * :py:func:`salespyforce.utils.tests.test_instantiate_object.test_get_api_versions`
     * :py:func:`salespyforce.utils.tests.test_instantiate_object.test_get_rest_resources`
+    * :py:func:`salespyforce.utils.tests.test_instantiate_object.test_get_org_limits`
 * Added the :py:mod:`salespyforce.utils.tests.test_sobjects` module with the following functions:
     * :py:func:`salespyforce.utils.tests.test_sobjects.test_get_all_sobjects`
     * :py:func:`salespyforce.utils.tests.test_sobjects.test_get_and_describe_sobject`

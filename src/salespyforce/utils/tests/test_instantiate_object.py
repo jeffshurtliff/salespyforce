@@ -37,3 +37,13 @@ def test_get_rest_resources():
     sfdc_object = resources.get_core_object()
     rest_resources = sfdc_object.get_rest_resources()
     assert 'metadata' in rest_resources
+
+
+def test_get_org_limits():
+    """This function tests the get_org_limits() method in the core object.
+
+    .. versionadded:: 1.1.0
+    """
+    sfdc_object = resources.get_core_object()
+    org_limits = sfdc_object.get_org_limits()
+    assert 'DailyApiRequests' in org_limits
