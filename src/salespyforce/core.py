@@ -275,6 +275,13 @@ class Salesforce(object):
         """
         return self.get('/services/data')
 
+    def get_org_limits(self):
+        """This method returns a list of all org limits.
+
+        .. versionadded:: 1.1.0
+        """
+        return self.get(f'/services/data/{self.version}/limits')
+
     def get_all_sobjects(self):
         """This method returns a list of all Salesforce objects. (i.e. sObjects)
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm>`_)
