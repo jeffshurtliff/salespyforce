@@ -335,6 +335,21 @@ class Salesforce(object):
         query = core_utils.url_encode(query)
         return self.get(f'/services/data/{self.version}/query/?q={query}')
 
+    def search_string(self, string_to_search):
+        """This method performs a SOSL query to search for a given string.
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_search.htm>`_)
+
+        .. versionadded:: 1.1.0
+
+        :param string_to_search: The string for which to search
+        :type string_to_search: str
+        :returns: The SOSL response data in JSON format
+        """
+        query = 'FIND {' + string_to_search + '}'
+        query = core_utils.url_encode(query)
+        return self.get(f'/services/data/{self.version}/search/?q={query}')
+
+
     def create_sobject_record(self, sobject, payload):
         """This method creates a new record for a specific sObject.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)

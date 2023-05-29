@@ -16,6 +16,7 @@ Core Object
 Additions to the :doc:`core-object-methods`.
 
 * Added the :py:meth:`salespyforce.core.Salesforce.get_org_limits` method.
+* Added the :py:meth:`salespyforce.core.Salesforce.search_string` method.
 
 Supporting Modules
 ------------------
@@ -25,6 +26,7 @@ Additions to the :doc:`supporting modules <supporting-modules>`.
     * :py:class:`salespyforce.utils.tests.resources.MockResponse`
     * :py:func:`salespyforce.utils.tests.resources.mock_success_post`
     * :py:func:`salespyforce.utils.tests.resources.mock_error_post`
+    * :py:func:`salespyforce.utils.tests.resources.mock_sosl_get`
     * :py:func:`salespyforce.utils.tests.resources.set_package_path`
     * :py:func:`salespyforce.utils.tests.resources.import_modules`
     * :py:func:`salespyforce.utils.tests.resources.secrets_helper_exists`

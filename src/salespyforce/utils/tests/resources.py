@@ -56,6 +56,21 @@ def mock_error_post(*args, **kwargs):
     })
 
 
+def mock_sosl_get(*args, **kwargs):
+    """This function works with the `MockedResponse` class to simulate an SOSL response."""
+    return MockResponse({
+        "searchRecords": [
+            {
+                'attributes': {
+                    'type': 'Account',
+                    'url': '/services/data/v57.0/sobjects/Account/0018V00002NeqAxQAJ'
+                },
+                'Id': '0018V00002NeqAxQAJ'
+            }
+        ]
+    })
+
+
 def set_package_path():
     """This function adds the high-level salespyforce directory to the sys.path list.
 
