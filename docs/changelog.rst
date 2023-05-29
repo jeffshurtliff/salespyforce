@@ -26,3 +26,5 @@ Additions to the :doc:`supporting modules <supporting-modules>`.
     * :py:func:`salespyforce.utils.tests.resources.get_core_object`
     * :py:func:`salespyforce.utils.tests.resources.instantiate_with_secrets_helper`
     * :py:func:`salespyforce.utils.tests.resources.instantiate_with_local_helper`
+* Added the :py:mod:`salespyforce.utils.tests.test_instantiate_object` module with the following functions:
+    * :py:func:`salespyforce.utils.tests.test_instantiate_object.test_instantiate_core_object`
