@@ -39,7 +39,9 @@ def mock_success_post(*args, **kwargs):
     .. versionadded:: 1.1.0
     """
     return MockResponse({
-        "status": "success"
+        "id": "001D000000IqhSLIAZ",
+        "errors": [],
+        "success": True
     })
 
 
@@ -49,12 +51,8 @@ def mock_error_post(*args, **kwargs):
     .. versionadded:: 1.1.0
     """
     return MockResponse({
-        "status": "error",
-        "message": "There was an error",
-        "data": {
-            "code": "500",
-            "type": "error"
-        }
+        "errors": [],
+        "success": False
     })
 
 
