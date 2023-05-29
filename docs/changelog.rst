@@ -40,5 +40,6 @@ Additions to the :doc:`supporting modules <supporting-modules>`.
 * Added the :py:mod:`salespyforce.utils.tests.test_sobjects` module with the following functions:
     * :py:func:`salespyforce.utils.tests.test_sobjects.test_get_all_sobjects`
     * :py:func:`salespyforce.utils.tests.test_sobjects.test_get_and_describe_sobject`
+    * :py:func:`salespyforce.utils.tests.test_sobjects.test_create_record`
 * Added the :py:mod:`salespyforce.utils.tests.test_soql` module with the following functions:
     * :py:func:`salespyforce.utils.tests.test_soql.test_soql_query`
