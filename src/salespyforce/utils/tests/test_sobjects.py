@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:Module:         khoros.utils.tests.test_sobjects
+:Module:         salespyforce.utils.tests.test_sobjects
 :Synopsis:       This module is used by pytest to test basic sObject-related methods
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:Module:         khoros.utils.tests.test_instantiate_object
+:Module:         salespyforce.utils.tests.test_instantiate_object
 :Synopsis:       This module is used by pytest to test instantiating the core object
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:Module:            khoros.utils.core_utils
+:Module:            salespyforce.utils.core_utils
 :Synopsis:          Collection of supporting utilities and functions to complement the primary modules
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
