@@ -4,6 +4,22 @@ Change Log
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
 ******
+v1.1.1
+******
+**Release Date: 2023-06-05**
+
+Changed
+=======
+
+General
+-------
+Only the version was changed in this release to address an issue with PyPI distribution.
+
+|
+
+-----
+
+******
 v1.1.0
 ******
 **Release Date: 2023-05-29**
