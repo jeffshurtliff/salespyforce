@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Feb 2023
+:Modified Date:     10 Aug 2023
 """
 
 from . import errors
@@ -458,3 +458,31 @@ def publish_multiple_articles(sfdc_object, article_id_list, major_version=True):
 
     # Perform the API call
     return sfdc_object.post(endpoint, payload)
+
+
+def assign_data_category(sfdc_object, article_id, category_group_name, category_name):
+    """This function assigns a single data category for a knowledge article.
+    (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
+    :param article_id: The ID of the article to update
+    :type article_id: str
+    :param category_group_name: The unique Data Category Group Name
+    :type category_group_name: str
+    :param category_name: The unique Data Category Name
+    :type category_name: str
+    :returns: The API response from the POST request
+    :raises: :py:exc:`RuntimeError`
+    """
+    # Define the payload for the API call
+    payload = {
+        "ParentId": article_id,
+        "DataCategoryGroupName": category_group_name,
+        "DataCategoryName": category_name
+    }
+
+    # Perform the API call
+    endpoint = f'/services/data/{sfdc_object.version}/sobjects/Knowledge__DataCategorySelection'
+    return sfdc_object.post(endpoint, payload)
+

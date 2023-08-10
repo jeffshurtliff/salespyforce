@@ -4,6 +4,24 @@ Change Log
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
 ******
+v1.2.0
+******
+**Release Date: TBD**
+
+Added
+=====
+
+Primary Modules
+---------------
+Additions to the :doc:`primary modules <primary-modules>`.
+
+* Added the :py:func:`salespyforce.knowledge.assign_data_category` function.
+
+|
+
+-----
+
+******
 v1.1.2
 ******
 **Release Date: 2023-06-05**
