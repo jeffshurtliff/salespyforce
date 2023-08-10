@@ -11,6 +11,12 @@ v1.2.0
 Added
 =====
 
+Core Object
+-----------
+Additions to the :doc:`core-object-methods`.
+
+* Added the :py:meth:`salespyforce.core.Salesforce.Knowledge.assign_data_category` method.
+
 Primary Modules
 ---------------
 Additions to the :doc:`primary modules <primary-modules>`.

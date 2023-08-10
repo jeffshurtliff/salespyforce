@@ -748,6 +748,25 @@ class Salesforce(object):
             return knowledge_module.publish_multiple_articles(self.sfdc_object, article_id_list=article_id_list,
                                                               major_version=major_version)
 
+        def assign_data_category(self, article_id, category_group_name, category_name):
+            """This method assigns a single data category for a knowledge article.
+            (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
+
+            .. versionadded:: 1.2.0
+
+            :param article_id: The ID of the article to update
+            :type article_id: str
+            :param category_group_name: The unique Data Category Group Name
+            :type category_group_name: str
+            :param category_name: The unique Data Category Name
+            :type category_name: str
+            :returns: The API response from the POST request
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.assign_data_category(self.sfdc_object, article_id=article_id,
+                                                         category_group_name=category_group_name,
+                                                         category_name=category_name)
+
 
 def define_connection_info():
     """This function prompts the user for the connection information.

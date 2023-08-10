@@ -464,6 +464,8 @@ def assign_data_category(sfdc_object, article_id, category_group_name, category_
     """This function assigns a single data category for a knowledge article.
     (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
 
+    .. versionadded:: 1.2.0
+
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The ID of the article to update
