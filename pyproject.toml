@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "salespyforce"
-version = "1.1.2"
+version = "1.2.0"
 description = "A Python toolset for performing Salesforce API calls"
 authors = ["Jeff Shurtliff <jeff.shurtliff@rsa.com>"]
 license = "MIT"
