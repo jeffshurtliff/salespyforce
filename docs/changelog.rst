@@ -4,6 +4,41 @@ Change Log
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
 ******
+v1.2.0
+******
+**Release Date: 2023-08-31**
+
+Added
+=====
+
+Core Object
+-----------
+Additions to the :doc:`core-object-methods`.
+
+* Added the :py:meth:`salespyforce.core.Salesforce.Knowledge.assign_data_category` method.
+
+Primary Modules
+---------------
+Additions to the :doc:`primary modules <primary-modules>`.
+
+* Added the :py:func:`salespyforce.knowledge.assign_data_category` function.
+
+
+Changed
+=======
+
+Primary Modules
+---------------
+Changes to the :doc:`primary modules <primary-modules>`.
+
+* Updated when Lightning URLs are defined and fixed an extraneous slash issue with
+  the :py:func:`salespyforce.knowledge.get_article_url` function.
+
+|
+
+-----
+
+******
 v1.1.2
 ******
 **Release Date: 2023-06-05**
