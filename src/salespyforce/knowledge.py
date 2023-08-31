@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     10 Aug 2023
+:Modified Date:     31 Aug 2023
 """
 
 from . import errors
@@ -223,6 +223,9 @@ def get_article_version(sfdc_object, article_id):
 def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=None):
     """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
+    .. versionchanged:: 1.2.0
+       Changed when lightning URLs are defined and fixed an issue with extraneous slashes.
+
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
@@ -234,14 +237,16 @@ def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=N
     :returns: The article URL as a string
     :raises: :py:exc:`ValueError`
     """
+    sobject = 'Knowledge__kav' if sobject is None else sobject
     if not any((article_id, article_number)):
         raise ValueError('An article ID or an article number must be provided to retrieve the article URL.')
     if article_number and not article_id:
         article_id = get_article_id_from_number(sfdc_object, article_number, sobject)
-    if 'lightning' in sfdc_object.base_url:
-        article_url = f'{sfdc_object.base_url}/lightning/r/Knowledge__kav/{article_id}/view'
+    segment = '' if sfdc_object.base_url.endswith('/') else '/'
+    if 'lightning' in sfdc_object.base_url or sobject == 'Knowledge__kav':
+        article_url = f'{sfdc_object.base_url}{segment}lightning/r/Knowledge__kav/{article_id}/view'
     else:
-        article_url = f'{sfdc_object.base_url}/knowledge/publishing/articleDraftDetail.apexp?id={article_id}'
+        article_url = f'{sfdc_object.base_url}{segment}knowledge/publishing/articleDraftDetail.apexp?id={article_id}'
     return article_url
 
 

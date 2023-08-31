@@ -23,6 +23,17 @@ Additions to the :doc:`primary modules <primary-modules>`.
 
 * Added the :py:func:`salespyforce.knowledge.assign_data_category` function.
 
+
+Changed
+=======
+
+Primary Modules
+---------------
+Changes to the :doc:`primary modules <primary-modules>`.
+
+* Updated when Lightning URLs are defined and fixed an extraneous slash issue with
+  the :py:func:`salespyforce.knowledge.get_article_url` function.
+
 |
 
 -----
