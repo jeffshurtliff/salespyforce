@@ -120,7 +120,7 @@ syntax below.
 from salespyforce import Salesforce
 ```
 
-### Initializing a Khoros object instance
+### Initializing a Salesforce object instance
 The primary `Salesforce` object serves many purposes, the most important being to establish a connection to the 
 Salesforce environment with which you intend to interact. As such, when initializing an instance of the `Salesforce` 
 object, you will need to pass it the following information:
