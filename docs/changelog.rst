@@ -4,6 +4,35 @@ Change Log
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
 ******
+v1.2.1
+******
+**Release Date: TBD**
+
+Changed
+=======
+
+Core Object
+-----------
+Changes to the :doc:`core-object-methods`.
+
+* Changed the ``CURRENT_SFDC_VERSION`` value to be ``58.0``.
+* Updated the :py:meth:`salespyforce.core.Salesforce.Knowledge.publish_article` method to return a
+  Boolean value indicating the successful outcome by default, while optionally being able to return
+  the full API response.
+
+Primary Modules
+---------------
+Changes to the :doc:`primary modules <primary-modules>`.
+
+* Updated the :py:func:`salespyforce.knowledge.publish_article` function to return a Boolean value
+  indicating the successful outcome by default, while optionally being able to return the full
+  API response.
+
+|
+
+-----
+
+******
 v1.2.0
 ******
 **Release Date: 2023-08-31**

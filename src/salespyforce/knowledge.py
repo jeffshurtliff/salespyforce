@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     31 Aug 2023
+:Modified Date:     01 Sep 2023
 """
 
 from . import errors
@@ -401,7 +401,7 @@ def create_draft_from_master_version(sfdc_object, article_id=None, knowledge_art
     return response
 
 
-def publish_article(sfdc_object, article_id, major_version=True):
+def publish_article(sfdc_object, article_id, major_version=True, full_response=False):
     """This function publishes a draft knowledge article as a major or minor version.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`_)
 
@@ -411,7 +411,9 @@ def publish_article(sfdc_object, article_id, major_version=True):
     :type article_id: str
     :param major_version: Determines if the published article should be a major version (``True`` by default)
     :type major_version: bool
-    :returns: The API response from the PATCH request
+    :param full_response: Determines if the full API response should be returned (``False`` by default)
+    :type full_response: bool
+    :returns: A Boolean value indicating the success of the action or the API response from the PATCH request
     :raises: :py:exc:`RuntimeError`
     """
     # Define the payload for the API call
@@ -423,7 +425,12 @@ def publish_article(sfdc_object, article_id, major_version=True):
 
     # Perform the API call
     endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{article_id}'
-    return sfdc_object.patch(endpoint, payload)
+    result = sfdc_object.patch(endpoint, payload)
+
+    # Return the appropriate value depending on if a full response was requested
+    if not full_response:
+        result = True if result.status_code == 204 else False
+    return result
 
 
 def publish_multiple_articles(sfdc_object, article_id_list, major_version=True):

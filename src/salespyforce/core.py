@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     14 Mar 2023
+:Modified Date:     01 Sep 2023
 """
 
 import requests
@@ -18,7 +18,7 @@ from .utils import core_utils, log_utils
 from .utils.helper import get_helper_settings
 
 # Define constants
-CURRENT_SFDC_VERSION = '57.0'
+CURRENT_SFDC_VERSION = '58.0'
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -720,7 +720,7 @@ class Salesforce(object):
                                                                      article_data=article_data, sobject=sobject,
                                                                      full_response=full_response)
 
-        def publish_article(self, article_id, major_version=True):
+        def publish_article(self, article_id, major_version=True, full_response=False):
             """This method publishes a draft knowledge article as a major or minor version.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`_)
 
@@ -728,11 +728,13 @@ class Salesforce(object):
             :type article_id: str
             :param major_version: Determines if the published article should be a major version (``True`` by default)
             :type major_version: bool
-            :returns: The API response from the PATCH request
+            :param full_response: Determines if the full API response should be returned (``False`` by default)
+            :type full_response: bool
+            :returns: A Boolean value indicating the success of the action or the API response from the PATCH request
             :raises: :py:exc:`RuntimeError`
             """
             return knowledge_module.publish_article(self.sfdc_object, article_id=article_id,
-                                                    major_version=major_version)
+                                                    major_version=major_version, full_response=full_response)
 
         def publish_multiple_articles(self, article_id_list, major_version=True):
             """This method publishes multiple knowledge article drafts at one time.
