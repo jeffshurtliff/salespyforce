@@ -14,10 +14,14 @@ from .utils import log_utils
 logger = log_utils.initialize_logging(__name__)
 
 
-def check_for_existing_article(sfdc_object, title, sobject=None, return_id=False, return_id_and_number=False):
+def check_for_existing_article(sfdc_object, title, sobject=None, return_id=False, return_id_and_number=False,
+                               include_archived=False):
     """This method checks to see if an article already exists with a given title and returns its article number.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
+
+    .. versionchanged:: 1.2.2
+       You can now specify whether archived articles are included in the query results.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -29,10 +33,13 @@ def check_for_existing_article(sfdc_object, title, sobject=None, return_id=False
     :type return_id: bool
     :param return_id_and_number: Determines if Article ID and Article Number should be returned (``False`` by default)
     :type return_id_and_number: bool
+    :param include_archived: Determines if archived articles should be included (``False`` by default)
+    :type include_archived: bool
     :returns: The Article Number, Article ID, or both, if found, or a blank string if not found
     """
     sobject = 'Knowledge__kav' if sobject is None else sobject
     query = f"SELECT Id,ArticleNumber FROM {sobject} WHERE Title = '{title}'"
+    query += " AND PublishStatus != 'Archived'" if not include_archived else query
     response = sfdc_object.soql_query(query, replace_quotes=False)
     return_value = ''
     if response.get('totalSize') > 0:
