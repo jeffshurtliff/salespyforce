@@ -4,6 +4,32 @@ Change Log
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
 ******
+v1.2.2
+******
+**Release Date: 2023-11-14**
+
+Changed
+=======
+
+Core Object
+-----------
+Changes to the :doc:`core-object-methods`.
+
+* Updated the :py:meth:`salespyforce.core.Salesforce.Knowledge.check_for_existing_article` method
+  to specify whether archived articles will be included in the query results.
+
+Primary Modules
+---------------
+Changes to the :doc:`primary modules <primary-modules>`.
+
+* Updated the :py:func:`salespyforce.knowledge.check_for_existing_article` function
+  to specify whether archived articles will be included in the query results.
+
+|
+
+-----
+
+******
 v1.2.1
 ******
 **Release Date: 2023-09-01**
