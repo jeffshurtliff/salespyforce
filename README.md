@@ -14,7 +14,7 @@ A Python toolset for performing Salesforce API calls
         <td>Latest Beta/RC Release</td>
         <td>
             <a href='https://pypi.org/project/salespyforce/#history'>
-                <img alt="PyPI" src="https://img.shields.io/badge/pypi-1.3.0rc1-blue">
+                <img alt="PyPI" src="https://img.shields.io/badge/pypi-1.3.0rc2-blue">
             </a>
         </td>
     </tr>
