@@ -8,6 +8,21 @@ v1.3.0
 ******
 **Release Date: TBD**
 
+Added
+=====
+
+Core Object
+-----------
+Additions to the :doc:`core-object-methods`.
+
+* Added the :py:meth:`salespyforce.core.Salesforce.Knowledge.archive_article` method.
+
+Primary Modules
+---------------
+Additions to the :doc:`primary modules <primary-modules>`.
+
+* Added the :py:func:`salespyforce.knowledge.archive_article` function.
+
 |
 
 -----
