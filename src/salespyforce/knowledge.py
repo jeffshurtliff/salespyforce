@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     01 Sep 2023
+:Modified Date:     14 Nov 2023
 """
 
 from . import errors
@@ -507,3 +507,25 @@ def assign_data_category(sfdc_object, article_id, category_group_name, category_
     endpoint = f'/services/data/{sfdc_object.version}/sobjects/Knowledge__DataCategorySelection'
     return sfdc_object.post(endpoint, payload)
 
+
+def archive_article(sfdc_object, article_id):
+    """This function archives a published knowledge article.
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
+
+    .. versionadded:: 1.3.0
+
+    :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
+    :param article_id: The ID of the article to archive
+    :type article_id: str
+    :returns: The API response from the POST request
+    :raises: :py:exc:`RuntimeError`
+    """
+    # Define the payload for the API call
+    payload = {
+        "publishStatus": "Archived"
+    }
+
+    # Perform the API call
+    endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{article_id}'
+    return sfdc_object.post(endpoint, payload)

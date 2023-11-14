@@ -773,6 +773,19 @@ class Salesforce(object):
                                                          category_group_name=category_group_name,
                                                          category_name=category_name)
 
+        def archive_article(self, article_id):
+            """This function archives a published knowledge article.
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
+
+            .. versionadded:: 1.3.0
+
+            :param article_id: The ID of the article to archive
+            :type article_id: str
+            :returns: The API response from the POST request
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.archive_article(self.sfdc_object, article_id=article_id)
+
 
 def define_connection_info():
     """This function prompts the user for the connection information.
