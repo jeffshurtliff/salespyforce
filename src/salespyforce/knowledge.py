@@ -528,4 +528,4 @@ def archive_article(sfdc_object, article_id):
 
     # Perform the API call
     endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{article_id}'
-    return sfdc_object.post(endpoint, payload)
+    return sfdc_object.patch(endpoint, payload)
