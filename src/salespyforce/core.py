@@ -6,8 +6,10 @@
 :Example:           ``sfdc = Salesforce()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     01 Sep 2023
+:Modified Date:     22 Nov 2023
 """
+
+import re
 
 import requests
 
@@ -319,7 +321,7 @@ class Salesforce(object):
         """
         return self.get(f'/services/data/{self.version}')
 
-    def soql_query(self, query, replace_quotes=True):
+    def soql_query(self, query, replace_quotes=True, next_records_url=False):
         """This method performs a SOQL query and returns the results in JSON format.
         (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
         `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
@@ -328,12 +330,18 @@ class Salesforce(object):
         :type query: str
         :param replace_quotes: Determines if double-quotes should be replaced with single-quotes (``True`` by default)
         :type replace_quotes: bool
+        :param next_records_url: Indicates that the ``query`` parameter is a ``nextRecordsUrl`` value.
+        :type next_records_url: bool
         :returns: The result of the SOQL query
         """
-        if replace_quotes:
-            query = query.replace('"', "'")
-        query = core_utils.url_encode(query)
-        return self.get(f'/services/data/{self.version}/query/?q={query}')
+        if next_records_url:
+            query = re.sub(r'^.*/', '', query) if '/' in query else query
+        else:
+            if replace_quotes:
+                query = query.replace('"', "'")
+            query = core_utils.url_encode(query)
+            query = f'?q={query}'
+        return self.get(f'/services/data/{self.version}/query/{query}')
 
     def search_string(self, string_to_search):
         """This method performs a SOSL query to search for a given string.

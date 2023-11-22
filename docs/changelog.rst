@@ -16,6 +16,9 @@ Core Object
 Additions to the :doc:`core-object-methods`.
 
 * Added the :py:meth:`salespyforce.core.Salesforce.Knowledge.archive_article` method.
+* Added the ``next_records_url`` parameter in the
+  :py:meth:`salespyforce.core.Salesforce.soql_query` method and added the ability to
+  query using a ``nextRecordsUrl`` value.
 
 Primary Modules
 ---------------
