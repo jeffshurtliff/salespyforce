@@ -13,7 +13,7 @@ from . import log_utils
 logger = log_utils.initialize_logging(__name__)
 
 # Define special and global variables
-__version__ = "1.3.0rc2"
+__version__ = "1.3.0rc3"
 
 
 def get_full_version():
