@@ -4,7 +4,7 @@
 :Synopsis:          This simple script contains the package version
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     14 Nov 2023
+:Modified Date:     22 Nov 2023
 """
 
 from . import log_utils
