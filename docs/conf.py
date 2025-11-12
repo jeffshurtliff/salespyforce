@@ -24,7 +24,7 @@ import src.salespyforce.utils.version
 # -- Project information -----------------------------------------------------
 
 project = 'SalesPyForce'
-copyright = '2023, Jeff Shurtliff'
+copyright = '2025, Jeff Shurtliff'
 author = 'Jeff Shurtliff'
 
 # The short X.Y version
@@ -37,7 +37,7 @@ release = src.salespyforce.utils.version.get_full_version()
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-needs_sphinx = '3.4.0'
+needs_sphinx = '7.4.7'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -69,7 +69,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -216,8 +216,8 @@ epub_exclude_files = ['search.html']
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'https://docs.python.org/3/': None,
-    'https://2.python-requests.org/en/master/': None
+    'python': ('https://docs.python.org/3/', None),
+    'requests': ('https://requests.readthedocs.io/en/latest/', None),
 }
 
 # -- Options for todo extension ----------------------------------------------

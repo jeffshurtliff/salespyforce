@@ -15,6 +15,13 @@ General
 -------
 * Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation.
 
+Changed
+=======
+
+General
+-------
+* Updated the Sphinx configuration (``docs/conf.py``) to follow recommendations and best practices
+
 |
 
 -----
