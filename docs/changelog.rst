@@ -15,6 +15,7 @@ General
 -------
 * Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation.
 * Added the ``docs/ci.md`` Markdown document with CI-related instructions and notes.
+* Added the ``.github/scripts/decrypt_helper_local.sh`` script to assist with pytest and CI.
 
 Changed
 =======
