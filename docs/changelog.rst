@@ -23,6 +23,13 @@ General
 * Updated the Sphinx configuration (``docs/conf.py``) to follow recommendations and best practices
 * Updated the ``urllib3`` version in ``requirements.txt`` to be at least ``2.5.0`` to mitigate
   known vulnerabilities found in earlier versions.
+* Updated the ``pyproject.toml`` file to follow best practices and to include the following changes:
+    * Changed the minimum supported Python version to be 3.7
+    * Added hyperlinks to available resources and documentation
+    * Added Trove classifiers for PyPI
+    * Moved ``pytest`` to a dev dependency group
+    * Removed ``setuptools`` and ``urllib3`` from runtime dependencies
+    * Updated dependency versions to mitigate known vulnerabilities found in earlier versions
 
 |
 
