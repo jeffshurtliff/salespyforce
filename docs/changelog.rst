@@ -8,6 +8,13 @@ v1.4.0.dev0
 ***********
 **Release Date: TBD**
 
+Added
+=====
+
+General
+-------
+* Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation.
+
 |
 
 -----
