@@ -25,7 +25,7 @@ General
 * Updated the ``urllib3`` version in ``requirements.txt`` to be at least ``2.5.0`` to mitigate
   known vulnerabilities found in earlier versions
 * Updated the ``pyproject.toml`` file to follow best practices and to include the following changes:
-    * Changed the minimum supported Python version to be 3.7
+    * Changed the minimum supported Python version to be 3.9
     * Added hyperlinks to available resources and documentation
     * Added Trove classifiers for PyPI
     * Moved ``pytest`` to a dev dependency group
@@ -34,7 +34,7 @@ General
 * Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
 * Replaced the ``.github/workflows/pythonpackage.yml`` workflow with ``.github/workflows/ci.yml``
   which has several improvements over the original file, including:
-    * Dropping Python 3.6 and testing 3.7–3.12 on ``ubuntu-latest`` and ``macos-latest``
+    * Dropping Python 3.6-3.8 and testing 3.9–3.12 on ``ubuntu-latest`` and ``macos-latest``
     * Using ``actions/checkout@v4`` and ``actions/setup-python@v5``
     * Installing Poetry via ``pipx`` and using ``poetry install --with dev``
     * Building wheel/sdist with ``poetry build``
