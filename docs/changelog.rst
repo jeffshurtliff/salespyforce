@@ -3,6 +3,15 @@ Change Log
 ##########
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
+***********
+v1.4.0.dev0
+***********
+**Release Date: TBD**
+
+|
+
+-----
+
 ******
 v1.3.0
 ******
