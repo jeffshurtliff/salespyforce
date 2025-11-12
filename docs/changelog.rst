@@ -21,6 +21,8 @@ Changed
 General
 -------
 * Updated the Sphinx configuration (``docs/conf.py``) to follow recommendations and best practices
+* Updated the ``urllib3`` version in ``requirements.txt`` to be at least ``2.5.0`` to mitigate
+  known vulnerabilities found in earlier versions.
 
 |
 
