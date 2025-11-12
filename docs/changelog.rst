@@ -14,6 +14,7 @@ Added
 General
 -------
 * Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation.
+* Added the ``docs/ci.md`` Markdown document with CI-related instructions and notes.
 
 Changed
 =======
@@ -22,7 +23,7 @@ General
 -------
 * Updated the Sphinx configuration (``docs/conf.py``) to follow recommendations and best practices
 * Updated the ``urllib3`` version in ``requirements.txt`` to be at least ``2.5.0`` to mitigate
-  known vulnerabilities found in earlier versions.
+  known vulnerabilities found in earlier versions
 * Updated the ``pyproject.toml`` file to follow best practices and to include the following changes:
     * Changed the minimum supported Python version to be 3.7
     * Added hyperlinks to available resources and documentation
@@ -30,6 +31,23 @@ General
     * Moved ``pytest`` to a dev dependency group
     * Removed ``setuptools`` and ``urllib3`` from runtime dependencies
     * Updated dependency versions to mitigate known vulnerabilities found in earlier versions
+* Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
+* Replaced the ``.github/workflows/pythonpackage.yml`` workflow with ``.github/workflows/ci.yml``
+  which has several improvements over the original file, including:
+    * Dropping Python 3.6 and testing 3.7–3.12 on ``ubuntu-latest`` and ``macos-latest``
+    * Using ``actions/checkout@v4`` and ``actions/setup-python@v5``
+    * Installing Poetry via ``pipx`` and using ``poetry install --with dev``
+    * Building wheel/sdist with ``poetry build``
+    * Running Bandit only on Ubuntu (to save time)
+    * Caching Poetry/pip downloads for speed
+    * Removing the obsolete macOS target matrix
+
+Removed
+=======
+
+General
+-------
+* Removed ``.github/workflows/pythonpackage.yml`` (replaced by ``.github/workflows/ci.yml``)
 
 |
 
