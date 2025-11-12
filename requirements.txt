@@ -1,7 +1,4 @@
-urllib3>=2.5.0
-requests>=2.27.1
-setuptools~=59.6.0; python_version == '3.6'
-setuptools~=67.6.0; python_version > '3.6'
-pytest>=7.0.1; python_version <= '3.7'
-pytest>=7.3.1; python_version > '3.7'
-PyYAML~=6.0
+# salespyforce runtime dependencies (Python >= 3.7)
+# Keep this file minimal; dev/test deps should live in Poetry groups.
+requests>=2.32.5; python_version >= '3.7'
+PyYAML>=6,<7; python_version >= '3.7'
