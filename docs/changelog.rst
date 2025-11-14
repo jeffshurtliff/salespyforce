@@ -21,6 +21,12 @@ General
 Changed
 =======
 
+Supporting Modules
+------------------
+Changes to the :doc:`supporting modules <supporting-modules>`.
+
+* Updated the ``HELPER_FILE_NAME`` value in the :py:mod:`salespyforce.utils.tests.resources` module.
+
 General
 -------
 * Updated the Sphinx configuration (``docs/conf.py``) to follow recommendations and best practices
