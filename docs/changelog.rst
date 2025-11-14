@@ -13,9 +13,10 @@ Added
 
 General
 -------
-* Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation.
-* Added the ``docs/ci.md`` Markdown document with CI-related instructions and notes.
-* Added the ``.github/scripts/decrypt_helper_local.sh`` script to assist with pytest and CI.
+* Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation
+* Added the new ``.github/workflows/ci.yml`` CI workflow to follow best practices and improve deployments
+* Added the ``docs/ci.md`` Markdown document with CI-related instructions and notes
+* Added the ``.github/scripts/decrypt_helper_local.sh`` script to assist with pytest and CI
 
 Changed
 =======
@@ -42,6 +43,8 @@ General
     * Running Bandit only on Ubuntu (to save time)
     * Caching Poetry/pip downloads for speed
     * Removing the obsolete macOS target matrix
+* Completely refactored the ``.github/scripts/encrypt_secret.sh`` script to add features and functionality
+* Added a new helper file in ``.github/encrypted/`` for use with CI and unit testing with pytest
 
 Removed
 =======
