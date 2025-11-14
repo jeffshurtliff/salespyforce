@@ -6,7 +6,7 @@
 :Example:           ``exceptions = resources.import_exceptions_module()``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     27 May 2023
+:Modified Date:     14 Nov 2025
 """
 
 import os
@@ -17,7 +17,7 @@ import pytest
 
 # Define constants
 SKIP_LOCAL_TEST_MSG = 'skipping local-only tests'
-HELPER_FILE_NAME = 'helper_shurt.yml'
+HELPER_FILE_NAME = 'helper_dm_conn.yml'
 
 
 class MockResponse:
