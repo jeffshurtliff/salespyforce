@@ -39,6 +39,7 @@ General
     * Moved ``pytest`` to a dev dependency group
     * Removed ``setuptools`` and ``urllib3`` from runtime dependencies
     * Updated dependency versions to mitigate known vulnerabilities found in earlier versions
+    * Added ``bandit`` with SARIF support to the dev dependencies
 * Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
 * Replaced the ``.github/workflows/pythonpackage.yml`` workflow with ``.github/workflows/ci.yml``
   which has several improvements over the original file, including:

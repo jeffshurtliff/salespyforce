@@ -48,6 +48,7 @@ include = ["LICENSE", "README.md"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2"
+bandit = { version = "^1.7.8", extras = ["sarif"] }
 # Sphinx = "^7.0"
 # sphinxcontrib-applehelp = ">=1.0.2"
 # sphinxcontrib-devhelp = ">=1.0.2"
