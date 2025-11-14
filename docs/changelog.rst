@@ -45,6 +45,7 @@ General
     * Removing the obsolete macOS target matrix
 * Completely refactored the ``.github/scripts/encrypt_secret.sh`` script to add features and functionality
 * Added a new helper file in ``.github/encrypted/`` for use with CI and unit testing with pytest
+* Updated the ``.github/scripts/decrypt_helper.sh`` script to use the new helper file
 
 Removed
 =======
