@@ -61,6 +61,7 @@ General
 -------
 * Removed ``.github/workflows/pythonpackage.yml`` (replaced by ``.github/workflows/ci.yml``)
 * Removed the obsolete ``.github/encrypted/helper_shurt.yml.old.gpg`` helper file
+* Removed the ``setup.py`` file as it is no longer needed for this package
 
 |
 
