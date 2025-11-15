@@ -31,7 +31,7 @@ def get_full_version() -> str:
         # This can happen if the package is not installed in the environment.
         # (e.g. running from a source checkout without an editable install)
         logger.warning(
-            "salespyforce is not installed; falling back to '0.0.0' as version."
+            "salespyforce is not installed; falling back to '0.0.0' as version"
         )
         return "0.0.0"
 
