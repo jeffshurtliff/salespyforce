@@ -32,8 +32,6 @@ Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 General
 -------
 * Updated the Sphinx configuration (``docs/conf.py``) to follow recommendations and best practices
-* Updated the ``urllib3`` version in ``requirements.txt`` to be at least ``2.5.0`` to mitigate
-  known vulnerabilities found in earlier versions
 * Updated the ``pyproject.toml`` file to follow best practices and to include the following changes:
     * Changed the minimum supported Python version to be 3.9
     * Added hyperlinks to available resources and documentation
