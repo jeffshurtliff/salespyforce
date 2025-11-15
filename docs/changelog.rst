@@ -25,7 +25,9 @@ Supporting Modules
 ------------------
 Changes to the :doc:`supporting modules <supporting-modules>`.
 
-* Updated the ``HELPER_FILE_NAME`` value in the :py:mod:`salespyforce.utils.tests.resources` module.
+* Completely refactored the :py:mod:`salespyforce.utils.version` module to retrieve the version
+  from the package metadata and using it to define the ``__version__`` special variable
+* Updated the ``HELPER_FILE_NAME`` value in the :py:mod:`salespyforce.utils.tests.resources` module
 
 General
 -------
