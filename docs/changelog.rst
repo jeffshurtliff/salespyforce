@@ -11,6 +11,17 @@ v1.4.0.dev0
 Added
 =====
 
+Core Object
+-----------
+Additions to the :doc:`core-object-methods` are listed below.
+
+* Added the :py:meth:`salespyforce.core.Salesforce.get_latest_api_version` method which retrieves
+  the latest API version by querying the authorized Salesforce org, returning the version as a
+  string (e.g. ``65.0``)
+* Added the ``FALLBACK_SFDC_API_VERSION`` constant that is leveraged if the
+  :py:meth:`salespyforce.core.Salesforce.get_latest_api_version` method fails to retrieve the
+  latest API version for the authorized Salesforce org
+
 General
 -------
 * Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation
@@ -20,6 +31,13 @@ General
 
 Changed
 =======
+
+Core Object
+-----------
+Changes to the :doc:`core-object-methods` are listed below.
+
+* Updated the docstring for the :py:meth:`salespyforce.core.Salesforce.get_api_versions` method
+  to explicitly state what the method returns and its data type
 
 Supporting Modules
 ------------------
@@ -56,6 +74,13 @@ General
 
 Removed
 =======
+
+Core Object
+-----------
+Removals in the :doc:`core-object-methods` are listed below.
+
+* Removed the hardcoded ``CURRENT_SFDC_VERSION`` constant in the :py:mod:`salespyforce.core.Salesforce` ``__init__``
+  method as it is now obsolete
 
 General
 -------
