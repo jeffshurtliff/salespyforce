@@ -23,7 +23,7 @@ Changed
 
 Supporting Modules
 ------------------
-Changes to the :doc:`supporting modules <supporting-modules>`.
+Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 
 * Completely refactored the :py:mod:`salespyforce.utils.version` module to retrieve the version
   from the package metadata and using it to define the ``__version__`` special variable
@@ -79,18 +79,18 @@ Added
 
 Core Object
 -----------
-Additions to the :doc:`core-object-methods`.
+Additions to the :doc:`core-object-methods` are listed below.
 
-* Added the :py:meth:`salespyforce.core.Salesforce.Knowledge.archive_article` method.
+* Added the :py:meth:`salespyforce.core.Salesforce.Knowledge.archive_article` method
 * Added the ``next_records_url`` parameter in the
   :py:meth:`salespyforce.core.Salesforce.soql_query` method and added the ability to
-  query using a ``nextRecordsUrl`` value.
+  query using a ``nextRecordsUrl`` value
 
 Primary Modules
 ---------------
-Additions to the :doc:`primary modules <primary-modules>`.
+Additions to the :doc:`primary modules <primary-modules>` are listed below.
 
-* Added the :py:func:`salespyforce.knowledge.archive_article` function.
+* Added the :py:func:`salespyforce.knowledge.archive_article` function
 
 |
 
@@ -106,17 +106,17 @@ Changed
 
 Core Object
 -----------
-Changes to the :doc:`core-object-methods`.
+Changes to the :doc:`core-object-methods` are listed below.
 
 * Updated the :py:meth:`salespyforce.core.Salesforce.Knowledge.check_for_existing_article` method
-  to specify whether archived articles will be included in the query results.
+  to specify whether archived articles will be included in the query results
 
 Primary Modules
 ---------------
-Changes to the :doc:`primary modules <primary-modules>`.
+Changes to the :doc:`primary modules <primary-modules>` are listed below.
 
 * Updated the :py:func:`salespyforce.knowledge.check_for_existing_article` function
-  to specify whether archived articles will be included in the query results.
+  to specify whether archived articles will be included in the query results
 
 |
 
@@ -132,20 +132,20 @@ Changed
 
 Core Object
 -----------
-Changes to the :doc:`core-object-methods`.
+Changes to the :doc:`core-object-methods` are listed below.
 
-* Changed the ``CURRENT_SFDC_VERSION`` value to be ``58.0``.
+* Changed the ``CURRENT_SFDC_VERSION`` value to be ``58.0``
 * Updated the :py:meth:`salespyforce.core.Salesforce.Knowledge.publish_article` method to return a
   Boolean value indicating the successful outcome by default, while optionally being able to return
-  the full API response.
+  the full API response
 
 Primary Modules
 ---------------
-Changes to the :doc:`primary modules <primary-modules>`.
+Changes to the :doc:`primary modules <primary-modules>` are listed below.
 
 * Updated the :py:func:`salespyforce.knowledge.publish_article` function to return a Boolean value
   indicating the successful outcome by default, while optionally being able to return the full
-  API response.
+  API response
 
 |
 
@@ -161,15 +161,15 @@ Added
 
 Core Object
 -----------
-Additions to the :doc:`core-object-methods`.
+Additions to the :doc:`core-object-methods` are listed below.
 
-* Added the :py:meth:`salespyforce.core.Salesforce.Knowledge.assign_data_category` method.
+* Added the :py:meth:`salespyforce.core.Salesforce.Knowledge.assign_data_category` method
 
 Primary Modules
 ---------------
-Additions to the :doc:`primary modules <primary-modules>`.
+Additions to the :doc:`primary modules <primary-modules>` are listed below.
 
-* Added the :py:func:`salespyforce.knowledge.assign_data_category` function.
+* Added the :py:func:`salespyforce.knowledge.assign_data_category` function
 
 
 Changed
@@ -177,10 +177,10 @@ Changed
 
 Primary Modules
 ---------------
-Changes to the :doc:`primary modules <primary-modules>`.
+Changes to the :doc:`primary modules <primary-modules>` are listed below.
 
 * Updated when Lightning URLs are defined and fixed an extraneous slash issue with
-  the :py:func:`salespyforce.knowledge.get_article_url` function.
+  the :py:func:`salespyforce.knowledge.get_article_url` function
 
 |
 
@@ -228,14 +228,14 @@ Added
 
 Core Object
 -----------
-Additions to the :doc:`core-object-methods`.
+Additions to the :doc:`core-object-methods` are listed below.
 
-* Added the :py:meth:`salespyforce.core.Salesforce.get_org_limits` method.
-* Added the :py:meth:`salespyforce.core.Salesforce.search_string` method.
+* Added the :py:meth:`salespyforce.core.Salesforce.get_org_limits` method
+* Added the :py:meth:`salespyforce.core.Salesforce.search_string` method
 
 Supporting Modules
 ------------------
-Additions to the :doc:`supporting modules <supporting-modules>`.
+Additions to the :doc:`supporting modules <supporting-modules>` are listed below.
 
 * Added the :py:mod:`salespyforce.utils.tests.resources` module with the following functions and classes:
     * :py:class:`salespyforce.utils.tests.resources.MockResponse`
