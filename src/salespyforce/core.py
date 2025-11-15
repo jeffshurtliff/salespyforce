@@ -3,10 +3,10 @@
 :Module:            salespyforce.core
 :Synopsis:          This module performs the core Salesforce-related operations
 :Usage:             ``from salespyforce import Salesforce``
-:Example:           ``sfdc = Salesforce()``
+:Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Nov 2023
+:Modified Date:     15 Nov 2025
 """
 
 import re
@@ -20,7 +20,7 @@ from .utils import core_utils, log_utils
 from .utils.helper import get_helper_settings
 
 # Define constants
-CURRENT_SFDC_VERSION = '58.0'
+FALLBACK_SFDC_API_VERSION = '65.0'      # Used if querying the org for the version fails
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -29,14 +29,18 @@ logger = log_utils.initialize_logging(__name__)
 class Salesforce(object):
     """This is the class for the core object leveraged in this module."""
     # Define the function that initializes the object instance (i.e. instantiates the object)
-    def __init__(self, connection_info=None, version=CURRENT_SFDC_VERSION, base_url=None, org_id=None, username=None,
+    def __init__(self, connection_info=None, version=None, base_url=None, org_id=None, username=None,
                  password=None, endpoint_url=None, client_id=None, client_secret=None, security_token=None, helper=None):
         """This method instantiates the core Salesforce object.
 
+        .. version-changed:: 1.4.0
+           The authorized Salesforce org is now queried to determine the latest API version to leverage unless
+           explicitly defined with the ``version`` parameter when instantiating the object.
+
         :param connection_info: The information for connecting to the Salesforce instance
         :type connection_info: dict, None
-        :param version: The Salesforce API version to utilize (Default: ``57.0``)
-        :type version: str
+        :param version: The Salesforce API version to utilize (uses latest version from org if not explicitly defined)
+        :type version: str, None
         :param base_url: The base URL of the Salesforce instance
         :type base_url: str, None
         :param org_id: The Org ID of the Salesforce instance
@@ -93,14 +97,14 @@ class Salesforce(object):
         # Define the base URL value
         self.base_url = self.connection_info.get('base_url')
 
-        # Define the version value
-        self.version = f'v{version}'
-
         # Define the connection response data variables
         auth_response = self.connect()
         self.access_token = auth_response.get('access_token')
         self.instance_url = auth_response.get('instance_url')
         self.signature = auth_response.get('signature')
+
+        # Define the version with explicitly provided version or by querying the Salesforce org
+        self.version = f'v{version}' if version else f'v{self.get_latest_api_version()}'
 
         # Import inner object classes so their methods can be called from the primary object
         self.chatter = self._import_chatter_class()
@@ -271,11 +275,32 @@ class Salesforce(object):
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
                                          return_json=return_json)
 
-    def get_api_versions(self):
+    def get_api_versions(self) -> list:
         """This method returns the API versions for the Salesforce releases.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm>`_)
+
+        :returns: A list containing the API metadata from the ``/services/data`` endpoint.
         """
         return self.get('/services/data')
+
+    def get_latest_api_version(self) -> str:
+        """This method returns the latest Salesforce API version by querying the authorized org.
+
+        .. version-added:: 1.4.0
+
+        :returns: The latest Salesforce API version for the authorized org as a string (e.g. ``65.0``)
+        """
+        versions = self.get_api_versions()
+        try:
+            latest_version = versions[-1]['version']
+        except Exception as exc:
+            exc_type = type(exc).__name__
+            logger.warning(
+                f"Failed to retrieve API version due to a(n) {exc_type} exception; defaulting to "
+                f"the fallback version {FALLBACK_SFDC_API_VERSION}"
+            )
+            latest_version = FALLBACK_SFDC_API_VERSION
+        return latest_version
 
     def get_org_limits(self):
         """This method returns a list of all org limits.
