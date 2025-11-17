@@ -4,10 +4,10 @@
 :Synopsis:          Utilities for working with the package version.
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     15 Nov 2025
+:Modified Date:     17 Nov 2025
 """
 
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import version, PackageNotFoundError
 
 from . import log_utils
 
@@ -26,14 +26,12 @@ def get_full_version() -> str:
     populated from the ``version`` field in ``pyproject.toml``.
     """
     try:
-        return version("salespyforce")
+        return version('salespyforce')
     except PackageNotFoundError:
         # This can happen if the package is not installed in the environment.
         # (e.g. running from a source checkout without an editable install)
-        logger.warning(
-            "salespyforce is not installed; falling back to '0.0.0' as version"
-        )
-        return "0.0.0"
+        logger.warning("salespyforce is not installed; falling back to '0.0.0' as version")
+        return '0.0.0'
 
 
 def get_major_minor_version() -> str:
