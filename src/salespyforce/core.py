@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     15 Nov 2025
+:Modified Date:     17 Nov 2025
 """
 
 import re
@@ -381,7 +381,6 @@ class Salesforce(object):
         query = 'FIND {' + string_to_search + '}'
         query = core_utils.url_encode(query)
         return self.get(f'/services/data/{self.version}/search/?q={query}')
-
 
     def create_sobject_record(self, sobject, payload):
         """This method creates a new record for a specific sObject.
