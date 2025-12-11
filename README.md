@@ -91,6 +91,10 @@ A Python toolset for performing Salesforce API calls
     </tr>
 </table>
 
+## Overview
+salespyforce is a Python toolkit focused on interacting with Salesforce APIs, with a primary `Salesforce` class 
+that centralizes authentication, version selection, and access to helper feature sets (Chatter, Knowledge).
+
 ## Installation
 The package can be installed via pip using the syntax below.
 
