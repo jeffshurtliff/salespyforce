@@ -28,6 +28,7 @@ General
 * Added the new ``.github/workflows/ci.yml`` CI workflow to follow best practices and improve deployments
 * Added the ``docs/ci.md`` Markdown document with CI-related instructions and notes
 * Added the ``.github/scripts/decrypt_helper_local.sh`` script to assist with pytest and CI
+* Added the ``AGENTS.md`` file to define agent guidelines with the package
 
 Changed
 =======
