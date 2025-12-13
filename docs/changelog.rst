@@ -22,6 +22,12 @@ Additions to the :doc:`core-object-methods` are listed below.
   :py:meth:`salespyforce.core.Salesforce.get_latest_api_version` method fails to retrieve the
   latest API version for the authorized Salesforce org
 
+Supporting Modules
+------------------
+Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
+
+* Added the :py:mod:`salespyforce.utils.tests.conftest` module to configure pytest for unit testing.
+
 General
 -------
 * Created the ``.readthedocs.yaml`` file to manage the integration with the ReadTheDocs documentation
@@ -47,6 +53,11 @@ Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 * Completely refactored the :py:mod:`salespyforce.utils.version` module to retrieve the version
   from the package metadata and using it to define the ``__version__`` special variable
 * Updated the ``HELPER_FILE_NAME`` value in the :py:mod:`salespyforce.utils.tests.resources` module
+* Updated the following unit test modules to leverage the new pytest configuration:
+    * :py:mod:`salespyforce.utils.tests.test_instantiate_object`
+    * :py:mod:`salespyforce.utils.tests.test_sobjects`
+    * :py:mod:`salespyforce.utils.tests.test_soql`
+    * :py:mod:`salespyforce.utils.tests.test_sosl`
 
 General
 -------

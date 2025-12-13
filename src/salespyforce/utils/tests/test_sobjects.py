@@ -4,7 +4,7 @@
 :Synopsis:       This module is used by pytest to test basic sObject-related methods
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff
-:Modified Date:  29 May 2023
+:Modified Date:  13 Dec 2025
 """
 
 import requests
@@ -16,6 +16,9 @@ def test_get_all_sobjects(salesforce_unit):
     """This function tests the get_all_sobjects() method in the core object.
 
     .. versionadded:: 1.1.0
+
+    .. version-changed:: 1.4.0
+       The function now utilizes the ``salesforce_unit`` fixture.
     """
     all_sobjects = salesforce_unit.get_all_sobjects()
     assert 'sobjects' in all_sobjects
@@ -25,6 +28,9 @@ def test_get_and_describe_sobject(salesforce_unit):
     """This function tests the get_sobject() and describe_object() methods in the core object.
 
     .. versionadded:: 1.1.0
+
+    .. version-changed:: 1.4.0
+       The function now utilizes the ``salesforce_unit`` fixture.
     """
     # Test the default query (non-describe)
     account_sobject = salesforce_unit.get_sobject('Account')
@@ -40,6 +46,13 @@ def test_get_and_describe_sobject(salesforce_unit):
 
 
 def test_create_record(monkeypatch, salesforce_unit):
+    """This function tests creating a Salesforce object record.
+
+    .. versionadded:: 1.1.0
+
+    .. version-changed:: 1.4.0
+       The function now utilizes the ``salesforce_unit`` fixture.
+    """
     # Overwrite the requests.post functionality with the mock_success_post() function
     monkeypatch.setattr(requests, 'post', resources.mock_success_post)
 
