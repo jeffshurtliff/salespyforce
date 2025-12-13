@@ -7,43 +7,43 @@
 :Modified Date:  29 May 2023
 """
 
-from . import resources
+# These tests rely on the ``salesforce_unit`` fixture defined in
+# ``conftest.py`` to keep them fast and deterministic. When you want to
+# verify behaviour against a real org, add ``@pytest.mark.integration``
+# and switch the fixture parameter to ``salesforce_integration``.
 
 
-def test_instantiate_core_object():
+def test_instantiate_core_object(salesforce_unit):
     """This function tests the ability to instantiate the core object.
 
     .. versionadded:: 1.1.0
     """
-    sfdc_object = resources.get_core_object()
+    sfdc_object = salesforce_unit
     assert 'force.com' in sfdc_object.base_url
 
 
-def test_get_api_versions():
+def test_get_api_versions(salesforce_unit):
     """This function tests the get_api_versions() method in the core object.
 
     .. versionadded:: 1.1.0
     """
-    sfdc_object = resources.get_core_object()
-    api_versions = sfdc_object.get_api_versions()
+    api_versions = salesforce_unit.get_api_versions()
     assert isinstance(api_versions, list) and 'version' in api_versions[0]
 
 
-def test_get_rest_resources():
+def test_get_rest_resources(salesforce_unit):
     """This function tests the get_rest_resources() method in the core object.
 
     .. versionadded:: 1.1.0
     """
-    sfdc_object = resources.get_core_object()
-    rest_resources = sfdc_object.get_rest_resources()
+    rest_resources = salesforce_unit.get_rest_resources()
     assert 'metadata' in rest_resources
 
 
-def test_get_org_limits():
+def test_get_org_limits(salesforce_unit):
     """This function tests the get_org_limits() method in the core object.
 
     .. versionadded:: 1.1.0
     """
-    sfdc_object = resources.get_core_object()
-    org_limits = sfdc_object.get_org_limits()
+    org_limits = salesforce_unit.get_org_limits()
     assert 'DailyApiRequests' in org_limits
