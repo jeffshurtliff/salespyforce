@@ -1,37 +1,165 @@
-# Agent Guidelines for `salespyforce`
+# AGENTS.md
 
-These instructions apply to all work in this repository.
+Instructions for coding agents (Codex, etc.) working in this repository.
 
-## Development practices
-- Follow PEP 8 conventions for Python code, but line lengths may exceed 79
-  characters when it improves clarity.
-- Prefer explicit, secure defaults: avoid disabling SSL verification unless
-  absolutely required, do not log secrets, and validate inputs received from
-  configuration files or environment variables.
-- Keep changes backward compatible with the public API exposed by the
-  `salespyforce.Salesforce` class unless a breaking change is explicitly
-  requested.
-- When handling HTTP interactions, use `requests` session objects where
-  available to reuse connections and apply common headers or auth settings.
+## Project overview
 
-## Repository layout
-- Package code lives under `src/salespyforce/`; examples are under
-  `examples/`; documentation sources reside in `docs/`.
-- README.md contains quick-start guidance and should remain synchronized with
-  any changes to primary workflows or configuration expectations.
+This repository contains `salespyforce`, a Python package/toolset for interacting with Salesforce APIs.
 
-## Testing and quality
-- Run `pytest` to exercise the test suite when altering behavior.
-- Run `bandit -r src` for security linting on Python changes.
-- Ensure new functionality is covered by tests when feasible.
+Primary goals when making changes:
+- Keep the public API stable unless the change explicitly requires a breaking change.
+- Prefer small, testable changes.
+- Keep docs and docstrings consistent and Sphinx-friendly.
 
-## Dependency and build tooling
-- Dependencies are defined in `pyproject.toml`; prefer updating them there and
-  regenerating lock files as needed.
-- Use Poetry commands for local environment tasks when possible (e.g.,
-  `poetry install`, `poetry run pytest`).
+## Dev environment
+
+Use Poetry for dependency management and packaging.
+
+Common commands (prefer these unless the user asks otherwise):
+- Install: `poetry install`
+- Run tests: `poetry run pytest`
+- Lint/format (if configured in this repo): `poetry run ruff check .` and `poetry run ruff format .`
+- Build: `poetry build`
+
+If you add a dependency, add it via Poetry (`poetry add ...` / `poetry add --group dev ...`) rather than editing `pyproject.toml` by hand.
+
+## Coding style
+
+- Prefer clarity over cleverness.
+- Keep functions small and focused.
+- Avoid unnecessary abstraction.
+- Keep changes localized; don’t reformat unrelated code.
+- Use type hints where they improve readability and tooling, especially for public APIs.
+
+## Docstrings (PEP 257 + Sphinx/reST)
+
+### PEP 257 essentials (what “good” looks like)
+Follow PEP 257 conventions:
+- Use triple double-quotes: """..."""
+- One-line docstrings:
+  - The summary is on one line and ends with a period.
+  - Example: """Return the API version string."""
+- Multi-line docstrings:
+  - First line is a short summary (imperative mood is fine), ending with a period.
+  - Blank line after the summary.
+  - Then a more detailed description if needed.
+- Docstrings describe “what/why”; code should show “how”.
+- Keep docstrings updated when behavior changes.
+
+### Sphinx/reST field list style (required)
+Use Sphinx/reST field lists for parameters and returns:
+
+- :param <name>: ...
+- :type <name>: ... (only if the type is non-obvious or you’re not using type hints consistently)
+- :returns: ...
+- :rtype: ... (only if needed; type hints usually suffice)
+- :raises <ExceptionType>: ...
+
+If type hints are present and clear, you may omit :type: and :rtype:.
+
+### Function/method docstring template
+```
+def example(name: str, enabled: bool = True) -> int:
+    """Compute the example value.
+
+    Longer explanation if needed.
+
+    :param name: The user-facing name to process.
+    :param enabled: Whether to enable additional processing.
+    :returns: The computed example value.
+    :raises ValueError: If `name` is empty.
+    """
+```
+
+### Package / module docstrings (including __init__.py)
+
+#### Module docstrings (some_module.py)
+Every public module should start with a module docstring describing purpose and key concepts:
+
+```
+"""Salesforce REST helpers.
+
+This module contains low-level request/response helpers used by the core client.
+"""
+```
+
+#### Package docstrings (__init__.py)
+If src/salespyforce/__init__.py exposes the public API (re-exports classes/functions),
+include a package docstring that explains the package purpose and lists key exports.
+
+```
+"""Top-level package for salespyforce.
+
+This package provides the :class:`salespyforce.Salesforce` client and related helpers.
+"""
+```
+
+If __init__.py only marks a package and exports nothing meaningful, keep the docstring short
+(or omit it).
+
+### Class docstrings vs __init__ docstrings (important rule)
+
+#### Preferred approach for user-facing classes
+For user-facing classes, document constructor parameters in the class docstring (not duplicated in __init__), using :param: fields.
+
+```
+class Salesforce:
+    """Salesforce API client.
+
+    :param username: API username.
+    :param password: API password.
+    :param org_id: Salesforce Org ID.
+    :param base_url: Base instance URL (e.g. https://example.my.salesforce.com).
+    :param endpoint_url: OAuth token endpoint URL.
+    :param client_id: Connected App client ID.
+    :param client_secret: Connected App client secret.
+    :param security_token: Salesforce security token (if required).
+    """
+    def __init__(
+        self,
+        username: str,
+        password: str,
+        org_id: str,
+        base_url: str,
+        endpoint_url: str,
+        client_id: str,
+        client_secret: str,
+        security_token: str | None = None,
+    ) -> None:
+        """Initialize the client.
+
+        Parameter documentation is defined on the class docstring.
+        """
+```
+
+#### When __init__ should have full :param: docs
+Only put full :param: documentation on __init__ if:
+- the class docstring is intentionally minimal, or
+- the class is internal/private and only __init__ needs documentation, or
+- you need to document multiple alternative init signatures/behaviors that are clearer at __init__.
+
+### Properties
+Use property docstrings as short descriptions. Avoid :param: fields (properties take no params).
+
+```
+@property
+def api_version(self) -> str:
+    """The Salesforce API version in use."""
+```
+
+## Tests
+
+- Add or update tests for behavior changes.
+- Prefer pytest-style tests.
+- Keep tests deterministic (no real network calls unless explicitly requested).
 
 ## Documentation expectations
-- Inline code comments should clarify intent without repeating obvious logic.
-- For new public methods or parameters, update or create docstrings and keep
-  documentation consistent with behavior shown in README and docs.
+
+- If you change a public behavior, update docstrings and any relevant docs under docs/.
+- Keep examples accurate and runnable.
+
+## PR / commit hygiene (if applicable)
+
+- Keep commits focused and descriptive.
+- Avoid large refactors unless requested.
+- Don’t change formatting in unrelated files.
