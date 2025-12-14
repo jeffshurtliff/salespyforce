@@ -58,7 +58,7 @@ Use Sphinx/reST field lists for parameters and returns:
 If type hints are present and clear, you may omit :type: and :rtype:.
 
 ### Function/method docstring template
-```
+```python
 def example(name: str, enabled: bool = True) -> int:
     """Compute the example value.
 
@@ -102,7 +102,7 @@ If __init__.py only marks a package and exports nothing meaningful, keep the doc
 #### Preferred approach for user-facing classes
 For user-facing classes, document constructor parameters in the class docstring (not duplicated in __init__), using :param: fields.
 
-```
+```python
 class Salesforce:
     """Salesforce API client.
 
@@ -141,7 +141,7 @@ Only put full :param: documentation on __init__ if:
 ### Properties
 Use property docstrings as short descriptions. Avoid :param: fields (properties take no params).
 
-```
+```python
 @property
 def api_version(self) -> str:
     """The Salesforce API version in use."""
@@ -155,11 +155,17 @@ def api_version(self) -> str:
 
 ## Documentation expectations
 
-- If you change a public behavior, update docstrings and any relevant docs under docs/.
+- If you change a public behavior, update the docstrings and any relevant docs under docs/ (always the changelog.rst file).
+- If you change any file with a header block containing `Last Modified` or `Modified Date` fields:
+  - Update the `Last Modified` field with the name (or username/pseudonym) of the person making the change.
+    - The person making the change indicates the human user who is orchestrating the AI-generated changes.
+    - If the person does not wish to display their name/username/pseudonym, use "Anonymous" as a default value.
+  - Update the `Modified Date` field where applicable with the current date (local time) in the same format as the existing value.
 - Keep examples accurate and runnable.
 
 ## PR / commit hygiene (if applicable)
 
-- Keep commits focused and descriptive.
+- Keep commits focused and descriptive and prefer past-tense over present-tense. ("Updated the ..." over "Update the ...")
+- Explicitly mention the file name if it fits organically and does not distract from the commit message itself.
 - Avoid large refactors unless requested.
 - Don’t change formatting in unrelated files.
