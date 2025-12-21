@@ -19,7 +19,10 @@ from salespyforce.utils import core_utils
 
 
 def test_url_encode_and_decode_round_trip():
-    """This function tests URL encoding and decoding helper functions."""
+    """This function tests URL encoding and decoding helper functions.
+
+    .. version-added:: 1.4.0
+    """
     raw_string = "My sample string with spaces & symbols!"
     encoded = core_utils.url_encode(raw_string)
     assert "%26" in encoded and "+" in encoded
@@ -28,28 +31,40 @@ def test_url_encode_and_decode_round_trip():
 
 
 def test_display_warning_emits_userwarning():
-    """This function tests that display_warning emits a UserWarning."""
+    """This function tests that display_warning emits a UserWarning.
+
+    .. version-added:: 1.4.0
+    """
     warn_msg = "testing warning"
     with pytest.warns(UserWarning, match=warn_msg):
         core_utils.display_warning(warn_msg)
 
 
 def test_get_file_type_detects_json_extension(tmp_path):
-    """This function tests get_file_type with a JSON extension."""
+    """This function tests get_file_type with a JSON extension.
+
+    .. version-added:: 1.4.0
+    """
     json_path = tmp_path / "config.json"
     json_path.write_text('{"key": "value"}')
     assert core_utils.get_file_type(str(json_path)) == "json"
 
 
 def test_get_file_type_detects_yaml_extension(tmp_path):
-    """This function tests get_file_type with a YAML extension."""
+    """This function tests get_file_type with a YAML extension.
+
+    .. version-added:: 1.4.0
+    """
     yaml_path = tmp_path / "config.yaml"
     yaml_path.write_text("key: value")
     assert core_utils.get_file_type(str(yaml_path)) == "yaml"
 
 
 def test_get_file_type_reads_unknown_extension_with_warning(tmp_path):
-    """This function tests get_file_type fallback detection on unknown extensions."""
+    """This function tests get_file_type fallback detection on unknown extensions.
+
+    .. version-added:: 1.4.0
+    """
     txt_path = tmp_path / "config.txt"
     txt_path.write_text("# comment line\n{json: true}")
     with warnings.catch_warnings(record=True) as captured_warnings:
@@ -61,7 +76,10 @@ def test_get_file_type_reads_unknown_extension_with_warning(tmp_path):
 
 
 def test_get_file_type_raises_for_unknown_content(tmp_path):
-    """This function tests get_file_type when content is unrecognized."""
+    """This function tests get_file_type when content is unrecognized.
+
+    .. version-added:: 1.4.0
+    """
     bad_path = tmp_path / "config.data"
     bad_path.write_text("plain text content")
     with pytest.warns(UserWarning):
@@ -70,14 +88,20 @@ def test_get_file_type_raises_for_unknown_content(tmp_path):
 
 
 def test_get_file_type_raises_for_missing_file():
-    """This function tests get_file_type when a file is missing."""
+    """This function tests get_file_type when a file is missing.
+
+    .. version-added:: 1.4.0
+    """
     missing_path = "does/not/exist.json"
     with pytest.raises(FileNotFoundError):
         core_utils.get_file_type(missing_path)
 
 
 def test_get_random_string_returns_expected_length(monkeypatch):
-    """This function tests get_random_string length and prefix handling."""
+    """This function tests get_random_string length and prefix handling.
+
+    .. version-added:: 1.4.0
+    """
     alphabet = "abc123"
     monkeypatch.setattr(core_utils, "random", core_utils.random)
     monkeypatch.setattr(
@@ -92,7 +116,10 @@ def test_get_random_string_returns_expected_length(monkeypatch):
 
 
 def test_get_image_ref_id_parses_query_param():
-    """This function tests get_image_ref_id parsing."""
+    """This function tests get_image_ref_id parsing.
+
+    .. version-added:: 1.4.0
+    """
     image_url = (
         "https://example.force.com/servlet/servlet.ImageServer"
         "?oid=00Dxx0000001gPFEAY&refid=abc123&lastMod=123"
@@ -101,13 +128,19 @@ def test_get_image_ref_id_parses_query_param():
 
 
 def test_download_image_raises_without_input():
-    """This function tests download_image when neither URL nor response is provided."""
+    """This function tests download_image when neither URL nor response is provided.
+
+    .. version-added:: 1.4.0
+    """
     with pytest.raises(RuntimeError):
         core_utils.download_image()
 
 
 def test_download_image_raises_on_bad_status(monkeypatch, tmp_path):
-    """This function tests download_image when the response is unsuccessful."""
+    """This function tests download_image when the response is unsuccessful.
+
+    .. version-added:: 1.4.0
+    """
     class DummyResponse:
         status_code = 404
         content = b""
@@ -118,7 +151,10 @@ def test_download_image_raises_on_bad_status(monkeypatch, tmp_path):
 
 
 def test_download_image_writes_response_content(tmp_path):
-    """This function tests download_image writing provided response content."""
+    """This function tests download_image writing provided response content.
+
+    .. version-added:: 1.4.0
+    """
     file_path = tmp_path / "images"
     os.makedirs(file_path, exist_ok=True)
 
@@ -139,7 +175,10 @@ def test_download_image_writes_response_content(tmp_path):
 
 
 def test_download_image_generates_file_name(monkeypatch, tmp_path):
-    """This function tests download_image generates a file name when not provided."""
+    """This function tests download_image generates a file name when not provided.
+
+    .. version-added:: 1.4.0
+    """
     class DummyResponse:
         status_code = 200
         content = b"bytes"
