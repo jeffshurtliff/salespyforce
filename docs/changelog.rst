@@ -27,6 +27,7 @@ Supporting Modules
 Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 
 * Added the :py:mod:`salespyforce.utils.tests.conftest` module to configure pytest for unit testing.
+* Added the :py:mod:`salespyforce.utils.tests.test_core_utils` module to test the core utilities.
 
 General
 -------
