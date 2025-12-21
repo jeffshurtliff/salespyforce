@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+# bandit: skip=B101
 """
 :Module:         salespyforce.utils.tests.test_soql
 :Synopsis:       This module is used by pytest to test performing SOQL queries
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff
-:Modified Date:  13 Dec 2025
+:Modified Date:  20 Dec 2025
 """
 
 

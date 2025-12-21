@@ -58,6 +58,7 @@ Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
     * :py:mod:`salespyforce.utils.tests.test_sobjects`
     * :py:mod:`salespyforce.utils.tests.test_soql`
     * :py:mod:`salespyforce.utils.tests.test_sosl`
+* Added a comment to skip assert checks by bandit in the modules used by pytest
 
 General
 -------
