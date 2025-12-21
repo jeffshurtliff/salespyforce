@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+# bandit: skip=B101
 """
 :Module:         salespyforce.utils.tests.test_instantiate_object
 :Synopsis:       This module is used by pytest to test instantiating the core object
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff
-:Modified Date:  13 Dec 2025
+:Modified Date:  20 Dec 2025
 
 These tests rely on the ``salesforce_unit`` fixture defined in
 ``conftest.py`` to keep them fast and deterministic. When you want to

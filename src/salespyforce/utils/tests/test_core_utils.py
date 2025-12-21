@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+# bandit: skip=B101
 """
 :Module:         salespyforce.utils.tests.test_core_utils
 :Synopsis:       This module is used by pytest to test core utility functions
 :Created By:     Jeff Shurtliff
-:Last Modified:  Anonymous
-:Modified Date:  19 Dec 2025
+:Last Modified:  Jeff Shurtliff
+:Modified Date:  20 Dec 2025
 """
 
 import os
