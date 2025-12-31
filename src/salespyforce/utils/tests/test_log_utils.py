@@ -22,7 +22,7 @@ def _cleanup_logger(logger: logging.Logger) -> None:
     .. version-added:: 1.4.0
 
     :param logger: The logger instance to clean up
-    :type logger: logging.Logger
+    :type logger: class[logging.Logger]
     :returns: None
     """
     for handler in list(logger.handlers):
@@ -51,7 +51,7 @@ def test_initialize_logging_applies_default_level_to_console_handler(caplog: pyt
     .. version-added:: 1.4.0
 
     :param caplog: Pytest fixture capturing log records for assertions
-    :type caplog: pytest.LogCaptureFixture
+    :type caplog: class[pytest.LogCaptureFixture]
     :returns: None
     """
     logger_name = "salespyforce.test.console.default"
