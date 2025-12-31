@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce.utils import log_utils``
 :Example:           ``logger = log_utils.initialize_logging(__name__)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     22 Jan 2023
+:Last Modified:     Anonymous
+:Modified Date:     20 Dec 2025
 """
 
 import os
@@ -79,8 +79,9 @@ def _apply_defaults(_logger_name, _formatter, _debug, _log_level, _file_level, _
     :type _log_level: str, None
     :returns: The values that will be used for the configuration settings
     """
+    _default_log_level = LOGGING_DEFAULTS.get('log_level')
     _log_levels = {
-        'general': _log_level,
+        'general': _log_level or _default_log_level,
         'file': _file_level,
         'console': _console_level,
         'syslog': _syslog_level,
@@ -90,12 +91,9 @@ def _apply_defaults(_logger_name, _formatter, _debug, _log_level, _file_level, _
         for _log_type in _log_levels:
             _log_levels[_log_type] = 'debug'
     else:
-        if _log_level:
-            for _lvl_type, _lvl_value in _log_levels.items():
-                if _lvl_type != 'general' and _lvl_value is None:
-                    _log_levels[_lvl_type] = _log_level
-        else:
-            _log_level = LOGGING_DEFAULTS.get('log_level')
+        for _lvl_type, _lvl_value in _log_levels.items():
+            if _lvl_value is None:
+                _log_levels[_lvl_type] = _log_levels['general']
     if _formatter and isinstance(_formatter, str):
         _formatter = logging.Formatter(_formatter)
     _formatter = LOGGING_DEFAULTS.get('formatter') if not _formatter else _formatter
