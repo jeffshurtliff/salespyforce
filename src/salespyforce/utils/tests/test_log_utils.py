@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+# bandit: skip=B101
+"""
+:Module:         salespyforce.utils.tests.test_log_utils
+:Synopsis:       This module is used by pytest to test the logging functionality
+:Created By:     Jeff Shurtliff
+:Last Modified:  Jeff Shurtliff
+:Modified Date:  31 Dec 2025
+"""
+
 import logging
 import sys
 
@@ -7,9 +17,13 @@ from salespyforce.utils import log_utils
 
 
 def _cleanup_logger(logger: logging.Logger) -> None:
-    """Remove and close handlers for a logger.
+    """This function removes and closes handlers for a logger.
 
-    :param logger: The logger instance to clean up.
+    .. version-added:: 1.4.0
+
+    :param logger: The logger instance to clean up
+    :type logger: logging.Logger
+    :returns: None
     """
     for handler in list(logger.handlers):
         logger.removeHandler(handler)
@@ -17,7 +31,12 @@ def _cleanup_logger(logger: logging.Logger) -> None:
 
 
 def test_initialize_logging_defaults_to_info_level() -> None:
-    """Verify initialize_logging defaults logger level to INFO."""
+    """This function verifies that initialize_logging() defaults logger level to INFO.
+
+    .. version-added:: 1.4.0
+
+    :returns: None
+    """
     logger_name = "salespyforce.test.default.info"
     logger = log_utils.initialize_logging(logger_name)
     try:
@@ -26,12 +45,14 @@ def test_initialize_logging_defaults_to_info_level() -> None:
         _cleanup_logger(logger)
 
 
-def test_initialize_logging_applies_default_level_to_console_handler(
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """Ensure console handlers inherit the default INFO level.
+def test_initialize_logging_applies_default_level_to_console_handler(caplog: pytest.LogCaptureFixture) -> None:
+    """This function ensures console handlers inherit the default INFO level.
 
-    :param caplog: Pytest fixture capturing log records for assertions.
+    .. version-added:: 1.4.0
+
+    :param caplog: Pytest fixture capturing log records for assertions
+    :type caplog: pytest.LogCaptureFixture
+    :returns: None
     """
     logger_name = "salespyforce.test.console.default"
     logger = log_utils.initialize_logging(logger_name, console_output=True)
