@@ -102,14 +102,6 @@ The package can be installed via pip using the syntax below.
 pip install salespyforce --upgrade
 ```
 
-You may also clone the repository and install from source using below.
-
-```sh
-git clone git://github.com/jeffshurtliff/salespyforce.git
-cd salespyforce/
-python setup.py install
-```
-
 ## Change Log
 The change log can be found in the [documentation](https://salespyforce.readthedocs.io/en/latest/changelog.html).
 
