@@ -156,6 +156,19 @@ def api_version(self) -> str:
 ## Documentation expectations
 
 - If you change a public behavior, update the docstrings and any relevant docs under docs/ (always the changelog.rst file).
+- When creating a new module, a header block similar to the example below should be included.
+
+```python
+# -*- coding: utf-8 -*-
+"""
+:Module:            salespyforce.new_module_name
+:Synopsis:          Defines the functionality related to ????
+:Created By:        Jeff Shurtliff
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     31 Dec 2025
+"""
+```
+
 - If you change any file with a header block containing `Last Modified` or `Modified Date` fields:
   - Update the `Last Modified` field with the name (or username/pseudonym) of the person making the change.
     - The person making the change indicates the human user who is orchestrating the AI-generated changes.
