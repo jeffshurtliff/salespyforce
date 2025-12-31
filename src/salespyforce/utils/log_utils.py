@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce.utils import log_utils``
 :Example:           ``logger = log_utils.initialize_logging(__name__)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Anonymous
-:Modified Date:     20 Dec 2025
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     31 Dec 2025
 """
 
 import os
@@ -59,7 +59,7 @@ class LessThanFilter(logging.Filter):
         self.max_level = exclusive_maximum
 
     def filter(self, record):
-        """This method returns a Boolean integer value indicating whether or not a message should be logged.
+        """This method returns a Boolean integer value indicating whether a message should be logged.
 
         .. note:: A non-zero return indicates that the message will be logged.
         """
@@ -68,6 +68,9 @@ class LessThanFilter(logging.Filter):
 
 def _apply_defaults(_logger_name, _formatter, _debug, _log_level, _file_level, _console_level, _syslog_level):
     """This function applies default values to the configuration settings if not explicitly defined.
+
+    .. version-changed:: 1.4.0
+       The default logging level is now defined.
 
     :param _logger_name: The name of the logger instance
     :type _logger_name: str, None
