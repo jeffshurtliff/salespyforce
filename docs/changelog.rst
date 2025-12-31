@@ -28,6 +28,7 @@ Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 
 * Added the :py:mod:`salespyforce.utils.tests.conftest` module to configure pytest for unit testing.
 * Added the :py:mod:`salespyforce.utils.tests.test_core_utils` module to test the core utilities.
+* Added the :py:mod:`salespyforce.utils.tests.test_log_utils` module to test the logging functionality.
 
 General
 -------
@@ -59,6 +60,7 @@ Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
     * :py:mod:`salespyforce.utils.tests.test_sobjects`
     * :py:mod:`salespyforce.utils.tests.test_soql`
     * :py:mod:`salespyforce.utils.tests.test_sosl`
+* Updated the :py:mod:`salespyforce.utils.log_utils` module to always define a default logging level
 * Added a comment to skip assert checks by bandit in the modules used by pytest
 
 General
