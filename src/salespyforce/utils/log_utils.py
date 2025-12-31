@@ -121,7 +121,7 @@ def _set_logging_level(_logger, _log_level):
     """This function sets the logging level for a :py:class:`logging.Logger` instance.
 
     :param _logger: The :py:class:`logging.Logger` instance
-    :type _logger: Logger
+    :type _logger: class[logging.Logger]
     :param _log_level: The log level as a string (``debug``, ``info``, ``warning``, ``error`` or ``critical``)
     :type _log_level: str
     :returns: The :py:class:`logging.Logger` instance with a logging level set where applicable
@@ -162,7 +162,7 @@ def _add_file_handler(_logger, _log_level, _log_file, _overwrite, _formatter):
     """This function adds a :py:class:`logging.FileHandler` to the :py:class:`logging.Logger` instance.
 
     :param _logger: The :py:class:`logging.Logger` instance
-    :type _logger: Logger
+    :type _logger: class[logging.Logger]
     :param _log_level: The log level to set for the handler
     :type _log_level: str
     :param _log_file: The log file (as a file name or a file path) to which messages should be written
@@ -174,7 +174,7 @@ def _add_file_handler(_logger, _log_level, _log_file, _overwrite, _formatter):
     :param _overwrite: Determines if messages should be appended to the file (default) or overwrite it
     :type _overwrite: bool
     :param _formatter: The :py:class:`logging.Formatter` to apply to messages passed through the handler
-    :type _formatter: Formatter
+    :type _formatter: class[logging.Formatter]
     :returns: The :py:class:`logging.Logger` instance with the added :py:class:`logging.FileHandler`
     """
     # Define the log file to use
@@ -203,11 +203,11 @@ def _add_stream_handler(_logger, _log_level, _formatter):
     """This function adds a :py:class:`logging.StreamHandler` to the :py:class:`logging.Logger` instance.
 
     :param _logger: The :py:class:`logging.Logger` instance
-    :type _logger: Logger
+    :type _logger: class[logging.Logger]
     :param _log_level: The log level to set for the handler
     :type _log_level: str
     :param _formatter: The :py:class:`logging.Formatter` to apply to messages passed through the handler
-    :type _formatter: Formatter
+    :type _formatter: class[logging.Formatter]
     :returns: The :py:class:`logging.Logger` instance with the added :py:class:`logging.StreamHandler`
     """
     _log_level = HANDLER_DEFAULTS.get('console_log_level') if not _log_level else _log_level
@@ -229,11 +229,11 @@ def _add_split_stream_handlers(_logger, _log_level, _formatter):
                  more information on how this filtering is implemented and for credit to the original author.
 
     :param _logger: The :py:class:`logging.Logger` instance
-    :type _logger: Logger
+    :type _logger: class[logging.Logger]
     :param _log_level: The log level provided for the stream handler (i.e. console output)
     :type _log_level: str
     :param _formatter: The :py:class:`logging.Formatter` to apply to messages passed through the handlers
-    :type _formatter: Formatter
+    :type _formatter: class[logging.Formatter]
     :returns: The logger instance with the two handlers added
     """
     # Configure and add the STDOUT handler
