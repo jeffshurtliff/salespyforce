@@ -179,8 +179,9 @@ def api_version(self) -> str:
 
 - If you change any file with a header block containing `Last Modified` or `Modified Date` fields:
   - Update the `Last Modified` field with the name (or username/pseudonym) of the person making the change.
-    - The person making the change indicates the human user who is orchestrating the AI-generated changes.
+    - The person making the change indicates the human developer who is orchestrating the AI-generated changes.
     - If the person does not wish to display their name/username/pseudonym, use "Anonymous" as a default value.
+    - Indicate after the value which AI tool and/or model was utilized (e.g. `John Doe (via GPT-5.2-Codex)`, `johndoe434 (via claude-opus-4-5)`, etc.)
   - Update the `Modified Date` field where applicable with the current date (local time) in the same format as the existing value.
 - Keep examples accurate and runnable.
 
