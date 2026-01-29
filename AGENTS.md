@@ -34,6 +34,7 @@ If you add a dependency, add it via Poetry (`poetry add ...` / `poetry add --gro
 ## Docstrings (PEP 257 + Sphinx/reST)
 
 ### PEP 257 essentials (what “good” looks like)
+
 Follow PEP 257 conventions:
 - Use triple double-quotes: """..."""
 - One-line docstrings:
@@ -47,6 +48,7 @@ Follow PEP 257 conventions:
 - Keep docstrings updated when behavior changes.
 
 ### Sphinx/reST field list style (required)
+
 Use Sphinx/reST field lists for parameters and returns:
 
 - :param <name>: ...
@@ -58,6 +60,7 @@ Use Sphinx/reST field lists for parameters and returns:
 If type hints are present and clear, you may omit :type: and :rtype:.
 
 ### Function/method docstring template
+
 ```python
 def example(name: str, enabled: bool = True) -> int:
     """Compute the example value.
@@ -74,6 +77,7 @@ def example(name: str, enabled: bool = True) -> int:
 ### Package / module docstrings (including __init__.py)
 
 #### Module docstrings (some_module.py)
+
 Every public module should start with a module docstring describing purpose and key concepts:
 
 ```
@@ -84,6 +88,7 @@ This module contains low-level request/response helpers used by the core client.
 ```
 
 #### Package docstrings (__init__.py)
+
 If src/salespyforce/__init__.py exposes the public API (re-exports classes/functions),
 include a package docstring that explains the package purpose and lists key exports.
 
@@ -100,6 +105,7 @@ If __init__.py only marks a package and exports nothing meaningful, keep the doc
 ### Class docstrings vs __init__ docstrings (important rule)
 
 #### Preferred approach for user-facing classes
+
 For user-facing classes, document constructor parameters in the class docstring (not duplicated in __init__), using :param: fields.
 
 ```python
@@ -133,12 +139,14 @@ class Salesforce:
 ```
 
 #### When __init__ should have full :param: docs
+
 Only put full :param: documentation on __init__ if:
 - the class docstring is intentionally minimal, or
 - the class is internal/private and only __init__ needs documentation, or
 - you need to document multiple alternative init signatures/behaviors that are clearer at __init__.
 
 ### Properties
+
 Use property docstrings as short descriptions. Avoid :param: fields (properties take no params).
 
 ```python
