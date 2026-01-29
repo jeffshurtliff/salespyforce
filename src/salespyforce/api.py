@@ -3,7 +3,7 @@
 :Module:            salespyforce.api
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Anonymous
+:Last Modified:     Jeff Shurtliff
 :Modified Date:     29 Jan 2026
 """
 
@@ -119,7 +119,8 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
 
 def delete(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
     """This method performs a DELETE request against the Salesforce instance.
-    (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+    .. version-added:: 1.4.0
 
     :param sfdc_object: The instantiated SalesPyForce object
     :param endpoint: The API endpoint to query
