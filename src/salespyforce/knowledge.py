@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     14 Nov 2023
+:Modified Date:     30 Jan 2026
 """
 
 from . import errors
@@ -20,7 +20,7 @@ def check_for_existing_article(sfdc_object, title, sobject=None, return_id=False
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
-    .. versionchanged:: 1.2.2
+    .. version-changed:: 1.2.2
        You can now specify whether archived articles are included in the query results.
 
     :param sfdc_object: The instantiated SalesPyForce object
@@ -230,7 +230,7 @@ def get_article_version(sfdc_object, article_id):
 def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=None):
     """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
-    .. versionchanged:: 1.2.0
+    .. version-changed:: 1.2.0
        Changed when lightning URLs are defined and fixed an issue with extraneous slashes.
 
     :param sfdc_object: The instantiated SalesPyForce object
@@ -483,7 +483,7 @@ def assign_data_category(sfdc_object, article_id, category_group_name, category_
     """This function assigns a single data category for a knowledge article.
     (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
 
-    .. versionadded:: 1.2.0
+    .. version-added:: 1.2.0
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -512,7 +512,7 @@ def archive_article(sfdc_object, article_id):
     """This function archives a published knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
 
-    .. versionadded:: 1.3.0
+    .. version-added:: 1.3.0
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -529,3 +529,19 @@ def archive_article(sfdc_object, article_id):
     # Perform the API call
     endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{article_id}'
     return sfdc_object.patch(endpoint, payload)
+
+
+def delete_article_draft(sfdc_object, version_id):
+    """This function deletes an unpublished knowledge article draft.
+    
+    .. version-added:: 1.4.0
+    
+    :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
+    :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
+    :type version_id: str
+    :returns: The API response from the DELETE request
+    :raises: :py:exc:`RuntimeError`
+    """
+    endpoint = f'/services/data/{sfdc_object.version}/sobjects/Knowledge__kav/{version_id}'
+    return sfdc_object.delete(endpoint)

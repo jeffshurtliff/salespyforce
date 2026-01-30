@@ -18,25 +18,28 @@ Additions to the :doc:`core-object-methods` are listed below.
 * Added the :py:meth:`salespyforce.core.Salesforce.get_latest_api_version` method which retrieves
   the latest API version by querying the authorized Salesforce org, returning the version as a
   string (e.g. ``65.0``)
-* Added the :py:meth:`salespyforce.core.Salesforce.delete` method to perform DELETE requests
-  against the authorized Salesforce instance
 * Added the ``FALLBACK_SFDC_API_VERSION`` constant that is leveraged if the
   :py:meth:`salespyforce.core.Salesforce.get_latest_api_version` method fails to retrieve the
   latest API version for the authorized Salesforce org
+* Added the :py:meth:`salespyforce.core.Salesforce.delete` method to perform DELETE requests
+  against the authorized Salesforce instance
+* Added the :py:meth:`salespyforce.core.Salesforce.get_18_char_id` method to convert 15-character ``Id`` values
 
 Primary Modules
 ---------------
 Additions to the :doc:`primary modules <primary-modules>` are listed below.
 
-* Added the :py:func:`salespyforce.api.delete` function to perform DELETE API requests.
+* Added the :py:func:`salespyforce.api.delete` function to perform DELETE API requests
+* Added the :py:func:`salespyforce.knowledge.delete_article_draft` function to delete knowledge article drafts
 
 Supporting Modules
 ------------------
 Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 
-* Added the :py:mod:`salespyforce.utils.tests.conftest` module to configure pytest for unit testing.
-* Added the :py:mod:`salespyforce.utils.tests.test_core_utils` module to test the core utilities.
-* Added the :py:mod:`salespyforce.utils.tests.test_log_utils` module to test the logging functionality.
+* Added the :py:func:`salespyforce.utils.core_utils.get_18_char_id` function to convert 15-character ``Id`` values
+* Added the :py:mod:`salespyforce.utils.tests.conftest` module to configure pytest for unit testing
+* Added the :py:mod:`salespyforce.utils.tests.test_core_utils` module to test the core utilities
+* Added the :py:mod:`salespyforce.utils.tests.test_log_utils` module to test the logging functionality
 
 General
 -------

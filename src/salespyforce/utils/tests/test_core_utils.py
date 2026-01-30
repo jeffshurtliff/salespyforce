@@ -5,7 +5,7 @@
 :Synopsis:       This module is used by pytest to test core utility functions
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff
-:Modified Date:  20 Dec 2025
+:Modified Date:  30 Jan 2026
 """
 
 import os
@@ -113,6 +113,45 @@ def test_get_random_string_returns_expected_length(monkeypatch):
     assert result.startswith("pre_")
     assert len(result) == 5 + len("pre_")
     assert all(char in alphabet for char in result.replace("pre_", ""))
+
+
+def test_converts_15_char_id_to_18_char():
+    """This function tests the conversion of a 15-character Salesforce ID into the 18-character equivalent.
+
+    .. version-added:: 1.4.0
+    """
+    id_15 = "ka4PO0000002hby"
+    id_18 = core_utils.get_18_char_id(id_15)
+
+    assert len(id_18) == 18
+    assert id_18.startswith(id_15)
+
+
+def test_returns_18_char_id_unchanged():
+    """This function tests that an 18-character Salesforce ID is returned unchanged during conversion attempt.
+
+    .. version-added:: 1.4.0
+    """
+    id_18 = "ka4PO0000002hbyYAA"
+    assert core_utils.get_18_char_id(id_18) == id_18
+
+
+def test_invalid_id_length_raises_error():
+    """This function tests to ensure passing an invalid Salesforce ID length raises an exception.
+
+    .. version-added:: 1.4.0
+    """
+    with pytest.raises(ValueError):
+        core_utils.get_18_char_id("short")
+
+
+def test_non_string_id_input_raises_error():
+    """This function tests to ensure passing a non-string to the get_18_char_id function raises an exception.
+
+    .. version-added:: 1.4.0
+    """
+    with pytest.raises(ValueError):
+        core_utils.get_18_char_id(12345)
 
 
 def test_get_image_ref_id_parses_query_param():

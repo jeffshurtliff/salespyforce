@@ -6,7 +6,7 @@
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 May 2023
+:Modified Date:     30 Jan 2026
 """
 
 import random
@@ -22,6 +22,9 @@ from .. import errors
 
 # Initialize the logger for this module
 logger = log_utils.initialize_logging(__name__)
+
+# Define constants
+SALESFORCE_ID_SUFFIX_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'
 
 
 def url_encode(raw_string):
@@ -60,7 +63,8 @@ def get_file_type(file_path):
     :param file_path: The full path to the file
     :type file_path: str
     :returns: The file type in string format (e.g. ``yaml`` or ``json``)
-    :raises: :py:exc:`FileNotFoundError`, :py:exc:`khoros.errors.exceptions.UnknownFileTypeError`
+    :raises: :py:exc:`FileNotFoundError`,
+             :py:exc:`salespyforce.errors.exceptions.UnknownFileTypeError`
     """
     file_type = 'unknown'
     if os.path.isfile(file_path):
@@ -95,6 +99,44 @@ def get_random_string(length=32, prefix_string=""):
     :returns: The alphanumeric string
     """
     return f"{prefix_string}{''.join([random.choice(string.ascii_letters + string.digits) for _ in range(length)])}"
+
+
+def get_18_char_id(record_id: str) -> str:
+    """This function converts a 15-character Salesforce record ID to its 18-character case-insensitive form.
+
+    .. version-added:: 1.4.0
+
+    :param record_id: The Salesforce record ID to convert (or return unchanged if already 18 characters)
+    :type record_id: str
+    :returns: The 18-character Salesforce record ID
+    :raises: :py:exc:`ValueError`
+    """
+    # Ensure the provided record ID is a string
+    if not isinstance(record_id, str):
+        raise ValueError("Salesforce ID must be a string")
+
+    # Return the record ID unchanged if it is already 18 characters in length
+    if len(record_id) == 18:
+        return record_id
+
+    # Ensure the record ID is a valid 15-character value
+    if len(record_id) != 15:
+        raise ValueError("Salesforce ID must be 15 or 18 characters long")
+
+    # Define the checksum suffix (additional 3 characters)
+    suffix = ""
+    for i in range(0, 15, 5):
+        chunk = record_id[i:i + 5]
+        bitmask = 0
+
+        for index, char in enumerate(chunk):
+            if "A" <= char <= "Z":
+                bitmask |= 1 << index
+
+        suffix += SALESFORCE_ID_SUFFIX_ALPHABET[bitmask]
+
+    # Return the 18-character ID value
+    return record_id + suffix
 
 
 def get_image_ref_id(image_url):

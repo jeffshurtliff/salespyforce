@@ -60,7 +60,8 @@ class Salesforce(object):
         :param helper: The file path of a helper file
         :type helper: str, None
         :returns: The instantiated object
-        :raises: :py:exc:`TypeError`
+        :raises: :py:exc:`TypeError`,
+                 :py:exc:`RuntimeError`
         """
         # Define the default settings
         self._helper_settings = {}
@@ -147,6 +148,7 @@ class Salesforce(object):
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
         :returns: The API call response with the authorization information
+        :raises: :py:exc:`RuntimeError`
         """
         params = {
             'grant_type': 'password',
@@ -176,6 +178,7 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
+        :raises: :py:exc:`RuntimeError`
         """
         return api.get(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
                        show_full_error=show_full_error, return_json=return_json)
@@ -201,6 +204,7 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
+        :raises: :py:exc:`RuntimeError`
         """
         return api.api_call_with_payload(self, method=method, endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
@@ -224,6 +228,7 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
+        :raises: :py:exc:`RuntimeError`
         """
         return api.api_call_with_payload(self, 'post', endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
@@ -247,6 +252,7 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
+        :raises: :py:exc:`RuntimeError`
         """
         return api.api_call_with_payload(self, 'patch', endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
@@ -270,6 +276,7 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
+        :raises: :py:exc:`RuntimeError`
         """
         return api.api_call_with_payload(self, 'put', endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
@@ -293,6 +300,7 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
+        :raises: :py:exc:`RuntimeError`
         """
         return api.delete(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
                           show_full_error=show_full_error, return_json=return_json)
@@ -302,6 +310,7 @@ class Salesforce(object):
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm>`_)
 
         :returns: A list containing the API metadata from the ``/services/data`` endpoint.
+        :raises: :py:exc:`RuntimeError`
         """
         return self.get('/services/data')
 
@@ -328,12 +337,18 @@ class Salesforce(object):
         """This method returns a list of all org limits.
 
         .. version-added:: 1.1.0
+
+        :returns: The Salesforce org governor limits data
+        :raises: :py:exc:`RuntimeError`
         """
         return self.get(f'/services/data/{self.version}/limits')
 
     def get_all_sobjects(self):
         """This method returns a list of all Salesforce objects. (i.e. sObjects)
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm>`_)
+
+        :returns: The list of all Salesforce objects
+        :raises: :py:exc:`RuntimeError`
         """
         return self.get(f'/services/data/{self.version}/sobjects')
 
@@ -347,6 +362,7 @@ class Salesforce(object):
         :param describe: Determines if the full (i.e. ``describe``) data should be returned (defaults to ``False``)
         :type describe: bool
         :returns: The Salesforce object data
+        :raises: :py:exc:`RuntimeError`
         """
         uri = f'/services/data/{self.version}/sobjects/{object_name}'
         uri = f'{uri}/describe' if describe else uri
@@ -359,14 +375,31 @@ class Salesforce(object):
         :param object_name: The name of the Salesforce object
         :type object_name: str
         :returns: The Salesforce object data
+        :raises: :py:exc:`RuntimeError`
         """
         return self.get_sobject(object_name, describe=True)
 
     def get_rest_resources(self):
         """This method returns a list of all available REST resources.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm>`_)
+
+        :returns: The list of all available REST resources for the Salesforce org
+        :raises: :py:exc:`RuntimeError`
         """
         return self.get(f'/services/data/{self.version}')
+
+    @staticmethod
+    def get_18_char_id(record_id: str) -> str:
+        """This method converts a 15-character Salesforce record ID to its 18-character case-insensitive form.
+
+        .. version-added:: 1.4.0
+
+        :param record_id: The Salesforce record ID to convert (or return unchanged if already 18 characters)
+        :type record_id: str
+        :returns: The 18-character Salesforce record ID
+        :raises: :py:exc:`ValueError`
+        """
+        return core_utils.get_18_char_id(record_id=record_id)
 
     def soql_query(self, query, replace_quotes=True, next_records_url=False):
         """This method performs a SOQL query and returns the results in JSON format.
@@ -380,6 +413,7 @@ class Salesforce(object):
         :param next_records_url: Indicates that the ``query`` parameter is a ``nextRecordsUrl`` value.
         :type next_records_url: bool
         :returns: The result of the SOQL query
+        :raises: :py:exc:`RuntimeError`
         """
         if next_records_url:
             query = re.sub(r'^.*/', '', query) if '/' in query else query
@@ -399,6 +433,7 @@ class Salesforce(object):
         :param string_to_search: The string for which to search
         :type string_to_search: str
         :returns: The SOSL response data in JSON format
+        :raises: :py:exc:`RuntimeError`
         """
         query = 'FIND {' + string_to_search + '}'
         query = core_utils.url_encode(query)
@@ -413,7 +448,8 @@ class Salesforce(object):
         :param payload: The JSON payload with the record details
         :type payload: dict
         :returns: The API response from the POST request
-        :raises: :py:exc:`RuntimeError`, :py:exc:`TypeError`
+        :raises: :py:exc:`RuntimeError`,
+                 :py:exc:`TypeError`
         """
         # Ensure the payload is in the appropriate format
         if not isinstance(payload, dict):
@@ -434,7 +470,8 @@ class Salesforce(object):
         :param payload: The JSON payload with the record details to be updated
         :type payload: dict
         :returns: The API response from the PATCH request
-        :raises: :py:exc:`RuntimeError`, :py:exc:`TypeError`
+        :raises: :py:exc:`RuntimeError`,
+                 :py:exc:`TypeError`
         """
         # Ensure the payload is in the appropriate format
         if not isinstance(payload, dict):
@@ -618,7 +655,8 @@ class Salesforce(object):
             :param return_uri: Determines if the URI of the article should be returned rather than the ID (``False`` by default)
             :type return_uri: bool
             :returns: The Article ID or Article URI, or a blank string if no article is found
-            :raises: :py:exc:`ValueError`
+            :raises: :py:exc:`ValueError`,
+                     :py:exc:`RuntimeError`
             """
             return knowledge_module.get_article_id_from_number(self.sfdc_object, article_number=article_number,
                                                                sobject=sobject, return_uri=return_uri)
@@ -638,6 +676,7 @@ class Salesforce(object):
             :param page_num: The starting page number (``1`` by default)
             :type page_num: int
             :returns: The list of retrieved knowledge articles
+            :raises: :py:exc:`RuntimeError`
             """
             return knowledge_module.get_articles_list(self.sfdc_object, query=query, sort=sort, order=order,
                                                       page_size=page_size, page_num=page_num)
@@ -651,6 +690,7 @@ class Salesforce(object):
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
             :returns: The details for the knowledge article
+            :raises: :py:exc:`RuntimeError`
             """
             return knowledge_module.get_article_details(self.sfdc_object, article_id=article_id, sobject=sobject)
 
@@ -702,7 +742,8 @@ class Salesforce(object):
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
             :returns: The article URL as a string
-            :raises: :py:exc:`ValueError`
+            :raises: :py:exc:`ValueError`,
+                     :py:exc:`RuntimeError`
             """
             return knowledge_module.get_article_url(self.sfdc_object, article_id=article_id,
                                                     article_number=article_number, sobject=sobject)
@@ -718,7 +759,9 @@ class Salesforce(object):
             :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
             :type full_response: bool
             :returns: The API response or the ID of the article draft
-            :raises: :py:exc:`ValueError`, :py:exc:`TypeError`
+            :raises: :py:exc:`ValueError`,
+                     :py:exc:`TypeError`,
+                     :py:exc:`RuntimeError`
             """
             return knowledge_module.create_article(self.sfdc_object, article_data=article_data, sobject=sobject,
                                                    full_response=full_response)
@@ -736,7 +779,9 @@ class Salesforce(object):
             :param include_status_code: Determines if the API response status code should be returned (``False`` by default)
             :type include_status_code: bool
             :returns: A Boolean indicating if the update operation was successful, and optionally the API response status code
-            :raises: :py:exc:`ValueError`, :py:exc:`TypeError`, :py:exc:`RuntimeError`
+            :raises: :py:exc:`ValueError`,
+                     :py:exc:`TypeError`,
+                     :py:exc:`RuntimeError`
             """
             return knowledge_module.update_article(self.sfdc_object, record_id=record_id, article_data=article_data,
                                                    sobject=sobject, include_status_code=include_status_code)
@@ -803,7 +848,9 @@ class Salesforce(object):
             :param major_version: Determines if the published article should be a major version (``True`` by default)
             :type major_version: bool
             :returns: The API response from the POST request
-            :raises: :py:exc:`RuntimeError`, :py:exc:`TypeError`, :py:exc:`ValueError`
+            :raises: :py:exc:`RuntimeError`,
+                     :py:exc:`TypeError`,
+                     :py:exc:`ValueError`
             """
             return knowledge_module.publish_multiple_articles(self.sfdc_object, article_id_list=article_id_list,
                                                               major_version=major_version)
@@ -839,6 +886,18 @@ class Salesforce(object):
             :raises: :py:exc:`RuntimeError`
             """
             return knowledge_module.archive_article(self.sfdc_object, article_id=article_id)
+
+        def delete_article_draft(self, version_id):
+            """This function deletes an unpublished knowledge article draft.
+
+            .. version-added:: 1.4.0
+
+            :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
+            :type version_id: str
+            :returns: The API response from the DELETE request
+            :raises: :py:exc:`RuntimeError`
+            """
+            return knowledge_module.delete_article_draft(self.sfdc_object, version_id=version_id)
 
 
 def define_connection_info():
