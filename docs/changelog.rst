@@ -18,6 +18,8 @@ Additions to the :doc:`core-object-methods` are listed below.
 * Added the :py:meth:`salespyforce.core.Salesforce.get_latest_api_version` method which retrieves
   the latest API version by querying the authorized Salesforce org, returning the version as a
   string (e.g. ``65.0``)
+* Added the :py:meth:`salespyforce.core.Salesforce.delete` method to perform DELETE requests
+  against the authorized Salesforce instance
 * Added the ``FALLBACK_SFDC_API_VERSION`` constant that is leveraged if the
   :py:meth:`salespyforce.core.Salesforce.get_latest_api_version` method fails to retrieve the
   latest API version for the authorized Salesforce org

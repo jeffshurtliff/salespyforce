@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     17 Nov 2025
+:Last Modified:     Anonymous (via GPT-5.2-Codex)
+:Modified Date:     29 Jan 2026
 """
 
 import re
@@ -274,6 +274,26 @@ class Salesforce(object):
         return api.api_call_with_payload(self, 'put', endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
                                          return_json=return_json)
+
+    def delete(self, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
+        """This method performs a DELETE request against the Salesforce instance.
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+        :param endpoint: The API endpoint to query
+        :type endpoint: str
+        :param params: The query parameters (where applicable)
+        :type params: dict, None
+        :param headers: Specific API headers to use when performing the API call
+        :type headers: dict, None
+        :param timeout: The timeout period in seconds (defaults to ``30``)
+        :type timeout: int, str, None
+        :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
+        :type show_full_error: bool
+        :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
+        :returns: The API response in JSON format or as a ``requests`` object
+        """
+        return api.delete(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
+                          show_full_error=show_full_error, return_json=return_json)
 
     def get_api_versions(self) -> list:
         """This method returns the API versions for the Salesforce releases.
