@@ -4,9 +4,15 @@ on:
   push:
     paths-ignore:
       - README.md
+      - LICENSE
+      - docs/**
+      - examples/**
   pull_request:
     paths-ignore:
       - README.md
+      - LICENSE
+      - docs/**
+      - examples/**
 
 jobs:
   build:
