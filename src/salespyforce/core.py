@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Anonymous (via GPT-5.2-Codex)
-:Modified Date:     29 Jan 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     30 Jan 2026
 """
 
 import re
@@ -279,6 +279,8 @@ class Salesforce(object):
         """This method performs a DELETE request against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
+        .. version-added:: 1.4.0
+
         :param endpoint: The API endpoint to query
         :type endpoint: str
         :param params: The query parameters (where applicable)
@@ -325,7 +327,7 @@ class Salesforce(object):
     def get_org_limits(self):
         """This method returns a list of all org limits.
 
-        .. versionadded:: 1.1.0
+        .. version-added:: 1.1.0
         """
         return self.get(f'/services/data/{self.version}/limits')
 
@@ -392,7 +394,7 @@ class Salesforce(object):
         """This method performs a SOSL query to search for a given string.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_search.htm>`_)
 
-        .. versionadded:: 1.1.0
+        .. version-added:: 1.1.0
 
         :param string_to_search: The string for which to search
         :type string_to_search: str
@@ -810,7 +812,7 @@ class Salesforce(object):
             """This method assigns a single data category for a knowledge article.
             (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
 
-            .. versionadded:: 1.2.0
+            .. version-added:: 1.2.0
 
             :param article_id: The ID of the article to update
             :type article_id: str
@@ -829,7 +831,7 @@ class Salesforce(object):
             """This function archives a published knowledge article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
 
-            .. versionadded:: 1.3.0
+            .. version-added:: 1.3.0
 
             :param article_id: The ID of the article to archive
             :type article_id: str
