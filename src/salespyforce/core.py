@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     30 Jan 2026
+:Modified Date:     02 Feb 2026
 """
 
 import re
@@ -21,6 +21,7 @@ from .utils.helper import get_helper_settings
 
 # Define constants
 FALLBACK_SFDC_API_VERSION = '65.0'      # Used if querying the org for the version fails
+VALID_ACCESS_CONTROL_FIELDS = {'HasReadAccess', 'HasEditAccess', 'HasDeleteAccess'}
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -95,8 +96,9 @@ class Salesforce(object):
         # Get the connection information used to connect to the instance
         self.connection_info = connection_info if connection_info is not None else self._get_empty_connection_info()
 
-        # Define the base URL value
-        self.base_url = self.connection_info.get('base_url')
+        # Define the base URL and Org ID
+        self.base_url = self.connection_info.get('base_url', '')
+        self.org_id = self.connection_info.get('org_id', '')
 
         # Define the connection response data variables
         auth_response = self.connect()
@@ -106,6 +108,9 @@ class Salesforce(object):
 
         # Define the version with explicitly provided version or by querying the Salesforce org
         self.version = f'v{version}' if version else f'v{self.get_latest_api_version()}'
+
+        # Retrieve info about current user
+        self.current_user_info = self.retrieve_current_user_info(on_init=True, raise_exc_on_error=False)
 
         # Import inner object classes so their methods can be called from the primary object
         self.chatter = self._import_chatter_class()
@@ -143,6 +148,34 @@ class Salesforce(object):
         """This method returns the appropriate HTTP headers to use for different types of API calls."""
         return api._get_headers(_access_token=self.access_token, _header_type=_header_type)
 
+    def _get_cached_user_info(self, _field: str, _retrieve_if_missing: bool = False):
+        """This method attempts to retrieve a value for a given field in the cached ``userinfo`` data and
+           optionally queries the API as needed to retrieve the data when not found.
+
+        .. version-added:: 1.4.0
+
+        :param _field: The name of the field for which the value is needed
+        :type _field: str
+        :param _retrieve_if_missing: Will query the Salesforce REST API for the data when missing if True
+                                     (``False`` by default)
+        :type _retrieve_if_missing: bool
+        :returns: The field value when found (or retrieved), or a None value if the field value could not be obtained
+        :raises: :py:exc:`errors.exceptions.APIRequestError`
+        """
+        _field_value = None
+        _not_present_msg = f"The '{_field}' field is not present in the current user info data"
+        if self.current_user_info and _field in self.current_user_info:
+            _field_value = self.current_user_info[_field]
+        else:
+            logger.warning(_not_present_msg)
+            if _retrieve_if_missing:
+                self.current_user_info = self.retrieve_current_user_info(raise_exc_on_error=True)
+                if self.current_user_info and _field in self.current_user_info:
+                    _field_value = self.current_user_info[_field]
+                else:
+                    logger.error(f'{_not_present_msg} even after refreshing cached current user info')
+        return _field_value
+
     def connect(self):
         """This method connects to the Salesforce instance to obtain the access token.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
@@ -161,6 +194,51 @@ class Salesforce(object):
         if response.status_code != 200:
             raise RuntimeError(f'Failed to connect to the Salesforce instance.\n{response.text}')
         return response.json()
+
+    def retrieve_current_user_info(self, all_data=False, raise_exc_on_error=False, on_init=False) -> dict:
+        """This method retrieves the ``userinfo`` data for the current/running user.
+
+        .. version-added:: 1.4.0
+
+        :param all_data: Returns all ``userinfo`` data from the API when True instead of only the relevant fields/values
+                         (``False`` by default)
+        :type all_data: bool
+        :param raise_exc_on_error: Raises an exception if the API retrieval attempt fails when True (``False`` by default)
+        :type raise_exc_on_error: bool
+        :param on_init: Indicates if the method is being called during the core object instantiation (``False`` by default)
+        :type on_init: bool
+        :returns: The user info data within a dictionary
+        :raises: :py:exc:`RuntimeError`,
+                 :py:exc:`errors.exceptions.APIRequestError`
+        """
+        user_info = {'user_id': '', 'nickname': '', 'name': '', 'email': '', 'user_type': '',
+                     'language': '', 'locale': '', 'utcOffset': '', 'is_salesforce_integration_user': None}
+        bool_fields = ['is_salesforce_integration_user']
+        endpoint = '/services/oauth2/userinfo'
+        base_error_msg = 'Failed to retrieve current user info'
+        msg_init_segment = 'on core object instantiation'
+        if on_init:
+            base_error_msg = f'{base_error_msg} {msg_init_segment}'
+        try:
+            response = self.get(endpoint)
+            if isinstance(response, dict) and all_data:
+                user_info = response
+            elif isinstance(response, dict):
+                for field in user_info.keys():
+                    if field in response:
+                        default_val = None if field in bool_fields else ''
+                        user_info[field] = response.get(field, default_val)
+            else:
+                logger.error(f'{base_error_msg} with a usable format')
+        except Exception as exc:
+            exc_type = errors.handlers.get_exception_type(exc)
+            exc_msg = f'{base_error_msg} due to {exc_type} exception: {exc}'
+            logger.error(exc_msg)
+            if raise_exc_on_error:
+                raise errors.exceptions.APIRequestError(f'{exc_type}: {exc}')
+
+        # Return the populated user info
+        return user_info
 
     def get(self, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
         """This method performs a GET request against the Salesforce instance.
@@ -438,6 +516,204 @@ class Salesforce(object):
         query = 'FIND {' + string_to_search + '}'
         query = core_utils.url_encode(query)
         return self.get(f'/services/data/{self.version}/search/?q={query}')
+
+    def check_user_record_access(self, record_id: str, user_id=None) -> dict:
+        """This method checks the Read, Edit, and Delete access for a given record and user.
+
+        .. version-added:: 1.4.0
+
+        :param record_id: The ``Id`` value of the record against which to check the user access
+        :type record_id: str
+        :param user_id: The ``Id`` of the user to evaluate (or the current user's ID if not explicitly defined)
+        :type user_id: str, None
+        :returns: Dictionary with Boolean values for ``HasReadAccess``, ``HasEditAccess``, and ``HasDeleteAccess``
+        :raises: :py:exc:`RuntimeError`,
+                 :py:exc:`errors.exceptions.APIRequestError`
+        """
+        record_access = {'HasReadAccess': None, 'HasEditAccess': None, 'HasDeleteAccess': None}
+
+        # Use the current/running user's ID if an ID wasn't explicitly provided
+        if not user_id:
+            user_id = self._get_cached_user_info(_field='user_id', _retrieve_if_missing=True)
+            if user_id:
+                logger.debug(f'Using the User Id {user_id} for the running user as an Id was not specified')
+
+        # Raise an exception if the User ID is still undefined
+        if not user_id:
+            error_msg = f'The user access for record Id {record_id} cannot be checked as the User Id is undefined'
+            logger.error(error_msg)
+            raise errors.exceptions.MissingRequiredDataError(error_msg)
+
+        # Perform SOQL query for the access data
+        query = f"""
+            SELECT RecordId, HasReadAccess, HasEditAccess, HasDeleteAccess
+            FROM UserRecordAccess
+            WHERE UserId = '{user_id}' AND RecordId = '{record_id}'
+        """
+        response = self.soql_query(query=query)
+
+        # Parse the response to extract the relevant field values
+        if 'records' in response and response['records']:
+            response = response['records'][0]
+            for field in record_access.keys():
+                record_access[field] = response.get(field, None)
+
+        # Return the record access data
+        return record_access
+
+    @staticmethod
+    def _eval_user_record_access(_field: str, _record_id: str,
+                                 _record_access_data: dict, _raise_exc_on_failure: bool = True) -> bool:
+        """This private method checks for an access level given the field and the record access data.
+
+        .. version-added:: 1.4.0
+
+        :param _field: The access level field to evaluate (``HasReadAccess``, ``HasEditAccess``, ``HasDeleteAccess``)
+        :type _field: str
+        :param _record_id: The ID value for the record whose access is being checked
+        :type _record_id: str
+        :param _record_access_data: The user record access data that has already been retrieved
+        :type _record_access_data: dict
+        :param _raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
+        :type _raise_exc_on_failure: bool
+        :returns: Boolean value indicating the access level for the given field
+        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        """
+        # Raise an exception if a valid access control field is not provided
+        if _field not in VALID_ACCESS_CONTROL_FIELDS:
+            _error_msg = f"The field '{_field}' is not a valid record access level field"
+            raise errors.exceptions.InvalidFieldError(_error_msg)
+
+        # Identify the access level value if possible (API retrievals should be handled in a parent method)
+        _has_access = _record_access_data.get(_field) if _field in _record_access_data else None
+        if _has_access is None:
+            _error_msg = f"The value for the '{_field}' is undefined for the given Record Id '{_record_id}'"
+            logger.error(_error_msg)
+            if _raise_exc_on_failure:
+                raise errors.exceptions.MissingRequiredDataError(_error_msg)
+
+        # Return the identified access level value
+        return _has_access
+
+    def can_access_record(self, access_type, record_id, user_id=None, record_access_data=None, raise_exc_on_failure=True):
+        """This method evaluates if a user can access a specific record given the access type.
+
+        .. version-added:: 1.4.0
+
+        :param access_type: The type of access to evaluate (``read``, ``edit``, or ``delete``)
+        :type access_type: str
+        :param record_id: The ID of the record
+        :type record_id: str
+        :param user_id: The ID of the user to evaluate (defaults to the current/running user if not defined)
+        :type user_id: str, None
+        :param record_access_data: The user record access data that has already been retrieved (optional)
+        :type record_access_data: dict, None
+        :param raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
+        :type raise_exc_on_failure: bool
+        :returns: Boolean value indicating the access level for the given field
+        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        """
+        # Define the initial value for the result
+        can_access = None
+
+        # Identify the correct field to query based on access type
+        access_type_field_mapping = {
+            'read': 'HasReadAccess',
+            'edit': 'HasEditAccess',
+            'delete': 'HasDeleteAccess',
+        }
+        if access_type.lower() not in access_type_field_mapping:
+            error_msg = f"The access_type '{access_type}' is invalid (must use 'read', 'edit', or 'delete')"
+            logger.error(error_msg)
+            if raise_exc_on_failure:
+                raise errors.exceptions.InvalidParameterError(error_msg)
+        else:
+            # Retrieve the field name to check
+            read_access_field = access_type_field_mapping.get(access_type.lower())
+
+            # Check to see if record access data was provided and validate that it is a dictionary
+            if record_access_data and not isinstance(record_access_data, dict):
+                error_msg = f"The record_access_data provided is Type {type(read_access_field)} but must be a dict"
+                logger.error(error_msg)
+                if raise_exc_on_failure:
+                    raise errors.exceptions.DataMismatchError(error_msg)
+
+            # Perform the API all to check the record access for the user if data not provided
+            if not record_access_data:
+                record_access_data = self.check_user_record_access(record_id=record_id, user_id=user_id)
+
+            # Return the access level value
+            can_access = self._eval_user_record_access(_field=read_access_field, _record_id=record_id,
+                                                       _record_access_data=record_access_data,
+                                                       _raise_exc_on_failure=raise_exc_on_failure)
+
+        # Emit a warning if the value is None rather than a boolean
+        if can_access is None:
+            warn_msg = 'The record access check could not be completed and the function will return a None value'
+            errors.handlers.display_warning(warn_msg)
+
+        # Return the result
+        return can_access
+
+    def can_read_record(self, record_id, user_id=None, record_access_data=None, raise_exc_on_failure=True):
+        """This method evaluates if a user has access to read a specific record.
+
+        .. version-added:: 1.4.0
+
+        :param record_id: The ID of the record
+        :type record_id: str
+        :param user_id: The ID of the user to evaluate (defaults to the current/running user if not defined)
+        :type user_id: str, None
+        :param record_access_data: The user record access data that has already been retrieved (optional)
+        :type record_access_data: dict, None
+        :param raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
+        :type raise_exc_on_failure: bool
+        :returns: Boolean value indicating the access level for the given field
+        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        """
+        return self.can_access_record(access_type='read', record_id=record_id, user_id=user_id,
+                                      record_access_data=record_access_data,
+                                      raise_exc_on_failure=raise_exc_on_failure)
+
+    def can_edit_record(self, record_id, user_id=None, record_access_data=None, raise_exc_on_failure=True):
+        """This method evaluates if a user has access to edit a specific record.
+
+        .. version-added:: 1.4.0
+
+        :param record_id: The ID of the record
+        :type record_id: str
+        :param user_id: The ID of the user to evaluate (defaults to the current/running user if not defined)
+        :type user_id: str, None
+        :param record_access_data: The user record access data that has already been retrieved (optional)
+        :type record_access_data: dict, None
+        :param raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
+        :type raise_exc_on_failure: bool
+        :returns: Boolean value indicating the access level for the given field
+        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        """
+        return self.can_access_record(access_type='edit', record_id=record_id, user_id=user_id,
+                                      record_access_data=record_access_data,
+                                      raise_exc_on_failure=raise_exc_on_failure)
+
+    def can_delete_record(self, record_id, user_id=None, record_access_data=None, raise_exc_on_failure=True):
+        """This method evaluates if a user has access to delete a specific record.
+
+        .. version-added:: 1.4.0
+
+        :param record_id: The ID of the record
+        :type record_id: str
+        :param user_id: The ID of the user to evaluate (defaults to the current/running user if not defined)
+        :type user_id: str, None
+        :param record_access_data: The user record access data that has already been retrieved (optional)
+        :type record_access_data: dict, None
+        :param raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
+        :type raise_exc_on_failure: bool
+        :returns: Boolean value indicating the access level for the given field
+        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        """
+        return self.can_access_record(access_type='edit', record_id=record_id, user_id=user_id,
+                                      record_access_data=record_access_data,
+                                      raise_exc_on_failure=raise_exc_on_failure)
 
     def create_sobject_record(self, sobject, payload):
         """This method creates a new record for a specific sObject.

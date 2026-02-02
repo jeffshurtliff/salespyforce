@@ -23,6 +23,19 @@ Additions to the :doc:`core-object-methods` are listed below.
   latest API version for the authorized Salesforce org
 * Added the :py:meth:`salespyforce.core.Salesforce.delete` method to perform DELETE requests
   against the authorized Salesforce instance
+* Added the :py:meth:`salespyforce.core.Salesforce.retrieve_current_user_info` method to retrieve the
+  ``userinfo`` data for the current/running user and store it in the instantiated core object
+* Added the :py:meth:`salespyforce.core.Salesforce._get_cached_user_info` private method to retrieve
+  a field value from the current user info, optionally attempting to retrieve the data from the API again
+  if the field and/or data is missing
+* Added the :py:meth:`salespyforce.core.Salesforce.check_user_record_access` method to check the Read, Edit,
+  and Delete access for a given record and user
+* Added the :py:meth:`salespyforce.core.Salesforce.can_access_record` method
+* Added the :py:meth:`salespyforce.core.Salesforce.can_read_record` method
+* Added the :py:meth:`salespyforce.core.Salesforce.can_edit_record` method
+* Added the :py:meth:`salespyforce.core.Salesforce.can_delete_record` method
+* Added the :py:meth:`salespyforce.core.Salesforce._eval_user_record_access` private static method to check for an
+  access level given the field and the record access data
 * Added the :py:meth:`salespyforce.core.Salesforce.get_18_char_id` method to convert 15-character ``Id`` values
 
 Primary Modules
@@ -30,13 +43,21 @@ Primary Modules
 Additions to the :doc:`primary modules <primary-modules>` are listed below.
 
 * Added the :py:func:`salespyforce.api.delete` function to perform DELETE API requests
+* Added the :py:func:`salespyforce.api._construct_full_query_url` function to evaluate and construct the URL to
+  utilize during an API call
 * Added the :py:func:`salespyforce.knowledge.delete_article_draft` function to delete knowledge article drafts
+* Created the :py:mod:`salespyforce.decorators` module containing the following decorators:
+    * :py:func:`salespyforce.decorators.deprecated` to flag a callable as deprecated
 
 Supporting Modules
 ------------------
 Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
 
 * Added the :py:func:`salespyforce.utils.core_utils.get_18_char_id` function to convert 15-character ``Id`` values
+* Added the :py:func:`salespyforce.utils.core_utils.matches_regex_pattern` function to compare strings with regex patterns
+* Added the :py:func:`salespyforce.utils.core_utils.is_valid_salesforce_url` function to verify a URL is valid
+* Added the :py:func:`salespyforce.errors.handlers.get_exception_type` function to aid in handling exceptions
+* Added the :py:func:`salespyforce.errors.handlers.display_warning` function to better handle runtime warnings
 * Added the :py:mod:`salespyforce.utils.tests.conftest` module to configure pytest for unit testing
 * Added the :py:mod:`salespyforce.utils.tests.test_core_utils` module to test the core utilities
 * Added the :py:mod:`salespyforce.utils.tests.test_log_utils` module to test the logging functionality
@@ -56,8 +77,26 @@ Core Object
 -----------
 Changes to the :doc:`core-object-methods` are listed below.
 
+* Updated the init method for the :py:class:`salespyforce.core.Salesforce` class to define the following
+  class-scoped variables:
+
+  +------------+--------------------------------------------------+
+  | Variable   | Data Type | Description                          |
+  +============+===========+======================================+
+  | ``org_id`` | str       | Salesforce Org ID                    |
+  +------------+-----------+--------------------------------------+
+
 * Updated the docstring for the :py:meth:`salespyforce.core.Salesforce.get_api_versions` method
   to explicitly state what the method returns and its data type
+
+Primary Modules
+---------------
+Changes to the :doc:`primary modules <primary-modules>` are listed below.
+
+* Updated the functions below to support full URLs to be passed as the endpoint with the URLs being
+  evaluated to ensure they are valid Salesforce URLs:
+    * :py:func:`salespyforce.api.get`
+    * :py:func:`salespyforce.api.api_call_with_payload`
 
 Supporting Modules
 ------------------
@@ -98,6 +137,16 @@ General
 * Completely refactored the ``.github/scripts/encrypt_secret.sh`` script to add features and functionality
 * Added a new helper file in ``.github/encrypted/`` for use with CI and unit testing with pytest
 * Updated the ``.github/scripts/decrypt_helper.sh`` script to use the new helper file
+
+Deprecated
+==========
+
+Supporting Modules
+------------------
+Deprecations in the :doc:`supporting modules <supporting-modules>` are listed below.
+
+* :py:func:`salespyforce.utils.core_utils.display_warning`
+    * Use the :py:func:`salespyforce.errors.handlers.display_warning` function instead.
 
 Removed
 =======

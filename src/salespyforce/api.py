@@ -4,12 +4,13 @@
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     29 Jan 2026
+:Modified Date:     30 Jan 2026
 """
 
 import requests
 
-from .utils import log_utils
+from . import errors
+from .utils import core_utils, log_utils
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -18,6 +19,10 @@ logger = log_utils.initialize_logging(__name__)
 def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
     """This method performs a GET request against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+    .. version-changed:: 1.4.0
+       The full URL for the API call is now constructed prior to making the call.
+       The provided URL is also now evaluated to ensure it is a valid Salesforce URL.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :param endpoint: The API endpoint to query
@@ -40,12 +45,13 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_
     default_headers = _get_headers(sfdc_object.access_token)
     headers = default_headers if not headers else headers
 
-    # Make sure the endpoint begins with a slash
-    endpoint = f'/{endpoint}' if not endpoint.startswith('/') else endpoint
+    # Construct the request URL
+    url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Perform the API call
-    response = requests.get(f'{sfdc_object.instance_url}{endpoint}', headers=headers, params=params, timeout=timeout)
+    response = requests.get(url, headers=headers, params=params, timeout=timeout)
     if response.status_code >= 300:
+        # TODO: Functionalize this segment and figure out how to improve on the approach somehow
         if show_full_error:
             raise RuntimeError(f'The GET request failed with a {response.status_code} status code.\n'
                                f'{response.text}')
@@ -60,6 +66,10 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
                           show_full_error=True, return_json=True):
     """This method performs a POST call against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+    .. version-changed:: 1.4.0
+       The full URL for the API call is now constructed prior to making the call.
+       The provided URL is also now evaluated to ensure it is a valid Salesforce URL.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :param method: The API method (``post``, ``put``, or ``patch``)
@@ -86,25 +96,23 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
     default_headers = _get_headers(sfdc_object.access_token)
     headers = default_headers if not headers else headers
 
-    # Make sure the endpoint begins with a slash
-    endpoint = f'/{endpoint}' if not endpoint.startswith('/') else endpoint
+    # Construct the request URL
+    url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Perform the API call
     if method.lower() == 'post':
-        response = requests.post(f'{sfdc_object.instance_url}{endpoint}', json=payload, headers=headers, params=params,
-                                 timeout=timeout)
+        response = requests.post(url, json=payload, headers=headers, params=params, timeout=timeout)
     elif method.lower() == 'patch':
-        response = requests.patch(f'{sfdc_object.instance_url}{endpoint}', json=payload, headers=headers, params=params,
-                                  timeout=timeout)
+        response = requests.patch(url, json=payload, headers=headers, params=params, timeout=timeout)
     elif method.lower() == 'put':
-        response = requests.put(f'{sfdc_object.instance_url}{endpoint}', json=payload, headers=headers, params=params,
-                                timeout=timeout)
+        response = requests.put(url, json=payload, headers=headers, params=params, timeout=timeout)
     else:
-        raise ValueError('The API call method (POST or PATCH OR PUT) must be defined.')
+        raise ValueError('The API call method (POST or PATCH or PUT) must be defined')
 
     # Examine the result
     if response.status_code >= 300:
         if show_full_error:
+            # TODO: Functionalize this segment and figure out how to improve on the approach somehow
             raise RuntimeError(f'The POST request failed with a {response.status_code} status code.\n'
                                f'{response.text}')
         else:
@@ -143,14 +151,14 @@ def delete(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_fu
     default_headers = _get_headers(sfdc_object.access_token)
     headers = default_headers if not headers else headers
 
-    # Make sure the endpoint begins with a slash
-    endpoint = f'/{endpoint}' if not endpoint.startswith('/') else endpoint
+    # Construct the request URL
+    url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Perform the API call
-    response = requests.delete(f'{sfdc_object.instance_url}{endpoint}', headers=headers, params=params,
-                               timeout=timeout)
+    response = requests.delete(url, headers=headers, params=params, timeout=timeout)
     if response.status_code >= 300:
         if show_full_error:
+            # TODO: Functionalize this segment and figure out how to improve on the approach somehow
             raise RuntimeError(f'The DELETE request failed with a {response.status_code} status code.\n'
                                f'{response.text}')
         else:
@@ -170,3 +178,36 @@ def _get_headers(_access_token, _header_type='default'):
     if _header_type == 'articles':
         headers['accept-language'] = 'en-US'
     return headers
+
+
+def _construct_full_query_url(_endpoint: str, _instance_url: str) -> str:
+    """This function constructs the URL to use in an API call to the Salesforce REST API.
+
+    .. version-added:: 1.4.0
+
+    :param _endpoint: The endpoint provided when calling an API call method or function
+    :type _endpoint: str
+    :param _instance_url: The Salesforce instance URL defined when the core object was instantiated
+    :type _instance_url: str
+    :returns: The fully qualified URL
+    :raises: :py:exc:`TypeError`,
+             :py:exc:`errors.exceptions.InvalidURLError`
+    """
+    # Raise an exception if the endpoint is not a string
+    if not isinstance(_endpoint, str):
+        exc_msg = 'The provided URL must be a string and a valid Salesforce URL'
+        logger.critical(exc_msg)
+        raise TypeError(exc_msg)
+
+    # Construct the URL as needed by prepending the instance URL
+    if _endpoint.startswith('https://'):
+        # Only permit valid Salesforce URLs
+        if not core_utils.is_valid_salesforce_url(_endpoint):
+            raise errors.exceptions.InvalidURLError(url=_endpoint)
+        _url = _endpoint
+    else:
+        _endpoint = f'/{_endpoint}' if not _endpoint.startswith('/') else _endpoint
+        _url = f'{_instance_url}{_endpoint}'
+
+    # Return the constructed URL
+    return _url

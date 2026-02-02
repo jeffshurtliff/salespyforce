@@ -6,9 +6,10 @@
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     30 Jan 2026
+:Modified Date:     02 Feb 2026
 """
 
+import re
 import random
 import string
 import os.path
@@ -19,12 +20,14 @@ import requests
 
 from . import log_utils
 from .. import errors
+from ..decorators import deprecated
 
 # Initialize the logger for this module
 logger = log_utils.initialize_logging(__name__)
 
 # Define constants
 SALESFORCE_ID_SUFFIX_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'
+VALID_SALESFORCE_URL_PATTERN = r'^https://[a-zA-Z0-9._-]+\.salesforce\.com(/|$)'
 
 
 def url_encode(raw_string):
@@ -47,8 +50,12 @@ def url_decode(encoded_string):
     return urllib.parse.unquote_plus(encoded_string)
 
 
+@deprecated(since='1.4.0', replacement='salespyforce.errors.handlers.display_warning', removal='2.0.0')
 def display_warning(warn_msg):
     """This function displays a :py:exc:`UserWarning` message via the :py:mod:`warnings` module.
+
+    .. deprecated:: 1.4.0
+       Use :py:func:`salespyforce.errors.handlers.display_warning` instead.
 
     :param warn_msg: The message to be displayed
     :type warn_msg: str
@@ -137,6 +144,41 @@ def get_18_char_id(record_id: str) -> str:
 
     # Return the 18-character ID value
     return record_id + suffix
+
+
+def matches_regex_pattern(pattern: str, text: str, full_match: bool = False, must_start_with: bool = False) -> bool:
+    """This function compares a text string against a regex pattern and determines whether they match.
+
+    .. version-added:: 1.4.0
+
+    :param pattern: The regex pattern that should match
+    :type pattern: str
+    :param text: The text string to evaluate
+    :type text: str
+    :param full_match: Determines if the entire string should be validated
+    :type full_match: bool
+    :param must_start_with: Determines if the pattern must be at the beginning of the string
+    :returns: True if the regex pattern matches anywhere in the text string
+    :raises: :py:exc:`TypeError`
+    """
+    if full_match:
+        return bool(re.fullmatch(pattern, text))
+    elif must_start_with:
+        return bool(re.match(pattern, text))
+    else:
+        return bool(re.search(pattern, text))
+
+
+def is_valid_salesforce_url(url: str) -> bool:
+    """This function evaluates a URL to determine if it is a valid Salesforce URL.
+
+    .. version-added:: 1.4.0
+
+    :param url: The URL to evaluate
+    :type url: str
+    :returns: Boolean value depending on whether the URL meets the criteria
+    """
+    return True if isinstance(url, str) and matches_regex_pattern(VALID_SALESFORCE_URL_PATTERN, url) else False
 
 
 def get_image_ref_id(image_url):
