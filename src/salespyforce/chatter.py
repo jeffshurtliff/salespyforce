@@ -87,7 +87,8 @@ def post_feed_item(
         message_text: Optional[str] = None,
         message_segments: Optional[list] = None,
         site_id: Optional[str] = None,
-        created_by_id: Optional[str] = None):
+        created_by_id: Optional[str] = None,
+):
     """This function publishes a new Chatter feed item.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`_)
 
@@ -136,7 +137,8 @@ def post_comment(
         message_text: Optional[str] = None,
         message_segments: Optional[list] = None,
         site_id: Optional[str] = None,
-        created_by_id: Optional[str] = None):
+        created_by_id: Optional[str] = None,
+):
     """This function publishes a comment on a Chatter feed item.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`_)
 
@@ -174,7 +176,7 @@ def post_comment(
     return sfdc_object.post(endpoint=endpoint, payload=body)
 
 
-def _construct_simple_message_segment(_message_text):
+def _construct_simple_message_segment(_message_text: str) -> list:
     """This function constructs a simple message segments collection to be used in an API payload.
 
     :param _message_text: The plaintext message to be embedded in a message segment.
@@ -188,4 +190,3 @@ def _construct_simple_message_segment(_message_text):
         }
     ]
     return _message_segments
-
