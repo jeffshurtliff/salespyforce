@@ -3,10 +3,10 @@ Change Log
 ##########
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
-***********
-v1.4.0.dev3
-***********
-**Release Date: TBD**
+**********
+v1.4.0.rc0
+**********
+**Release Date: 2026-02-03**
 
 Added
 =====
@@ -51,7 +51,7 @@ Additions to the :doc:`primary modules <primary-modules>` are listed below.
 
 Supporting Modules
 ------------------
-Changes to the :doc:`supporting modules <supporting-modules>` are listed below.
+Additions to the :doc:`supporting modules <supporting-modules>` are listed below.
 
 * Added the :py:func:`salespyforce.utils.core_utils.get_18_char_id` function to convert 15-character ``Id`` values
 * Added the :py:func:`salespyforce.utils.core_utils.matches_regex_pattern` function to compare strings with regex patterns
