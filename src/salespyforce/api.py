@@ -23,7 +23,15 @@ DEFAULT_API_REQUEST_TIMEOUT = 30
 logger = log_utils.initialize_logging(__name__)
 
 
-def get(sfdc_object, endpoint, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
+def get(
+        sfdc_object,
+        endpoint: str,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = True,
+):
     """This method performs a GET request against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
@@ -33,6 +41,7 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=None, show_ful
        for the API timeout value instead of hardcoding the value. (Timeout is still **30** seconds in this version)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param endpoint: The API endpoint to query
     :type endpoint: str
     :param params: The query parameters (where applicable)
@@ -77,8 +86,17 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=None, show_ful
     return response
 
 
-def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, headers=None, timeout=None,
-                          show_full_error=True, return_json=True):
+def api_call_with_payload(
+        sfdc_object,
+        method: str,
+        endpoint: str,
+        payload: dict,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = True,
+):
     """This method performs a POST call against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
@@ -88,6 +106,7 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
        for the API timeout value instead of hardcoding the value. (Timeout is still **30** seconds in this version)
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param method: The API method (``post``, ``put``, or ``patch``)
     :type method: str
     :param endpoint: The API endpoint to query
@@ -150,12 +169,20 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
     return response
 
 
-def delete(sfdc_object, endpoint: str, params: Optional[dict] = None, headers: Optional[dict] = None, timeout=None, show_full_error=True, return_json=True):
+def delete(
+        sfdc_object,
+        endpoint: str,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = True):
     """This method performs a DELETE request against the Salesforce instance.
 
     .. version-added:: 1.4.0
 
     :param sfdc_object: The instantiated SalesPyForce object
+    :type sfdc_object: class[salespyforce.Salesforce]
     :param endpoint: The API endpoint to query
     :type endpoint: str
     :param params: The query parameters (where applicable)
