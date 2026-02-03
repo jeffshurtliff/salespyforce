@@ -531,7 +531,7 @@ def archive_article(sfdc_object, article_id):
     return sfdc_object.patch(endpoint, payload)
 
 
-def delete_article_draft(sfdc_object, version_id, use_knowledge_management_endpoint: bool = True):
+def delete_article_draft(sfdc_object, version_id: str, use_knowledge_management_endpoint: bool = True):
     """This function deletes an unpublished knowledge article draft.
     
     .. version-added:: 1.4.0

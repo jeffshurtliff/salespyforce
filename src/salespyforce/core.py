@@ -1163,17 +1163,22 @@ class Salesforce(object):
             """
             return knowledge_module.archive_article(self.sfdc_object, article_id=article_id)
 
-        def delete_article_draft(self, version_id):
+        def delete_article_draft(self, version_id: str, use_knowledge_management_endpoint: bool = True):
             """This function deletes an unpublished knowledge article draft.
 
             .. version-added:: 1.4.0
 
             :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
             :type version_id: str
+            :param use_knowledge_management_endpoint: Leverage the ``/knowledgeManagement/articleVersions/masterVersions/``
+                                                      endpoint rather than the ``/sobjects/Knowledge__kav/`` endpoint
+                                                      (``True`` by default)
+            :type use_knowledge_management_endpoint: bool
             :returns: The API response from the DELETE request
             :raises: :py:exc:`RuntimeError`
             """
-            return knowledge_module.delete_article_draft(self.sfdc_object, version_id=version_id)
+            return knowledge_module.delete_article_draft(self.sfdc_object, version_id=version_id,
+                                                         use_knowledge_management_endpoint=use_knowledge_management_endpoint)
 
 
 def define_connection_info():
