@@ -14,6 +14,9 @@ from typing import Optional
 from . import errors
 from .utils import log_utils
 
+# Define constants
+KNOWLEDGE_SOBJECT = ''
+
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
 
@@ -23,7 +26,8 @@ def check_for_existing_article(
         sobject: Optional[str] = None,
         return_id: bool = False,
         return_id_and_number: bool = False,
-        include_archived: bool = False):
+        include_archived: bool = False,
+):
     """This method checks to see if an article already exists with a given title and returns its article number.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
@@ -66,7 +70,8 @@ def get_article_id_from_number(
         sfdc_object,
         article_number,
         sobject: Optional[str] = None,
-        return_uri: bool = False) -> str:
+        return_uri: bool = False,
+) -> str:
     """This method returns the Article ID when an article number is provided.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
@@ -84,6 +89,7 @@ def get_article_id_from_number(
     """
     sobject = 'Knowledge__kav' if sobject is None else sobject
     if sobject is None:
+        # TODO: Change to more specific exception class
         raise ValueError('The sObject must be defined for the Article Type in order to query for the ID.')
     if len(str(article_number)) < 9:
         query = f"SELECT Id FROM {sobject} WHERE ArticleNumber LIKE '%0{article_number}'"
@@ -97,6 +103,7 @@ def get_article_id_from_number(
             return_value = response['records'][0]['Id']
     else:
         return_value = ''
+        # TODO: Replace with log entry (warning)
         print(f'No results were returned when querying for the article number {article_number}')
     return return_value
 
@@ -107,7 +114,8 @@ def get_articles_list(
         sort: Optional[str] = None,
         order: Optional[str] = None,
         page_size: int = 20,
-        page_num: int = 1):
+        page_num: int = 1,
+):
     """This function retrieves a list of knowledge articles.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`_)
 
@@ -164,6 +172,7 @@ def get_articles_list(
     params['pageNumber'] = page_num
 
     # Perform the query
+    # TODO: Determine what is returned by this API call and see if data should be pruned to just the list of articles
     return sfdc_object.get(f'/services/data/{sfdc_object.version}/support/knowledgeArticles',
                            params=params, headers=headers)
 
@@ -171,7 +180,8 @@ def get_articles_list(
 def get_article_details(
         sfdc_object,
         article_id: str,
-        sobject: Optional[str] = None):
+        sobject: Optional[str] = None,
+):
     """This function retrieves details for a single knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
@@ -194,6 +204,7 @@ def get_article_details(
     else:
         data = sfdc_object.get(f'/services/data/{sfdc_object.version}/support/knowledgeArticles/{article_id}',
                                headers=headers)
+    # TODO: Determine what is returned by this API call and see if data should be pruned to just the article details
     return data
 
 
@@ -201,9 +212,15 @@ def get_validation_status(
         sfdc_object,
         article_id: Optional[str] = None,
         article_details: Optional[dict] = None,
-        sobject: Optional[str] = None) -> str:
+        sobject: Optional[str] = None,
+) -> str:
     """This function retrieves the Validation Status for a given Article ID.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+
+    .. version-changed:: 1.4.0
+       The function now returns an empty string rather than a ``None`` value if the ``ValidationStatus`` field
+       is not found in the article details data, and a more specific exception class is used when input
+       data is missing instead of the generic :py:exc:`RuntimeError` exception class.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -214,17 +231,18 @@ def get_validation_status(
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
     :type sobject: str, None
     :returns: The validation status as a text string
-    :raises: :py:exc:`RuntimeError`
+    :raises: :py:exc:`RuntimeError`,
+             :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
     """
     if not any((article_id, article_details)):
-        raise RuntimeError('The article ID or article details must be provided.')
+        raise errors.exceptions.MissingRequiredDataError('The article ID or article details must be provided.')
 
     # Retrieve the article details if not already supplied
     if not article_details:
         article_details = get_article_details(sfdc_object, article_id, sobject)
 
     # Identify the validation status
-    return article_details.get('ValidationStatus')
+    return article_details.get('ValidationStatus', '')
 
 
 def get_article_metadata(sfdc_object, article_id: str):
@@ -253,6 +271,7 @@ def get_article_version(sfdc_object, article_id: str):
     :raises: :py:exc:`RuntimeError`
     """
     endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleversions/masterVersions/{article_id}'
+    # TODO: Determine what is returned by this API call and see if data should be pruned to just the Version ID
     return sfdc_object.get(endpoint)
 
 
@@ -260,7 +279,8 @@ def get_article_url(
         sfdc_object,
         article_id: Optional[str] = None,
         article_number=None,
-        sobject: Optional[str] = None) -> str:
+        sobject: Optional[str] = None,
+) -> str:
     """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
     .. version-changed:: 1.2.0
@@ -294,7 +314,8 @@ def create_article(
         sfdc_object,
         article_data: dict,
         sobject: Optional[str] = None,
-        full_response: bool = False):
+        full_response: bool = False,
+):
     """This function creates a new knowledge article draft.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
 
@@ -336,7 +357,8 @@ def update_article(
         record_id: str,
         article_data: dict,
         sobject: Optional[str] = None,
-        include_status_code: bool = False):
+        include_status_code: bool = False,
+):
     """This function updates an existing knowledge article draft.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
 
@@ -416,7 +438,8 @@ def create_draft_from_master_version(
         knowledge_article_id: Optional[str] = None,
         article_data: Optional[dict] = None,
         sobject: Optional[str] = None,
-        full_response: bool = False):
+        full_response: bool = False,
+):
     """This function creates an online version of a master article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`_)
 
@@ -461,7 +484,8 @@ def publish_article(
         sfdc_object,
         article_id: str,
         major_version: bool = True,
-        full_response: bool = False):
+        full_response: bool = False,
+):
     """This function publishes a draft knowledge article as a major or minor version.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`_)
 

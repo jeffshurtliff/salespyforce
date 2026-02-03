@@ -974,6 +974,11 @@ class Salesforce(object):
             """This method retrieves the Validation Status for a given Article ID.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
+            .. version-changed:: 1.4.0
+               This method now returns an empty string rather than a ``None`` value if the ``ValidationStatus`` field
+               is not found in the article details data, and a more specific exception class is used when input
+               data is missing instead of the generic :py:exc:`RuntimeError` exception class.
+
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str, None
             :param article_details: The dictionary of article details for the given article
@@ -981,7 +986,8 @@ class Salesforce(object):
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
             :returns: The validation status as a text string
-            :raises: :py:exc:`RuntimeError`
+            :raises: :py:exc:`RuntimeError`,
+                     :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
             return knowledge_module.get_validation_status(self.sfdc_object, article_id=article_id,
                                                           article_details=article_details, sobject=sobject)

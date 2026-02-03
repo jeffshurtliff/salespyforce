@@ -80,14 +80,18 @@ Changes to the :doc:`core-object-methods` are listed below.
 * Updated the init method for the :py:class:`salespyforce.core.Salesforce` class to define the following
   class-scoped variables:
 
-  +------------+--------------------------------------------------+
-  | Variable   | Data Type | Description                          |
-  +============+===========+======================================+
-  | ``org_id`` | str       | Salesforce Org ID                    |
-  +------------+-----------+--------------------------------------+
+  +-----------------------+--------------------------------------------------+
+  | Variable              | Data Type | Description                          |
+  +=======================+===========+======================================+
+  | ``org_id``            | str       | Salesforce Org ID                    |
+  +-----------------------+-----------+--------------------------------------+
+  | ``current_user_info`` | dict      | Details about current/running user   |
+  +-----------------------+-----------+--------------------------------------+
 
 * Updated the docstring for the :py:meth:`salespyforce.core.Salesforce.get_api_versions` method
   to explicitly state what the method returns and its data type
+* Updated the :py:meth:`salespyforce.core.Salesforce.Knowledge.get_validation_status` method to use
+  a more specific exception class and to return an empty string on lookup failures versus a ``None`` value
 
 Primary Modules
 ---------------
@@ -97,8 +101,10 @@ Changes to the :doc:`primary modules <primary-modules>` are listed below.
   evaluated to ensure they are valid Salesforce URLs:
     * :py:func:`salespyforce.api.get`
     * :py:func:`salespyforce.api.api_call_with_payload`
+* Updated the :py:mod:`salespyforce.knowledge` module to add some type hints and make other minor improvements
 * Updated the :py:func:`salespyforce.knowledge.get_articles_list` function to log errors using the
   logger rather than to stderr in the console
+
 
 Supporting Modules
 ------------------

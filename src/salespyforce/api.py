@@ -4,7 +4,7 @@
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     30 Jan 2026
+:Modified Date:     03 Feb 2026
 """
 
 import requests
@@ -191,7 +191,7 @@ def _construct_full_query_url(_endpoint: str, _instance_url: str) -> str:
     :type _instance_url: str
     :returns: The fully qualified URL
     :raises: :py:exc:`TypeError`,
-             :py:exc:`errors.exceptions.InvalidURLError`
+             :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
     """
     # Raise an exception if the endpoint is not a string
     if not isinstance(_endpoint, str):
