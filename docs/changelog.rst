@@ -97,6 +97,8 @@ Changes to the :doc:`primary modules <primary-modules>` are listed below.
   evaluated to ensure they are valid Salesforce URLs:
     * :py:func:`salespyforce.api.get`
     * :py:func:`salespyforce.api.api_call_with_payload`
+* Updated the :py:func:`salespyforce.knowledge.get_articles_list` function to log errors using the
+  logger rather than to stderr in the console
 
 Supporting Modules
 ------------------

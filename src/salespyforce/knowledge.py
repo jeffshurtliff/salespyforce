@@ -14,8 +14,8 @@ from .utils import log_utils
 logger = log_utils.initialize_logging(__name__)
 
 
-def check_for_existing_article(sfdc_object, title, sobject=None, return_id=False, return_id_and_number=False,
-                               include_archived=False):
+def check_for_existing_article(sfdc_object, title: str, sobject=None, return_id: bool = False,
+                               return_id_and_number: bool = False, include_archived: bool = False):
     """This method checks to see if an article already exists with a given title and returns its article number.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
@@ -54,7 +54,7 @@ def check_for_existing_article(sfdc_object, title, sobject=None, return_id=False
     return return_value
 
 
-def get_article_id_from_number(sfdc_object, article_number, sobject=None, return_uri=False):
+def get_article_id_from_number(sfdc_object, article_number, sobject=None, return_uri: bool = False) -> str:
     """This method returns the Article ID when an article number is provided.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
@@ -89,9 +89,12 @@ def get_article_id_from_number(sfdc_object, article_number, sobject=None, return
     return return_value
 
 
-def get_articles_list(sfdc_object, query=None, sort=None, order=None, page_size=20, page_num=1):
+def get_articles_list(sfdc_object, query=None, sort=None, order=None, page_size: int = 20, page_num: int = 1):
     """This function retrieves a list of knowledge articles.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`_)
+
+    .. version-changed:: 1.4.0
+       The errors now log as errors via the logger rather than to the stderr console.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -118,17 +121,17 @@ def get_articles_list(sfdc_object, query=None, sort=None, order=None, page_size=
 
     # Validate the order field
     if order and order.upper() not in ['ASC', 'DESC']:
-        errors.handlers.eprint(f'The order value {order} is not valid and will be ignored.')
+        logger.error(f'The order value {order} is not valid and will be ignored.')
         order = None
 
     # Validate the page size field
     if page_size > 100:
-        errors.handlers.eprint(f'The pageSize value exceeds the maximum and will default to 100.')
+        logger.error('The pageSize value exceeds the maximum and will default to 100.')
         page_size = 100
 
     # Validate the pageNumber field
     if page_num < 1:
-        errors.handlers.eprint(f'The pageNumber value is not valid and will default to 1.')
+        logger.error('The pageNumber value is not valid and will default to 1.')
         page_num = 1
 
     # Add values to the parameters dictionary if they have been defined
@@ -147,7 +150,7 @@ def get_articles_list(sfdc_object, query=None, sort=None, order=None, page_size=
                            params=params, headers=headers)
 
 
-def get_article_details(sfdc_object, article_id, sobject=None):
+def get_article_details(sfdc_object, article_id: str, sobject=None):
     """This function retrieves details for a single knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
@@ -158,6 +161,7 @@ def get_article_details(sfdc_object, article_id, sobject=None):
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
     :type sobject: str, None
     :returns: The details for the knowledge article
+    :raises: :py:exc:`RuntimeError`
     """
     # Define the headers
     headers = sfdc_object._get_headers('articles')
@@ -172,7 +176,7 @@ def get_article_details(sfdc_object, article_id, sobject=None):
     return data
 
 
-def get_validation_status(sfdc_object, article_id=None, article_details=None, sobject=None):
+def get_validation_status(sfdc_object, article_id=None, article_details=None, sobject=None) -> str:
     """This function retrieves the Validation Status for a given Article ID.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
@@ -198,7 +202,7 @@ def get_validation_status(sfdc_object, article_id=None, article_details=None, so
     return article_details.get('ValidationStatus')
 
 
-def get_article_metadata(sfdc_object, article_id):
+def get_article_metadata(sfdc_object, article_id: str):
     """This function retrieves metadata for a specific knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`_)
 
@@ -212,7 +216,7 @@ def get_article_metadata(sfdc_object, article_id):
     return sfdc_object.get(f'/services/data/{sfdc_object.version}/knowledgeManagement/articles/{article_id}')
 
 
-def get_article_version(sfdc_object, article_id):
+def get_article_version(sfdc_object, article_id: str):
     """This function retrieves the version ID for a given master article ID.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`_)
 
@@ -227,7 +231,7 @@ def get_article_version(sfdc_object, article_id):
     return sfdc_object.get(endpoint)
 
 
-def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=None):
+def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=None) -> str:
     """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
     .. version-changed:: 1.2.0
@@ -257,7 +261,7 @@ def get_article_url(sfdc_object, article_id=None, article_number=None, sobject=N
     return article_url
 
 
-def create_article(sfdc_object, article_data, sobject=None, full_response=False):
+def create_article(sfdc_object, article_data: dict, sobject=None, full_response: bool = False):
     """This function creates a new knowledge article draft.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
 
@@ -294,7 +298,7 @@ def create_article(sfdc_object, article_data, sobject=None, full_response=False)
     return response
 
 
-def update_article(sfdc_object, record_id, article_data, sobject=None, include_status_code=False):
+def update_article(sfdc_object, record_id: str, article_data: dict, sobject=None, include_status_code: bool = False):
     """This function updates an existing knowledge article draft.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
 
@@ -309,7 +313,9 @@ def update_article(sfdc_object, record_id, article_data, sobject=None, include_s
     :param include_status_code: Determines if the API response status code should be returned (``False`` by default)
     :type include_status_code: bool
     :returns: A Boolean indicating if the update operation was successful, and optionally the API response status code
-    :raises: :py:exc:`ValueError`, :py:exc:`TypeError`, :py:exc:`RuntimeError`
+    :raises: :py:exc:`ValueError`,
+             :py:exc:`TypeError`,
+             :py:exc:`RuntimeError`
     """
     # Get the appropriate sObject to call
     sobject = 'Knowledge__kav' if sobject is None else sobject
@@ -337,7 +343,7 @@ def update_article(sfdc_object, record_id, article_data, sobject=None, include_s
     return successful
 
 
-def create_draft_from_online_article(sfdc_object, article_id, unpublish=False):
+def create_draft_from_online_article(sfdc_object, article_id: str, unpublish: bool = False):
     """This function creates a draft knowledge article from an online article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`_)
 
@@ -367,7 +373,7 @@ def create_draft_from_online_article(sfdc_object, article_id, unpublish=False):
 
 
 def create_draft_from_master_version(sfdc_object, article_id=None, knowledge_article_id=None, article_data=None,
-                                     sobject=None, full_response=False):
+                                     sobject=None, full_response: bool = False):
     """This function creates an online version of a master article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`_)
 
@@ -408,7 +414,7 @@ def create_draft_from_master_version(sfdc_object, article_id=None, knowledge_art
     return response
 
 
-def publish_article(sfdc_object, article_id, major_version=True, full_response=False):
+def publish_article(sfdc_object, article_id: str, major_version: bool = True, full_response: bool = False):
     """This function publishes a draft knowledge article as a major or minor version.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`_)
 
@@ -440,7 +446,7 @@ def publish_article(sfdc_object, article_id, major_version=True, full_response=F
     return result
 
 
-def publish_multiple_articles(sfdc_object, article_id_list, major_version=True):
+def publish_multiple_articles(sfdc_object, article_id_list: list, major_version:bool = True):
     """This function publishes multiple knowledge article drafts at one time.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`_)
 
@@ -479,7 +485,7 @@ def publish_multiple_articles(sfdc_object, article_id_list, major_version=True):
     return sfdc_object.post(endpoint, payload)
 
 
-def assign_data_category(sfdc_object, article_id, category_group_name, category_name):
+def assign_data_category(sfdc_object, article_id: str, category_group_name: str, category_name: str):
     """This function assigns a single data category for a knowledge article.
     (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
 
@@ -508,7 +514,7 @@ def assign_data_category(sfdc_object, article_id, category_group_name, category_
     return sfdc_object.post(endpoint, payload)
 
 
-def archive_article(sfdc_object, article_id):
+def archive_article(sfdc_object, article_id: str):
     """This function archives a published knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
 
