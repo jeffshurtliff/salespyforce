@@ -160,7 +160,7 @@ class Salesforce(object):
                                      (``False`` by default)
         :type _retrieve_if_missing: bool
         :returns: The field value when found (or retrieved), or a None value if the field value could not be obtained
-        :raises: :py:exc:`errors.exceptions.APIRequestError`
+        :raises: :py:exc:`salespyforce.errors.exceptions.APIRequestError`
         """
         _field_value = None
         _not_present_msg = f"The '{_field}' field is not present in the current user info data"
@@ -209,7 +209,7 @@ class Salesforce(object):
         :type on_init: bool
         :returns: The user info data within a dictionary
         :raises: :py:exc:`RuntimeError`,
-                 :py:exc:`errors.exceptions.APIRequestError`
+                 :py:exc:`salespyforce.errors.exceptions.APIRequestError`
         """
         user_info = {'user_id': '', 'nickname': '', 'name': '', 'email': '', 'user_type': '',
                      'language': '', 'locale': '', 'utcOffset': '', 'is_salesforce_integration_user': None}
@@ -528,7 +528,7 @@ class Salesforce(object):
         :type user_id: str, None
         :returns: Dictionary with Boolean values for ``HasReadAccess``, ``HasEditAccess``, and ``HasDeleteAccess``
         :raises: :py:exc:`RuntimeError`,
-                 :py:exc:`errors.exceptions.APIRequestError`
+                 :py:exc:`salespyforce.errors.exceptions.APIRequestError`
         """
         record_access = {'HasReadAccess': None, 'HasEditAccess': None, 'HasDeleteAccess': None}
 
@@ -577,7 +577,7 @@ class Salesforce(object):
         :param _raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
         :type _raise_exc_on_failure: bool
         :returns: Boolean value indicating the access level for the given field
-        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
         # Raise an exception if a valid access control field is not provided
         if _field not in VALID_ACCESS_CONTROL_FIELDS:
@@ -611,7 +611,7 @@ class Salesforce(object):
         :param raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
         :type raise_exc_on_failure: bool
         :returns: Boolean value indicating the access level for the given field
-        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
         # Define the initial value for the result
         can_access = None
@@ -669,7 +669,7 @@ class Salesforce(object):
         :param raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
         :type raise_exc_on_failure: bool
         :returns: Boolean value indicating the access level for the given field
-        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
         return self.can_access_record(access_type='read', record_id=record_id, user_id=user_id,
                                       record_access_data=record_access_data,
@@ -689,7 +689,7 @@ class Salesforce(object):
         :param raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
         :type raise_exc_on_failure: bool
         :returns: Boolean value indicating the access level for the given field
-        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
         return self.can_access_record(access_type='edit', record_id=record_id, user_id=user_id,
                                       record_access_data=record_access_data,
@@ -709,7 +709,7 @@ class Salesforce(object):
         :param raise_exc_on_failure: Raises an exception rather than returning a ``None`` value (``True`` by default)
         :type raise_exc_on_failure: bool
         :returns: Boolean value indicating the access level for the given field
-        :raises: :py:exc:`errors.exceptions.InvalidFieldError`
+        :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
         return self.can_access_record(access_type='edit', record_id=record_id, user_id=user_id,
                                       record_access_data=record_access_data,

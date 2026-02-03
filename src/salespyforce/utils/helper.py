@@ -6,7 +6,7 @@
 :Example:           ``helper_settings = helper.get_settings('/tmp/helper.yml', 'yaml')``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     13 Mar 2023
+:Modified Date:     03 Feb 2026
 """
 
 import json
@@ -29,7 +29,8 @@ def import_helper_file(file_path, file_type):
     :param file_type: Defines the file type as either ``yaml`` or ``json``
     :type file_type: str
     :returns: The parsed configuration data
-    :raises: :py:exc:`FileNotFoundError`, :py:exc:`salespyforce.errors.exceptions.InvalidHelperFileTypeError`
+    :raises: :py:exc:`FileNotFoundError`,
+             :py:exc:`salespyforce.errors.exceptions.InvalidHelperFileTypeError`
     """
     with open(file_path, 'r') as cfg_file:
         if file_type == 'yaml':
