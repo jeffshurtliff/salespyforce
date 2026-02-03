@@ -9,7 +9,10 @@
 :Modified Date:     03 Feb 2026
 """
 
+from __future__ import annotations
+
 import re
+from typing import Optional
 
 import requests
 
@@ -932,8 +935,14 @@ class Salesforce(object):
             """
             self.sfdc_object = sfdc_object
 
-        def check_for_existing_article(self, title, sobject=None, return_id=False, return_id_and_number=False,
-                                       include_archived=False):
+        def check_for_existing_article(
+                self,
+                title: str,
+                sobject: Optional[str] = None,
+                return_id: bool = False,
+                return_id_and_number: bool = False,
+                include_archived: bool = False,
+        ):
             """This method checks to see if an article already exists with a given title and returns its article number.
             (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_.
             `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
@@ -948,17 +957,26 @@ class Salesforce(object):
             :type return_id_and_number: bool
             :param include_archived: Determines if archived articles should be included (``False`` by default)
             :type include_archived: bool
-            :returns: The Article Number, Article ID, or both, if found, or a blank string if not found
+            :returns: The Article Number, Article ID, or both (if found), or a blank string if not found
             """
             return knowledge_module.check_for_existing_article(self.sfdc_object, title=title,
                                                                sobject=sobject, return_id=return_id,
                                                                return_id_and_number=return_id_and_number,
                                                                include_archived=include_archived)
 
-        def get_article_id_from_number(self, article_number, sobject=None, return_uri=False):
+        def get_article_id_from_number(
+                self,
+                article_number,
+                sobject: Optional[str] = None,
+                return_uri: bool = False,
+        ):
             """This method returns the Article ID when an article number is provided.
             (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
             `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
+
+            .. warning::
+               The ability to retrieve the article URI/URL rather than the ID will be moved to a separate function in
+               a future release.
 
             :param article_number: The Article Number to query
             :type article_number: str, int
@@ -967,19 +985,28 @@ class Salesforce(object):
             :param return_uri: Determines if the URI of the article should be returned rather than the ID (``False`` by default)
             :type return_uri: bool
             :returns: The Article ID or Article URI, or a blank string if no article is found
-            :raises: :py:exc:`ValueError`,
+            :raises: :py:exc:`TypeError`,
                      :py:exc:`RuntimeError`
             """
+            # TODO: Move return_uri functionality (here and in underlying function) to a separate method/function
             return knowledge_module.get_article_id_from_number(self.sfdc_object, article_number=article_number,
                                                                sobject=sobject, return_uri=return_uri)
 
-        def get_articles_list(self, query=None, sort=None, order=None, page_size=20, page_num=1):
+        def get_articles_list(
+                self,
+                query: Optional[str] = None,
+                sort: Optional[str] = None,
+                order: Optional[str] = None,
+                page_size: int = 20,
+                page_num: int = 1,
+        ) -> list:
             """This method retrieves a list of knowledge articles.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`_)
 
             :param query: A SOQL query with which to filter the results (optional)
             :type query: str, None
-            :param sort: One of the following optional values: ``LastPublishedDate``, ``CreatedDate``, ``Title``, or ``ViewScore``
+            :param sort: Optionally sort the results with one of the following values: ``LastPublishedDate``,
+                         ``CreatedDate``, ``Title``, or ``ViewScore``
             :type sort: str, None
             :param order: Optionally define the ORDER BY as ``ASC`` or ``DESC``
             :type order: str, None
@@ -990,23 +1017,44 @@ class Salesforce(object):
             :returns: The list of retrieved knowledge articles
             :raises: :py:exc:`RuntimeError`
             """
+            # TODO: Update to use constants for page_size and page_num
             return knowledge_module.get_articles_list(self.sfdc_object, query=query, sort=sort, order=order,
                                                       page_size=page_size, page_num=page_num)
 
-        def get_article_details(self, article_id, sobject=None):
+        def get_article_details(
+                self,
+                article_id: str,
+                sobject: Optional[str] = None,
+                use_knowledge_articles_endpoint: Optional[bool] = None,
+        ):
             """This method retrieves details for a single knowledge article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+
+                .. version-changed:: 1.4.0
+                   A logic issue was resolved and the new optional ``use_knowledge_articles_endpoint`` parameter can
+                   now be set to force the ``knowledgeArticles`` endpoint to be used for the GET request rather than
+                   the ``sobjects`` endpoint.
 
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
+            :param use_knowledge_articles_endpoint: Optionally use the ``knowledgeArticles`` endpoint rather than
+                                                    ``sobjects`` to retrieve the article details (``False`` by default)
+            :type use_knowledge_articles_endpoint: bool, None
             :returns: The details for the knowledge article
-            :raises: :py:exc:`RuntimeError`
+            :raises: :py:exc:`RuntimeError`,
+                     :py:exc:`salespyforce.errors.exceptions.DataMismatchError`
             """
-            return knowledge_module.get_article_details(self.sfdc_object, article_id=article_id, sobject=sobject)
+            return knowledge_module.get_article_details(self.sfdc_object, article_id=article_id, sobject=sobject,
+                                                        use_knowledge_articles_endpoint=use_knowledge_articles_endpoint)
 
-        def get_validation_status(self, article_id=None, article_details=None, sobject=None):
+        def get_validation_status(
+                self,
+                article_id: Optional[str] = None,
+                article_details: Optional[dict] = None,
+                sobject: Optional[str] = None,
+        ) -> str:
             """This method retrieves the Validation Status for a given Article ID.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
@@ -1028,7 +1076,7 @@ class Salesforce(object):
             return knowledge_module.get_validation_status(self.sfdc_object, article_id=article_id,
                                                           article_details=article_details, sobject=sobject)
 
-        def get_article_metadata(self, article_id):
+        def get_article_metadata(self, article_id: str) -> dict:
             """This method retrieves metadata for a specific knowledge article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`_)
 
@@ -1039,7 +1087,7 @@ class Salesforce(object):
             """
             return knowledge_module.get_article_metadata(self.sfdc_object, article_id=article_id)
 
-        def get_article_version(self, article_id):
+        def get_article_version(self, article_id: str):
             """This method retrieves the version ID for a given master article ID.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`_)
 
@@ -1048,9 +1096,15 @@ class Salesforce(object):
             :returns: The version ID for the given master article ID
             :raises: :py:exc:`RuntimeError`
             """
+            # TODO: Determine how the data is returned and if it needs to be pruned to just the article version
             return knowledge_module.get_article_version(self.sfdc_object, article_id=article_id)
 
-        def get_article_url(self, article_id=None, article_number=None, sobject=None):
+        def get_article_url(
+                self,
+                article_id: Optional[str] = None,
+                article_number=None,                    # Needs type hint
+                sobject: Optional[str] = None,
+        ):
             """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
             :param article_id: The Article ID for which to retrieve details
@@ -1066,7 +1120,12 @@ class Salesforce(object):
             return knowledge_module.get_article_url(self.sfdc_object, article_id=article_id,
                                                     article_number=article_number, sobject=sobject)
 
-        def create_article(self, article_data, sobject=None, full_response=False):
+        def create_article(
+                self,
+                article_data: dict,
+                sobject: Optional[str] = None,
+                full_response: bool = False,
+        ):
             """This method creates a new knowledge article draft.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
 
@@ -1084,7 +1143,13 @@ class Salesforce(object):
             return knowledge_module.create_article(self.sfdc_object, article_data=article_data, sobject=sobject,
                                                    full_response=full_response)
 
-        def update_article(self, record_id, article_data, sobject=None, include_status_code=False):
+        def update_article(
+                self,
+                record_id: str,
+                article_data: dict,
+                sobject: Optional[str] = None,
+                include_status_code: bool = False,
+        ):
             """This method updates an existing knowledge article draft.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
 
@@ -1104,7 +1169,7 @@ class Salesforce(object):
             return knowledge_module.update_article(self.sfdc_object, record_id=record_id, article_data=article_data,
                                                    sobject=sobject, include_status_code=include_status_code)
 
-        def create_draft_from_online_article(self, article_id, unpublish=False):
+        def create_draft_from_online_article(self, article_id: str, unpublish: bool = False):
             """This method creates a draft knowledge article from an online article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`_)
 
@@ -1118,8 +1183,14 @@ class Salesforce(object):
             return knowledge_module.create_draft_from_online_article(self.sfdc_object, article_id=article_id,
                                                                      unpublish=unpublish)
 
-        def create_draft_from_master_version(self, article_id=None, knowledge_article_id=None, article_data=None,
-                                             sobject=None, full_response=False):
+        def create_draft_from_master_version(
+                self,
+                article_id: Optional[str] = None,
+                knowledge_article_id: Optional[str] = None,
+                article_data: Optional[dict] = None,
+                sobject: Optional[str] = None,
+                full_response: bool = False,
+        ):
             """This method creates an online version of a master article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`_)
 

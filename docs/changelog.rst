@@ -99,6 +99,8 @@ Changes to the :doc:`core-object-methods` are listed below.
     * :py:meth:`salespyforce.core.Salesforce.put`
 * Updated the :py:meth:`salespyforce.core.Salesforce.Knowledge.get_validation_status` method to use
   a more specific exception class and to return an empty string on lookup failures versus a ``None`` value
+* Updated the :py:meth:`salespyforce.core.Salesforce.Knowledge.get_article_details` method to fix a logic issue
+  and to introduce the optional ``use_knowledge_articles_endpoint`` parameter with respective functionality
 
 Primary Modules
 ---------------
@@ -111,9 +113,15 @@ Changes to the :doc:`primary modules <primary-modules>` are listed below.
 * Updated the functions below to use a global constant for the ``timeout`` parameter value default:
     * :py:func:`salespyforce.api.get`
     * :py:func:`salespyforce.api.api_call_with_payload`
-* Updated the :py:mod:`salespyforce.knowledge` module to add some type hints and make other minor improvements
+* Updated the :py:func:`salespyforce.knowledge.get_article_details` function to fix a logic issue and to
+  introduce the optional ``use_knowledge_articles_endpoint`` parameter with respective functionality
 * Updated the :py:func:`salespyforce.knowledge.get_articles_list` function to log errors using the
   logger rather than to stderr in the console
+* Updated the :py:func:`salespyforce.knowledge.get_article_id_from_number` function to resolve a logic issue
+  and to make the function more robust and stable
+    * A warning has also been added when the ``return_uri`` parameter is leveraged to inform users that its
+      functionality will be moved to a separate function in a future release
+* Updated the primary modules to add some type hints and make other minor improvements
 
 
 Supporting Modules

@@ -15,7 +15,7 @@ from . import errors
 from .utils import log_utils
 
 # Define constants
-KNOWLEDGE_SOBJECT = ''
+KNOWLEDGE_SOBJECT = 'Knowledge__kav'
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -76,6 +76,13 @@ def get_article_id_from_number(
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
+    .. warning::
+       The ability to retrieve the article URI/URL rather than the ID will be moved to a separate function in
+       a future release.
+
+    .. version-changed:: 1.4.0
+       A logic issue has been fixed and improved to make this function more robust and stable.
+
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_number: The Article Number to query
@@ -85,26 +92,41 @@ def get_article_id_from_number(
     :param return_uri: Determines if the URI of the article should be returned rather than the ID (``False`` by default)
     :type return_uri: bool
     :returns: The Article ID or Article URI, or a blank string if no article is found
-    :raises: :py:exc:`ValueError`
+    :raises: :py:exc:`TypeError`,
+             :py:exc:`RuntimeError`
     """
-    sobject = 'Knowledge__kav' if sobject is None else sobject
-    if sobject is None:
-        # TODO: Change to more specific exception class
-        raise ValueError('The sObject must be defined for the Article Type in order to query for the ID.')
-    if len(str(article_number)) < 9:
+    # Ensure the sobject is defined appropriately
+    if sobject and not isinstance(sobject, str):
+        exc_msg = f'The sobject must be a string (provided: {type(sobject)})'
+        logger.error(exc_msg)
+        raise TypeError(exc_msg)
+    if not sobject:
+        sobject = KNOWLEDGE_SOBJECT
+        logger.debug(f'The {KNOWLEDGE_SOBJECT} sObject will be used as one was not provided')
+
+    # Construct the SOQL query to perform
+    article_number = str(article_number) if not isinstance(article_number, str) else article_number
+    if len(article_number) < 9:
         query = f"SELECT Id FROM {sobject} WHERE ArticleNumber LIKE '%0{article_number}'"
     else:
         query = f"SELECT Id FROM {sobject} WHERE ArticleNumber = '{article_number}'"
+
+    # Perform the SOQL query and return the article number if found
     response = sfdc_object.soql_query(query)
     if response.get('totalSize') > 0:
         if return_uri:
+            # TODO: Split out the return_uri functionality into a separate function and method
+            warn_msg = ("The ability to retrieve the article URI/URL rather than the ID (return_uri parameter) will "
+                        "be moved to a separate function/method in a future release")
+            logger.warning(warn_msg)
+            errors.handlers.display_warning(warn_msg)
             return_value = response['records'][0]['attributes']['url']
         else:
             return_value = response['records'][0]['Id']
     else:
         return_value = ''
-        # TODO: Replace with log entry (warning)
-        print(f'No results were returned when querying for the article number {article_number}')
+        warn_msg = f'No results were returned when querying for the article number {article_number}'
+        logger.warning(warn_msg)
     return return_value
 
 
@@ -140,24 +162,25 @@ def get_articles_list(
     headers = sfdc_object._get_headers('articles')
 
     # Validate the sort field
+    # TODO: Convert list below into constant
     valid_sort_options = ['LastPublishedDate', 'CreatedDate', 'Title', 'ViewScore']
     if sort and sort not in valid_sort_options:
-        errors.handlers.eprint(f'The sort value {sort} is not valid and will be ignored.')
+        logger.error(f"The sort value '{sort}' is not valid and will be ignored")
         sort = None
 
     # Validate the order field
     if order and order.upper() not in ['ASC', 'DESC']:
-        logger.error(f'The order value {order} is not valid and will be ignored.')
+        logger.error(f"The order value '{order}' is not valid and will be ignored")
         order = None
 
     # Validate the page size field
     if page_size > 100:
-        logger.error('The pageSize value exceeds the maximum and will default to 100.')
+        logger.error('The pageSize value exceeds the maximum and will default to 100')
         page_size = 100
 
     # Validate the pageNumber field
     if page_num < 1:
-        logger.error('The pageNumber value is not valid and will default to 1.')
+        logger.error('The pageNumber value is not valid and will default to 1')
         page_num = 1
 
     # Add values to the parameters dictionary if they have been defined
@@ -181,9 +204,14 @@ def get_article_details(
         sfdc_object,
         article_id: str,
         sobject: Optional[str] = None,
+        use_knowledge_articles_endpoint: Optional[bool] = None,
 ):
     """This function retrieves details for a single knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+
+    .. version-changed:: 1.4.0
+       A logic issue was resolved and the new optional ``use_knowledge_articles_endpoint`` parameter can now be set to
+       force the ``knowledgeArticles`` endpoint to be used for the GET request rather than the ``sobjects`` endpoint.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -191,20 +219,37 @@ def get_article_details(
     :type article_id: str
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
     :type sobject: str, None
+    :param use_knowledge_articles_endpoint: Optionally use the ``knowledgeArticles`` endpoint rather than ``sobjects``
+                                            to retrieve the article details (``False`` by default)
+    :type use_knowledge_articles_endpoint: bool, None
     :returns: The details for the knowledge article
-    :raises: :py:exc:`RuntimeError`
+    :raises: :py:exc:`RuntimeError`,
+             :py:exc:`salespyforce.errors.exceptions.DataMismatchError`
     """
-    # Define the headers
-    headers = sfdc_object._get_headers('articles')
+    # Define the headers based on the endpoint that will be utilized
+    headers = sfdc_object._get_headers('articles') if use_knowledge_articles_endpoint else None
+
+    # Ensure there are no conflicting parameters
+    if sobject and use_knowledge_articles_endpoint:
+        if sobject == KNOWLEDGE_SOBJECT:
+            info_msg = (f'It is not necessary to define the sObject as {KNOWLEDGE_SOBJECT} when leveraging '
+                        f'the knowledgeArticles endpoint')
+            logger.info(info_msg)
+        else:
+            error_msg = 'You cannot use the knowledgeArticles endpoint with an explicitly defined sObject'
+            logger.error(error_msg)
+            raise errors.exceptions.DataMismatchError(error_msg)
+
+    # Define the endpoint to use in the GET request
+    if use_knowledge_articles_endpoint:
+        endpoint = f'/services/data/{sfdc_object.version}/support/knowledgeArticles/{article_id}'
+    else:
+        sobject = KNOWLEDGE_SOBJECT if not sobject else sobject
+        endpoint = f'/services/data/{sfdc_object.version}/sobjects/{sobject}/{article_id}'
 
     # Perform the query and return the data
-    sobject = 'Knowledge__kav' if sobject is None else sobject
-    if sobject is not None:
-        data = sfdc_object.get(f'/services/data/{sfdc_object.version}/sobjects/{sobject}/{article_id}')
-    else:
-        data = sfdc_object.get(f'/services/data/{sfdc_object.version}/support/knowledgeArticles/{article_id}',
-                               headers=headers)
-    # TODO: Determine what is returned by this API call and see if data should be pruned to just the article details
+    data = sfdc_object.get(endpoint, headers=headers)
+    # TODO: Determine what is returned by this API call and see if data should be pruned to just the article details (for both endpoints)
     return data
 
 
@@ -299,6 +344,7 @@ def get_article_url(
     """
     sobject = 'Knowledge__kav' if sobject is None else sobject
     if not any((article_id, article_number)):
+
         raise ValueError('An article ID or an article number must be provided to retrieve the article URL.')
     if article_number and not article_id:
         article_id = get_article_id_from_number(sfdc_object, article_number, sobject)
@@ -459,10 +505,11 @@ def create_draft_from_master_version(
     :raises: :py:exc:`RuntimeError`
     """
     if not any((article_id, knowledge_article_id, article_data)):
-        raise RuntimeError('Need to provide article ID, knowledge article ID, or article data.')
+        # TODO: Change to more specific exception class (errors.exceptions.MissingRequiredDataError)
+        raise RuntimeError('Need to provide article ID, knowledge article ID, or article data')
 
     # Get the appropriate sObject to call
-    sobject = 'Knowledge__kav' if sobject is None else sobject
+    sobject = KNOWLEDGE_SOBJECT if sobject is None else sobject
 
     # Get the knowledge article ID as needed
     if not knowledge_article_id:
@@ -537,6 +584,7 @@ def publish_multiple_articles(sfdc_object, article_id_list: list, major_version:
     if not isinstance(article_id_list, list) or not isinstance(article_id_list[0], str):
         raise TypeError('A list of Article ID strings must be provided in order to publish multiple articles.')
     elif len(article_id_list) == 0:
+        # TODO: Change to more specific exception class (errors.exceptions.MissingRequiredDataError)
         raise ValueError('No article ID strings were found in the article ID list variable.')
 
     # Define the action to perform
