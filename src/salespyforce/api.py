@@ -37,6 +37,9 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_
     :type show_full_error: bool
     :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
     :returns: The API response in JSON format or as a ``requests`` object
+    :raises: :py:exc:`TypeError`,
+             :py:exc:`RuntimeError`,
+             :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
     """
     # Define the parameters as an empty dictionary if none are provided
     params = {} if params is None else params
@@ -57,6 +60,7 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_
                                f'{response.text}')
         else:
             raise RuntimeError(f'The GET request failed with a {response.status_code} status code.')
+    # TODO: Leverage private function for this section across all API call functions (see TODO in api_call_with_payload)
     if return_json:
         response = response.json()
     return response
@@ -88,6 +92,10 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
     :type show_full_error: bool
     :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
     :returns: The API response in JSON format or as a ``requests`` object
+    :raises: :py:exc:`TypeError`,
+             :py:exc:`RuntimeError`,
+             :py:exc:`ValueError`,
+             :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
     """
     # Define the parameters as an empty dictionary if none are provided
     params = {} if params is None else params
@@ -117,10 +125,12 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
                                f'{response.text}')
         else:
             raise RuntimeError(f'The POST request failed with a {response.status_code} status code.')
+    # TODO: Break this out into a separate private function so it can be reused and standardized
     if return_json:
         try:
             response = response.json()
         except Exception as exc:
+            # TODO: log the exception rather than using a print statement
             print(f'Failed to convert the API response to JSON format due to the following exception: {exc}')
     return response
 
@@ -143,6 +153,9 @@ def delete(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_fu
     :type show_full_error: bool
     :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
     :returns: The API response in JSON format or as a ``requests`` object
+    :raises: :py:exc:`TypeError`,
+             :py:exc:`RuntimeError`,
+             :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
     """
     # Define the parameters as an empty dictionary if none are provided
     params = {} if params is None else params
@@ -163,6 +176,7 @@ def delete(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_fu
                                f'{response.text}')
         else:
             raise RuntimeError(f'The DELETE request failed with a {response.status_code} status code.')
+    # TODO: Leverage private function for this section across all API call functions (see TODO in api_call_with_payload)
     if return_json:
         response = response.json()
     return response
@@ -195,9 +209,9 @@ def _construct_full_query_url(_endpoint: str, _instance_url: str) -> str:
     """
     # Raise an exception if the endpoint is not a string
     if not isinstance(_endpoint, str):
-        exc_msg = 'The provided URL must be a string and a valid Salesforce URL'
-        logger.critical(exc_msg)
-        raise TypeError(exc_msg)
+        _exc_msg = 'The provided URL must be a string and a valid Salesforce URL'
+        logger.critical(_exc_msg)
+        raise TypeError(_exc_msg)
 
     # Construct the URL as needed by prepending the instance URL
     if _endpoint.startswith('https://'):

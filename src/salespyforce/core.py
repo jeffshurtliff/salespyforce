@@ -256,7 +256,9 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
-        :raises: :py:exc:`RuntimeError`
+        :raises: :py:exc:`TypeError`,
+                 :py:exc:`RuntimeError`,
+                 :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
         return api.get(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
                        show_full_error=show_full_error, return_json=return_json)
@@ -282,7 +284,10 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
-        :raises: :py:exc:`RuntimeError`
+        :raises: :py:exc:`TypeError`,
+                 :py:exc:`RuntimeError`,
+                 :py:exc:`ValueError`,
+                 :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
         return api.api_call_with_payload(self, method=method, endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
@@ -306,7 +311,10 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
-        :raises: :py:exc:`RuntimeError`
+        :raises: :py:exc:`TypeError`,
+                 :py:exc:`RuntimeError`,
+                 :py:exc:`ValueError`,
+                 :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
         return api.api_call_with_payload(self, 'post', endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
@@ -330,7 +338,10 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
-        :raises: :py:exc:`RuntimeError`
+        :raises: :py:exc:`TypeError`,
+                 :py:exc:`RuntimeError`,
+                 :py:exc:`ValueError`,
+                 :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
         return api.api_call_with_payload(self, 'patch', endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
@@ -354,7 +365,10 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
-        :raises: :py:exc:`RuntimeError`
+        :raises: :py:exc:`TypeError`,
+                 :py:exc:`RuntimeError`,
+                 :py:exc:`ValueError`,
+                 :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
         return api.api_call_with_payload(self, 'put', endpoint=endpoint, payload=payload, params=params,
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
@@ -378,7 +392,9 @@ class Salesforce(object):
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
         :returns: The API response in JSON format or as a ``requests`` object
-        :raises: :py:exc:`RuntimeError`
+        :raises: :py:exc:`TypeError`,
+                 :py:exc:`RuntimeError`,
+                 :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
         return api.delete(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
                           show_full_error=show_full_error, return_json=return_json)
