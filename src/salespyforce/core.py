@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     02 Feb 2026
+:Modified Date:     03 Feb 2026
 """
 
 import re
