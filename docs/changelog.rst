@@ -80,7 +80,7 @@ Changes to the :doc:`core-object-methods` are listed below.
 * Updated the init method for the :py:class:`salespyforce.core.Salesforce` class to define the following
   class-scoped variables:
 
-  +-----------------------+--------------------------------------------------+
+  +-----------------------+-----------+--------------------------------------+
   | Variable              | Data Type | Description                          |
   +=======================+===========+======================================+
   | ``org_id``            | str       | Salesforce Org ID                    |
@@ -90,6 +90,13 @@ Changes to the :doc:`core-object-methods` are listed below.
 
 * Updated the docstring for the :py:meth:`salespyforce.core.Salesforce.get_api_versions` method
   to explicitly state what the method returns and its data type
+* Updated the following methods to use a globally defined default ``timeout`` value to use when a value
+  is not explicitly defined in the respective parameter:
+    * :py:meth:`salespyforce.core.Salesforce.get`
+    * :py:meth:`salespyforce.core.Salesforce.api_call_with_payload`
+    * :py:meth:`salespyforce.core.Salesforce.post`
+    * :py:meth:`salespyforce.core.Salesforce.patch`
+    * :py:meth:`salespyforce.core.Salesforce.put`
 * Updated the :py:meth:`salespyforce.core.Salesforce.Knowledge.get_validation_status` method to use
   a more specific exception class and to return an empty string on lookup failures versus a ``None`` value
 
@@ -99,6 +106,9 @@ Changes to the :doc:`primary modules <primary-modules>` are listed below.
 
 * Updated the functions below to support full URLs to be passed as the endpoint with the URLs being
   evaluated to ensure they are valid Salesforce URLs:
+    * :py:func:`salespyforce.api.get`
+    * :py:func:`salespyforce.api.api_call_with_payload`
+* Updated the functions below to use a global constant for the ``timeout`` parameter value default:
     * :py:func:`salespyforce.api.get`
     * :py:func:`salespyforce.api.api_call_with_payload`
 * Updated the :py:mod:`salespyforce.knowledge` module to add some type hints and make other minor improvements

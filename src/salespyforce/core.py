@@ -240,9 +240,13 @@ class Salesforce(object):
         # Return the populated user info
         return user_info
 
-    def get(self, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
+    def get(self, endpoint, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
         """This method performs a GET request against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+        .. version-changed:: 1.4.0
+           A global constant is now leveraged for the API timeout value instead of hardcoding the value.
+           (Timeout is still **30** seconds in this version)
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -251,7 +255,7 @@ class Salesforce(object):
         :param headers: Specific API headers to use when performing the API call
         :type headers: dict, None
         :param timeout: The timeout period in seconds (defaults to ``30``)
-        :type timeout: int, str, None
+        :type timeout: int, None
         :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
@@ -263,10 +267,14 @@ class Salesforce(object):
         return api.get(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
                        show_full_error=show_full_error, return_json=return_json)
 
-    def api_call_with_payload(self, method, endpoint, payload, params=None, headers=None, timeout=30,
+    def api_call_with_payload(self, method, endpoint, payload, params=None, headers=None, timeout=None,
                               show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+        .. version-changed:: 1.4.0
+           A global constant is now leveraged for the API timeout value instead of hardcoding the value.
+           (Timeout is still **30** seconds in this version)
 
         :param method: The API method (``post``, ``put``, or ``patch``)
         :type method: str
@@ -279,7 +287,7 @@ class Salesforce(object):
         :param headers: Specific API headers to use when performing the API call
         :type headers: dict, None
         :param timeout: The timeout period in seconds (defaults to ``30``)
-        :type timeout: int, str, None
+        :type timeout: int, None
         :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
@@ -293,9 +301,13 @@ class Salesforce(object):
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
                                          return_json=return_json)
 
-    def post(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
+    def post(self, endpoint, payload, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+        .. version-changed:: 1.4.0
+           A global constant is now leveraged for the API timeout value instead of hardcoding the value.
+           (Timeout is still **30** seconds in this version)
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -306,7 +318,7 @@ class Salesforce(object):
         :param headers: Specific API headers to use when performing the API call
         :type headers: dict, None
         :param timeout: The timeout period in seconds (defaults to ``30``)
-        :type timeout: int, str, None
+        :type timeout: int, None
         :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
@@ -320,9 +332,13 @@ class Salesforce(object):
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
                                          return_json=return_json)
 
-    def patch(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=False):
+    def patch(self, endpoint, payload, params=None, headers=None, timeout=None, show_full_error=True, return_json=False):
         """This method performs a PATCH call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+        .. version-changed:: 1.4.0
+           A global constant is now leveraged for the API timeout value instead of hardcoding the value.
+           (Timeout is still **30** seconds in this version)
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -333,7 +349,7 @@ class Salesforce(object):
         :param headers: Specific API headers to use when performing the API call
         :type headers: dict, None
         :param timeout: The timeout period in seconds (defaults to ``30``)
-        :type timeout: int, str, None
+        :type timeout: int, None
         :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
@@ -347,9 +363,13 @@ class Salesforce(object):
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
                                          return_json=return_json)
 
-    def put(self, endpoint, payload, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
+    def put(self, endpoint, payload, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
         """This method performs a PUT call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+
+        .. version-changed:: 1.4.0
+           A global constant is now leveraged for the API timeout value instead of hardcoding the value.
+           (Timeout is still **30** seconds in this version)
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -360,7 +380,7 @@ class Salesforce(object):
         :param headers: Specific API headers to use when performing the API call
         :type headers: dict, None
         :param timeout: The timeout period in seconds (defaults to ``30``)
-        :type timeout: int, str, None
+        :type timeout: int, None
         :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
@@ -374,7 +394,7 @@ class Salesforce(object):
                                          headers=headers, timeout=timeout, show_full_error=show_full_error,
                                          return_json=return_json)
 
-    def delete(self, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
+    def delete(self, endpoint, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
         """This method performs a DELETE request against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
@@ -387,7 +407,7 @@ class Salesforce(object):
         :param headers: Specific API headers to use when performing the API call
         :type headers: dict, None
         :param timeout: The timeout period in seconds (defaults to ``30``)
-        :type timeout: int, str, None
+        :type timeout: int, None
         :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
         :type show_full_error: bool
         :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)

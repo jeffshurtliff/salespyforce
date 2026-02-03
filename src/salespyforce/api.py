@@ -7,22 +7,30 @@
 :Modified Date:     03 Feb 2026
 """
 
+from __future__ import annotations
+
+from typing import Optional
+
 import requests
 
 from . import errors
 from .utils import core_utils, log_utils
 
+# Define constants
+DEFAULT_API_REQUEST_TIMEOUT = 30
+
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
 
 
-def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
+def get(sfdc_object, endpoint, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
     """This method performs a GET request against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
     .. version-changed:: 1.4.0
-       The full URL for the API call is now constructed prior to making the call.
-       The provided URL is also now evaluated to ensure it is a valid Salesforce URL.
+       The full URL for the API call is now constructed prior to making the call. The provided URL is also
+       now evaluated to ensure it is a valid Salesforce URL. Additionally, a global constant is now leveraged
+       for the API timeout value instead of hardcoding the value. (Timeout is still **30** seconds in this version)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :param endpoint: The API endpoint to query
@@ -32,7 +40,7 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_
     :param headers: Specific API headers to use when performing the API call
     :type headers: dict, None
     :param timeout: The timeout period in seconds (defaults to ``30``)
-    :type timeout: int, str, None
+    :type timeout: int, None
     :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
     :type show_full_error: bool
     :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
@@ -51,6 +59,9 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_
     # Construct the request URL
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
+    # Define the API request timeout (using default value if not explicitly defined with parameter)
+    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
+
     # Perform the API call
     response = requests.get(url, headers=headers, params=params, timeout=timeout)
     if response.status_code >= 300:
@@ -66,14 +77,15 @@ def get(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_
     return response
 
 
-def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, headers=None, timeout=30,
+def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, headers=None, timeout=None,
                           show_full_error=True, return_json=True):
     """This method performs a POST call against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
     .. version-changed:: 1.4.0
-       The full URL for the API call is now constructed prior to making the call.
-       The provided URL is also now evaluated to ensure it is a valid Salesforce URL.
+       The full URL for the API call is now constructed prior to making the call. The provided URL is also
+       now evaluated to ensure it is a valid Salesforce URL. Additionally, a global constant is now leveraged
+       for the API timeout value instead of hardcoding the value. (Timeout is still **30** seconds in this version)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :param method: The API method (``post``, ``put``, or ``patch``)
@@ -87,7 +99,7 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
     :param headers: Specific API headers to use when performing the API call
     :type headers: dict, None
     :param timeout: The timeout period in seconds (defaults to ``30``)
-    :type timeout: int, str, None
+    :type timeout: int, None
     :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
     :type show_full_error: bool
     :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
@@ -106,6 +118,9 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
 
     # Construct the request URL
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
+
+    # Define the API request timeout (using default value if not explicitly defined with parameter)
+    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
 
     # Perform the API call
     if method.lower() == 'post':
@@ -135,7 +150,7 @@ def api_call_with_payload(sfdc_object, method, endpoint, payload, params=None, h
     return response
 
 
-def delete(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_full_error=True, return_json=True):
+def delete(sfdc_object, endpoint: str, params: Optional[dict] = None, headers: Optional[dict] = None, timeout=None, show_full_error=True, return_json=True):
     """This method performs a DELETE request against the Salesforce instance.
 
     .. version-added:: 1.4.0
@@ -148,7 +163,7 @@ def delete(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_fu
     :param headers: Specific API headers to use when performing the API call
     :type headers: dict, None
     :param timeout: The timeout period in seconds (defaults to ``30``)
-    :type timeout: int, str, None
+    :type timeout: int, None
     :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
     :type show_full_error: bool
     :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
@@ -167,6 +182,9 @@ def delete(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_fu
     # Construct the request URL
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
+    # Define the API request timeout (using default value if not explicitly defined with parameter)
+    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
+
     # Perform the API call
     response = requests.delete(url, headers=headers, params=params, timeout=timeout)
     if response.status_code >= 300:
@@ -182,7 +200,7 @@ def delete(sfdc_object, endpoint, params=None, headers=None, timeout=30, show_fu
     return response
 
 
-def _get_headers(_access_token, _header_type='default'):
+def _get_headers(_access_token: str, _header_type: str = 'default') -> dict:
     """This function returns the appropriate HTTP headers to use for different types of API calls."""
     headers = {
         'content-type': 'application/json',
