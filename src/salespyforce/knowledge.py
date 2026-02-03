@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     30 Jan 2026
+:Modified Date:     03 Feb 2026
 """
 
 from . import errors
@@ -531,7 +531,7 @@ def archive_article(sfdc_object, article_id):
     return sfdc_object.patch(endpoint, payload)
 
 
-def delete_article_draft(sfdc_object, version_id):
+def delete_article_draft(sfdc_object, version_id, use_knowledge_management_endpoint: bool = True):
     """This function deletes an unpublished knowledge article draft.
     
     .. version-added:: 1.4.0
@@ -540,8 +540,15 @@ def delete_article_draft(sfdc_object, version_id):
     :type sfdc_object: class[salespyforce.Salesforce]
     :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
     :type version_id: str
+    :param use_knowledge_management_endpoint: Leverage the ``/knowledgeManagement/articleVersions/masterVersions/``
+                                              endpoint rather than the ``/sobjects/Knowledge__kav/`` endpoint
+                                              (``True`` by default)
+    :type use_knowledge_management_endpoint: bool
     :returns: The API response from the DELETE request
     :raises: :py:exc:`RuntimeError`
     """
-    endpoint = f'/services/data/{sfdc_object.version}/sobjects/Knowledge__kav/{version_id}'
+    if use_knowledge_management_endpoint:
+        endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{version_id}'
+    else:
+        endpoint = f'/services/data/{sfdc_object.version}/sobjects/Knowledge__kav/{version_id}'
     return sfdc_object.delete(endpoint)
