@@ -33,6 +33,7 @@ dependencies = [
     "requests>=2.32.5",
     "urllib3>=1.26.19,<3",  # Explicit pin to avoid CVE-2024-37891
     "idna>=3.7,<4",         # Explicit pin to avoid CVE-2024-3651
+    "certifi>=2024.7.4",    # Explicit pin to mitigate CA removals (e-Tugra, GLOBALTRUST)
 ]
 
 [project.urls]

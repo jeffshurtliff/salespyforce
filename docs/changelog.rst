@@ -153,12 +153,16 @@ General
           to avoid CVE-2024-37891
         * Explicitly pinned ``idna`` to require version ``3.7`` or above (below v4) in order
           to avoid CVE-2024-3651
+        * Explicitly pinned ``certifi`` to require version ``2024.7.4`` or above in order to
+          mitigate CA removals (e-Tugra, GLOBALTRUST) per CVE-2023-37920 and CVE-2024-39689
     * Added ``bandit`` with SARIF support to the dev dependencies
 * Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
     * Added ``urllib3`` to ``requirements.txt`` to require version ``1.26.19`` or above (below v3) in order
       to avoid CVE-2024-37891
     * Added ``idna`` to ``requirements.txt`` to require version ``3.7`` or above (below v4) in order
       to avoid CVE-2024-3651
+    * Added ``certifi`` to ``requirements.txt`` to require version ``2024.7.4`` or above in order to
+      mitigate CA removals (e-Tugra, GLOBALTRUST) per CVE-2023-37920 and CVE-2024-39689
 * Replaced the ``.github/workflows/pythonpackage.yml`` workflow with ``.github/workflows/ci.yml``
   which has several improvements over the original file, including:
     * Dropping Python 3.6-3.8 and testing 3.9–3.12 on ``ubuntu-latest`` and ``macos-latest``
