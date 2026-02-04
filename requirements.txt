@@ -3,3 +3,6 @@
 
 requests>=2.32.5
 PyYAML>=6,<7
+
+# Minimum urllib3 version to avoid CVE-2024-37891
+urllib3>=1.26.19,<3
