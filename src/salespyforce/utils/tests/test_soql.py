@@ -14,7 +14,7 @@ def test_soql_query(salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     soql_statement = 'SELECT Id FROM Account LIMIT 1'

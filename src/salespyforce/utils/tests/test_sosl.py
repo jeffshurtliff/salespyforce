@@ -18,7 +18,7 @@ def test_search_string(monkeypatch, salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     # Overwrite the requests.post functionality with the mock_success_post() function

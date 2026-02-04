@@ -18,7 +18,7 @@ logger = log_utils.initialize_logging(__name__)
 def get_full_version() -> str:
     """This function returns the current full version of the ``salespyforce`` package.
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now retrieves the version from the package metadata,
        rather than from the ``__version__`` special variable.
 
@@ -37,7 +37,7 @@ def get_full_version() -> str:
 def get_major_minor_version() -> str:
     """Return the current major.minor (i.e., X.Y) version of the package.
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function utilizes the :py:func:`salespyforce.utils.version.get_full_version`
        function to get the package version rather than using ``__version__``.
     """

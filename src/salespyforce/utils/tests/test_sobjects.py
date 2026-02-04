@@ -18,7 +18,7 @@ def test_get_all_sobjects(salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     all_sobjects = salesforce_unit.get_all_sobjects()
@@ -30,7 +30,7 @@ def test_get_and_describe_sobject(salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     # Test the default query (non-describe)
@@ -51,7 +51,7 @@ def test_create_record(monkeypatch, salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     # Overwrite the requests.post functionality with the mock_success_post() function

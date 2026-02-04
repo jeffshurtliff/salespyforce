@@ -69,7 +69,7 @@ class LessThanFilter(logging.Filter):
 def _apply_defaults(_logger_name, _formatter, _debug, _log_level, _file_level, _console_level, _syslog_level):
     """This function applies default values to the configuration settings if not explicitly defined.
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The default logging level is now defined.
 
     :param _logger_name: The name of the logger instance

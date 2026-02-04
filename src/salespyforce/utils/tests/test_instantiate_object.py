@@ -19,7 +19,7 @@ def test_instantiate_core_object(salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     sfdc_object = salesforce_unit
@@ -31,7 +31,7 @@ def test_get_api_versions(salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     api_versions = salesforce_unit.get_api_versions()
@@ -43,7 +43,7 @@ def test_get_rest_resources(salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     rest_resources = salesforce_unit.get_rest_resources()
@@ -55,7 +55,7 @@ def test_get_org_limits(salesforce_unit):
 
     .. versionadded:: 1.1.0
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now utilizes the ``salesforce_unit`` fixture.
     """
     org_limits = salesforce_unit.get_org_limits()
