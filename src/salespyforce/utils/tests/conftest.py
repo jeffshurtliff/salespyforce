@@ -47,7 +47,7 @@ HELPER_FILE_NAME = "helper_dm_conn.yml"
 def pytest_addoption(parser: pytest.Parser) -> None:
     """This function registers custom CLI options.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     ``--integration`` enables tests that require access to a real
     Salesforce org. Keeping this opt-in protects routine runs from
@@ -64,7 +64,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 def pytest_configure(config: pytest.Config) -> None:
     """This function declares custom markers so pytest will not warn during collection.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
     """
     config.addinivalue_line(
         "markers",
@@ -77,7 +77,7 @@ def pytest_collection_modifyitems(
 ) -> None:
     """This function skips integration tests when ``--integration`` is not provided.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
     """
     if config.getoption("--integration"):
         return
@@ -97,7 +97,7 @@ def pytest_collection_modifyitems(
 def _find_helper_file() -> Path | None:
     """This function locates a helper file in common locations used by this project.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
     """
     helper_locations = [
         Path(os.environ.get("HOME", "")) / "secrets" / HELPER_FILE_NAME,
@@ -117,7 +117,7 @@ def _find_helper_file() -> Path | None:
 def integration_helper_file() -> Path:
     """This fixture returns the helper file path or skips the test if none is available.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     Keeping this lookup in a session-scoped fixture ensures we only
     perform filesystem checks once per test run and provides a single
@@ -133,7 +133,7 @@ def integration_helper_file() -> Path:
 def salesforce_integration(integration_helper_file: Path) -> Iterator[Salesforce]:
     """This fixture instantiates the real Salesforce client for integration tests.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     The fixture is session-scoped to avoid repeated authentication and
     to reuse connections across tests. It is intended only for tests
@@ -147,7 +147,7 @@ def salesforce_integration(integration_helper_file: Path) -> Iterator[Salesforce
 def salesforce_unit(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
     """This fixture provides a lightweight stub that mimics the ``Salesforce`` API.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     This fixture avoids network calls by supplying deterministic return
     values for the subset of methods exercised by the current tests.
@@ -179,7 +179,7 @@ def salesforce_unit(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
     def _create_response(**overrides):
         """This function creates an API response payload mimicking the Salesforce REST API responses.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
         """
         response = {"id": "001D000000IqhSLIAZ", "success": True, "errors": []}
         response.update(overrides)

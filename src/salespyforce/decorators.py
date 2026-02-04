@@ -27,7 +27,7 @@ def deprecated(
 ) -> Callable[[F], F]:
     """This decorator marks a callable as deprecated and emits a warning at runtime.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param since: Version when deprecation started
     :param replacement: Suggested replacement usage (string)

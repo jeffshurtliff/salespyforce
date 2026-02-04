@@ -179,7 +179,7 @@ def delete(
         return_json: bool = True):
     """This method performs a DELETE request against the Salesforce instance.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -242,7 +242,7 @@ def _get_headers(_access_token: str, _header_type: str = 'default') -> dict:
 def _construct_full_query_url(_endpoint: str, _instance_url: str) -> str:
     """This function constructs the URL to use in an API call to the Salesforce REST API.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param _endpoint: The endpoint provided when calling an API call method or function
     :type _endpoint: str

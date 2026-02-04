@@ -25,7 +25,7 @@ def eprint(*args, **kwargs) -> None:
 def get_exception_type(exc) -> str:
     """This function returns the exception type (e.g. ``RuntimeError``, ``TypeError``, etc.) for a given exception.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :returns: The exception type as a string
     """
@@ -40,7 +40,7 @@ def display_warning(
 ) -> None:
     """This function emits a warning that points to the caller by default.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param message: Warning message to emit
     :type message: str

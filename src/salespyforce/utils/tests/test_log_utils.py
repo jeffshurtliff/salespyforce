@@ -19,7 +19,7 @@ from salespyforce.utils import log_utils
 def _cleanup_logger(logger: logging.Logger) -> None:
     """This function removes and closes handlers for a logger.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param logger: The logger instance to clean up
     :type logger: class[logging.Logger]
@@ -33,7 +33,7 @@ def _cleanup_logger(logger: logging.Logger) -> None:
 def test_initialize_logging_defaults_to_info_level() -> None:
     """This function verifies that initialize_logging() defaults logger level to INFO.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :returns: None
     """
@@ -48,7 +48,7 @@ def test_initialize_logging_defaults_to_info_level() -> None:
 def test_initialize_logging_applies_default_level_to_console_handler(caplog: pytest.LogCaptureFixture) -> None:
     """This function ensures console handlers inherit the default INFO level.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param caplog: Pytest fixture capturing log records for assertions
     :type caplog: class[pytest.LogCaptureFixture]

@@ -111,7 +111,7 @@ def get_random_string(length=32, prefix_string=""):
 def get_18_char_id(record_id: str) -> str:
     """This function converts a 15-character Salesforce record ID to its 18-character case-insensitive form.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param record_id: The Salesforce record ID to convert (or return unchanged if already 18 characters)
     :type record_id: str
@@ -149,7 +149,7 @@ def get_18_char_id(record_id: str) -> str:
 def matches_regex_pattern(pattern: str, text: str, full_match: bool = False, must_start_with: bool = False) -> bool:
     """This function compares a text string against a regex pattern and determines whether they match.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param pattern: The regex pattern that should match
     :type pattern: str
@@ -172,7 +172,7 @@ def matches_regex_pattern(pattern: str, text: str, full_match: bool = False, mus
 def is_valid_salesforce_url(url: str) -> bool:
     """This function evaluates a URL to determine if it is a valid Salesforce URL.
 
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
 
     :param url: The URL to evaluate
     :type url: str

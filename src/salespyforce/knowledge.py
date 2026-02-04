@@ -608,7 +608,7 @@ def assign_data_category(sfdc_object, article_id: str, category_group_name: str,
     """This function assigns a single data category for a knowledge article.
     (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
 
-    .. version-added:: 1.2.0
+    .. versionadded:: 1.2.0
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -637,7 +637,7 @@ def archive_article(sfdc_object, article_id: str):
     """This function archives a published knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
 
-    .. version-added:: 1.3.0
+    .. versionadded:: 1.3.0
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -659,7 +659,7 @@ def archive_article(sfdc_object, article_id: str):
 def delete_article_draft(sfdc_object, version_id: str, use_knowledge_management_endpoint: bool = True):
     """This function deletes an unpublished knowledge article draft.
     
-    .. version-added:: 1.4.0
+    .. versionadded:: 1.4.0
     
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]

@@ -155,7 +155,7 @@ class Salesforce(object):
         """This method attempts to retrieve a value for a given field in the cached ``userinfo`` data and
            optionally queries the API as needed to retrieve the data when not found.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param _field: The name of the field for which the value is needed
         :type _field: str
@@ -201,7 +201,7 @@ class Salesforce(object):
     def retrieve_current_user_info(self, all_data=False, raise_exc_on_error=False, on_init=False) -> dict:
         """This method retrieves the ``userinfo`` data for the current/running user.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param all_data: Returns all ``userinfo`` data from the API when True instead of only the relevant fields/values
                          (``False`` by default)
@@ -401,7 +401,7 @@ class Salesforce(object):
         """This method performs a DELETE request against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -434,7 +434,7 @@ class Salesforce(object):
     def get_latest_api_version(self) -> str:
         """This method returns the latest Salesforce API version by querying the authorized org.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :returns: The latest Salesforce API version for the authorized org as a string (e.g. ``65.0``)
         """
@@ -453,7 +453,7 @@ class Salesforce(object):
     def get_org_limits(self):
         """This method returns a list of all org limits.
 
-        .. version-added:: 1.1.0
+        .. versionadded:: 1.1.0
 
         :returns: The Salesforce org governor limits data
         :raises: :py:exc:`RuntimeError`
@@ -509,7 +509,7 @@ class Salesforce(object):
     def get_18_char_id(record_id: str) -> str:
         """This method converts a 15-character Salesforce record ID to its 18-character case-insensitive form.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param record_id: The Salesforce record ID to convert (or return unchanged if already 18 characters)
         :type record_id: str
@@ -545,7 +545,7 @@ class Salesforce(object):
         """This method performs a SOSL query to search for a given string.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_search.htm>`_)
 
-        .. version-added:: 1.1.0
+        .. versionadded:: 1.1.0
 
         :param string_to_search: The string for which to search
         :type string_to_search: str
@@ -559,7 +559,7 @@ class Salesforce(object):
     def check_user_record_access(self, record_id: str, user_id=None) -> dict:
         """This method checks the Read, Edit, and Delete access for a given record and user.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param record_id: The ``Id`` value of the record against which to check the user access
         :type record_id: str
@@ -605,7 +605,7 @@ class Salesforce(object):
                                  _record_access_data: dict, _raise_exc_on_failure: bool = True) -> bool:
         """This private method checks for an access level given the field and the record access data.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param _field: The access level field to evaluate (``HasReadAccess``, ``HasEditAccess``, ``HasDeleteAccess``)
         :type _field: str
@@ -637,7 +637,7 @@ class Salesforce(object):
     def can_access_record(self, access_type, record_id, user_id=None, record_access_data=None, raise_exc_on_failure=True):
         """This method evaluates if a user can access a specific record given the access type.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param access_type: The type of access to evaluate (``read``, ``edit``, or ``delete``)
         :type access_type: str
@@ -697,7 +697,7 @@ class Salesforce(object):
     def can_read_record(self, record_id, user_id=None, record_access_data=None, raise_exc_on_failure=True):
         """This method evaluates if a user has access to read a specific record.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param record_id: The ID of the record
         :type record_id: str
@@ -717,7 +717,7 @@ class Salesforce(object):
     def can_edit_record(self, record_id, user_id=None, record_access_data=None, raise_exc_on_failure=True):
         """This method evaluates if a user has access to edit a specific record.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param record_id: The ID of the record
         :type record_id: str
@@ -737,7 +737,7 @@ class Salesforce(object):
     def can_delete_record(self, record_id, user_id=None, record_access_data=None, raise_exc_on_failure=True):
         """This method evaluates if a user has access to delete a specific record.
 
-        .. version-added:: 1.4.0
+        .. versionadded:: 1.4.0
 
         :param record_id: The ID of the record
         :type record_id: str
@@ -1248,7 +1248,7 @@ class Salesforce(object):
             """This method assigns a single data category for a knowledge article.
             (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
 
-            .. version-added:: 1.2.0
+            .. versionadded:: 1.2.0
 
             :param article_id: The ID of the article to update
             :type article_id: str
@@ -1267,7 +1267,7 @@ class Salesforce(object):
             """This function archives a published knowledge article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
 
-            .. version-added:: 1.3.0
+            .. versionadded:: 1.3.0
 
             :param article_id: The ID of the article to archive
             :type article_id: str
@@ -1279,7 +1279,7 @@ class Salesforce(object):
         def delete_article_draft(self, version_id: str, use_knowledge_management_endpoint: bool = True):
             """This function deletes an unpublished knowledge article draft.
 
-            .. version-added:: 1.4.0
+            .. versionadded:: 1.4.0
 
             :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
             :type version_id: str
