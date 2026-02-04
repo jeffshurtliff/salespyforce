@@ -37,7 +37,7 @@ class Salesforce(object):
                  password=None, endpoint_url=None, client_id=None, client_secret=None, security_token=None, helper=None):
         """This method instantiates the core Salesforce object.
 
-        .. version-changed:: 1.4.0
+        .. versionchanged:: 1.4.0
            The authorized Salesforce org is now queried to determine the latest API version to leverage unless
            explicitly defined with the ``version`` parameter when instantiating the object.
 
@@ -247,7 +247,7 @@ class Salesforce(object):
         """This method performs a GET request against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
-        .. version-changed:: 1.4.0
+        .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
            (Timeout is still **30** seconds in this version)
 
@@ -275,7 +275,7 @@ class Salesforce(object):
         """This method performs a POST call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
-        .. version-changed:: 1.4.0
+        .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
            (Timeout is still **30** seconds in this version)
 
@@ -308,7 +308,7 @@ class Salesforce(object):
         """This method performs a POST call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
-        .. version-changed:: 1.4.0
+        .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
            (Timeout is still **30** seconds in this version)
 
@@ -339,7 +339,7 @@ class Salesforce(object):
         """This method performs a PATCH call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
-        .. version-changed:: 1.4.0
+        .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
            (Timeout is still **30** seconds in this version)
 
@@ -370,7 +370,7 @@ class Salesforce(object):
         """This method performs a PUT call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
-        .. version-changed:: 1.4.0
+        .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
            (Timeout is still **30** seconds in this version)
 
@@ -1030,7 +1030,7 @@ class Salesforce(object):
             """This method retrieves details for a single knowledge article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
-                .. version-changed:: 1.4.0
+                .. versionchanged:: 1.4.0
                    A logic issue was resolved and the new optional ``use_knowledge_articles_endpoint`` parameter can
                    now be set to force the ``knowledgeArticles`` endpoint to be used for the GET request rather than
                    the ``sobjects`` endpoint.
@@ -1058,7 +1058,7 @@ class Salesforce(object):
             """This method retrieves the Validation Status for a given Article ID.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
-            .. version-changed:: 1.4.0
+            .. versionchanged:: 1.4.0
                This method now returns an empty string rather than a ``None`` value if the ``ValidationStatus`` field
                is not found in the article details data, and a more specific exception class is used when input
                data is missing instead of the generic :py:exc:`RuntimeError` exception class.

@@ -32,7 +32,7 @@ def check_for_existing_article(
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
 
-    .. version-changed:: 1.2.2
+    .. versionchanged:: 1.2.2
        You can now specify whether archived articles are included in the query results.
 
     :param sfdc_object: The instantiated SalesPyForce object
@@ -80,7 +80,7 @@ def get_article_id_from_number(
        The ability to retrieve the article URI/URL rather than the ID will be moved to a separate function in
        a future release.
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        A logic issue has been fixed and improved to make this function more robust and stable.
 
     :param sfdc_object: The instantiated SalesPyForce object
@@ -141,7 +141,7 @@ def get_articles_list(
     """This function retrieves a list of knowledge articles.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`_)
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The errors now log as errors via the logger rather than to the stderr console.
 
     :param sfdc_object: The instantiated SalesPyForce object
@@ -209,7 +209,7 @@ def get_article_details(
     """This function retrieves details for a single knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        A logic issue was resolved and the new optional ``use_knowledge_articles_endpoint`` parameter can now be set to
        force the ``knowledgeArticles`` endpoint to be used for the GET request rather than the ``sobjects`` endpoint.
 
@@ -262,7 +262,7 @@ def get_validation_status(
     """This function retrieves the Validation Status for a given Article ID.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now returns an empty string rather than a ``None`` value if the ``ValidationStatus`` field
        is not found in the article details data, and a more specific exception class is used when input
        data is missing instead of the generic :py:exc:`RuntimeError` exception class.
@@ -328,7 +328,7 @@ def get_article_url(
 ) -> str:
     """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
-    .. version-changed:: 1.2.0
+    .. versionchanged:: 1.2.0
        Changed when lightning URLs are defined and fixed an issue with extraneous slashes.
 
     :param sfdc_object: The instantiated SalesPyForce object

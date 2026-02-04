@@ -35,7 +35,7 @@ def get(
     """This method performs a GET request against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The full URL for the API call is now constructed prior to making the call. The provided URL is also
        now evaluated to ensure it is a valid Salesforce URL. Additionally, a global constant is now leveraged
        for the API timeout value instead of hardcoding the value. (Timeout is still **30** seconds in this version)
@@ -100,7 +100,7 @@ def api_call_with_payload(
     """This method performs a POST call against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The full URL for the API call is now constructed prior to making the call. The provided URL is also
        now evaluated to ensure it is a valid Salesforce URL. Additionally, a global constant is now leveraged
        for the API timeout value instead of hardcoding the value. (Timeout is still **30** seconds in this version)

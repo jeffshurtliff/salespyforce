@@ -92,7 +92,7 @@ def post_feed_item(
     """This function publishes a new Chatter feed item.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`_)
 
-    .. version-changed:: 1.4.0
+    .. versionchanged:: 1.4.0
        The function now raises the :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception rather than the
        generic :py:exc:`RuntimeError` exception.
 
