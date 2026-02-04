@@ -3,10 +3,10 @@ Change Log
 ##########
 This page documents the additions, changes, fixes, deprecations and removals made in each release.
 
-**********
-v1.4.0.rc0
-**********
-**Release Date: 2026-02-03**
+******
+v1.4.0
+******
+**Release Date: 2026-02-04**
 
 Added
 =====

@@ -1,6 +1,6 @@
 [project]
 name = "salespyforce"
-version = "1.4.0.rc0"
+version = "1.4.0"
 description = "A Python toolset for performing Salesforce API calls"
 readme = "README.md"
 requires-python = ">=3.9,<4.0"
