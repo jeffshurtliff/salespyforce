@@ -23,15 +23,15 @@ A Python toolset for performing Salesforce API calls
         <td>
             <a href="https://github.com/jeffshurtliff/salespyforce/blob/master/.github/workflows/ci.yml">
                 <img alt="GitHub Workflow Status" 
-                src="https://img.shields.io/github/actions/workflow/status/jeffshurtliff/salespyforce/pythonpackage.yml?branch=master">
+                src="https://img.shields.io/github/actions/workflow/status/jeffshurtliff/salespyforce/ci.yml?branch=master">
             </a>
         </td>
     </tr>
     <tr>
         <td>Supported Versions</td>
         <td>
-            <a href='https://pypi.org/project/salespyforce/'>
-                <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/salespyforce">
+            <a href="https://pypi.org/project/salespyforce/">
+                <img alt="PyPI - Supported Python Versions" src="https://img.shields.io/pypi/pyversions/salespyforce">
             </a>
         </td>
     </tr>
@@ -46,8 +46,8 @@ A Python toolset for performing Salesforce API calls
     <tr>
         <td>Documentation</td>
         <td>
-            <a href='https://salespyforce.readthedocs.io/en/latest/?badge=latest'>
-                <img src='https://readthedocs.org/projects/salespyforce/badge/?version=latest' alt='Documentation Status' />
+            <a href="https://salespyforce.readthedocs.io/en/latest/?badge=latest">
+                <img src="https://readthedocs.org/projects/salespyforce/badge/?version=latest" alt="Documentation Status" />
             </a>
         </td>
     </tr>
