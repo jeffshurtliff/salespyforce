@@ -151,10 +151,14 @@ General
     * Updated dependency versions to mitigate known vulnerabilities found in earlier versions
         * Explicitly pinned ``urllib3`` to require version ``1.26.19`` or above (below v3) in order
           to avoid CVE-2024-37891
+        * Explicitly pinned ``idna`` to require version ``3.7`` or above (below v4) in order
+          to avoid CVE-2024-3651
     * Added ``bandit`` with SARIF support to the dev dependencies
 * Updated the ``requirements.txt`` file to be runtime-only and mirror the ``pyproject.toml`` file
     * Added ``urllib3`` to ``requirements.txt`` to require version ``1.26.19`` or above (below v3) in order
       to avoid CVE-2024-37891
+    * Added ``idna`` to ``requirements.txt`` to require version ``3.7`` or above (below v4) in order
+      to avoid CVE-2024-3651
 * Replaced the ``.github/workflows/pythonpackage.yml`` workflow with ``.github/workflows/ci.yml``
   which has several improvements over the original file, including:
     * Dropping Python 3.6-3.8 and testing 3.9–3.12 on ``ubuntu-latest`` and ``macos-latest``
