@@ -1,4 +1,4 @@
-# salespyforce
+# SalesPyForce
 A Python toolset for performing Salesforce API calls
 
 <table>
@@ -21,7 +21,7 @@ A Python toolset for performing Salesforce API calls
     <tr>
         <td>Build Status</td>
         <td>
-            <a href="https://github.com/jeffshurtliff/salespyforce/blob/master/.github/workflows/pythonpackage.yml">
+            <a href="https://github.com/jeffshurtliff/salespyforce/blob/master/.github/workflows/ci.yml">
                 <img alt="GitHub Workflow Status" 
                 src="https://img.shields.io/github/actions/workflow/status/jeffshurtliff/salespyforce/pythonpackage.yml?branch=master">
             </a>
