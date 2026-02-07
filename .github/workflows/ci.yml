@@ -7,12 +7,14 @@ on:
       - LICENSE
       - docs/**
       - examples/**
+      - .github/ISSUE_TEMPLATE/**
   pull_request:
     paths-ignore:
       - README.md
       - LICENSE
       - docs/**
       - examples/**
+      - .github/ISSUE_TEMPLATE/**
 
 permissions:
   contents: read
