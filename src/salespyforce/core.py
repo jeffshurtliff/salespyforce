@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     03 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
+:Modified Date:     07 Feb 2026
 """
 
 from __future__ import annotations
@@ -181,7 +181,7 @@ class Salesforce(object):
 
     def connect(self):
         """This method connects to the Salesforce instance to obtain the access token.
-        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
         :returns: The API call response with the authorization information
         :raises: :py:exc:`RuntimeError`
@@ -245,7 +245,7 @@ class Salesforce(object):
 
     def get(self, endpoint, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
         """This method performs a GET request against the Salesforce instance.
-        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
         .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
@@ -273,7 +273,7 @@ class Salesforce(object):
     def api_call_with_payload(self, method, endpoint, payload, params=None, headers=None, timeout=None,
                               show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
-        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
         .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
@@ -306,7 +306,7 @@ class Salesforce(object):
 
     def post(self, endpoint, payload, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
         """This method performs a POST call against the Salesforce instance.
-        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
         .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
@@ -337,7 +337,7 @@ class Salesforce(object):
 
     def patch(self, endpoint, payload, params=None, headers=None, timeout=None, show_full_error=True, return_json=False):
         """This method performs a PATCH call against the Salesforce instance.
-        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
         .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
@@ -368,7 +368,7 @@ class Salesforce(object):
 
     def put(self, endpoint, payload, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
         """This method performs a PUT call against the Salesforce instance.
-        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
         .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
@@ -399,7 +399,7 @@ class Salesforce(object):
 
     def delete(self, endpoint, params=None, headers=None, timeout=None, show_full_error=True, return_json=True):
         """This method performs a DELETE request against the Salesforce instance.
-        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
         .. versionadded:: 1.4.0
 
@@ -424,7 +424,7 @@ class Salesforce(object):
 
     def get_api_versions(self) -> list:
         """This method returns the API versions for the Salesforce releases.
-        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm>`_)
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm>`__)
 
         :returns: A list containing the API metadata from the ``/services/data`` endpoint.
         :raises: :py:exc:`RuntimeError`
@@ -462,7 +462,7 @@ class Salesforce(object):
 
     def get_all_sobjects(self):
         """This method returns a list of all Salesforce objects. (i.e. sObjects)
-        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm>`_)
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm>`__)
 
         :returns: The list of all Salesforce objects
         :raises: :py:exc:`RuntimeError`
@@ -471,8 +471,8 @@ class Salesforce(object):
 
     def get_sobject(self, object_name, describe=False):
         """This method returns basic information or the full (describe) information for a specific sObject.
-        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info_get.htm>`_,
-        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm>`_)
+        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info_get.htm>`__,
+        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm>`__)
 
         :param object_name: The name of the Salesforce object
         :type object_name: str
@@ -487,7 +487,7 @@ class Salesforce(object):
 
     def describe_object(self, object_name):
         """This method returns the full (describe) information for a specific sObject.
-        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm>`_)
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm>`__)
 
         :param object_name: The name of the Salesforce object
         :type object_name: str
@@ -498,7 +498,7 @@ class Salesforce(object):
 
     def get_rest_resources(self):
         """This method returns a list of all available REST resources.
-        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm>`_)
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm>`__)
 
         :returns: The list of all available REST resources for the Salesforce org
         :raises: :py:exc:`RuntimeError`
@@ -520,8 +520,8 @@ class Salesforce(object):
 
     def soql_query(self, query, replace_quotes=True, next_records_url=False):
         """This method performs a SOQL query and returns the results in JSON format.
-        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
-        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
+        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
+        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`__)
 
         :param query: The SOQL query to perform
         :type query: str
@@ -543,7 +543,7 @@ class Salesforce(object):
 
     def search_string(self, string_to_search):
         """This method performs a SOSL query to search for a given string.
-        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_search.htm>`_)
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_search.htm>`__)
 
         .. versionadded:: 1.1.0
 
@@ -756,7 +756,7 @@ class Salesforce(object):
 
     def create_sobject_record(self, sobject, payload):
         """This method creates a new record for a specific sObject.
-        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`__)
 
         :param sobject: The sObject under which to create the new record
         :type sobject: str
@@ -776,7 +776,7 @@ class Salesforce(object):
 
     def update_sobject_record(self, sobject, record_id, payload):
         """This method updates an existing sObject record.
-        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
+        (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`__)
 
         :param sobject: The sObject under which to update the record
         :type sobject: str
@@ -798,8 +798,8 @@ class Salesforce(object):
 
     def download_image(self, image_url, record_id, field_name, file_path=None, sobject=None):
         """This method downloads an image using the sObject Rich Text Image Retrieve functionality.
-        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`_,
-        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`_)
+        (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`__,
+        `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`__)
 
         :param image_url: The URL for the image to be downloaded
         :type image_url: str
@@ -848,7 +848,7 @@ class Salesforce(object):
 
         def get_my_news_feed(self, site_id=None):
             """This method retrieves the news feed for the user calling the function.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`__)
 
             :param site_id: The ID of an Experience Cloud site against which to query (optional)
             :type site_id: str, None
@@ -859,7 +859,7 @@ class Salesforce(object):
 
         def get_user_news_feed(self, user_id, site_id=None):
             """This method retrieves another user's news feed.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`__)
 
             :param user_id: The ID of the user whose feed you wish to return
             :type user_id: str
@@ -872,7 +872,7 @@ class Salesforce(object):
 
         def get_group_feed(self, group_id, site_id=None):
             """This method retrieves a group's news feed.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`__)
 
             :param group_id: The ID of the group whose feed you wish to return
             :type group_id: str
@@ -885,7 +885,7 @@ class Salesforce(object):
 
         def post_feed_item(self, subject_id, message_text=None, message_segments=None, site_id=None, created_by_id=None):
             """This method publishes a new Chatter feed item.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`__)
 
             :param subject_id: The Subject ID against which to publish the feed item (e.g. ``0F9B000000000W2``)
             :type subject_id: str
@@ -906,7 +906,7 @@ class Salesforce(object):
 
         def post_comment(self, feed_element_id, message_text=None, message_segments=None, site_id=None, created_by_id=None):
             """This method publishes a comment on a Chatter feed item.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`__)
 
             :param feed_element_id: The ID of the feed element on which to post the comment
             :type feed_element_id: str
@@ -944,8 +944,8 @@ class Salesforce(object):
                 include_archived: bool = False,
         ):
             """This method checks to see if an article already exists with a given title and returns its article number.
-            (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_.
-            `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
+            (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__.
+            `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`__)
 
             :param title: The title of the knowledge article for which to check
             :type title: str
@@ -971,8 +971,8 @@ class Salesforce(object):
                 return_uri: bool = False,
         ):
             """This method returns the Article ID when an article number is provided.
-            (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
-            `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
+            (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
+            `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`__)
 
             .. warning::
                The ability to retrieve the article URI/URL rather than the ID will be moved to a separate function in
@@ -1001,7 +1001,7 @@ class Salesforce(object):
                 page_num: int = 1,
         ) -> list:
             """This method retrieves a list of knowledge articles.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`__)
 
             :param query: A SOQL query with which to filter the results (optional)
             :type query: str, None
@@ -1028,7 +1028,7 @@ class Salesforce(object):
                 use_knowledge_articles_endpoint: Optional[bool] = None,
         ):
             """This method retrieves details for a single knowledge article.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
 
                 .. versionchanged:: 1.4.0
                    A logic issue was resolved and the new optional ``use_knowledge_articles_endpoint`` parameter can
@@ -1056,7 +1056,7 @@ class Salesforce(object):
                 sobject: Optional[str] = None,
         ) -> str:
             """This method retrieves the Validation Status for a given Article ID.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
 
             .. versionchanged:: 1.4.0
                This method now returns an empty string rather than a ``None`` value if the ``ValidationStatus`` field
@@ -1078,7 +1078,7 @@ class Salesforce(object):
 
         def get_article_metadata(self, article_id: str) -> dict:
             """This method retrieves metadata for a specific knowledge article.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`__)
 
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str
@@ -1089,7 +1089,7 @@ class Salesforce(object):
 
         def get_article_version(self, article_id: str):
             """This method retrieves the version ID for a given master article ID.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`__)
 
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str
@@ -1127,7 +1127,7 @@ class Salesforce(object):
                 full_response: bool = False,
         ):
             """This method creates a new knowledge article draft.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`__)
 
             :param article_data: The article data used to populate the article
             :type article_data: dict
@@ -1151,7 +1151,7 @@ class Salesforce(object):
                 include_status_code: bool = False,
         ):
             """This method updates an existing knowledge article draft.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`__)
 
             :param record_id: The ID of the article draft record to be updated
             :type record_id: str
@@ -1171,7 +1171,7 @@ class Salesforce(object):
 
         def create_draft_from_online_article(self, article_id: str, unpublish: bool = False):
             """This method creates a draft knowledge article from an online article.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`__)
 
             :param article_id: The ID of the online article from which to create the draft
             :type article_id: str
@@ -1192,7 +1192,7 @@ class Salesforce(object):
                 full_response: bool = False,
         ):
             """This method creates an online version of a master article.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`__)
 
             :param article_id: The Article ID from which to create the draft
             :type article_id: str, None
@@ -1214,7 +1214,7 @@ class Salesforce(object):
 
         def publish_article(self, article_id, major_version=True, full_response=False):
             """This method publishes a draft knowledge article as a major or minor version.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`__)
 
             :param article_id: The Article ID to publish
             :type article_id: str
@@ -1230,7 +1230,7 @@ class Salesforce(object):
 
         def publish_multiple_articles(self, article_id_list, major_version=True):
             """This method publishes multiple knowledge article drafts at one time.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`__)
 
             :param article_id_list: A list of Article IDs to be published
             :type article_id_list: list
@@ -1246,7 +1246,7 @@ class Salesforce(object):
 
         def assign_data_category(self, article_id, category_group_name, category_name):
             """This method assigns a single data category for a knowledge article.
-            (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
+            (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`__)
 
             .. versionadded:: 1.2.0
 
@@ -1265,7 +1265,7 @@ class Salesforce(object):
 
         def archive_article(self, article_id):
             """This function archives a published knowledge article.
-            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
+            (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`__)
 
             .. versionadded:: 1.3.0
 

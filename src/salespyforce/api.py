@@ -3,8 +3,8 @@
 :Module:            salespyforce.api
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     03 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
+:Modified Date:     07 Feb 2026
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ def get(
         return_json: bool = True,
 ):
     """This method performs a GET request against the Salesforce instance.
-    (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+    (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
     .. versionchanged:: 1.4.0
        The full URL for the API call is now constructed prior to making the call. The provided URL is also
@@ -98,7 +98,7 @@ def api_call_with_payload(
         return_json: bool = True,
 ):
     """This method performs a POST call against the Salesforce instance.
-    (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`_)
+    (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
     .. versionchanged:: 1.4.0
        The full URL for the API call is now constructed prior to making the call. The provided URL is also

@@ -3,8 +3,8 @@
 :Module:            salespyforce.knowledge
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     03 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
+:Modified Date:     07 Feb 2026
 """
 
 from __future__ import annotations
@@ -29,8 +29,8 @@ def check_for_existing_article(
         include_archived: bool = False,
 ):
     """This method checks to see if an article already exists with a given title and returns its article number.
-    (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
-    `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
+    (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
+    `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`__)
 
     .. versionchanged:: 1.2.2
        You can now specify whether archived articles are included in the query results.
@@ -73,8 +73,8 @@ def get_article_id_from_number(
         return_uri: bool = False,
 ) -> str:
     """This method returns the Article ID when an article number is provided.
-    (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`_,
-    `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`_)
+    (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
+    `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`__)
 
     .. warning::
        The ability to retrieve the article URI/URL rather than the ID will be moved to a separate function in
@@ -139,7 +139,7 @@ def get_articles_list(
         page_num: int = 1,
 ):
     """This function retrieves a list of knowledge articles.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`__)
 
     .. versionchanged:: 1.4.0
        The errors now log as errors via the logger rather than to the stderr console.
@@ -207,7 +207,7 @@ def get_article_details(
         use_knowledge_articles_endpoint: Optional[bool] = None,
 ):
     """This function retrieves details for a single knowledge article.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
 
     .. versionchanged:: 1.4.0
        A logic issue was resolved and the new optional ``use_knowledge_articles_endpoint`` parameter can now be set to
@@ -260,7 +260,7 @@ def get_validation_status(
         sobject: Optional[str] = None,
 ) -> str:
     """This function retrieves the Validation Status for a given Article ID.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
 
     .. versionchanged:: 1.4.0
        The function now returns an empty string rather than a ``None`` value if the ``ValidationStatus`` field
@@ -292,7 +292,7 @@ def get_validation_status(
 
 def get_article_metadata(sfdc_object, article_id: str):
     """This function retrieves metadata for a specific knowledge article.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -306,7 +306,7 @@ def get_article_metadata(sfdc_object, article_id: str):
 
 def get_article_version(sfdc_object, article_id: str):
     """This function retrieves the version ID for a given master article ID.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -363,7 +363,7 @@ def create_article(
         full_response: bool = False,
 ):
     """This function creates a new knowledge article draft.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -406,7 +406,7 @@ def update_article(
         include_status_code: bool = False,
 ):
     """This function updates an existing knowledge article draft.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -451,7 +451,7 @@ def update_article(
 
 def create_draft_from_online_article(sfdc_object, article_id: str, unpublish: bool = False):
     """This function creates a draft knowledge article from an online article.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -487,7 +487,7 @@ def create_draft_from_master_version(
         full_response: bool = False,
 ):
     """This function creates an online version of a master article.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -534,7 +534,7 @@ def publish_article(
         full_response: bool = False,
 ):
     """This function publishes a draft knowledge article as a major or minor version.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -566,7 +566,7 @@ def publish_article(
 
 def publish_multiple_articles(sfdc_object, article_id_list: list, major_version: bool = True):
     """This function publishes multiple knowledge article drafts at one time.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -606,7 +606,7 @@ def publish_multiple_articles(sfdc_object, article_id_list: list, major_version:
 
 def assign_data_category(sfdc_object, article_id: str, category_group_name: str, category_name: str):
     """This function assigns a single data category for a knowledge article.
-    (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`_)
+    (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`__)
 
     .. versionadded:: 1.2.0
 
@@ -635,7 +635,7 @@ def assign_data_category(sfdc_object, article_id: str, category_group_name: str,
 
 def archive_article(sfdc_object, article_id: str):
     """This function archives a published knowledge article.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`__)
 
     .. versionadded:: 1.3.0
 

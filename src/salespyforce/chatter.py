@@ -3,8 +3,8 @@
 :Module:            salespyforce.chatter
 :Synopsis:          Defines the Chatter-related functions associated with the Salesforce Connect API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     03 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
+:Modified Date:     07 Feb 2026
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ def _get_site_endpoint_segment(_site_id: Optional[str] = None) -> str:
 
 def get_my_news_feed(sfdc_object, site_id: Optional[str] = None):
     """This function retrieves the news feed for the user calling the function.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -47,7 +47,7 @@ def get_my_news_feed(sfdc_object, site_id: Optional[str] = None):
 
 def get_user_news_feed(sfdc_object, user_id: str, site_id: Optional[str] = None):
     """This function retrieves another user's news feed.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -65,7 +65,7 @@ def get_user_news_feed(sfdc_object, user_id: str, site_id: Optional[str] = None)
 
 def get_group_feed(sfdc_object, group_id: str, site_id: Optional[str] = None):
     """This function retrieves a group's news feed.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -90,7 +90,7 @@ def post_feed_item(
         created_by_id: Optional[str] = None,
 ):
     """This function publishes a new Chatter feed item.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`__)
 
     .. versionchanged:: 1.4.0
        The function now raises the :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception rather than the
@@ -140,7 +140,7 @@ def post_comment(
         created_by_id: Optional[str] = None,
 ):
     """This function publishes a comment on a Chatter feed item.
-    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`_)
+    (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`__)
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]

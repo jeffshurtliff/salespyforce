@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     02 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
+:Modified Date:     07 Feb 2026
 """
 
 import re
@@ -183,8 +183,8 @@ def is_valid_salesforce_url(url: str) -> bool:
 
 def get_image_ref_id(image_url):
     """This function parses an image URL to identify the reference ID (refid) value.
-    (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`_,
-    `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`_)
+    (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`__,
+    `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`__)
 
     :param image_url: The URL of an image from within Salesforce
     :type image_url: str
