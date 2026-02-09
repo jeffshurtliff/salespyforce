@@ -123,7 +123,9 @@ html_theme = 'pydata_sphinx_theme'
 # Theme options are theme-specific and customize the look and feel of a theme.
 html_theme_options = {
     'logo': {
-        'text': 'SalesPyForce',
+        'image_light': 'salespyforce-logo-v1-tightcrop-72pxh.png',
+        'image_dark': 'salespyforce-logo-v1-tightcrop-72pxh.png',
+        'alt_text': 'SalesPyForce',
     },
     # 'github_url': 'https://github.com/jeffshurtliff/salespyforce',
 
