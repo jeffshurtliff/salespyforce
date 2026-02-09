@@ -67,14 +67,6 @@ source_suffix = {
     ".md": "markdown",
 }
 
-# -- MyST configuration -----------------------------------------------------
-
-myst_enable_extensions = [
-    'colon_fence',
-    'deflist',
-    'fieldlist',
-]
-
 # The master toctree document.
 master_doc = 'index'
 
@@ -92,6 +84,30 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'desktop.ini', 'README.m
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
+
+
+# -- MyST configuration -----------------------------------------------------
+
+# Enable syntax extensions
+myst_enable_extensions = [
+    'colon_fence',
+    'deflist',
+    'fieldlist',
+    'replacements',
+    'strikethrough',
+]
+
+# Open all external links in a new tab
+myst_links_external_new_tab = True
+
+# URI schemes that are converted to external links
+myst_url_schemes = ['http', 'https']
+
+# Heading level depth to assign HTML anchors
+myst_heading_anchors = 3
+
+# tasklist: Enable checkboxes
+myst_enable_checkboxes = True
 
 
 # -- Options for HTML output -------------------------------------------------
