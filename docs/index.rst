@@ -1,40 +1,27 @@
+##########################
 SalesPyForce Documentation
-==========================
+##########################
+Welcome to the official documentation for the SalesPyForce package.
 
-Welcome to the refreshed documentation for SalesPyForce.
-
-This site is intentionally minimal while we rebuild the structure and
-styling. The previous documentation has been preserved in ``docs_legacy/``
-for migration.
-
-Document reset notes are available here: :doc:`readme`.
+*****************
+Table of Contents
+*****************
 
 .. toctree::
    :maxdepth: 2
-   :caption: Getting Started
-
-   getting-started/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Guides
-
-   guides/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Reference
-
-   reference/index
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Project Info
 
    changelog
 
 .. toctree::
-   :maxdepth: 1
-   :hidden:
 
-   readme
+   core-object-methods
+   primary-modules
+   supporting-modules
+
+***********************
+Module Index and Search
+***********************
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

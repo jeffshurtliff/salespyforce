@@ -13,8 +13,6 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
-from __future__ import annotations
-
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -26,7 +24,7 @@ import src.salespyforce.utils.version
 # -- Project information -----------------------------------------------------
 
 project = 'SalesPyForce'
-copyright = '2026, Jeff Shurtliff'
+copyright = '2025, Jeff Shurtliff'
 author = 'Jeff Shurtliff'
 
 # The short X.Y version
@@ -52,8 +50,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
-    'sphinx.ext.autosectionlabel',
-    'myst_parser'
+    'sphinx.ext.autosectionlabel'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -62,10 +59,7 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-source_suffix = {
-    ".rst": "restructuredtext",
-    ".md": "markdown",
-}
+source_suffix = ['.rst', '.md']
 
 # The master toctree document.
 master_doc = 'index'
@@ -80,34 +74,10 @@ language = 'en'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'desktop.ini', 'README.md']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'desktop.ini']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
-
-
-# -- MyST configuration -----------------------------------------------------
-
-# Enable syntax extensions
-myst_enable_extensions = [
-    'colon_fence',
-    'deflist',
-    'fieldlist',
-    'replacements',
-    'strikethrough',
-]
-
-# Open all external links in a new tab
-myst_links_external_new_tab = True
-
-# URI schemes that are converted to external links
-myst_url_schemes = ['http', 'https']
-
-# Heading level depth to assign HTML anchors
-myst_heading_anchors = 3
-
-# tasklist: Enable checkboxes
-myst_enable_checkboxes = True
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -115,7 +85,7 @@ myst_enable_checkboxes = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'pydata_sphinx_theme'
+html_theme = 'alabaster'
 
 # Add the favicon
 # html_favicon = '_static/favicon.ico'
@@ -125,24 +95,15 @@ html_theme = 'pydata_sphinx_theme'
 # documentation.
 #
 html_theme_options = {
-    'logo': {
-        'text': 'SalesPyForce',
-    },
-    # 'github_url': 'https://github.com/jeffshurtliff/salespyforce',
-
-    # Right side of the top navbar
-    'navbar_end': ['theme-switcher', 'navbar-icon-links'],
-    'icon_links': [
-        {
-            'name': 'GitHub',
-            'url': 'https://github.com/jeffshurtliff/salespyforce',
-            'icon': 'fa-brands fa-github',
-        }
-    ],
-
-    # Reasonable code highlighting defaults
-    "pygment_light_style": "tango",
-    "pygment_dark_style": "monokai",
+    # 'logo': 'salespyforce-logo.png',
+    'description': 'A Python toolset for performing Salesforce API calls',
+    'font_family': 'Arial, sans-serif',
+    'head_font_family': 'Arial, sans-serif',
+    'github_user': 'jeffshurtliff',
+    'github_repo': 'salespyforce',
+    'github_banner': False,
+    'github_button': True,
+    'donate_url': 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=XDZ8M6UV6EFK6&item_name=salespyforce&currency_code=USD',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

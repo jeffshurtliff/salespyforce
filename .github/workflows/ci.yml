@@ -9,6 +9,7 @@ on:
       - .readthedocs.yaml
       - docs/**
       - docs_legacy/**
+      - docs_wip/**
       - examples/**
       - .github/ISSUE_TEMPLATE/**
   pull_request:
@@ -19,6 +20,7 @@ on:
       - .readthedocs.yaml
       - docs/**
       - docs_legacy/**
+      - docs_wip/**
       - examples/**
       - .github/ISSUE_TEMPLATE/**
 
