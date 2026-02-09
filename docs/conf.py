@@ -34,6 +34,9 @@ version = src.salespyforce.utils.version.get_major_minor_version()
 # The full version, including alpha/beta/rc tags
 release = src.salespyforce.utils.version.get_full_version()
 
+# The documentation title used throughout this configuration file.
+SALESPYFORCE_DOC_TITLE = 'SalesPyForce Documentation'
+
 
 # -- General configuration ---------------------------------------------------
 
@@ -53,18 +56,17 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
-    'myst_parser'
+    'myst_parser',
+    'sphinx_favicon',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
-# You can specify multiple suffix as a list of string:
-#
 source_suffix = {
-    ".rst": "restructuredtext",
-    ".md": "markdown",
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
 }
 
 # The master toctree document.
@@ -112,18 +114,13 @@ myst_enable_checkboxes = True
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
+# The theme to use for HTML and HTML Help pages.
 html_theme = 'pydata_sphinx_theme'
 
-# Add the favicon
+# Add the favicon (unused because sphinx_favicon extension is being used)
 # html_favicon = '_static/favicon.ico'
 
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-#
+# Theme options are theme-specific and customize the look and feel of a theme.
 html_theme_options = {
     'logo': {
         'text': 'SalesPyForce',
@@ -141,8 +138,8 @@ html_theme_options = {
     ],
 
     # Reasonable code highlighting defaults
-    "pygment_light_style": "tango",
-    "pygment_dark_style": "monokai",
+    'pygment_light_style': 'tango',
+    'pygment_dark_style': 'monokai',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -170,6 +167,16 @@ autosectionlabel_prefix_document = True
 suppress_warnings = [
     'autosectionlabel.changelog'
 ]
+
+
+# -- Options for sphinx-favicon ----------------------------------------------
+
+favicons = [
+    {'rel': 'icon', 'sizes': '16x16', 'href': 'salespyforce-favicon-16x16.png'},
+    {'rel': 'icon', 'sizes': '32x32', 'href': 'salespyforce-favicon-32x32.png'},
+    {'rel': 'apple-touch-icon', 'sizes': '180x180', 'href': 'salespyforce-apple-touch-icon-180x180.png'},
+]
+
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
@@ -201,7 +208,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'salespyforce.tex', 'SalesPyForce Documentation',
+    (master_doc, 'salespyforce.tex', SALESPYFORCE_DOC_TITLE,
      'Jeff Shurtliff', 'manual'),
 ]
 
@@ -211,7 +218,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'salespyforce', 'SalesPyForce Documentation',
+    (master_doc, 'salespyforce', SALESPYFORCE_DOC_TITLE,
      [author], 1)
 ]
 
@@ -222,7 +229,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'salespyforce', 'SalesPyForce Documentation',
+    (master_doc, 'salespyforce', SALESPYFORCE_DOC_TITLE,
      author, 'salespyforce', 'A Python toolset for performing Salesforce API calls',
      'Miscellaneous'),
 ]
@@ -259,7 +266,7 @@ intersphinx_mapping = {
     'requests': ('https://requests.readthedocs.io/en/latest/', None),
 }
 
-# -- Options for todo extension ----------------------------------------------
+# -- Options for tοdο extension ----------------------------------------------
 
-# If true, `todo` and `todoList` produce output, else they produce nothing.
+# If true, `tοdο` and `tοdοList` produce output, else they produce nothing.
 todo_include_todos = True
