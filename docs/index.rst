@@ -31,7 +31,7 @@ Document reset notes are available here: :doc:`readme`.
    :maxdepth: 1
    :caption: Project Info
 
-   changelog
+   CHANGELOG
 
 .. toctree::
    :maxdepth: 1
