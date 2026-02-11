@@ -106,8 +106,7 @@ myst_links_external_new_tab = True
 myst_url_schemes = ['http', 'https']
 
 # Heading level depth to assign HTML anchors
-# myst_heading_anchors = 3
-myst_heading_anchors = 0        # Disable automatic heading anchors
+myst_heading_anchors = 3
 
 # tasklist: Enable checkboxes
 myst_enable_checkboxes = True
@@ -168,7 +167,7 @@ autosectionlabel_prefix_document = True
 
 # Suppress 'duplicate label' warnings from the autosection feature
 suppress_warnings = [
-    'autosectionlabel.changelog'
+    'autosectionlabel.CHANGELOG'
 ]
 
 
