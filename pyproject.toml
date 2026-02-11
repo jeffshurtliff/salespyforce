@@ -14,9 +14,25 @@ authors = [
 keywords = ["salesforce", "sfdc", "sfdx", "api", "rest", "tooling", "python"]
 
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
+    # Project maturity
+    "Development Status :: 5 - Production/Stable",
+
+    # License
     "License :: OSI Approved :: MIT License",
+    "License :: Freely Distributable",
+
+    # Intended audience and environment
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Developers",
+    "Environment :: Web Environment",
+    "Operating System :: OS Independent",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: System :: Systems Administration",
+
+    # Supported Python versions
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.9",
@@ -24,8 +40,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Topic :: Software Development :: Libraries",
-    "Topic :: Internet :: WWW/HTTP"
 ]
 
 dependencies = [
