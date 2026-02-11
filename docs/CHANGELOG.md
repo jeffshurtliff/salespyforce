@@ -41,9 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - The {py:meth}`salespyforce.Salesforce.get_18_char_id` method converts a 15-character 
       `Id` value into a valid 18-character value.
 - Added several new functions in the utilities modules:
-  - The new {py:meth}`salespyforce.utils.core_utils.is_valid_salesforce_url` function is now 
-    utilized to ensure that URLs passed to the API function methods (e.g. 
-    {py:meth}`salespyforce.Salesforce.get`) to ensure they are valid Salesforce URLs. 
+    - The new {py:meth}`salespyforce.utils.core_utils.is_valid_salesforce_url` function 
+      is now utilized to ensure that URLs passed to the API call methods (e.g. 
+      {py:meth}`salespyforce.Salesforce.get`) to ensure they are valid Salesforce URLs. 
 
 (relnotes-1.4.0-changed)=
 ### Changed
@@ -56,7 +56,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_article_details` method now accepts the 
   optional `use_knowledge_articles_endpoint` parameter, which forces the `knowledgeArticles` 
   endpoint to be used for the GET request rather than the `sobjects` endpoint.
+- The client methods for API calls (e.g. {py:meth)`salespyforce.Salesforce.get`, 
+  {py:meth)`salespyforce.Salesforce.post`, etc.) now support passing full URLs as the endpoint 
+  as long as they are valid Salesforce.com URLs.
+- The {py:meth}`salespyforce.Salesforce.Knowledge.get_articles_list` method now logs errors 
+  using the logger rather than writing to `stderr` in the console.
 
+(relnotes-1.4.0-fixed)=
+### Fixed
+
+- A logic issue was found and resolved in the 
+  {py:meth}`salespyforce.Salesforce.Knowledge.get_article_id_from_number` method.
+
+(relnotes-1.4.0-security)=
+### Security
+
+- Several dependency versions were updated to mitigate known vulnerabilities 
+  found in earlier versions:
+    - Explicitly pinned `urllib3` to require version `1.26.19` or above (below v3) 
+      in order to avoid CVE-2024-37891.
+    - Explicitly pinned `idna` to require version `3.7` or above (below v4) in order
+      to avoid CVE-2024-3651.
+    - Explicitly pinned `certifi` to require version `2024.7.4` or above in order to
+      mitigate CA removals (e-Tugra, GLOBALTRUST) per CVE-2023-37920 and CVE-2024-39689.
+
+---
+(relnotes-1.3.0)=
+## 1.3.0 - 2025-11-11
+
+Coming soon!
 
 <!-- TODO: Continue populating the changelog from the original file -->
 
