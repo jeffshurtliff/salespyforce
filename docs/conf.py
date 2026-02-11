@@ -140,8 +140,8 @@ html_theme_options = {
     ],
 
     # Reasonable code highlighting defaults
-    'pygment_light_style': 'tango',
-    'pygment_dark_style': 'monokai',
+    'pygments_light_style': 'tango',
+    'pygments_dark_style': 'monokai',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
