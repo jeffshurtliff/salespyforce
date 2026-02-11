@@ -7,8 +7,10 @@ The format is based on the [Keep a Changelog](https://keepachangelog.com/en/1.1.
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+(relnotes-unreleased)=
 ## [Unreleased]
 
+(unreleased-changed)=
 ### Changed
 
 - The documentation for this project is being updated to a more modern and intuitive theme,
@@ -16,8 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   more human-oriented with helpful guides and tutorials.
 
 ---
+(relnotes-1.4.0)=
 ## [1.4.0] - 2026-02-04
 
+(relnotes-1.4.0-added)=
 ### Added
 
 - Several new methods have been introduced within the core object to perform various tasks:
@@ -36,6 +40,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - {py:meth}`salespyforce.Salesforce.can_delete_record`
     - The {py:meth}`salespyforce.Salesforce.get_18_char_id` method converts a 15-character 
       `Id` value into a valid 18-character value.
+- Added several new functions in the utilities modules:
+  - The new {py:meth}`salespyforce.utils.core_utils.is_valid_salesforce_url` function is now 
+    utilized to ensure that URLs passed to the API function methods (e.g. 
+    {py:meth}`salespyforce.Salesforce.get`) to ensure they are valid Salesforce URLs. 
+
+(relnotes-1.4.0-changed)=
+### Changed
+
+- The {py:class}`salespyforce.Salesforce` client now defines and stores the `org_id` (str)  
+  and `current_user_info` (dict) for use in client API calls as default parameter values.
+- The {py:meth}`salespyforce.Salesforce.Knowledge.get_validation_status` method has been updated
+  to use a more specific exception class, and to return an empty string on lookup failures 
+  versus a ``None`` value.
+- The {py:meth}`salespyforce.Salesforce.Knowledge.get_article_details` method now accepts the 
+  optional `use_knowledge_articles_endpoint` parameter, which forces the `knowledgeArticles` 
+  endpoint to be used for the GET request rather than the `sobjects` endpoint.
+
 
 <!-- TODO: Continue populating the changelog from the original file -->
 
