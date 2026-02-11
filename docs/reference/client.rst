@@ -44,12 +44,12 @@ Additional Modules
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: salespyforce.knowledge
+.. automodule:: salespyforce.decorators
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: salespyforce.decorators
+.. automodule:: salespyforce.knowledge
    :members:
    :undoc-members:
    :show-inheritance:

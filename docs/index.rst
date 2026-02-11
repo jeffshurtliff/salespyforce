@@ -7,7 +7,7 @@ This site is intentionally minimal while we rebuild the structure and
 styling. The previous documentation has been preserved in ``docs_legacy/``
 for migration.
 
-Document reset notes are available here: :doc:`readme`.
+Document reset notes are available here: :doc:`doc-redesign-notes`.
 
 .. toctree::
    :maxdepth: 2
@@ -37,4 +37,4 @@ Document reset notes are available here: :doc:`readme`.
    :maxdepth: 1
    :hidden:
 
-   readme
+   doc-redesign-notes
