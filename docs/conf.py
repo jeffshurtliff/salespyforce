@@ -106,7 +106,8 @@ myst_links_external_new_tab = True
 myst_url_schemes = ['http', 'https']
 
 # Heading level depth to assign HTML anchors
-myst_heading_anchors = 3
+# myst_heading_anchors = 3
+myst_heading_anchors = 0        # Disable automatic heading anchors
 
 # tasklist: Enable checkboxes
 myst_enable_checkboxes = True
