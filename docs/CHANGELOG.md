@@ -90,43 +90,85 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (relnotes-1.3.0)=
 ## [1.3.0] - 2025-11-11
 
-Coming soon!
+(relnotes-1.3.0-added)=
+### Added
+
+- The new {py:meth}`salespyforce.Salesforce.Knowledge.archive_article` method was added to 
+  easily archive knowledge articles.
+
+(relnotes-1.3.0-changed)=
+### Changed
+
+- The `next_records_url` parameter was added to the {py:meth}`salespyforce.Salesforce.soql_query`
+  method which introduces the ability to query using a `nextRecordsUrl` value.
 
 ---
 (relnotes-1.2.2)=
 ## [1.2.2] - 2023-11-14
 
-Coming soon!
+(relnotes-1.2.2-changed)=
+### Changed
+
+- The {py:meth}`salespyforce.Salesforce.Knowledge.check_for_existing_article` method has been 
+  updated to introduce the `include_archived ` parameter, which specifies whether archived 
+  articles will be included in the query results.
 
 ---
 (relnotes-1.2.1)=
 ## [1.2.1] - 2023-09-01
 
-Coming soon!
+(relnotes-1.2.1-changed)=
+### Changed
+
+- The {py:meth}`salespyforce.Salesforce.Knowledge.publish_article` method now returns a Boolean
+  value by default, which indicates whether the operation was successful. It is still possible 
+  to optionally return the full API response.
 
 ---
 (relnotes-1.2.0)=
 ## [1.2.0] - 2023-08-31
 
-Coming soon!
+(relnotes-1.2.0-added)=
+### Added
+
+- The new {py:meth}`salespyforce.Salesforce.Knowledge.assign_data_category` method has been added,
+  which introduces the ability to assign data categories to a knowledge article draft.
+
+(relnotes-1.2.0-fixed)=
+### Fixed
+
+- The underlying function for the {py:meth}`salespyforce.Salesforce.Knowledge.get_article_url` method
+  was updated to fix an extraneous slash issue.
 
 ---
 (relnotes-1.1.2)=
 ## [1.1.2] - 2023-06-05
 
-Coming soon!
+(relnotes-1.1.2-changed)=
+### Changed
+
+- Only the version was changed in this release to address an issue with PyPI distribution.
 
 ---
 (relnotes-1.1.1)=
 ## [1.1.1] - 2023-06-05
 
-Coming soon!
+(relnotes-1.1.1-changed)=
+### Changed
+
+- Only the version was changed in this release to address an issue with PyPI distribution.
 
 ---
 (relnotes-1.1.0)=
 ## [1.1.0] - 2023-05-29
 
-Coming soon!
+(relnotes-1.1.0-added)=
+### Added
+
+- The {py:meth}`salespyforce.Salesforce.get_org_limits` method was added to retrieve 
+  the governor limits for the connected Salesforce org.
+- The {py:meth}`salespyforce.Salesforce.search_string` method was added to introduce
+  the ability to perform a SOSL query to search for a given string.
 
 ---
 (relnotes-1.0.0)=
