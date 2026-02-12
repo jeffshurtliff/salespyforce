@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 (relnotes-1.3.0)=
-## 1.3.0 - 2025-11-11
+## [1.3.0] - 2025-11-11
 
 Coming soon!
 
@@ -90,4 +90,5 @@ Coming soon!
 
 <!-- The reference definitions are listed below -->
 [Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/1.4.0...HEAD
-[1.4.0]: https://github.com/jeffshurtliff/salespyforce/releases/tag/1.4.0
+[1.4.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.3.0...1.4.0
+[1.3.0]: https://github.com/jeffshurtliff/salespyforce/releases/tag/1.3.0
