@@ -62,6 +62,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_articles_list` method now logs errors 
   using the logger rather than writing to `stderr` in the console.
 
+(relnotes-1.4.0-deprecated)=
+### Deprecated
+
+- The function {py:func}`salespyforce.utils.core_utils.display_warning` has been deprecated, as 
+  it has been moved to {py:func}`salespyforce.errors.handlers.display_warning` instead.
+
 (relnotes-1.4.0-fixed)=
 ### Fixed
 
@@ -86,9 +92,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Coming soon!
 
-<!-- TODO: Continue populating the changelog from the original file -->
+---
+(relnotes-1.2.2)=
+## [1.2.2] - 2023-11-14
+
+Coming soon!
+
+---
+(relnotes-1.2.1)=
+## [1.2.1] - 2023-09-01
+
+Coming soon!
+
+---
+(relnotes-1.2.0)=
+## [1.2.0] - 2023-08-31
+
+Coming soon!
+
+---
+(relnotes-1.1.2)=
+## [1.1.2] - 2023-06-05
+
+Coming soon!
+
+---
+(relnotes-1.1.1)=
+## [1.1.1] - 2023-06-05
+
+Coming soon!
+
+---
+(relnotes-1.1.0)=
+## [1.1.0] - 2023-05-29
+
+Coming soon!
+
+---
+(relnotes-1.0.0)=
+## [1.0.0] - 2023-05-08
+
+This was the first release of the `salespyforce` package on PyPI with its original 
+features and functionality.
+
 
 <!-- The reference definitions are listed below -->
 [Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/1.4.0...HEAD
 [1.4.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.3.0...1.4.0
-[1.3.0]: https://github.com/jeffshurtliff/salespyforce/releases/tag/1.3.0
+[1.3.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.2.2...1.3.0
+[1.2.2]: https://github.com/jeffshurtliff/salespyforce/compare/1.2.1...1.2.2
+[1.2.1]: https://github.com/jeffshurtliff/salespyforce/compare/1.2.0...1.2.1
+[1.2.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.1.2...1.2.0
+[1.1.2]: https://github.com/jeffshurtliff/salespyforce/compare/1.1.1...1.1.2
+[1.1.1]: https://github.com/jeffshurtliff/salespyforce/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.0.0...1.1.0
+[1.0.0]: https://github.com/jeffshurtliff/salespyforce/releases/tag/1.0.0
