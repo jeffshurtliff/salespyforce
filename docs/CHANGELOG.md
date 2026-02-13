@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The documentation for this project is being updated to a more modern and intuitive theme,
   layout, and structure. The intent is to be less verbose and instead make the documentation 
   more human-oriented with helpful guides and tutorials.
+    - The previous Sphinx content has been preserved in `docs_legacy/` and will be migrated 
+      as the new structure and styling are finalized.  
 
 ---
 (relnotes-1.4.0)=

@@ -7,8 +7,6 @@ This site is intentionally minimal while we rebuild the structure and
 styling. The previous documentation has been preserved in ``docs_legacy/``
 for migration.
 
-Document reset notes are available here: :doc:`doc-redesign-notes`.
-
 .. toctree::
    :maxdepth: 2
    :caption: Getting Started
@@ -32,9 +30,3 @@ Document reset notes are available here: :doc:`doc-redesign-notes`.
    :caption: Project Info
 
    CHANGELOG
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-
-   doc-redesign-notes
