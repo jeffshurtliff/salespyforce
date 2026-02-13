@@ -4,16 +4,6 @@ Client API
 SalesPyForce exposes a high-level client class along with convenience helpers
 from the top-level package.
 
-Top-Level Package
------------------
-
-.. automodule:: salespyforce
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :no-index:
-   :exclude-members: Salesforce
-
 Salesforce Client
 -----------------
 
