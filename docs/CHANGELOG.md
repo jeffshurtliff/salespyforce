@@ -27,30 +27,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Several new methods have been introduced within the core object to perform various tasks:
-    - The {py:meth}`salespyforce.Salesforce.delete` method performs DELETE API calls.
-    - The {py:meth}`salespyforce.Salesforce.get_latest_api_version` method retrieves the 
+    - The {py:meth}`~salespyforce.Salesforce.delete` method performs DELETE API calls.
+    - The {py:meth}`~salespyforce.Salesforce.get_latest_api_version` method retrieves the 
       latest Salesforce API version.
-    - The {py:meth}`salespyforce.Salesforce.retrieve_current_user_info` method retrieves 
+    - The {py:meth}`~salespyforce.Salesforce.retrieve_current_user_info` method retrieves 
       information for the current/running user that was leveraged to connect to the 
       Salesforce REST API.
         - This method now runs during the core object instantiation so that the running user 
           information can be utilized as default parameter values with certain methods/functions.
     - Several new methods were added to check the user access for a specific record:
-        - {py:meth}`salespyforce.Salesforce.can_access_record`
-        - {py:meth}`salespyforce.Salesforce.can_read_record`
-        - {py:meth}`salespyforce.Salesforce.can_edit_record`
-        - {py:meth}`salespyforce.Salesforce.can_delete_record`
-    - The {py:meth}`salespyforce.Salesforce.get_18_char_id` method converts a 15-character 
+        - {py:meth}`~salespyforce.Salesforce.can_access_record`
+        - {py:meth}`~salespyforce.Salesforce.can_read_record`
+        - {py:meth}`~salespyforce.Salesforce.can_edit_record`
+        - {py:meth}`~salespyforce.Salesforce.can_delete_record`
+    - The {py:meth}`~salespyforce.Salesforce.get_18_char_id` method converts a 15-character 
       `Id` value into a valid 18-character value.
 - Added several new functions in the utilities modules:
     - The new {py:meth}`salespyforce.utils.core_utils.is_valid_salesforce_url` function 
-      is now utilized to ensure that URLs passed to the API call methods (e.g. 
-      {py:meth}`salespyforce.Salesforce.get`) to ensure they are valid Salesforce URLs. 
+      is now utilized to ensure that URLs passed to the API call methods (e.g., 
+      {py:meth}`~salespyforce.Salesforce.get`, {py:meth}`~salespyforce.Salesforce.put`, etc.) 
+      to ensure they are valid Salesforce URLs. 
 
 (relnotes-1.4.0-changed)=
 ### Changed
 
-- The {py:class}`salespyforce.Salesforce` client now defines and stores the `org_id` (str)  
+- The {py:class}`~salespyforce.Salesforce` client now defines and stores the `org_id` (str)  
   and `current_user_info` (dict) for use in client API calls as default parameter values.
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_validation_status` method has been updated
   to use a more specific exception class, and to return an empty string on lookup failures 
@@ -58,8 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_article_details` method now accepts the 
   optional `use_knowledge_articles_endpoint` parameter, which forces the `knowledgeArticles` 
   endpoint to be used for the GET request rather than the `sobjects` endpoint.
-- The client methods for API calls (e.g. {py:meth)`salespyforce.Salesforce.get`, 
-  {py:meth)`salespyforce.Salesforce.post`, etc.) now support passing full URLs as the endpoint 
+- The client methods for API calls (e.g. {py:meth)`~salespyforce.Salesforce.get`, 
+  {py:meth)`~salespyforce.Salesforce.post`, etc.) now support passing full URLs as the endpoint 
   as long as they are valid Salesforce.com URLs.
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_articles_list` method now logs errors 
   using the logger rather than writing to `stderr` in the console.
@@ -101,7 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (relnotes-1.3.0-changed)=
 ### Changed
 
-- The `next_records_url` parameter was added to the {py:meth}`salespyforce.Salesforce.soql_query`
+- The `next_records_url` parameter was added to the {py:meth}`~salespyforce.Salesforce.soql_query`
   method which introduces the ability to query using a `nextRecordsUrl` value.
 
 ---
@@ -167,9 +168,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (relnotes-1.1.0-added)=
 ### Added
 
-- The {py:meth}`salespyforce.Salesforce.get_org_limits` method was added to retrieve 
+- The {py:meth}`~salespyforce.Salesforce.get_org_limits` method was added to retrieve 
   the governor limits for the connected Salesforce org.
-- The {py:meth}`salespyforce.Salesforce.search_string` method was added to introduce
+- The {py:meth}`~salespyforce.Salesforce.search_string` method was added to introduce
   the ability to perform a SOSL query to search for a given string.
 
 ---
