@@ -59,8 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_article_details` method now accepts the 
   optional `use_knowledge_articles_endpoint` parameter, which forces the `knowledgeArticles` 
   endpoint to be used for the GET request rather than the `sobjects` endpoint.
-- The client methods for API calls (e.g. {py:meth)`~salespyforce.Salesforce.get`, 
-  {py:meth)`~salespyforce.Salesforce.post`, etc.) now support passing full URLs as the endpoint 
+- The client methods for API calls (e.g. {py:meth}`~salespyforce.Salesforce.get`, 
+  {py:meth}`~salespyforce.Salesforce.post`, etc.) now support passing full URLs as the endpoint 
   as long as they are valid Salesforce.com URLs.
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_articles_list` method now logs errors 
   using the logger rather than writing to `stderr` in the console.
@@ -68,8 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (relnotes-1.4.0-deprecated)=
 ### Deprecated
 
-- The function {py:func}`salespyforce.utils.core_utils.display_warning` has been deprecated, as 
-  it has been moved to {py:func}`salespyforce.errors.handlers.display_warning` instead.
+- The function {py:func}`salespyforce.utils.core_utils.display_warning` has been deprecated  
+  and has been moved to {py:func}`salespyforce.errors.handlers.display_warning` instead.
 
 (relnotes-1.4.0-fixed)=
 ### Fixed
