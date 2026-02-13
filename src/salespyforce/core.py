@@ -31,42 +31,42 @@ logger = log_utils.initialize_logging(__name__)
 
 
 class Salesforce(object):
-    """This is the class for the core object leveraged in this module."""
+    """This is the client object for the library (i.e. core object class) that is leveraged to perform API tasks.
+
+    .. versionchanged:: 1.4.0
+       The authorized Salesforce org is now queried to determine the latest API version to leverage unless
+       explicitly defined with the ``version`` parameter when instantiating the object.
+
+    :param connection_info: The information for connecting to the Salesforce instance
+    :type connection_info: dict, None
+    :param version: The Salesforce API version to utilize (uses latest version from org if not explicitly defined)
+    :type version: str, None
+    :param base_url: The base URL of the Salesforce instance
+    :type base_url: str, None
+    :param org_id: The Org ID of the Salesforce instance
+    :type org_id: str, None
+    :param username: The username of the API user
+    :type username: str, None
+    :param password: The password of the API user
+    :type password: str, None
+    :param endpoint_url: The endpoint URL for the Salesforce instance
+    :type endpoint_url: str, None
+    :param client_id: The Client ID for the Salesforce instance
+    :type client_id: str, None
+    :param client_secret: The Client Secret for the Salesforce instance
+    :type client_secret: str, None
+    :param security_token: The Security Token for the Salesforce instance
+    :type security_token: str, None
+    :param helper: The file path of a helper file
+    :type helper: str, None
+    :returns: The instantiated object
+    :raises: :py:exc:`TypeError`,
+             :py:exc:`RuntimeError`
+    """
     # Define the function that initializes the object instance (i.e. instantiates the object)
     def __init__(self, connection_info=None, version=None, base_url=None, org_id=None, username=None,
                  password=None, endpoint_url=None, client_id=None, client_secret=None, security_token=None, helper=None):
-        """This method instantiates the core Salesforce object.
-
-        .. versionchanged:: 1.4.0
-           The authorized Salesforce org is now queried to determine the latest API version to leverage unless
-           explicitly defined with the ``version`` parameter when instantiating the object.
-
-        :param connection_info: The information for connecting to the Salesforce instance
-        :type connection_info: dict, None
-        :param version: The Salesforce API version to utilize (uses latest version from org if not explicitly defined)
-        :type version: str, None
-        :param base_url: The base URL of the Salesforce instance
-        :type base_url: str, None
-        :param org_id: The Org ID of the Salesforce instance
-        :type org_id: str, None
-        :param username: The username of the API user
-        :type username: str, None
-        :param password: The password of the API user
-        :type password: str, None
-        :param endpoint_url: The endpoint URL for the Salesforce instance
-        :type endpoint_url: str, None
-        :param client_id: The Client ID for the Salesforce instance
-        :type client_id: str, None
-        :param client_secret: The Client Secret for the Salesforce instance
-        :type client_secret: str, None
-        :param security_token: The Security Token for the Salesforce instance
-        :type security_token: str, None
-        :param helper: The file path of a helper file
-        :type helper: str, None
-        :returns: The instantiated object
-        :raises: :py:exc:`TypeError`,
-                 :py:exc:`RuntimeError`
-        """
+        """This method instantiates the core Salesforce client object."""
         # Define the default settings
         self._helper_settings = {}
 
