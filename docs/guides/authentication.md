@@ -113,8 +113,9 @@ If authentication fails:
 
 ## Future Authentication Support
 
-> **Note**
-> Additional authentication methods are planned for future releases, such as
-> environment-variable-based configuration and additional OAuth 2.0 flows
-> (for example, JWT bearer and web server flow). External Client App-based
-> authentication options may also be added where applicable.
+:::{note}
+Additional authentication methods are planned for future releases, such as
+environment-variable-based configuration and additional OAuth 2.0 flows
+(for example, JWT bearer and web server flow). External Client App-based
+authentication options may also be added where applicable.
+:::
