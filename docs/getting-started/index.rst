@@ -17,11 +17,12 @@ Before you begin, make sure you have:
 - A Salesforce user with API permissions
 - Connected App credentials (client key/secret) and security token as needed
 
-For deeper task-based walkthroughs after setup, continue to :doc:`../guides/index`.
-For method and exception details, see :doc:`../reference/index`.
+For deeper task-based walkthroughs after setup, continue to the :doc:`../guides/index` section.
+For method and exception details, see the :doc:`../reference/index` section.
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
 
    overview
    installation
