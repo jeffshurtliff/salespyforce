@@ -55,31 +55,31 @@ result = sfdc.soql_query(query)
 print(result.get("totalSize", 0))
 ```
 
-For a complete walkthrough, see {doc}`getting-started/quickstart`.
+For a complete walkthrough, see the {doc}`getting-started/quickstart` page.
 
 ## Documentation Map
 
 ### Getting Started
 
-- {doc}`getting-started/overview`: package capabilities and requirements
-- {doc}`getting-started/installation`: installation and environment setup
-- {doc}`getting-started/quickstart`: minimal end-to-end usage example
+- {doc}`getting-started/overview`: Package capabilities and requirements
+- {doc}`getting-started/installation`: Installation and environment setup
+- {doc}`getting-started/quickstart`: Minimal end-to-end usage example
 
 ### Guides
 
-- {doc}`guides/authentication`: credential patterns and helper-file usage
+- {doc}`guides/authentication`: Credential patterns and helper-file usage
 - {doc}`guides/querying`: SOQL and SOSL examples and best practices
-- {doc}`guides/error-handling`: exceptions, diagnostics, and recovery patterns
+- {doc}`guides/error-handling`: Exceptions, diagnostics, and recovery patterns
 
 ### API Reference
 
 - {doc}`reference/client`: `Salesforce` class and client-facing modules
-- {doc}`reference/utilities`: utility functions and helpers
-- {doc}`reference/exceptions`: exception classes and error helpers
+- {doc}`reference/utilities`: Utility functions and helpers
+- {doc}`reference/exceptions`: Exception classes and error helpers
 
 ### Project Information
 
-- {doc}`CHANGELOG`: release history and notable changes
+- {doc}`CHANGELOG`: Release history and notable changes
 
 ## Project Links
 
