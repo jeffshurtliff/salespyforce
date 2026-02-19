@@ -102,8 +102,10 @@ The package can be installed via pip using the syntax below.
 pip install salespyforce --upgrade
 ```
 
-## Change Log
-The change log can be found in the [documentation](https://salespyforce.readthedocs.io/en/latest/changelog.html).
+## Changelog
+The changelog can be found in the [documentation](https://salespyforce.readthedocs.io) for the 
+[stable](https://salespyforce.readthedocs.io/en/stable/changelog.html) and 
+[latest](https://salespyforce.readthedocs.io/en/latest/CHANGELOG.html) versions.
 
 ## Usage
 This section provides basic usage instructions for the package.
@@ -184,7 +186,7 @@ sfdc = Salesforce(helper=HELPER_FILE)
 ```
 
 ## Documentation
-The documentation is located here: [https://salespyforce.readthedocs.io/en/latest/](https://salespyforce.readthedocs.io/en/latest/)
+The documentation is located here: [https://salespyforce.readthedocs.io/en/stable/](https://salespyforce.readthedocs.io/en/stable/)
 
 ## License
 [MIT License](https://github.com/jeffshurtliff/salespyforce/blob/master/LICENSE)
