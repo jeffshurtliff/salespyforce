@@ -48,12 +48,15 @@ dependencies = [
     "urllib3>=1.26.19,<3",  # Explicit pin to avoid CVE-2024-37891
     "idna>=3.7,<4",         # Explicit pin to avoid CVE-2024-3651
     "certifi>=2024.7.4",    # Explicit pin to mitigate CA removals (e-Tugra, GLOBALTRUST)
+
+    # Backport of tomllib for Python < 3.11
+    "tomli>=2.0.0; python_version < '3.11'",
 ]
 
 [project.urls]
 Homepage = "https://github.com/jeffshurtliff/salespyforce"
 Repository = "https://github.com/jeffshurtliff/salespyforce"
-Documentation = "https://salespyforce.readthedocs.io/en/latest/"
+Documentation = "https://salespyforce.readthedocs.io/en/stable/"
 "Issue Tracker" = "https://github.com/jeffshurtliff/salespyforce/issues"
 
 # --------------------------------------------------------------------
@@ -72,12 +75,7 @@ bandit = { version = "^1.7.8", extras = ["sarif"] }
 Sphinx = "^7.4.7"
 pydata-sphinx-theme = "^0.15.4"
 myst-parser = "^3.0.1"
-# sphinxcontrib-applehelp = ">=1.0.2"
-# sphinxcontrib-devhelp = ">=1.0.2"
-# sphinxcontrib-htmlhelp = ">=2.0.0"
-# sphinxcontrib-jsmath = ">=1.0.1"
-# sphinxcontrib-qthelp = ">=1.0.3"
-# sphinxcontrib-serializinghtml = ">=1.1.4"
+sphinx-favicon = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.2.0"]
