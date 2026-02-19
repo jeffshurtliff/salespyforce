@@ -4,7 +4,7 @@
 :Synopsis:          Utilities for working with the package version
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     18 Feb 2026
+:Modified Date:     19 Feb 2026
 """
 
 from __future__ import annotations
@@ -79,7 +79,7 @@ def get_version_from_pyproject(pyproject_path: Optional[str] = None) -> str:
     :type pyproject_path: str, None
     :returns: The current package version as a string
     """
-    path = Path(pyproject_path) if pyproject_path else Path(__file__).resolve().parents[2] / 'pyproject.toml'
+    path = Path(pyproject_path) if pyproject_path else Path(__file__).resolve().parents[3] / 'pyproject.toml'
 
     # tomllib.loads() expects a string, while Path.read_bytes() returns bytes
     # Prefer tomllib.load() with a binary file handle to avoid encoding pitfalls
