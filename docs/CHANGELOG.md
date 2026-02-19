@@ -10,14 +10,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (relnotes-unreleased)=
 ## [Unreleased]
 
+(unreleased-added)=
+### Added
+
+- The {py:func}`salespyforce.utils.version.get_version_from_pyproject` function was 
+  added as a fallback method for retrieving the current package version when the 
+  package is not installed.
+
 (unreleased-changed)=
 ### Changed
 
-- The documentation for this project is being updated to a more modern and intuitive theme,
-  layout, and structure. The intent is to be less verbose and instead make the documentation 
+- The {py:func}`salespyforce.utils.version.get_full_version` and 
+  {py:func}`salespyforce.utils.version.get_major_minor_version` functions now attempt to 
+  retrieve the version from the `pyproject.toml` file if it cannot be retrieved via the 
+  package metadata.
+- The documentation for this project has updated to a more modern and intuitive theme,
+  layout, and structure. The intent was to be less verbose and instead make the documentation 
   more human-oriented with helpful guides and tutorials.
-    - The previous Sphinx content has been preserved in `docs_legacy/` and will be migrated 
-      as the new structure and styling are finalized.  
+    - The previous Sphinx content has been preserved in `docs_legacy/` for historical purposes.
 
 ---
 (relnotes-1.4.0)=
