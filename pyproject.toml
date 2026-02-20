@@ -11,6 +11,9 @@ license = { file = "LICENSE" }
 authors = [
     { name = "Jeff Shurtliff", email = "jeffshurtliff@gmail.com" }
 ]
+maintainers = [
+    { name = "Jeff Shurtliff", email = "jeffshurtliff@gmail.com" }
+]
 keywords = ["salesforce", "sfdc", "sfdx", "api", "rest", "tooling", "python"]
 
 classifiers = [
