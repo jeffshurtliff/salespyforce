@@ -6,7 +6,7 @@ labels: maintainer, documentation
 assignees: []
 ---
 
-## Documentation Summary
+## Summary
 
 Brief description of the documentation change or update.
 
