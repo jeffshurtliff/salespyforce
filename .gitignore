@@ -6,6 +6,8 @@
 .hypothesis
 .mypy_cache/
 .pytest_cache/
+.eslintcache
+.stylelintcache
 /.ruff_cache/
 __pycache__/
 
@@ -110,6 +112,9 @@ ipython_config.py
 celerybeat-schedule
 celerybeat.pid
 
+# Yarn Integrity file
+.yarn-integrity
+
 # SageMath parsed files
 *.sage.py
 
@@ -134,6 +139,7 @@ __pypackages__/
 
 # VSCode IDE
 .vscode/
+.vscode-test
 
 # Spyder project settings
 .spyderproject
@@ -172,3 +178,9 @@ scratch.txt
 Desktop.ini
 ehthumbs.db
 Thumbs.db
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
