@@ -57,6 +57,7 @@ dependencies = [
 Homepage = "https://github.com/jeffshurtliff/salespyforce"
 Repository = "https://github.com/jeffshurtliff/salespyforce"
 Documentation = "https://salespyforce.readthedocs.io/en/stable/"
+Changelog = "https://salespyforce.readthedocs.io/en/latest/CHANGELOG.html"
 "Issue Tracker" = "https://github.com/jeffshurtliff/salespyforce/issues"
 
 # --------------------------------------------------------------------
