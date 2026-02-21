@@ -2,7 +2,7 @@
 name: Maintainer Task
 about: Internal task tracking for SalesPyForce maintainers
 title: "[TASK] <brief description>"
-labels: maintainer, task
+labels: maintainer, chore
 assignees: []
 ---
 
