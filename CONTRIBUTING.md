@@ -94,7 +94,7 @@ Valid prefixes:
 | Aspect                     | Value                                                               |
 |----------------------------|---------------------------------------------------------------------|
 | Issue Template: Maintainer | Maintainer Feature                                                  |
-| Issue Template: Requester  | Feature                                                             |
+| Issue Template: Requester  | Feature Request                                                     |
 | Issue Subject Prefix       | `[FEATURE]`                                                         |
 | Label(s)                   | Maintainer: `enhancement`, `maintainer`<br>Requester: `enhancement` |
 | Branch Prefix              | `feature/`                                                          |
@@ -378,6 +378,16 @@ Chore is for repository maintenance.
 | Label(s)                   | Maintainer: `security`, `maintainer`<br>Requester: `security` |
 | Branch Prefix              | `security/`                                                   |
 
+> **Responsible Security Reporting**
+>
+> If you believe you found a real vulnerability, prefer **GitHub Private Vulnerability Reporting**
+> (Security tab -> "Report a vulnerability") instead of opening a public issue.
+>
+> The public **Security Report** issue template is a fallback for sanitized reports only
+> (for example: low-risk concerns, hardening suggestions, or when private reporting is unavailable).
+>
+> Do **not** post exploit details, proof-of-concept payloads, secrets, or sensitive environment data in public Issues.
+
 ### Criteria
 
 A change is considered **security-related** when it:
@@ -463,6 +473,7 @@ SalesPyForce interacts with authentication flows and API tokens. Contributions m
 - Validate user input where applicable.
 - Use secure standard libraries whenever possible.
 - Justify any cryptographic or authentication changes.
+- Use private vulnerability reporting for sensitive disclosures whenever possible.
 
 Security-related contributions may receive heightened review scrutiny.
 
