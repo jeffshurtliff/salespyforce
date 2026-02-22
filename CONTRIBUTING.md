@@ -161,6 +161,14 @@ If yes → `fix/`.
 
 ## Refactor - Internal Structural Change (No Behavior Change)
 
+| Aspect                     | Value                                                         |
+|----------------------------|---------------------------------------------------------------|
+| Issue Template: Maintainer | Maintainer Refactor                                           |
+| Issue Template: Requester  | Refactor Request                                              |
+| Issue Subject Prefix       | `[REFACTOR]`                                                  |
+| Label(s)                   | Maintainer: `refactor`, `maintainer`<br>Requester: `refactor` |
+| Branch Prefix              | `refactor/`                                                   |
+
 ### Criteria
 
 A change is considered a **refactor** when it:
@@ -189,6 +197,14 @@ If yes → `refactor/`.
 
 ## Chore - Maintenance, Tooling, or Non-Functional Work
 
+| Aspect                     | Value                                               |
+|----------------------------|-----------------------------------------------------|
+| Issue Template: Maintainer | Maintainer Chore                                    |
+| Issue Template: Requester  | N/A                                                 |
+| Issue Subject Prefix       | `[CHORE]`                                           |
+| Label(s)                   | Maintainer: `chore`, `maintainer`<br>Requester: N/A |
+| Branch Prefix              | `chore/`                                            |
+
 ### Criteria
 
 A change is considered a **chore** when it:
@@ -216,6 +232,14 @@ If yes → `chore/`.
 ---
 
 ## Documentation - Documentation-Only Changes
+
+| Aspect                     | Value                                                                   |
+|----------------------------|-------------------------------------------------------------------------|
+| Issue Template: Maintainer | Maintainer Docs                                                         |
+| Issue Template: Requester  | Docs Request                                                            |
+| Issue Subject Prefix       | `[DOCS]`                                                                |
+| Label(s)                   | Maintainer: `documentation`, `maintainer`<br>Requester: `documentation` |
+| Branch Prefix              | `docs/`                                                                 |
 
 ### Criteria
 
@@ -253,6 +277,14 @@ If yes → `docs/`.
 
 ## Test - Test-Only Changes
 
+| Aspect                     | Value                                                       |
+|----------------------------|-------------------------------------------------------------|
+| Issue Template: Maintainer | Maintainer Test                                             |
+| Issue Template: Requester  | Test Request                                                |
+| Issue Subject Prefix       | `[TEST]`                                                    |
+| Label(s)                   | Maintainer: `testing`, `maintainer`<br>Requester: `testing` |
+| Branch Prefix              | `test/`                                                     |
+
 ### Criteria
 
 A change is considered **test-only** when it:
@@ -289,6 +321,14 @@ If yes → `test/`.
 ---
 
 ## CI - Continuous Integration / Automation
+
+| Aspect                     | Value                                             |
+|----------------------------|---------------------------------------------------|
+| Issue Template: Maintainer | Maintainer CI                                     |
+| Issue Template: Requester  | CI Request                                        |
+| Issue Subject Prefix       | `[CI]`                                            |
+| Label(s)                   | Maintainer: `ci`, `maintainer`<br>Requester: `ci` |
+| Branch Prefix              | `ci/`                                             |
 
 ### Criteria
 
@@ -329,6 +369,14 @@ Chore is for repository maintenance.
 ---
 
 ## Security - Security-Related Improvements
+
+| Aspect                     | Value                                                         |
+|----------------------------|---------------------------------------------------------------|
+| Issue Template: Maintainer | Maintainer Security                                           |
+| Issue Template: Requester  | Security Report                                               |
+| Issue Subject Prefix       | `[SECURITY]`                                                  |
+| Label(s)                   | Maintainer: `security`, `maintainer`<br>Requester: `security` |
+| Branch Prefix              | `security/`                                                   |
 
 ### Criteria
 
