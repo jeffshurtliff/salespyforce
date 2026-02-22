@@ -1,12 +1,12 @@
 ---
-name: Maintainer Task
-about: Internal task tracking for SalesPyForce maintainers
-title: "[TASK] <brief description>"
+name: Maintainer Chore
+about: Internal chore tracking for SalesPyForce maintainers
+title: "[CHORE] <brief description>"
 labels: maintainer, chore
 assignees: []
 ---
 
-## Task Summary
+## Chore Summary
 
 Briefly describe what needs to be done.
 
@@ -14,7 +14,7 @@ Briefly describe what needs to be done.
 
 ## Why This Matters
 
-Why is this task necessary?
+Why is this chore and its tasks necessary?
 Examples:
 - Unblocks other work
 - Improves maintainability
@@ -33,7 +33,7 @@ Optional implementation notes, constraints, or reminders.
 
 ## Checklist
 
-- [ ] Task identified
+- [ ] Task(s) identified
 - [ ] Implementation complete
 - [ ] Tests added or updated (if applicable)
 - [ ] Documentation updated (if applicable)
@@ -43,7 +43,7 @@ Optional implementation notes, constraints, or reminders.
 
 ## Done When
 
-What conditions must be met for this task to be considered complete?
+What conditions must be met for this chore to be considered complete?
 
 Examples:
 - Specific behavior change implemented

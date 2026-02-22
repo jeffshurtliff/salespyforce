@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
       - README.md
+      - CONTRIBUTING.md
       - AGENTS.md
       - LICENSE
       - .readthedocs.yaml
@@ -14,6 +15,7 @@ on:
   pull_request:
     paths-ignore:
       - README.md
+      - CONTRIBUTING.md
       - AGENTS.md
       - LICENSE
       - .readthedocs.yaml
