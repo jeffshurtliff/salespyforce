@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (unreleased-changed)=
 ### Changed
 
+- Centralized the constants used by the package within the new 
+  {py:mod}`salespyforce.constants` module.
 - The {py:func}`salespyforce.utils.version.get_full_version` and 
   {py:func}`salespyforce.utils.version.get_major_minor_version` functions now attempt to 
   retrieve the version from the `pyproject.toml` file if it cannot be retrieved via the 
