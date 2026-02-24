@@ -4,7 +4,7 @@
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
-:Modified Date:     07 Feb 2026
+:Modified Date:     24 Feb 2026
 """
 
 from __future__ import annotations
@@ -14,10 +14,9 @@ from typing import Optional
 import requests
 
 from . import errors
+from . import constants as const
 from .utils import core_utils, log_utils
 
-# Define constants
-DEFAULT_API_REQUEST_TIMEOUT = 30
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -69,7 +68,7 @@ def get(
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Define the API request timeout (using default value if not explicitly defined with parameter)
-    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
+    timeout = const.DEFAULT_API_TIMEOUT_SECONDS if not timeout else timeout
 
     # Perform the API call
     response = requests.get(url, headers=headers, params=params, timeout=timeout)
@@ -139,7 +138,7 @@ def api_call_with_payload(
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Define the API request timeout (using default value if not explicitly defined with parameter)
-    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
+    timeout = const.DEFAULT_API_TIMEOUT_SECONDS if not timeout else timeout
 
     # Perform the API call
     if method.lower() == 'post':
@@ -210,7 +209,7 @@ def delete(
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Define the API request timeout (using default value if not explicitly defined with parameter)
-    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
+    timeout = const.DEFAULT_API_TIMEOUT_SECONDS if not timeout else timeout
 
     # Perform the API call
     response = requests.delete(url, headers=headers, params=params, timeout=timeout)
@@ -228,14 +227,21 @@ def delete(
 
 
 def _get_headers(_access_token: str, _header_type: str = 'default') -> dict:
-    """This function returns the appropriate HTTP headers to use for different types of API calls."""
+    """This function returns the appropriate HTTP headers to use for different types of API calls.
+
+    .. versionchanged:: 1.5.0
+       The hardcoded strings have been replaced by constants, and a warning message is logged if an invalid
+       header type is passed to the function.
+    """
     headers = {
-        'content-type': 'application/json',
-        'accept-encoding': 'gzip',
-        'authorization': f'Bearer {_access_token}'
+        const.HEADERS.CONTENT_TYPE: const.CONTENT_TYPES.JSON,
+        const.HEADERS.ACCEPT_ENCODING: const.ENCODING_TYPES.GZIP,
+        const.HEADERS.AUTHORIZATION: const.AUTH_SCHEMES.BEARER.format(token=_access_token)
     }
     if _header_type == 'articles':
-        headers['accept-language'] = 'en-US'
+        headers[const.HEADERS.ACCEPT_LANGUAGE] = const.LANGUAGES.EN_US
+    elif _header_type not in const.VALID_HEADER_TYPES:
+        logger.warning(f"'{_header_type}' is not a valid header scope and the default scope will be leveraged")
     return headers
 
 
