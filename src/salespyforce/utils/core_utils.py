@@ -5,9 +5,11 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
-:Modified Date:     07 Feb 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     25 Feb 2026
 """
+
+from __future__ import annotations
 
 import re
 import random
@@ -15,22 +17,20 @@ import string
 import os.path
 import warnings
 import urllib.parse
+from typing import Optional
 
 import requests
 
 from . import log_utils
 from .. import errors
+from .. import constants as const
 from ..decorators import deprecated
 
 # Initialize the logger for this module
 logger = log_utils.initialize_logging(__name__)
 
-# Define constants
-SALESFORCE_ID_SUFFIX_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'
-VALID_SALESFORCE_URL_PATTERN = r'^https://[a-zA-Z0-9._-]+\.salesforce\.com(/|$)'
 
-
-def url_encode(raw_string):
+def url_encode(raw_string: str) -> str:
     """This function encodes a string for use in URLs.
 
     :param raw_string: The raw string to be encoded
@@ -40,7 +40,7 @@ def url_encode(raw_string):
     return urllib.parse.quote_plus(raw_string)
 
 
-def url_decode(encoded_string):
+def url_decode(encoded_string: str) -> str:
     """This function decodes a url-encoded string.
 
     :param encoded_string: The url-encoded string
@@ -75,10 +75,10 @@ def get_file_type(file_path):
     """
     file_type = 'unknown'
     if os.path.isfile(file_path):
-        if file_path.endswith('.json'):
-            file_type = 'json'
-        elif file_path.endswith('.yml') or file_path.endswith('.yaml'):
-            file_type = 'yaml'
+        if file_path.endswith(const.FILE_EXTENSIONS.DOT_JSON):
+            file_type = const.FILE_EXTENSIONS.JSON
+        elif file_path.endswith(const.FILE_EXTENSIONS.DOT_YML) or file_path.endswith(const.FILE_EXTENSIONS.DOT_YAML):
+            file_type = const.FILE_EXTENSIONS.YAML
         else:
             display_warning(f"Unable to recognize the file type of '{file_path}' by its extension.")
             with open(file_path) as cfg_file:
@@ -87,16 +87,16 @@ def get_file_type(file_path):
                         continue
                     else:
                         if '{' in line:
-                            file_type = 'json'
+                            file_type = const.FILE_EXTENSIONS.JSON
                             break
         if file_type == 'unknown':
             raise errors.exceptions.UnknownFileTypeError(file=file_path)
     else:
-        raise FileNotFoundError(f"Unable to locate the following file: {file_path}")
+        raise FileNotFoundError(f'Unable to locate the following file: {file_path}')
     return file_type
 
 
-def get_random_string(length=32, prefix_string=""):
+def get_random_string(length: int = 32, prefix_string: str = '') -> str:
     """This function returns a random alphanumeric string.
 
     :param length: The length of the string (``32`` by default)
@@ -120,7 +120,7 @@ def get_18_char_id(record_id: str) -> str:
     """
     # Ensure the provided record ID is a string
     if not isinstance(record_id, str):
-        raise ValueError("Salesforce ID must be a string")
+        raise ValueError('Salesforce ID must be a string')
 
     # Return the record ID unchanged if it is already 18 characters in length
     if len(record_id) == 18:
@@ -128,19 +128,19 @@ def get_18_char_id(record_id: str) -> str:
 
     # Ensure the record ID is a valid 15-character value
     if len(record_id) != 15:
-        raise ValueError("Salesforce ID must be 15 or 18 characters long")
+        raise ValueError('Salesforce ID must be 15 or 18 characters long')
 
     # Define the checksum suffix (additional 3 characters)
-    suffix = ""
+    suffix = ''
     for i in range(0, 15, 5):
         chunk = record_id[i:i + 5]
         bitmask = 0
 
         for index, char in enumerate(chunk):
-            if "A" <= char <= "Z":
+            if 'A' <= char <= 'Z':
                 bitmask |= 1 << index
 
-        suffix += SALESFORCE_ID_SUFFIX_ALPHABET[bitmask]
+        suffix += const.SALESFORCE_ID_SUFFIX_ALPHABET[bitmask]
 
     # Return the 18-character ID value
     return record_id + suffix
@@ -178,10 +178,10 @@ def is_valid_salesforce_url(url: str) -> bool:
     :type url: str
     :returns: Boolean value depending on whether the URL meets the criteria
     """
-    return True if isinstance(url, str) and matches_regex_pattern(VALID_SALESFORCE_URL_PATTERN, url) else False
+    return True if isinstance(url, str) and matches_regex_pattern(const.VALID_SALESFORCE_URL_PATTERN, url) else False
 
 
-def get_image_ref_id(image_url):
+def get_image_ref_id(image_url: str) -> str:
     """This function parses an image URL to identify the reference ID (refid) value.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`__,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`__)
@@ -192,22 +192,23 @@ def get_image_ref_id(image_url):
     """
     query_params = urllib.parse.parse_qs(urllib.parse.urlparse(image_url).query)
     # noinspection PyTypeChecker
-    ref_id = query_params.get('refid')
+    ref_id = query_params.get(const.QUERY_PARAMS.REF_ID)
     ref_id = ref_id[0] if not isinstance(ref_id, str) else ref_id
     return ref_id
 
 
-def download_image(image_url=None, file_name=None, file_path=None, response=None, extension='jpeg'):
+def download_image(image_url: Optional[str] = None, file_name: Optional[str] = None, file_path: Optional[str] = None,
+                   response=None, extension: str = const.FILE_EXTENSIONS.JPEG) -> str:
     """This function downloads an image and saves it to a specified directory.
 
     :param image_url: The absolute URL to the image
-    :type image_url: str
-    :param file_name: The file name including extension as which to save the file
-    :type file_name: str
-    :param file_path: File path where the image file should be saved (default: ``var/images/``)
+    :type image_url: str, None
+    :param file_name: The file name (including extension) to use as the file name (Default: randomly generated)
+    :type file_name: str, None
+    :param file_path: File path where the image file should be saved (Default: ``./``)
     :type file_path: str, None
     :param response: The response of the previously performed API call
-    :param extension: The file extension to use if a file name with extension is not provided
+    :param extension: The file extension to use if a file name with extension is not provided (Default: ``jpeg``)
     :type extension: str
     :returns: The full path to the downloaded image
     :raises: :py:exc:`RuntimeError`
