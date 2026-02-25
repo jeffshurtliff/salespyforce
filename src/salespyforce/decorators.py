@@ -4,7 +4,7 @@
 :Synopsis:          Decorators that can be used to include additional functionality with functions and methods
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     02 Feb 2026
+:Modified Date:     25 Feb 2026
 """
 
 from __future__ import annotations
@@ -30,10 +30,15 @@ def deprecated(
     .. versionadded:: 1.4.0
 
     :param since: Version when deprecation started
+    :type since: str
     :param replacement: Suggested replacement usage (string)
+    :type replacement: str, None
     :param removal: Version when it will be removed (optional)
-    :param category: Warning category (default: DeprecationWarning)
-    :param stacklevel: Warning stacklevel (default: 2)
+    :type removal: str, None
+    :param category: Warning category (default: :py:exc:`DeprecationWarning`)
+    :type category: type[Warning]
+    :param stacklevel: Warning stacklevel (default: ``2``)
+    :type stacklevel: int
     """
     def decorator(func: F) -> F:
         message_parts = [f"{func.__name__} is deprecated since {since}."]
