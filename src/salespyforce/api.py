@@ -3,8 +3,8 @@
 :Module:            salespyforce.api
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
-:Modified Date:     24 Feb 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     25 Feb 2026
 """
 
 from __future__ import annotations
