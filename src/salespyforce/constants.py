@@ -10,7 +10,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Final
+from typing import Final, ClassVar
 
 
 # -----------------------------
@@ -18,12 +18,13 @@ from typing import Final
 # -----------------------------
 FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'
 
+
 # -----------------------------
 # HTTP / networking defaults
 # -----------------------------
 DEFAULT_API_TIMEOUT_SECONDS: Final[int] = 30
 DEFAULT_API_MAX_RETRIES: Final[int] = 3
-VALID_HEADER_TYPES: Final[set] = {'default', 'articles'}
+VALID_HEADER_TYPES: Final[frozenset[str]] = frozenset({'default', 'articles'})
 
 
 @dataclass(frozen=True)
@@ -37,11 +38,11 @@ class Headers:
     typographical errors. These values are intended for constructing
     outbound HTTP requests to the Salesforce REST API.
     """
-    AUTHORIZATION: str = 'Authorization'
-    CONTENT_TYPE: str = 'Content-Type'
-    ACCEPT: str = 'Accept'
-    ACCEPT_ENCODING: str = 'Accept-Encoding'
-    ACCEPT_LANGUAGE: str = 'Accept-Language'
+    AUTHORIZATION: ClassVar[str] = 'Authorization'
+    CONTENT_TYPE: ClassVar[str] = 'Content-Type'
+    ACCEPT: ClassVar[str] = 'Accept'
+    ACCEPT_ENCODING: ClassVar[str] = 'Accept-Encoding'
+    ACCEPT_LANGUAGE: ClassVar[str] = 'Accept-Language'
 
 
 @dataclass(frozen=True)
@@ -51,7 +52,7 @@ class AuthSchemes:
 
     .. versionadded:: 1.5.0
     """
-    BEARER: str = 'Bearer {token}'
+    BEARER: ClassVar[str] = 'Bearer {token}'
 
 
 @dataclass(frozen=True)
@@ -63,7 +64,7 @@ class ContentTypes:
     This immutable namespace provides canonical MIME types used when
     sending or receiving data from the Salesforce REST API.
     """
-    JSON: str = 'application/json'
+    JSON: ClassVar[str] = 'application/json'
 
 
 @dataclass(frozen=True)
@@ -73,16 +74,16 @@ class EncodingTypes:
 
     .. versionadded:: 1.5.0
     """
-    GZIP: str = 'gzip'
-    COMPRESS: str = 'compress'
-    DEFLATE: str = 'deflate'
-    BR: str = 'br'
-    ZSTD: str = 'zstd'
-    DCB: str = 'dcb'
-    DCZ: str = 'dcz'
-    IDENTITY: str = 'identity'
-    WILDCARD: str = '*'
-    Q: str = ';q={weight}'
+    GZIP: ClassVar[str] = 'gzip'
+    COMPRESS: ClassVar[str] = 'compress'
+    DEFLATE: ClassVar[str] = 'deflate'
+    BR: ClassVar[str] = 'br'
+    ZSTD: ClassVar[str] = 'zstd'
+    DCB: ClassVar[str] = 'dcb'
+    DCZ: ClassVar[str] = 'dcz'
+    IDENTITY: ClassVar[str] = 'identity'
+    WILDCARD: ClassVar[str] = '*'
+    Q: ClassVar[str] = ';q={weight}'
 
 
 @dataclass(frozen=True)
@@ -95,18 +96,18 @@ class Languages:
     Additional valid IETF language tags may be supplied manually
     when constructing request headers.
     """
-    EN_US: str = 'en-US'
-    EN_GB: str = 'en-GB'
-    FR_FR: str = 'fr-FR'
-    DE_DE: str = 'de-DE'
-    ES_ES: str = 'es-ES'
-    PT_BR: str = 'pt-BR'
-    JA_JP: str = 'ja-JP'
-    IT_IT: str = 'it-IT'
-    ZH_CN: str = 'zh-CN'
-    ZH_TW: str = 'zh-TW'
-    WILDCARD: str = '*'
-    Q: str = ';q={weight}'
+    EN_US: ClassVar[str] = 'en-US'
+    EN_GB: ClassVar[str] = 'en-GB'
+    FR_FR: ClassVar[str] = 'fr-FR'
+    DE_DE: ClassVar[str] = 'de-DE'
+    ES_ES: ClassVar[str] = 'es-ES'
+    PT_BR: ClassVar[str] = 'pt-BR'
+    JA_JP: ClassVar[str] = 'ja-JP'
+    IT_IT: ClassVar[str] = 'it-IT'
+    ZH_CN: ClassVar[str] = 'zh-CN'
+    ZH_TW: ClassVar[str] = 'zh-TW'
+    WILDCARD: ClassVar[str] = '*'
+    Q: ClassVar[str] = ';q={weight}'
 
 
 # -----------------------------
@@ -123,18 +124,19 @@ class RestPaths:
     codebase. The templates are designed to be formatted with runtime
     values such as ``api_version``, ``sobject``, and ``record_id``.
     """
-    SERVICES_DATA: str = '/services/data'
-    SERVICES_DATA_API: str = '/services/data/{api_version}'
-    SERVICES_DATA_API_SITE = '/services/data/{api_version}{site_segment}'
-    QUERY: str = '/services/data/{api_version}/query'
-    SOBJECT: str = '/services/data/{api_version}/sobjects/{sobject}'
-    SOBJECT_BY_ID: str = '/services/data/{api_version}/sobjects/{sobject}/{record_id}'
-    CONNECT_COMMUNITIES_SITE: str = '/connect/communities/{site_id}'
-    CHATTER_MY_NEWS_FEED: str = '/chatter/feeds/news/me/feed-elements'
-    CHATTER_USER_NEWS_FEED: str = '/chatter/feeds/user-profile/{user_id}/feed-elements'
-    CHATTER_GROUP_NEWS_FEED: str = '/chatter/feeds/record/{group_id}/feed-elements'
-    CHATTER_FEED_ELEMENTS: str = '/chatter/feed-elements'
-    CHATTER_FEED_ELEMENT_COMMENTS: str = '/chatter/feed-elements/{feed_element_id}/capabilities/comments/items'
+    SERVICES_DATA: ClassVar[str] = '/services/data'
+    SERVICES_DATA_API: ClassVar[str] = SERVICES_DATA + '/{api_version}'
+    SERVICES_DATA_API_SITE = SERVICES_DATA_API + '{site_segment}'
+    QUERY: ClassVar[str] = SERVICES_DATA_API + '/query'
+    SOBJECT: ClassVar[str] = SERVICES_DATA_API + '/sobjects/{sobject}'
+    SOBJECT_BY_ID: ClassVar[str] = SOBJECT + '/{record_id}'
+    CONNECT_COMMUNITIES_SITE: ClassVar[str] = '/connect/communities/{site_id}'
+    CHATTER_FEEDS: ClassVar[str] = '/chatter/feeds'
+    CHATTER_MY_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/news/me/feed-elements'
+    CHATTER_USER_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/user-profile/{user_id}/feed-elements'
+    CHATTER_GROUP_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/record/{group_id}/feed-elements'
+    CHATTER_FEED_ELEMENTS: ClassVar[str] = '/chatter/feed-elements'
+    CHATTER_FEED_ELEMENT_COMMENTS: ClassVar[str] = CHATTER_FEED_ELEMENTS + '/{feed_element_id}/capabilities/comments/items'
 
 
 # -----------------------------
@@ -151,17 +153,17 @@ class QueryParams:
     REST API. Centralizing these values helps prevent typographical
     errors and ensures consistent request construction.
     """
-    Q: str = 'q'
-    TYPE: str = 'type'
-    BODY: str = 'body'
-    TEXT: str = 'text'
-    LIMIT: str = 'limit'
-    OFFSET: str = 'offset'
-    NEXT_RECORDS_URL: str = 'nextRecordsUrl'
-    FEED_ELEMENT_TYPE: str = 'feedElementType'
-    CREATED_BY_ID: str = 'createdById'
-    SUBJECT_ID: str = 'subjectId'
-    MESSAGE_SEGMENTS: str = 'messageSegments'
+    Q: ClassVar[str] = 'q'
+    TYPE: ClassVar[str] = 'type'
+    BODY: ClassVar[str] = 'body'
+    TEXT: ClassVar[str] = 'text'
+    LIMIT: ClassVar[str] = 'limit'
+    OFFSET: ClassVar[str] = 'offset'
+    NEXT_RECORDS_URL: ClassVar[str] = 'nextRecordsUrl'
+    FEED_ELEMENT_TYPE: ClassVar[str] = 'feedElementType'
+    CREATED_BY_ID: ClassVar[str] = 'createdById'
+    SUBJECT_ID: ClassVar[str] = 'subjectId'
+    MESSAGE_SEGMENTS: ClassVar[str] = 'messageSegments'
 
 
 # -----------------------------
@@ -173,8 +175,25 @@ class PayloadValues:
 
     .. versionadded:: 1.5.0
     """
-    FEED_ITEM: str = 'FeedItem'
-    TEXT: str = 'text'
+    FEED_ITEM: ClassVar[str] = 'FeedItem'
+    TEXT: ClassVar[str] = 'text'
+
+
+# -----------------------------
+# Salesforce Object Fields
+# -----------------------------
+@dataclass(frozen=True)
+class SObjectFields:
+    """Standard and common field names and similar values relating to Salesforce objects.
+
+    .. versionadded:: 1.5.0
+    """
+    HAS_READ_ACCESS: ClassVar[str] = 'HasReadAccess'
+    HAS_EDIT_ACCESS: ClassVar[str] = 'HasEditAccess'
+    HAS_DELETE_ACCESS: ClassVar[str] = 'HasDeleteAccess'
+    VALID_ACCESS_CONTROL_FIELDS: ClassVar[frozenset[str]] = frozenset(
+        {HAS_READ_ACCESS, HAS_EDIT_ACCESS, HAS_DELETE_ACCESS}
+    )
 
 
 # -----------------------------
@@ -188,3 +207,4 @@ LANGUAGES: Final[Languages] = Languages()
 REST_PATHS: Final[RestPaths] = RestPaths()
 QUERY_PARAMS: Final[QueryParams] = QueryParams()
 PAYLOAD_VALUES: Final[PayloadValues] = PayloadValues()
+SOBJECT_FIELDS: Final[SObjectFields] = SObjectFields()
