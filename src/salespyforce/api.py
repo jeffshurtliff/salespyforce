@@ -230,8 +230,7 @@ def _get_headers(_access_token: str, _header_type: str = 'default') -> dict:
     """This function returns the appropriate HTTP headers to use for different types of API calls.
 
     .. versionchanged:: 1.5.0
-       The hardcoded strings have been replaced by constants, and a warning message is logged if an invalid
-       header type is passed to the function.
+       A warning message is now logged if an invalid header type is passed to the function.
     """
     headers = {
         const.HEADERS.CONTENT_TYPE: const.CONTENT_TYPES.JSON,
@@ -241,7 +240,7 @@ def _get_headers(_access_token: str, _header_type: str = 'default') -> dict:
     if _header_type == 'articles':
         headers[const.HEADERS.ACCEPT_LANGUAGE] = const.LANGUAGES.EN_US
     elif _header_type not in const.VALID_HEADER_TYPES:
-        logger.warning(f"'{_header_type}' is not a valid header scope and the default scope will be leveraged")
+        logger.warning(f"'{_header_type}' is not a valid header type and the default type/scope will be leveraged")
     return headers
 
 
