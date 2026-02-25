@@ -4,7 +4,7 @@
 :Synopsis:          Constants that are utilized throughout the package
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     24 Feb 2026
+:Modified Date:     25 Feb 2026
 """
 
 from __future__ import annotations
@@ -124,9 +124,17 @@ class RestPaths:
     values such as ``api_version``, ``sobject``, and ``record_id``.
     """
     SERVICES_DATA: str = '/services/data'
-    QUERY: str = '/services/data/v{api_version}/query'
-    SOBJECT: str = '/services/data/v{api_version}/sobjects/{sobject}'
-    SOBJECT_BY_ID: str = '/services/data/v{api_version}/sobjects/{sobject}/{record_id}'
+    SERVICES_DATA_API: str = '/services/data/{api_version}'
+    SERVICES_DATA_API_SITE = '/services/data/{api_version}{site_segment}'
+    QUERY: str = '/services/data/{api_version}/query'
+    SOBJECT: str = '/services/data/{api_version}/sobjects/{sobject}'
+    SOBJECT_BY_ID: str = '/services/data/{api_version}/sobjects/{sobject}/{record_id}'
+    CONNECT_COMMUNITIES_SITE: str = '/connect/communities/{site_id}'
+    CHATTER_MY_NEWS_FEED: str = '/chatter/feeds/news/me/feed-elements'
+    CHATTER_USER_NEWS_FEED: str = '/chatter/feeds/user-profile/{user_id}/feed-elements'
+    CHATTER_GROUP_NEWS_FEED: str = '/chatter/feeds/record/{group_id}/feed-elements'
+    CHATTER_FEED_ELEMENTS: str = '/chatter/feed-elements'
+    CHATTER_FEED_ELEMENT_COMMENTS: str = '/chatter/feed-elements/{feed_element_id}/capabilities/comments/items'
 
 
 # -----------------------------
@@ -144,9 +152,29 @@ class QueryParams:
     errors and ensures consistent request construction.
     """
     Q: str = 'q'
+    TYPE: str = 'type'
+    BODY: str = 'body'
+    TEXT: str = 'text'
     LIMIT: str = 'limit'
     OFFSET: str = 'offset'
     NEXT_RECORDS_URL: str = 'nextRecordsUrl'
+    FEED_ELEMENT_TYPE: str = 'feedElementType'
+    CREATED_BY_ID: str = 'createdById'
+    SUBJECT_ID: str = 'subjectId'
+    MESSAGE_SEGMENTS: str = 'messageSegments'
+
+
+# -----------------------------
+# REST Payload Values
+# -----------------------------
+@dataclass(frozen=True)
+class PayloadValues:
+    """Standard and common payload values used in Salesforce REST requests.
+
+    .. versionadded:: 1.5.0
+    """
+    FEED_ITEM: str = 'FeedItem'
+    TEXT: str = 'text'
 
 
 # -----------------------------
@@ -159,3 +187,4 @@ ENCODING_TYPES: Final[EncodingTypes] = EncodingTypes()
 LANGUAGES: Final[Languages] = Languages()
 REST_PATHS: Final[RestPaths] = RestPaths()
 QUERY_PARAMS: Final[QueryParams] = QueryParams()
+PAYLOAD_VALUES: Final[PayloadValues] = PayloadValues()

@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
-:Modified Date:     07 Feb 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     25 Feb 2026
 """
 
 from __future__ import annotations
@@ -898,7 +898,8 @@ class Salesforce(object):
             :param created_by_id: The ID of the user to impersonate (**Experimental**)
             :type created_by_id: str, None
             :returns: The response of the POST request
-            :raises: :py:exc:`RuntimeError`
+            :raises: :py:exc:`RuntimeError`,
+                     :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
             return chatter_module.post_feed_item(self.sfdc_object, subject_id=subject_id, message_text=message_text,
                                                  message_segments=message_segments, site_id=site_id,
@@ -919,7 +920,8 @@ class Salesforce(object):
             :param created_by_id: The ID of the user to impersonate (**Experimental**)
             :type created_by_id: str, None
             :returns: The response of the POST request
-            :raises: :py:exc:`RuntimeError`
+            :raises: :py:exc:`RuntimeError`,
+                     :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
             return chatter_module.post_comment(self.sfdc_object, feed_element_id=feed_element_id,
                                                message_text=message_text, message_segments=message_segments,
