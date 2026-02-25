@@ -22,9 +22,6 @@ logger = log_utils.initialize_logging(__name__)
 def _get_site_endpoint_segment(_site_id: Optional[str] = None) -> str:
     """This function constructs the endpoint segment when querying a specific Experience Cloud site.
 
-    .. versionchanged:: 1.5.0
-       The function now leverages a constant for the endpoint segment.
-
     :param _site_id: The Site ID of the Experience Cloud site
     :type _site_id: str, None
     :returns: The API endpoint segment (or a blank string if no Site ID was provided)
@@ -52,9 +49,6 @@ def get_my_news_feed(sfdc_object, site_id: Optional[str] = None):
     """This function retrieves the news feed for the user calling the function.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`__)
 
-    .. versionchanged:: 1.5.0
-       This function now utilizes centralized constants and a new helper function to construct the endpoint URL.
-
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param site_id: The ID of an Experience Cloud site against which to query (optional)
@@ -70,9 +64,6 @@ def get_my_news_feed(sfdc_object, site_id: Optional[str] = None):
 def get_user_news_feed(sfdc_object, user_id: str, site_id: Optional[str] = None):
     """This function retrieves another user's news feed.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`__)
-
-    .. versionchanged:: 1.5.0
-       This function now utilizes centralized constants and a new helper function to construct the endpoint URL.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -91,9 +82,6 @@ def get_user_news_feed(sfdc_object, user_id: str, site_id: Optional[str] = None)
 def get_group_feed(sfdc_object, group_id: str, site_id: Optional[str] = None):
     """This function retrieves a group's news feed.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`__)
-
-    .. versionchanged:: 1.5.0
-       This function now utilizes centralized constants and a new helper function to construct the endpoint URL.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -119,9 +107,6 @@ def post_feed_item(
 ):
     """This function publishes a new Chatter feed item.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`__)
-
-    .. versionchanged:: 1.5.0
-       This function now utilizes centralized constants and a new helper function to construct the endpoint and payload.
 
     .. versionchanged:: 1.4.0
        The function now raises the :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception rather
@@ -215,9 +200,6 @@ def post_comment(
 
 def _construct_simple_message_segment(_message_text: str) -> list:
     """This function constructs a simple message segments collection to be used in an API payload.
-
-    .. versionchanged:: 1.5.0
-       This function now utilizes centralized constants to construct the payload.
 
     :param _message_text: The plaintext message to be embedded in a message segment.
     :type _message_text: str
