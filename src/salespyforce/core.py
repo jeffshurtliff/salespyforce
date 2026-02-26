@@ -17,14 +17,11 @@ from typing import Optional
 import requests
 
 from . import api, errors
+from . import constants as const
 from . import chatter as chatter_module
 from . import knowledge as knowledge_module
 from .utils import core_utils, log_utils
 from .utils.helper import get_helper_settings
-
-# Define constants
-FALLBACK_SFDC_API_VERSION = '65.0'      # Used if querying the org for the version fails
-VALID_ACCESS_CONTROL_FIELDS = {'HasReadAccess', 'HasEditAccess', 'HasDeleteAccess'}
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -445,9 +442,9 @@ class Salesforce(object):
             exc_type = type(exc).__name__
             logger.warning(
                 f"Failed to retrieve API version due to a(n) {exc_type} exception; defaulting to "
-                f"the fallback version {FALLBACK_SFDC_API_VERSION}"
+                f"the fallback version {const.FALLBACK_SFDC_API_VERSION}"
             )
-            latest_version = FALLBACK_SFDC_API_VERSION
+            latest_version = const.FALLBACK_SFDC_API_VERSION
         return latest_version
 
     def get_org_limits(self):
@@ -569,7 +566,11 @@ class Salesforce(object):
         :raises: :py:exc:`RuntimeError`,
                  :py:exc:`salespyforce.errors.exceptions.APIRequestError`
         """
-        record_access = {'HasReadAccess': None, 'HasEditAccess': None, 'HasDeleteAccess': None}
+        record_access = {
+            const.SOBJECT_FIELDS.HAS_READ_ACCESS: None,
+            const.SOBJECT_FIELDS.HAS_EDIT_ACCESS: None,
+            const.SOBJECT_FIELDS.HAS_DELETE_ACCESS: None,
+        }
 
         # Use the current/running user's ID if an ID wasn't explicitly provided
         if not user_id:
@@ -584,16 +585,23 @@ class Salesforce(object):
             raise errors.exceptions.MissingRequiredDataError(error_msg)
 
         # Perform SOQL query for the access data
+        select_fields = ', '.join((
+            const.SOBJECT_FIELDS.RECORD_ID,
+            const.SOBJECT_FIELDS.HAS_READ_ACCESS,
+            const.SOBJECT_FIELDS.HAS_EDIT_ACCESS,
+            const.SOBJECT_FIELDS.HAS_DELETE_ACCESS,
+        ))
         query = f"""
-            SELECT RecordId, HasReadAccess, HasEditAccess, HasDeleteAccess
-            FROM UserRecordAccess
-            WHERE UserId = '{user_id}' AND RecordId = '{record_id}'
+            SELECT {select_fields}
+            FROM {const.SOBJECTS.USER_RECORD_ACCESS}
+            WHERE {const.SOBJECT_FIELDS.USER_ID} = '{user_id}' 
+            AND {const.SOBJECT_FIELDS.RECORD_ID} = '{record_id}'
         """
         response = self.soql_query(query=query)
 
         # Parse the response to extract the relevant field values
-        if 'records' in response and response['records']:
-            response = response['records'][0]
+        if const.RESPONSE_KEYS.RECORDS in response and response[const.RESPONSE_KEYS.RECORDS]:
+            response = response[const.RESPONSE_KEYS.RECORDS][0]
             for field in record_access.keys():
                 record_access[field] = response.get(field, None)
 
@@ -619,7 +627,7 @@ class Salesforce(object):
         :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
         # Raise an exception if a valid access control field is not provided
-        if _field not in VALID_ACCESS_CONTROL_FIELDS:
+        if _field not in const.SOBJECT_FIELDS.VALID_ACCESS_CONTROL_FIELDS:
             _error_msg = f"The field '{_field}' is not a valid record access level field"
             raise errors.exceptions.InvalidFieldError(_error_msg)
 

@@ -10,23 +10,96 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Final, ClassVar
+from types import MappingProxyType
+from typing import Final, ClassVar, Mapping, Union
 
 
 # -----------------------------
-# Versioning / meta
+# Versioning / Meta
 # -----------------------------
-FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'
+FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'      # Used if querying the org for the version fails
 
 
 # -----------------------------
-# HTTP / networking defaults
+# Validation Criteria
+# -----------------------------
+SALESFORCE_ID_SUFFIX_ALPHABET: Final[str] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'
+VALID_SALESFORCE_URL_PATTERN: Final[str] = r'^https://[a-zA-Z0-9._-]+\.salesforce\.com(/|$)'
+YAML_BOOLEAN_MAPPING: Final[Mapping[Union[str, bool], bool]] = MappingProxyType(
+    {
+        True: True,
+        False: False,
+        'yes': True,
+        'no': False,
+    }
+)
+
+
+# -----------------------------
+# File Type Extensions
+# -----------------------------
+@dataclass(frozen=True)
+class FileExtensions:
+    """Common file extensions leveraged throughout the package.
+
+    .. versionadded:: 1.5.0
+    """
+    # Without delimiter
+    JPEG: str = 'jpeg'
+    JSON: str = 'json'
+    YAML: str = 'yaml'
+    YML: str = 'yml'
+
+    # With delimiter
+    DOT_JPEG: str = f'.{JPEG}'
+    DOT_JSON: str = f'.{JSON}'
+    DOT_YAML: str = f'.{YAML}'
+    DOT_YML: str = f'.{YML}'
+
+
+# -------------------------------
+# Helper Configuration Settings
+# -------------------------------
+@dataclass(frozen=True)
+class HelperSettings:
+    """Fields, values, and other constants relating to the helper configuration settings and
+       the :py:mod:`salespyforce.utils.helper` module.
+
+    .. versionadded:: 1.5.0
+    """
+    # Validation criteria
+    VALID_HELPER_FILE_TYPES: ClassVar[frozenset[str]] = frozenset({'json', 'yml', 'yaml'})
+
+    # Authentication / Connection Fields
+    CONNECTION: str = 'connection'
+    USERNAME: str = 'username'
+    PASSWORD: str = 'password'
+    ORG_ID: str = 'org_id'
+    BASE_URL: str = 'base_url'
+    ENDPOINT_URL: str = 'endpoint_url'
+    CLIENT_KEY: str = 'client_key'
+    CLIENT_SECRET: str = 'client_secret'
+    SECURITY_TOKEN: str = 'security_token'
+    CONNECTION_KEYS: ClassVar[frozenset[str]] = frozenset({
+        USERNAME, PASSWORD, BASE_URL, ENDPOINT_URL,
+        CLIENT_KEY, CLIENT_SECRET, ORG_ID, SECURITY_TOKEN,
+    })
+
+    # Other configuration fields
+    SSL_VERIFY: str = 'ssl_verify'
+
+
+# -----------------------------
+# HTTP / Networking Defaults
 # -----------------------------
 DEFAULT_API_TIMEOUT_SECONDS: Final[int] = 30
 DEFAULT_API_MAX_RETRIES: Final[int] = 3
 VALID_HEADER_TYPES: Final[frozenset[str]] = frozenset({'default', 'articles'})
 
 
+# -----------------------------
+# HTTP Header Fields / Names
+# -----------------------------
 @dataclass(frozen=True)
 class Headers:
     """Standard HTTP header names used by the package.
@@ -45,6 +118,9 @@ class Headers:
     ACCEPT_LANGUAGE: ClassVar[str] = 'Accept-Language'
 
 
+# -----------------------------
+# HTTP Authentication Schemes
+# -----------------------------
 @dataclass(frozen=True)
 class AuthSchemes:
     """Authentication schemes that are leveraged with the HTTP ``Authorization`` header.
@@ -55,6 +131,9 @@ class AuthSchemes:
     BEARER: ClassVar[str] = 'Bearer {token}'
 
 
+# -----------------------------
+# HTTP Content Types
+# -----------------------------
 @dataclass(frozen=True)
 class ContentTypes:
     """Common HTTP ``Content-Type`` header values used by the package.
@@ -67,6 +146,9 @@ class ContentTypes:
     JSON: ClassVar[str] = 'application/json'
 
 
+# -----------------------------
+# HTTP Encoding Types
+# -----------------------------
 @dataclass(frozen=True)
 class EncodingTypes:
     """Common HTTP ``Accept-Encoding`` header values.
@@ -86,6 +168,9 @@ class EncodingTypes:
     Q: ClassVar[str] = ';q={weight}'
 
 
+# -----------------------------
+# HTTP Language Tags
+# -----------------------------
 @dataclass(frozen=True)
 class Languages:
     """Common IETF language tags for use in the Accept-Language HTTP header.
@@ -110,9 +195,9 @@ class Languages:
     Q: ClassVar[str] = ';q={weight}'
 
 
-# -----------------------------
-# Salesforce REST endpoints
-# -----------------------------
+# -------------------------------
+# Salesforce REST API Endpoints
+# -------------------------------
 @dataclass(frozen=True)
 class RestPaths:
     """Template paths for Salesforce REST API endpoints.
@@ -139,9 +224,9 @@ class RestPaths:
     CHATTER_FEED_ELEMENT_COMMENTS: ClassVar[str] = CHATTER_FEED_ELEMENTS + '/{feed_element_id}/capabilities/comments/items'
 
 
-# -----------------------------
-# Query params / common keys
-# -----------------------------
+# -------------------------------------
+# REST API Query Params / Common Keys
+# -------------------------------------
 @dataclass(frozen=True)
 class QueryParams:
     """Standard query parameter names used in Salesforce REST requests.
@@ -159,6 +244,7 @@ class QueryParams:
     TEXT: ClassVar[str] = 'text'
     LIMIT: ClassVar[str] = 'limit'
     OFFSET: ClassVar[str] = 'offset'
+    REF_ID: ClassVar[str] = 'refid'
     NEXT_RECORDS_URL: ClassVar[str] = 'nextRecordsUrl'
     FEED_ELEMENT_TYPE: ClassVar[str] = 'feedElementType'
     CREATED_BY_ID: ClassVar[str] = 'createdById'
@@ -167,7 +253,7 @@ class QueryParams:
 
 
 # -----------------------------
-# REST Payload Values
+# REST API Payload Values
 # -----------------------------
 @dataclass(frozen=True)
 class PayloadValues:
@@ -180,6 +266,30 @@ class PayloadValues:
 
 
 # -----------------------------
+# REST API Response Keys
+# -----------------------------
+@dataclass(frozen=True)
+class ResponseKeys:
+    """Standard and common keys / fields for Salesforce REST API responses.
+
+    .. versionadded:: 1.5.0
+    """
+    RECORDS: ClassVar[str] = 'records'
+
+
+# -----------------------------
+# Salesforce Objects
+# -----------------------------
+@dataclass(frozen=True)
+class SObjects:
+    """Salesforce object (i.e. sObject) API names.
+
+    .. versionadded:: 1.5.0
+    """
+    USER_RECORD_ACCESS: ClassVar[str] = 'UserRecordAccess'
+
+
+# -----------------------------
 # Salesforce Object Fields
 # -----------------------------
 @dataclass(frozen=True)
@@ -188,6 +298,9 @@ class SObjectFields:
 
     .. versionadded:: 1.5.0
     """
+    ID: ClassVar[str] = 'Id'
+    RECORD_ID: ClassVar[str] = 'RecordId'
+    USER_ID: ClassVar[str] = 'UserId'
     HAS_READ_ACCESS: ClassVar[str] = 'HasReadAccess'
     HAS_EDIT_ACCESS: ClassVar[str] = 'HasEditAccess'
     HAS_DELETE_ACCESS: ClassVar[str] = 'HasDeleteAccess'
@@ -199,6 +312,8 @@ class SObjectFields:
 # -----------------------------
 # Exported namespaces
 # -----------------------------
+FILE_EXTENSIONS: Final[FileExtensions] = FileExtensions()
+HELPER_SETTINGS: Final[HelperSettings] = HelperSettings()
 HEADERS: Final[Headers] = Headers()
 AUTH_SCHEMES: Final[AuthSchemes] = AuthSchemes()
 CONTENT_TYPES: Final[ContentTypes] = ContentTypes()
@@ -207,4 +322,6 @@ LANGUAGES: Final[Languages] = Languages()
 REST_PATHS: Final[RestPaths] = RestPaths()
 QUERY_PARAMS: Final[QueryParams] = QueryParams()
 PAYLOAD_VALUES: Final[PayloadValues] = PayloadValues()
+RESPONSE_KEYS: Final[ResponseKeys] = ResponseKeys()
+SOBJECTS: Final[SObjects] = SObjects()
 SOBJECT_FIELDS: Final[SObjectFields] = SObjectFields()

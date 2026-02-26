@@ -30,10 +30,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   {py:meth}`salespyforce.Salesforce.Chatter.post_comment` methods (and their underlying functions) 
   now raise the {py:exc}`~salespyforce.errors.exceptions.MissingRequiredDataError` exception rather 
   than the generic {py:exc}`RuntimeError` exception when required data is not passed appropriately.
+- The {py:func}`salespyforce.utils.helper.import_helper_file` and
+  {py:func}`salespyforce.utils.helper.get_helper_settings` functions now support both ``yml`` and
+  ``yaml`` extensions for YAML files.
 - The documentation for this project has updated to a more modern and intuitive theme,
   layout, and structure. The intent was to be less verbose and instead make the documentation 
   more human-oriented with helpful guides and tutorials.
     - The previous Sphinx content has been preserved in `docs_legacy/` for historical purposes.
+
+(unreleased-removed)=
+### Removed
+
+- The {py:class}`salespyforce.utils.helper.HelperParsing` class has been removed as its functionality 
+  has been replaced by the `YAML_BOOLEAN_MAPPING` constant in the {py:mod}`salespyforce.constants`
+  module.
 
 ---
 (relnotes-1.4.0)=

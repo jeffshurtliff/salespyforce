@@ -4,7 +4,7 @@
 :Synopsis:          Collection of exception classes relating to the SalesPyForce library
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     13 Mar 2023
+:Modified Date:     25 Feb 2026
 """
 
 #################
@@ -271,7 +271,7 @@ class InvalidRequestTypeError(SalesPyForceError):
 
 
 class LookupMismatchError(SalesPyForceError):
-    """This exception is used when an a lookup value doesn't match the supplied lookup type."""
+    """This exception is used when a lookup value doesn't match the supplied lookup type."""
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
         default_msg = "The supplied lookup type for the API does not match the value that was provided."
@@ -363,7 +363,7 @@ class InvalidHelperFileTypeError(SalesPyForceError, ValueError):
     """This exception is used when an invalid file type is provided for the helper file."""
     def __init__(self, *args, **kwargs):
         """This method defines the default or custom message for the exception."""
-        default_msg = "The helper configuration file can only have the 'yaml' or 'json' file type."
+        default_msg = "The helper configuration file can only have the 'yml', 'yaml', or 'json' file type."
         if not (args or kwargs):
             args = (default_msg,)
         super().__init__(*args)
