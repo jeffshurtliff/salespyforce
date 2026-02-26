@@ -4,7 +4,7 @@
 :Synopsis:          Constants that are utilized throughout the package
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     25 Feb 2026
+:Modified Date:     26 Feb 2026
 """
 
 from __future__ import annotations
@@ -33,6 +33,12 @@ YAML_BOOLEAN_MAPPING: Final[Mapping[Union[str, bool], bool]] = MappingProxyType(
         'no': False,
     }
 )
+
+
+# -----------------------------
+# Error Handling
+# -----------------------------
+_DEFAULT_WARNING_CATEGORY: Final[type[Warning]] = UserWarning
 
 
 # -----------------------------
