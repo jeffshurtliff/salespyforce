@@ -32,6 +32,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   {py:meth}`salespyforce.Salesforce.Chatter.post_comment` methods (and their underlying functions) 
   now raise the {py:exc}`~salespyforce.errors.exceptions.MissingRequiredDataError` exception rather 
   than the generic {py:exc}`RuntimeError` exception when required data is not passed appropriately.
+- The {py:meth}`salespyforce.utils.core_utils.download_image` function now raises more specific 
+  exceptions instead of the generic {py:exc}`RuntimeError` exception.
+  - The {py:exc}`salespyforce.errors.exceptions.MissingRequiredDataError` exception is raised if 
+    neither an image URL nor an API response are provided when calling the function.
+  - The {py:exc}`salespyforce.errors.exceptions.GETRequestError` exception is raised if the GET 
+    request fails to download the image.
 - The {py:func}`salespyforce.utils.helper.import_helper_file` and
   {py:func}`salespyforce.utils.helper.get_helper_settings` functions now support both ``yml`` and
   ``yaml`` extensions for YAML files.

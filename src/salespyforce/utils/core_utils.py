@@ -6,7 +6,7 @@
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     25 Feb 2026
+:Modified Date:     27 Feb 2026
 """
 
 from __future__ import annotations
@@ -51,7 +51,7 @@ def url_decode(encoded_string: str) -> str:
 
 
 @deprecated(since='1.4.0', replacement='salespyforce.errors.handlers.display_warning', removal='2.0.0')
-def display_warning(warn_msg):
+def display_warning(warn_msg: str) -> None:
     """This function displays a :py:exc:`UserWarning` message via the :py:mod:`warnings` module.
 
     .. deprecated:: 1.4.0
@@ -64,7 +64,7 @@ def display_warning(warn_msg):
     warnings.warn(warn_msg, UserWarning)
 
 
-def get_file_type(file_path):
+def get_file_type(file_path: str) -> str:
     """This function attempts to identify if a given file path is for a YAML or JSON file.
 
     :param file_path: The full path to the file
@@ -201,6 +201,9 @@ def download_image(image_url: Optional[str] = None, file_name: Optional[str] = N
                    response=None, extension: str = const.FILE_EXTENSIONS.JPEG) -> str:
     """This function downloads an image and saves it to a specified directory.
 
+    .. versionchanged:: 1.5.0
+       This function now raises more specific exceptions instead of the generic :py:exc:`RuntimeError` exception.
+
     :param image_url: The absolute URL to the image
     :type image_url: str, None
     :param file_name: The file name (including extension) to use as the file name (Default: randomly generated)
@@ -211,10 +214,12 @@ def download_image(image_url: Optional[str] = None, file_name: Optional[str] = N
     :param extension: The file extension to use if a file name with extension is not provided (Default: ``jpeg``)
     :type extension: str
     :returns: The full path to the downloaded image
-    :raises: :py:exc:`RuntimeError`
+    :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`,
+             :py:exc:`salespyforce.errors.exceptions.GETRequestError`
     """
     if not image_url and not response:
-        raise RuntimeError('An image URL or an API response must be provided to download an image.')
+        exc_msg = 'An image URL or an API response must be provided to download an image.'
+        raise errors.exceptions.MissingRequiredDataError(exc_msg)
 
     # Define an appropriate file path
     file_path = './' if not file_path else file_path
@@ -229,7 +234,8 @@ def download_image(image_url: Optional[str] = None, file_name: Optional[str] = N
     if not response:
         response = requests.get(image_url)
     if response.status_code != 200:
-        raise RuntimeError(f'The image failed to download with a {response.status_code} status code.')
+        exc_msg = f'The image failed to download with a {response.status_code} status code.'
+        raise errors.exceptions.GETRequestError(exc_msg)
 
     # Export the response data as an image file
     with open(f'{file_path}{file_name}', 'wb') as file:
