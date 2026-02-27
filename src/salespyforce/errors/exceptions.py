@@ -235,11 +235,14 @@ class FeatureNotConfiguredError(SalesPyForceError):
     """This exception is used when an API request fails because a feature is not configured."""
     def __init__(self, *args, **kwargs):
         exc_msg = "The feature is not configured."
-        if 'identifier' in kwargs or 'feature' in kwargs:
-            if 'identifier' in kwargs:
-                exc_msg += f" Identifier: {kwargs['identifier']}"
-            if 'feature' in kwargs:
-                exc_msg = exc_msg.replace("feature", f"{kwargs['feature']} feature")
+        if _EXCEPTION_CLASSES._IDENTIFIER in kwargs or _EXCEPTION_CLASSES._FEATURE in kwargs:
+            if _EXCEPTION_CLASSES._IDENTIFIER in kwargs:
+                exc_msg += f' Identifier: {kwargs[_EXCEPTION_CLASSES._IDENTIFIER]}'
+            if _EXCEPTION_CLASSES._FEATURE in kwargs:
+                exc_msg = exc_msg.replace(
+                    _EXCEPTION_CLASSES._FEATURE,
+                    f'{kwargs[_EXCEPTION_CLASSES._FEATURE]} {_EXCEPTION_CLASSES._FEATURE}'
+                )
             args = (exc_msg,)
         elif not (args or kwargs):
             args = (exc_msg,)
@@ -272,11 +275,12 @@ class InvalidPayloadValueError(SalesPyForceError):
         custom_msg = "The invalid payload value 'X' was provided for the 'Y' field."
         if not (args or kwargs):
             args = (default_msg,)
-        elif 'value' in kwargs:
-            if 'field' in kwargs:
-                custom_msg = custom_msg.replace('X', kwargs['value']).replace('Y', kwargs['field'])
+        elif _EXCEPTION_CLASSES._VALUE in kwargs:
+            if _EXCEPTION_CLASSES._FIELD in kwargs:
+                custom_msg = custom_msg.replace('X', kwargs[_EXCEPTION_CLASSES._VALUE])
+                custom_msg = custom_msg.replace('Y', kwargs[_EXCEPTION_CLASSES._FIELD])
             else:
-                custom_msg = f"{custom_msg.replace('X', kwargs['value']).split(' for the')[0]}."
+                custom_msg = f"{custom_msg.replace('X', kwargs[_EXCEPTION_CLASSES._VALUE]).split(' for the')[0]}."
             args = (custom_msg,)
         super().__init__(*args)
 
@@ -315,8 +319,8 @@ class PayloadMismatchError(SalesPyForceError):
         default_msg = "More than one payload was provided for the API call when only one is permitted."
         if not (args or kwargs):
             args = (default_msg,)
-        elif kwargs['request_type']:
-            custom_msg = default_msg.replace("API call", f"{kwargs['request_type'].upper()} request")
+        elif kwargs[_EXCEPTION_CLASSES._REQUEST_TYPE]:
+            custom_msg = default_msg.replace('API call', f'{kwargs[_EXCEPTION_CLASSES._REQUEST_TYPE].upper()} request')
             args = (custom_msg,)
         super().__init__(*args)
 

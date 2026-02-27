@@ -52,15 +52,20 @@ class ExceptionClasses:
     """
     # Keyword arguments
     _DATA: str = 'data'
+    _FEATURE: str = 'feature'
+    _FIELD: str = 'field'
     _FILE: str = 'file'
+    _IDENTIFIER: str = 'identifier'
     _INIT: str = 'init'
     _INITIALIZE: str = 'initialize'
     _MESSAGE: str = 'message'
     _OBJECT: str = 'object'
     _PARAM: str = 'param'
+    _REQUEST_TYPE: str = 'request_type'
     _STATUS_CODE: str = 'status_code'
     _URL: str = 'url'
     _VAL: str = 'val'
+    _VALUE: str = 'value'
 
     # Exception messages and message segments
     _API_CUSTOM_MSG: str = 'The {type} request failed with the following message:'
