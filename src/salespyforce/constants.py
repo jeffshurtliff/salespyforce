@@ -25,14 +25,12 @@ FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'      # Used if querying the org f
 # --------------------------------------
 SALESFORCE_ID_SUFFIX_ALPHABET: Final[str] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'
 VALID_SALESFORCE_URL_PATTERN: Final[str] = r'^https://[a-zA-Z0-9._-]+\.salesforce\.com(/|$)'
-YAML_BOOLEAN_MAPPING: Final[Mapping[Union[str, bool], bool]] = MappingProxyType(
-    {
-        True: True,
-        False: False,
-        'yes': True,
-        'no': False,
-    }
-)
+YAML_BOOLEAN_MAPPING: Final[Mapping[Union[str, bool], bool]] = MappingProxyType({
+    True: True,
+    False: False,
+    'yes': True,
+    'no': False,
+})
 
 
 # -----------------------------
@@ -268,12 +266,15 @@ class RestPaths:
     codebase. The templates are designed to be formatted with runtime
     values such as ``api_version``, ``sobject``, and ``record_id``.
     """
+    # General REST paths
     SERVICES_DATA: ClassVar[str] = '/services/data'
     SERVICES_DATA_API: ClassVar[str] = SERVICES_DATA + '/{api_version}'
     SERVICES_DATA_API_SITE = SERVICES_DATA_API + '{site_segment}'
     QUERY: ClassVar[str] = SERVICES_DATA_API + '/query'
     SOBJECT: ClassVar[str] = SERVICES_DATA_API + '/sobjects/{sobject}'
     SOBJECT_BY_ID: ClassVar[str] = SOBJECT + '/{record_id}'
+
+    # Chatter REST paths
     CONNECT_COMMUNITIES_SITE: ClassVar[str] = '/connect/communities/{site_id}'
     CHATTER_FEEDS: ClassVar[str] = '/chatter/feeds'
     CHATTER_MY_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/news/me/feed-elements'
@@ -282,13 +283,16 @@ class RestPaths:
     CHATTER_FEED_ELEMENTS: ClassVar[str] = '/chatter/feed-elements'
     CHATTER_FEED_ELEMENT_COMMENTS: ClassVar[str] = CHATTER_FEED_ELEMENTS + '/{feed_element_id}/capabilities/comments/items'
 
+    # Knowledge REST paths
+    ARTICLE_MASTER_VERSION_BY_ID: ClassVar[str] = SERVICES_DATA_API + '/knowledgeManagement/articleVersions/masterVersions/{article_id}'
+
 
 # --------------------------------------
 # REST API Query Parameters and values
 # --------------------------------------
 @dataclass(frozen=True)
 class QueryParams:
-    """Standard query parameter names used in Salesforce REST requests.
+    """Standard query and payload parameter names used in Salesforce REST requests.
 
     .. versionadded:: 1.5.0
 
@@ -301,6 +305,7 @@ class QueryParams:
     Q: ClassVar[str] = 'q'
     BODY: ClassVar[str] = 'body'
     CREATED_BY_ID: ClassVar[str] = 'createdById'
+    INPUTS: ClassVar[str] = 'inputs'
     LIMIT: ClassVar[str] = 'limit'
     NEXT_RECORDS_URL: ClassVar[str] = 'nextRecordsUrl'
     OFFSET: ClassVar[str] = 'offset'
@@ -314,16 +319,25 @@ class QueryParams:
 
     # Common parameter default values
     DEFAULT_PAGE_NUM: ClassVar[int] = 1
-    DEFAULT_PAGE_SIZE: ClassVar[int] = 100
+    DEFAULT_PAGE_SIZE: ClassVar[int] = 20
 
     # Common parameter threshold values
     MIN_PAGE_NUM: ClassVar[int] = 1
     MAX_PAGE_SIZE: ClassVar[int] = 100
 
-    # Chatter parameter names
+    # Chatter parameter names / fields
     FEED_ELEMENT_TYPE: ClassVar[str] = 'feedElementType'
     MESSAGE_SEGMENTS: ClassVar[str] = 'messageSegments'
     SUBJECT_ID: ClassVar[str] = 'subjectId'
+
+    # Knowledge parameter names / fields
+    ACTION: ClassVar[str] = 'action'
+    ARTICLE_ID: ClassVar[str] = 'articleId'
+    ARTICLE_VERSION_ID_LIST: ClassVar[str] = 'articleVersionIdList'
+    PUBLISH_ACTION: ClassVar[str] = 'pubAction'
+    PUBLISH_STATUS: ClassVar[str] = 'publishStatus'
+    UNPUBLISH: ClassVar[str] = 'unpublish'
+    VERSION_NUMBER: ClassVar[str] = 'versionNumber'
 
 
 # -----------------------------
@@ -335,8 +349,17 @@ class PayloadValues:
 
     .. versionadded:: 1.5.0
     """
+    # Chatter payload values
     FEED_ITEM: ClassVar[str] = 'FeedItem'
     TEXT: ClassVar[str] = 'text'
+
+    # Knowledge payload values
+    ARCHIVED: ClassVar[str] = 'Archived'
+    EDIT_AS_DRAFT: ClassVar[str] = 'EDIT_AS_DRAFT_ARTICLE'
+    NEXT_VERSION: ClassVar[str] = 'NextVersion'
+    ONLINE: ClassVar[str] = 'Online'
+    PUBLISH_ARTICLE: ClassVar[str] = 'PUBLISH_ARTICLE'
+    PUBLISH_ARTICLE_NEW_VERSION: ClassVar[str] = 'PUBLISH_ARTICLE_NEW_VERSION'
 
 
 # -----------------------------
@@ -364,6 +387,7 @@ class SObjects:
     .. versionadded:: 1.5.0
     """
     KNOWLEDGE: ClassVar[str] = 'Knowledge__kav'
+    KNOWLEDGE_DATA_CATEGORY_SELECTION: ClassVar[str] = 'Knowledge__DataCategorySelection'
     USER_RECORD_ACCESS: ClassVar[str] = 'UserRecordAccess'
 
 
@@ -379,24 +403,35 @@ class SObjectFields:
     # Common field names
     CREATED_DATE: ClassVar[str] = 'CreatedDate'
     ID: ClassVar[str] = 'Id'
+    PARENT_ID: ClassVar[str] = 'ParentId'
     RECORD_ID: ClassVar[str] = 'RecordId'
     USER_ID: ClassVar[str] = 'UserId'
 
     # Knowledge__kav field names
     ARTICLE_NUMBER: ClassVar[str] = 'ArticleNumber'
+    KNOWLEDGE_ARTICLE_ID: ClassVar[str] = 'KnowledgeArticleId'
     LAST_PUBLISHED_DATE: ClassVar[str] = 'LastPublishedDate'
     PUBLISH_STATUS: ClassVar[str] = 'PublishStatus'
     TITLE: ClassVar[str] = 'Title'
+    URL_NAME: ClassVar[str] = 'UrlName'
     VALIDATION_STATUS: ClassVar[str] = 'ValidationStatus'
     VIEW_SCORE: ClassVar[str] = 'ViewScore'
 
     # Knowledge__kav validation criteria
+    REQUIRED_ARTICLE_CREATE_UPDATE_FIELDS: ClassVar[frozenset[str]] = frozenset({
+        TITLE,
+        URL_NAME,
+    })
     VALID_KNOWLEDGE_SORT_FIELDS: ClassVar[frozenset[str]] = frozenset({
         LAST_PUBLISHED_DATE,
         CREATED_DATE,
         TITLE,
         VIEW_SCORE,
     })
+
+    # Knowledge__DataCategorySelection field names
+    DATA_CATEGORY_GROUP_NAME: ClassVar[str] = 'DataCategoryGroupName'
+    DATA_CATEGORY_NAME: ClassVar[str] = 'DataCategoryName'
 
     # UserRecordAccess field names
     HAS_DELETE_ACCESS: ClassVar[str] = 'HasDeleteAccess'
@@ -455,7 +490,9 @@ class LogMessages:
     _DEFAULT_SOBJECT_USED: ClassVar[str] = 'The {sobject} sObject will be used as a specific sObject was not provided'
     _INVALID_PARAM_VALUE_DEFAULT: ClassVar[str] = 'The {param} value is not valid and will default to {default}'
     _INVALID_PARAM_VALUE_IGNORE: ClassVar[str] = "The {param} value '{value}' is not valid and will be ignored"
+    _MISSING_ARTICLE_FIELD_ERROR: ClassVar[str] = 'The following required field is missing from the article data: {field}'
     _MISSING_REQUIRED_DATA: ClassVar[str] = '{data} is missing and must be provided as it is required'
+    _MUST_BE_PROVIDED_ERROR: ClassVar[str] = 'The {data} must be provided.'
     _PARAM_EXCEEDS_MAX_VALUE: ClassVar[str] = 'The {param} value exceeds the maximum and will default to {default}'
 
 

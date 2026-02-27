@@ -142,8 +142,8 @@ def get_articles_list(
         query: Optional[str] = None,
         sort: Optional[str] = None,
         order: Optional[str] = None,
-        page_size: int = 20,
-        page_num: int = 1,
+        page_size: int = const.QUERY_PARAMS.DEFAULT_PAGE_SIZE,      # Default: 20
+        page_num: int = const.QUERY_PARAMS.DEFAULT_PAGE_NUM,        # Default: 1
 ) -> list:
     """This function retrieves a list of knowledge articles.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`__)
@@ -168,7 +168,7 @@ def get_articles_list(
     # Define the headers
     headers = sfdc_object._get_headers(const.HEADER_TYPE_ARTICLES)
 
-    # Validate the sort field
+    # Validate the sort parameter and ignore the value if it is invalid
     if sort and sort not in const.SOBJECT_FIELDS.VALID_KNOWLEDGE_SORT_FIELDS:
         logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_IGNORE.format(
             param=const.QUERY_PARAMS.SORT,
@@ -176,7 +176,7 @@ def get_articles_list(
         ))
         sort = None
 
-    # Validate the order field
+    # Validate the order parameter and ignore the value if it is invalid
     if order and order.upper() not in const.SOQL_QUERIES.VALID_ORDER_DIRECTIONS:
         logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_IGNORE.format(
             param=const.QUERY_PARAMS.ORDER,
@@ -184,15 +184,15 @@ def get_articles_list(
         ))
         order = None
 
-    # Validate the page size field
+    # Validate the page size parameter (Fall back to maximum value rather than default value if maximum is exceeded)
     if page_size > const.QUERY_PARAMS.MAX_PAGE_SIZE:
         logger.error(const._LOG_MESSAGES._PARAM_EXCEEDS_MAX_VALUE.format(
             param=const.QUERY_PARAMS.PAGE_SIZE,
-            default=const.QUERY_PARAMS.DEFAULT_PAGE_SIZE
+            default=const.QUERY_PARAMS.MAX_PAGE_SIZE
         ))
-        page_size = const.QUERY_PARAMS.DEFAULT_PAGE_SIZE
+        page_size = const.QUERY_PARAMS.MAX_PAGE_SIZE
 
-    # Validate the pageNumber field
+    # Validate the pageNumber parameter and fall back to default value if it is invalid
     if page_num < const.QUERY_PARAMS.MIN_PAGE_NUM:
         logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_DEFAULT.format(
             param=const.QUERY_PARAMS.PAGE_NUM,
@@ -300,7 +300,9 @@ def get_validation_status(
              :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
     """
     if not any((article_id, article_details)):
-        raise errors.exceptions.MissingRequiredDataError('The article ID or article details must be provided.')
+        error_msg = const._LOG_MESSAGES._MUST_BE_PROVIDED_ERROR.format(data='article ID or article details')
+        logger.error(error_msg)
+        raise errors.exceptions.MissingRequiredDataError(error_msg)
 
     # Retrieve the article details if not already supplied
     if not article_details:
@@ -409,17 +411,18 @@ def create_article(
     _validate_article_data(article_data)
 
     # Ensure that the required fields have been provided
-    required_fields = ['Title', 'UrlName']
-    for field in required_fields:
-        if field not in article_data:
-            raise ValueError(f'The following required field is missing from the article data: {field}')
+    _check_required_article_fields(article_data)
 
-    # Perform the API call
-    # TODO: Convert the REST path below into a constant
-    response = sfdc_object.post(f'/services/data/{sfdc_object.version}/sobjects/{sobject}', payload=article_data)
+    # Define the endpoint and perform the API call
+    endpoint = const.REST_PATHS.SOBJECT.format(
+        api_version=sfdc_object.version,
+        sobject=sobject,
+    )
+    response = sfdc_object.post(endpoint, payload=article_data)
 
     # Return the full response or just the article ID
     if not full_response:
+        # TODO: Verify that the `id` value below is correct and shouldn't be `Id` instead
         response = response.get('id')
     return response
 
@@ -456,14 +459,15 @@ def update_article(
     _validate_article_data(article_data)
 
     # Ensure that the required fields have been provided
-    required_fields = ['Title', 'UrlName']
-    for field in required_fields:
-        if field not in article_data:
-            raise ValueError(f'The following required field is missing from the article data: {field}')
+    _check_required_article_fields(article_data)
 
-    # Perform the API call
-    response = sfdc_object.patch(f'/services/data/{sfdc_object.version}/sobjects/{sobject}/{record_id}',
-                                 payload=article_data)
+    # Define the endpoint and perform the API call
+    endpoint = const.REST_PATHS.SOBJECT_BY_ID.format(
+        api_version=sfdc_object.version,
+        sobject=sobject,
+        record_id=record_id,
+    )
+    response = sfdc_object.patch(endpoint, payload=article_data)
 
     # Determine whether the call was successful
     successful = True if response.status_code == 204 else False
@@ -489,16 +493,17 @@ def create_draft_from_online_article(sfdc_object, article_id: str, unpublish: bo
     """
     # Define the payload for the API call
     payload = {
-        "inputs": [
+        const.QUERY_PARAMS.INPUTS: [
             {
-                "action": "EDIT_AS_DRAFT_ARTICLE",
-                "unpublish": unpublish,
-                "articleId": f"{article_id}"
+                const.QUERY_PARAMS.ACTION: const.PAYLOAD_VALUES.EDIT_AS_DRAFT,
+                const.QUERY_PARAMS.UNPUBLISH: unpublish,
+                const.QUERY_PARAMS.ARTICLE_ID: f"{article_id}"
             }
         ]
     }
 
     # Perform the API call
+    # TODO: Replace the REST path below with a constant
     endpoint = f'/services/data/{sfdc_object.version}/actions/standard/createDraftFromOnlineKnowledgeArticle'
     return sfdc_object.post(endpoint, payload)
 
@@ -514,6 +519,10 @@ def create_draft_from_master_version(
     """This function creates an online version of a master article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`__)
 
+    .. versionchanged:: 1.5.0
+       The :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception class is now raised when
+       required parameters are missing instead of the generic :py:exc:`RuntimeError` exception.
+
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID from which to create the draft
@@ -527,11 +536,12 @@ def create_draft_from_master_version(
     :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
     :type full_response: bool
     :returns: The API response or the ID of the article draft
-    :raises: :py:exc:`RuntimeError`
+    :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
     """
     if not any((article_id, knowledge_article_id, article_data)):
-        # TODO: Change to more specific exception class (errors.exceptions.MissingRequiredDataError)
-        raise RuntimeError('Need to provide article ID, knowledge article ID, or article data')
+        error_msg = 'Need to provide article ID, knowledge article ID, or article data'
+        logger.error(error_msg)
+        raise errors.exceptions.MissingRequiredDataError(error_msg)
 
     # Ensure the sobject is defined appropriately
     sobject = _validate_knowledge_sobject(sobject)
@@ -543,14 +553,16 @@ def create_draft_from_master_version(
     if not knowledge_article_id:
         if not article_data:
             article_data = sfdc_object.get_article_details(article_id, sobject=sobject)
-        knowledge_article_id = article_data.get('KnowledgeArticleId')
+        knowledge_article_id = article_data.get(const.SOBJECT_FIELDS.KNOWLEDGE_ARTICLE_ID)
 
     # Perform the API call to retrieve the new draft ID
+    # TODO: Replace the REST path below with a constant
     endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions'
-    response = sfdc_object.post(endpoint, {'articleId': knowledge_article_id})
+    response = sfdc_object.post(endpoint, {const.QUERY_PARAMS.ARTICLE_ID: knowledge_article_id})
 
     # Return the full response or the draft ID
     if not full_response:
+        # TODO: Verify that the `id` value below is correct and shouldn't be `Id` instead
         response = response.get('id')
     return response
 
@@ -577,12 +589,13 @@ def publish_article(
     """
     # Define the payload for the API call
     payload = {
-        "publishStatus": "Online"
+        const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ONLINE
     }
     if major_version:
-        payload['versionNumber'] = 'NextVersion'
+        payload[const.QUERY_PARAMS.VERSION_NUMBER] = const.PAYLOAD_VALUES.NEXT_VERSION
 
     # Perform the API call
+    # TODO: Replace the REST path below with a constant
     endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{article_id}'
     result = sfdc_object.patch(endpoint, payload)
 
@@ -596,6 +609,10 @@ def publish_multiple_articles(sfdc_object, article_id_list: list, major_version:
     """This function publishes multiple knowledge article drafts at one time.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`__)
 
+    .. versionchanged:: 1.5.0
+       The :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception class is now raised
+       when required parameters are missing instead of a more generic exception.
+
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id_list: A list of Article IDs to be published
@@ -603,27 +620,32 @@ def publish_multiple_articles(sfdc_object, article_id_list: list, major_version:
     :param major_version: Determines if the published article should be a major version (``True`` by default)
     :type major_version: bool
     :returns: The API response from the POST request
-    :raises: :py:exc:`RuntimeError`, :py:exc:`TypeError`, :py:exc:`ValueError`
+    :raises: :py:exc:`RuntimeError`,
+             :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
     """
     # Define the endpoint URI
+    # TODO: Replace the REST path below with a constant
     endpoint = f'/services/data/{sfdc_object.version}/actions/standard/publishKnowledgeArticles'
 
     # Ensure there is at least one article ID to publish
+    validation_error = None
     if not isinstance(article_id_list, list) or not isinstance(article_id_list[0], str):
-        raise TypeError('A list of Article ID strings must be provided in order to publish multiple articles.')
+        validation_error = 'A list of Article ID strings must be provided in order to publish multiple articles.'
     elif len(article_id_list) == 0:
-        # TODO: Change to more specific exception class (errors.exceptions.MissingRequiredDataError)
-        raise ValueError('No article ID strings were found in the article ID list variable.')
+        validation_error = 'No article ID strings were found in the article ID list variable.'
+    if validation_error:
+        logger.error(validation_error)
+        raise errors.exceptions.MissingRequiredDataError(validation_error)
 
     # Define the action to perform
-    action = 'PUBLISH_ARTICLE_NEW_VERSION' if major_version else 'PUBLISH_ARTICLE'
+    action = const.PAYLOAD_VALUES.PUBLISH_ARTICLE_NEW_VERSION if major_version else const.PAYLOAD_VALUES.PUBLISH_ARTICLE
 
     # Construct the payload
     payload = {
-        "inputs": [
+        const.QUERY_PARAMS.INPUTS: [
             {
-                "articleVersionIdList": article_id_list,
-                "pubAction": action
+                const.QUERY_PARAMS.ARTICLE_VERSION_ID_LIST: article_id_list,
+                const.QUERY_PARAMS.PUBLISH_ACTION: action
             }
         ]
     }
@@ -651,13 +673,16 @@ def assign_data_category(sfdc_object, article_id: str, category_group_name: str,
     """
     # Define the payload for the API call
     payload = {
-        "ParentId": article_id,
-        "DataCategoryGroupName": category_group_name,
-        "DataCategoryName": category_name
+        const.SOBJECT_FIELDS.PARENT_ID: article_id,
+        const.SOBJECT_FIELDS.DATA_CATEGORY_GROUP_NAME: category_group_name,
+        const.SOBJECT_FIELDS.DATA_CATEGORY_NAME: category_name
     }
 
-    # Perform the API call
-    endpoint = f'/services/data/{sfdc_object.version}/sobjects/Knowledge__DataCategorySelection'
+    # Define the endpoint and perform the API call
+    endpoint = const.REST_PATHS.SOBJECT.format(
+        api_version=sfdc_object.api_version,
+        sobject=const.SOBJECTS.KNOWLEDGE_DATA_CATEGORY_SELECTION,
+    )
     return sfdc_object.post(endpoint, payload)
 
 
@@ -671,16 +696,19 @@ def archive_article(sfdc_object, article_id: str):
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The ID of the article to archive
     :type article_id: str
-    :returns: The API response from the POST request
+    :returns: The API response from the PATCH request
     :raises: :py:exc:`RuntimeError`
     """
     # Define the payload for the API call
     payload = {
-        "publishStatus": "Archived"
+        const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ARCHIVED
     }
 
-    # Perform the API call
-    endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{article_id}'
+    # Define the endpoint and perform the API call
+    endpoint = const.REST_PATHS.ARTICLE_MASTER_VERSION_BY_ID.format(
+        api_version=sfdc_object.api_version,
+        article_id=article_id,
+    )
     return sfdc_object.patch(endpoint, payload)
 
 
@@ -711,9 +739,16 @@ def delete_article_draft(sfdc_object, version_id: str, sobject: Optional[str] = 
 
     # Define the appropriate REST path and perform the API call
     if use_knowledge_management_endpoint:
-        endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{version_id}'
+        endpoint = const.REST_PATHS.ARTICLE_MASTER_VERSION_BY_ID.format(
+            api_version=sfdc_object.api_version,
+            article_id=version_id,
+        )
     else:
-        endpoint = f'/services/data/{sfdc_object.version}/sobjects/{sobject}/{version_id}'
+        endpoint = const.REST_PATHS.SOBJECT_BY_ID.format(
+            api_version=sfdc_object.api_version,
+            sobject=sobject,
+            record_id=version_id,
+        )
     return sfdc_object.delete(endpoint)
 
 
@@ -779,3 +814,20 @@ def _validate_article_data(_article_data: Optional[dict] = None, _required: bool
     elif _article_data and not isinstance(_article_data, dict):
         logger.error(const._LOG_MESSAGES._ARTICLE_DATA_TYPE_ERROR)
         raise TypeError(const._LOG_MESSAGES._ARTICLE_DATA_TYPE_ERROR)
+
+
+def _check_required_article_fields(_article_data: dict) -> None:
+    """This function checks to ensure that the fields required to create or update an article are present.
+
+    .. versionadded:: 1.5.0
+
+    :param _article_data: The article data to validate
+    :type _article_data: dict
+    :returns: None
+    :raises: :py:exc:`errors.exceptions.MissingRequiredDataError``
+    """
+    for _field in const.SOBJECT_FIELDS.REQUIRED_ARTICLE_CREATE_UPDATE_FIELDS:
+        if _field not in _article_data:
+            _error_msg = const._LOG_MESSAGES._MISSING_ARTICLE_FIELD_ERROR.format(field=_field)
+            logger.error(_error_msg)
+            raise errors.exceptions.MissingRequiredDataError(_error_msg)

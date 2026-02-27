@@ -32,13 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   now supports the `sobject` parameter to specify the sObject against which to query.
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_validation_status` method (and underlying function) 
   now includes the `use_knowledge_articles_endpoint` parameter so you can specify the REST path to utilize.
-- The {py:meth}`salespyforce.Salesforce.Chatter.post_feed_item` and
-  {py:meth}`salespyforce.Salesforce.Chatter.post_comment` methods (and their underlying functions) 
-  now raise the {py:exc}`~salespyforce.errors.exceptions.MissingRequiredDataError` exception rather 
-  than the generic {py:exc}`RuntimeError` exception when required data is not passed appropriately.
-- The {py:meth}`salespyforce.Salesforce.Knowledge.get_article_url` method (And underlying function) 
-  now raises the {py:exc}`~salespyforce.errors.exceptions.MissingRequiredDataError` exception rather 
-  than the generic {py:exc}`ValueError` exception when required data is not passed appropriately.
+- The following methods (and underlying functions) now raise the 
+  {py:exc}`~salespyforce.errors.exceptions.MissingRequiredDataError` exception rather than generic 
+  {py:exc}`RuntimeError` or {py:exc}`ValueError` exceptions when required data is missing:
+  - {py:meth}`salespyforce.Salesforce.Chatter.post_feed_item`
+  - {py:meth}`salespyforce.Salesforce.Chatter.post_comment`
+  - {py:meth}`salespyforce.Salesforce.Knowledge.get_article_url`
+  - {py:meth}`salespyforce.Salesforce.Knowledge.create_draft_from_master_version`
+  - {py:meth}`salespyforce.Salesforce.Knowledge.publish_multiple_articles`
 - The {py:meth}`salespyforce.utils.core_utils.download_image` function now raises more specific 
   exceptions instead of the generic {py:exc}`RuntimeError` exception.
   - The {py:exc}`salespyforce.errors.exceptions.MissingRequiredDataError` exception is raised if 

@@ -1213,6 +1213,10 @@ class Salesforce(object):
             """This method creates an online version of a master article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`__)
 
+            .. versionchanged:: 1.5.0
+               The :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception class is now raised
+               when required parameters are missing instead of the generic :py:exc:`RuntimeError` exception.
+
             :param article_id: The Article ID from which to create the draft
             :type article_id: str, None
             :param knowledge_article_id: The Knowledge Article ID (``KnowledgeArticleId``) from which to create the draft
@@ -1251,14 +1255,17 @@ class Salesforce(object):
             """This method publishes multiple knowledge article drafts at one time.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#publishKnowledgeArticles>`__)
 
+            .. versionchanged:: 1.5.0
+               The :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception class is now raised
+               when required parameters are missing instead of a more generic exception.
+
             :param article_id_list: A list of Article IDs to be published
             :type article_id_list: list
             :param major_version: Determines if the published article should be a major version (``True`` by default)
             :type major_version: bool
             :returns: The API response from the POST request
             :raises: :py:exc:`RuntimeError`,
-                     :py:exc:`TypeError`,
-                     :py:exc:`ValueError`
+                     :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
             return knowledge_module.publish_multiple_articles(self.sfdc_object, article_id_list=article_id_list,
                                                               major_version=major_version)
