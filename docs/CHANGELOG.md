@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The {py:func}`salespyforce.utils.version.get_version_from_pyproject` function was 
   added as a fallback method for retrieving the current package version when the 
   package is not installed.
+- The {py:exc}`salespyforce.errors.exceptions.PATCHRequestError` exception class has
+  been added to leverage with PATCH request exceptions.
 
 (unreleased-changed)=
 ### Changed

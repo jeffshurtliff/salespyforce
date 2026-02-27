@@ -4,7 +4,7 @@
 :Synopsis:          Constants that are utilized throughout the package
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     26 Feb 2026
+:Modified Date:     27 Feb 2026
 """
 
 from __future__ import annotations
@@ -42,6 +42,33 @@ _DEFAULT_WARNING_CATEGORY: Final[type[Warning]] = UserWarning
 
 
 # -----------------------------
+# Exception Classes
+# -----------------------------
+@dataclass(frozen=True)
+class ExceptionClasses:
+    """Constants utilized by the exception classes in the :py:mod:`salespyforce.errors.exceptions` module.
+
+    .. versionadded:: 1.5.0
+    """
+    # Keyword arguments
+    _DATA: str = 'data'
+    _FILE: str = 'file'
+    _INIT: str = 'init'
+    _INITIALIZE: str = 'initialize'
+    _MESSAGE: str = 'message'
+    _OBJECT: str = 'object'
+    _PARAM: str = 'param'
+    _STATUS_CODE: str = 'status_code'
+    _URL: str = 'url'
+    _VAL: str = 'val'
+
+    # Exception messages and message segments
+    _API_CUSTOM_MSG: str = 'The {type} request failed with the following message:'
+    _API_DEFAULT_MSG: str = 'The {type} request did not return a successful response.'
+    _WITH_THE_FOLLOWING_SEGMENT: str = ' with the following'
+
+
+# -----------------------------
 # File Type Extensions
 # -----------------------------
 @dataclass(frozen=True)
@@ -76,7 +103,7 @@ class HelperSettings:
     # Validation criteria
     VALID_HELPER_FILE_TYPES: ClassVar[frozenset[str]] = frozenset({'json', 'yml', 'yaml'})
 
-    # Authentication / Connection Fields
+    # Authentication and connection fields
     CONNECTION: str = 'connection'
     USERNAME: str = 'username'
     PASSWORD: str = 'password'
@@ -101,6 +128,19 @@ class HelperSettings:
 DEFAULT_API_TIMEOUT_SECONDS: Final[int] = 30
 DEFAULT_API_MAX_RETRIES: Final[int] = 3
 VALID_HEADER_TYPES: Final[frozenset[str]] = frozenset({'default', 'articles'})
+
+
+@dataclass(frozen=True)
+class ApiRequestTypes:
+    """Standard REST API Request types used by the package.
+
+    .. versionadded:: 1.5.0
+    """
+    GET: str = 'GET'
+    PATCH: str = 'PATCH'
+    POST: str = 'POST'
+    PUT: str = 'PUT'
+    DELETE: str = 'DELETE'
 
 
 # -----------------------------
@@ -320,6 +360,7 @@ class SObjectFields:
 # -----------------------------
 FILE_EXTENSIONS: Final[FileExtensions] = FileExtensions()
 HELPER_SETTINGS: Final[HelperSettings] = HelperSettings()
+API_REQUEST_TYPES: Final[ApiRequestTypes] = ApiRequestTypes()
 HEADERS: Final[Headers] = Headers()
 AUTH_SCHEMES: Final[AuthSchemes] = AuthSchemes()
 CONTENT_TYPES: Final[ContentTypes] = ContentTypes()
@@ -331,3 +372,4 @@ PAYLOAD_VALUES: Final[PayloadValues] = PayloadValues()
 RESPONSE_KEYS: Final[ResponseKeys] = ResponseKeys()
 SOBJECTS: Final[SObjects] = SObjects()
 SOBJECT_FIELDS: Final[SObjectFields] = SObjectFields()
+_EXCEPTION_CLASSES: Final[ExceptionClasses] = ExceptionClasses()
