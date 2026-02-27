@@ -3,19 +3,17 @@
 :Module:            salespyforce.knowledge
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
-:Modified Date:     07 Feb 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     27 Feb 2026
 """
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Union
 
 from . import errors
+from . import constants as const
 from .utils import log_utils
-
-# Define constants
-KNOWLEDGE_SOBJECT = 'Knowledge__kav'
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -27,7 +25,7 @@ def check_for_existing_article(
         return_id: bool = False,
         return_id_and_number: bool = False,
         include_archived: bool = False,
-):
+) -> Union[str, tuple[str]]:
     """This method checks to see if an article already exists with a given title and returns its article number.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`__)
@@ -49,26 +47,40 @@ def check_for_existing_article(
     :type include_archived: bool
     :returns: The Article Number, Article ID, or both, if found, or a blank string if not found
     """
-    sobject = 'Knowledge__kav' if sobject is None else sobject
-    query = f"SELECT Id,ArticleNumber FROM {sobject} WHERE Title = '{title}'"
-    query += " AND PublishStatus != 'Archived'" if not include_archived else query
+    # Prepare the SOQL query
+    if not sobject:
+        sobject = const.SOBJECTS.KNOWLEDGE
+        logger.debug(const._LOG_MESSAGES._DEFAULT_SOBJECT_USED.format(sobject=sobject))
+    query = f"""
+        SELECT {const.SOBJECT_FIELDS.ID}, {const.SOBJECT_FIELDS.ARTICLE_NUMBER} 
+        FROM {sobject} 
+        WHERE {const.SOBJECT_FIELDS.TITLE} = '{title}'
+    """
+    if not include_archived:
+        query += f" AND {const.SOBJECT_FIELDS.PUBLISH_STATUS} != '{const.SOBJECT_FIELD_VALUES.ARCHIVED}'"
+
+    # Perform and parse the SOQL query
     response = sfdc_object.soql_query(query, replace_quotes=False)
-    return_value = ''
-    if response.get('totalSize') > 0:
+    if response.get(const.RESPONSE_KEYS.TOTAL_SIZE) > 0:
         if return_id:
-            return_value = response['records'][0]['Id']
+            return_value = response[const.RESPONSE_KEYS.RECORDS][0][const.SOBJECT_FIELDS.ID]
         elif return_id_and_number:
-            return_value = (response['records'][0]['Id'], response['records'][0]['ArticleNumber'])
+            return_value = (
+                response[const.RESPONSE_KEYS.RECORDS][0][const.SOBJECT_FIELDS.ID],
+                response[const.RESPONSE_KEYS.RECORDS][0][const.SOBJECT_FIELDS.ARTICLE_NUMBER],
+            )
         else:
-            return_value = response['records'][0]['ArticleNumber']
+            return_value = response[const.RESPONSE_KEYS.RECORDS][0][const.SOBJECT_FIELDS.ARTICLE_NUMBER]
     elif return_id_and_number:
         return_value = ('', '')
+    else:
+        return_value = ''
     return return_value
 
 
 def get_article_id_from_number(
         sfdc_object,
-        article_number,
+        article_number: Union[str, int],
         sobject: Optional[str] = None,
         return_uri: bool = False,
 ) -> str:
@@ -101,28 +113,30 @@ def get_article_id_from_number(
         logger.error(exc_msg)
         raise TypeError(exc_msg)
     if not sobject:
-        sobject = KNOWLEDGE_SOBJECT
-        logger.debug(f'The {KNOWLEDGE_SOBJECT} sObject will be used as one was not provided')
+        sobject = const.SOBJECTS.KNOWLEDGE
+        logger.debug(const._LOG_MESSAGES._DEFAULT_SOBJECT_USED.format(sobject=sobject))
 
     # Construct the SOQL query to perform
-    article_number = str(article_number) if not isinstance(article_number, str) else article_number
+    if not isinstance(article_number, str):
+        article_number = str(article_number)
+    query = f'SELECT {const.SOBJECT_FIELDS.ID} FROM {sobject} '
     if len(article_number) < 9:
-        query = f"SELECT Id FROM {sobject} WHERE ArticleNumber LIKE '%0{article_number}'"
+        query += f"WHERE {const.SOBJECT_FIELDS.ARTICLE_NUMBER} LIKE '%0{article_number}'"
     else:
-        query = f"SELECT Id FROM {sobject} WHERE ArticleNumber = '{article_number}'"
+        query += f"WHERE {const.SOBJECT_FIELDS.ARTICLE_NUMBER} = '{article_number}'"
 
     # Perform the SOQL query and return the article number if found
     response = sfdc_object.soql_query(query)
-    if response.get('totalSize') > 0:
+    if response.get(const.RESPONSE_KEYS.TOTAL_SIZE) > 0:
         if return_uri:
             # TODO: Split out the return_uri functionality into a separate function and method
             warn_msg = ("The ability to retrieve the article URI/URL rather than the ID (return_uri parameter) will "
                         "be moved to a separate function/method in a future release")
             logger.warning(warn_msg)
             errors.handlers.display_warning(warn_msg)
-            return_value = response['records'][0]['attributes']['url']
+            return_value = response[const.RESPONSE_KEYS.RECORDS][0][const.RESPONSE_KEYS.ATTRIBUTES][const.RESPONSE_KEYS.URL]
         else:
-            return_value = response['records'][0]['Id']
+            return_value = response[const.RESPONSE_KEYS.RECORDS][0][const.SOBJECT_FIELDS.ID]
     else:
         return_value = ''
         warn_msg = f'No results were returned when querying for the article number {article_number}'
@@ -137,7 +151,7 @@ def get_articles_list(
         order: Optional[str] = None,
         page_size: int = 20,
         page_num: int = 1,
-):
+) -> list:
     """This function retrieves a list of knowledge articles.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`__)
 
@@ -159,43 +173,54 @@ def get_articles_list(
     :returns: The list of retrieved knowledge articles
     """
     # Define the headers
-    headers = sfdc_object._get_headers('articles')
+    headers = sfdc_object._get_headers(const.HEADER_TYPE_ARTICLES)
 
     # Validate the sort field
-    # TODO: Convert list below into constant
-    valid_sort_options = ['LastPublishedDate', 'CreatedDate', 'Title', 'ViewScore']
-    if sort and sort not in valid_sort_options:
-        logger.error(f"The sort value '{sort}' is not valid and will be ignored")
+    if sort and sort not in const.SOBJECT_FIELDS.VALID_KNOWLEDGE_SORT_FIELDS:
+        logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_IGNORE.format(
+            param=const.QUERY_PARAMS.SORT,
+            value=sort
+        ))
         sort = None
 
     # Validate the order field
-    if order and order.upper() not in ['ASC', 'DESC']:
-        logger.error(f"The order value '{order}' is not valid and will be ignored")
+    if order and order.upper() not in const.SOQL_QUERIES.VALID_ORDER_DIRECTIONS:
+        logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_IGNORE.format(
+            param=const.QUERY_PARAMS.ORDER,
+            value=order
+        ))
         order = None
 
     # Validate the page size field
-    if page_size > 100:
-        logger.error('The pageSize value exceeds the maximum and will default to 100')
-        page_size = 100
+    if page_size > const.QUERY_PARAMS.MAX_PAGE_SIZE:
+        logger.error(const._LOG_MESSAGES._PARAM_EXCEEDS_MAX_VALUE.format(
+            param=const.QUERY_PARAMS.PAGE_SIZE,
+            default=const.QUERY_PARAMS.DEFAULT_PAGE_SIZE
+        ))
+        page_size = const.QUERY_PARAMS.DEFAULT_PAGE_SIZE
 
     # Validate the pageNumber field
-    if page_num < 1:
-        logger.error('The pageNumber value is not valid and will default to 1')
-        page_num = 1
+    if page_num < const.QUERY_PARAMS.MIN_PAGE_NUM:
+        logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_DEFAULT.format(
+            param=const.QUERY_PARAMS.PAGE_NUM,
+            default=const.QUERY_PARAMS.DEFAULT_PAGE_NUM
+        ))
+        page_num = const.QUERY_PARAMS.DEFAULT_PAGE_NUM
 
     # Add values to the parameters dictionary if they have been defined
     params = {}
     if query:
-        params['q'] = query
+        params[const.QUERY_PARAMS.Q] = query
     if sort:
-        params['sort'] = sort
+        params[const.QUERY_PARAMS.SORT] = sort
     if order:
-        params['order'] = order
-    params['pageSize'] = page_size
-    params['pageNumber'] = page_num
+        params[const.QUERY_PARAMS.ORDER] = order
+    params[const.QUERY_PARAMS.PAGE_SIZE] = page_size
+    params[const.QUERY_PARAMS.PAGE_NUM] = page_num
 
     # Perform the query
     # TODO: Determine what is returned by this API call and see if data should be pruned to just the list of articles
+    # TODO: Replace the REST path below with a constant
     return sfdc_object.get(f'/services/data/{sfdc_object.version}/support/knowledgeArticles',
                            params=params, headers=headers)
 
@@ -227,12 +252,12 @@ def get_article_details(
              :py:exc:`salespyforce.errors.exceptions.DataMismatchError`
     """
     # Define the headers based on the endpoint that will be utilized
-    headers = sfdc_object._get_headers('articles') if use_knowledge_articles_endpoint else None
+    headers = sfdc_object._get_headers(const.HEADER_TYPE_ARTICLES) if use_knowledge_articles_endpoint else None
 
     # Ensure there are no conflicting parameters
     if sobject and use_knowledge_articles_endpoint:
-        if sobject == KNOWLEDGE_SOBJECT:
-            info_msg = (f'It is not necessary to define the sObject as {KNOWLEDGE_SOBJECT} when leveraging '
+        if sobject == const.SOBJECTS.KNOWLEDGE:
+            info_msg = (f'It is not necessary to define the sObject as {const.SOBJECTS.KNOWLEDGE} when leveraging '
                         f'the knowledgeArticles endpoint')
             logger.info(info_msg)
         else:
@@ -242,9 +267,11 @@ def get_article_details(
 
     # Define the endpoint to use in the GET request
     if use_knowledge_articles_endpoint:
+        # TODO: Replace the REST path below with a constant
         endpoint = f'/services/data/{sfdc_object.version}/support/knowledgeArticles/{article_id}'
     else:
-        sobject = KNOWLEDGE_SOBJECT if not sobject else sobject
+        sobject = const.SOBJECTS.KNOWLEDGE if not sobject else sobject
+        # TODO: Replace the REST path below with a constant
         endpoint = f'/services/data/{sfdc_object.version}/sobjects/{sobject}/{article_id}'
 
     # Perform the query and return the data
@@ -258,9 +285,14 @@ def get_validation_status(
         article_id: Optional[str] = None,
         article_details: Optional[dict] = None,
         sobject: Optional[str] = None,
+        use_knowledge_articles_endpoint: Optional[bool] = None,
 ) -> str:
     """This function retrieves the Validation Status for a given Article ID.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
+
+    .. versionchanged:: 1.5.0
+       The `use_knowledge_articles_endpoint` parameter is now supported, which allows you to specify the
+       REST path to utilize for the API query.
 
     .. versionchanged:: 1.4.0
        The function now returns an empty string rather than a ``None`` value if the ``ValidationStatus`` field
@@ -275,6 +307,9 @@ def get_validation_status(
     :type article_details: dict, None
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
     :type sobject: str, None
+    :param use_knowledge_articles_endpoint: Optionally use the ``knowledgeArticles`` endpoint rather than ``sobjects``
+                                            to retrieve the article details (``False`` by default)
+    :type use_knowledge_articles_endpoint: bool, None
     :returns: The validation status as a text string
     :raises: :py:exc:`RuntimeError`,
              :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
@@ -284,10 +319,10 @@ def get_validation_status(
 
     # Retrieve the article details if not already supplied
     if not article_details:
-        article_details = get_article_details(sfdc_object, article_id, sobject)
+        article_details = get_article_details(sfdc_object, article_id, sobject, use_knowledge_articles_endpoint)
 
     # Identify the validation status
-    return article_details.get('ValidationStatus', '')
+    return article_details.get(const.SOBJECT_FIELDS.VALIDATION_STATUS, '')
 
 
 def get_article_metadata(sfdc_object, article_id: str):
@@ -509,7 +544,7 @@ def create_draft_from_master_version(
         raise RuntimeError('Need to provide article ID, knowledge article ID, or article data')
 
     # Get the appropriate sObject to call
-    sobject = KNOWLEDGE_SOBJECT if sobject is None else sobject
+    sobject = const.SOBJECTS.KNOWLEDGE if sobject is None else sobject
 
     # Get the knowledge article ID as needed
     if not knowledge_article_id:

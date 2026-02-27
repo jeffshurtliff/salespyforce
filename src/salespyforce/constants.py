@@ -20,9 +20,9 @@ from typing import Final, ClassVar, Mapping, Union
 FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'      # Used if querying the org for the version fails
 
 
-# -----------------------------
-# Validation Criteria
-# -----------------------------
+# --------------------------------------
+# Common Validation Criteria / Mapping
+# --------------------------------------
 SALESFORCE_ID_SUFFIX_ALPHABET: Final[str] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'
 VALID_SALESFORCE_URL_PATTERN: Final[str] = r'^https://[a-zA-Z0-9._-]+\.salesforce\.com(/|$)'
 YAML_BOOLEAN_MAPPING: Final[Mapping[Union[str, bool], bool]] = MappingProxyType(
@@ -132,9 +132,17 @@ class HelperSettings:
 # -----------------------------
 DEFAULT_API_TIMEOUT_SECONDS: Final[int] = 30
 DEFAULT_API_MAX_RETRIES: Final[int] = 3
-VALID_HEADER_TYPES: Final[frozenset[str]] = frozenset({'default', 'articles'})
+HEADER_TYPE_DEFAULT: Final[str] = 'default'
+HEADER_TYPE_ARTICLES: Final[str] = 'articles'
+VALID_HEADER_TYPES: Final[frozenset[str]] = frozenset({
+    HEADER_TYPE_DEFAULT,
+    HEADER_TYPE_ARTICLES,
+})
 
 
+# -----------------------------
+# HTTP / REST API Request Types
+# -----------------------------
 @dataclass(frozen=True)
 class ApiRequestTypes:
     """Standard REST API Request types used by the package.
@@ -275,9 +283,9 @@ class RestPaths:
     CHATTER_FEED_ELEMENT_COMMENTS: ClassVar[str] = CHATTER_FEED_ELEMENTS + '/{feed_element_id}/capabilities/comments/items'
 
 
-# -------------------------------------
-# REST API Query Params / Common Keys
-# -------------------------------------
+# --------------------------------------
+# REST API Query Parameters and values
+# --------------------------------------
 @dataclass(frozen=True)
 class QueryParams:
     """Standard query parameter names used in Salesforce REST requests.
@@ -289,18 +297,33 @@ class QueryParams:
     REST API. Centralizing these values helps prevent typographical
     errors and ensures consistent request construction.
     """
+    # Common parameter names
     Q: ClassVar[str] = 'q'
-    TYPE: ClassVar[str] = 'type'
     BODY: ClassVar[str] = 'body'
-    TEXT: ClassVar[str] = 'text'
-    LIMIT: ClassVar[str] = 'limit'
-    OFFSET: ClassVar[str] = 'offset'
-    REF_ID: ClassVar[str] = 'refid'
-    NEXT_RECORDS_URL: ClassVar[str] = 'nextRecordsUrl'
-    FEED_ELEMENT_TYPE: ClassVar[str] = 'feedElementType'
     CREATED_BY_ID: ClassVar[str] = 'createdById'
-    SUBJECT_ID: ClassVar[str] = 'subjectId'
+    LIMIT: ClassVar[str] = 'limit'
+    NEXT_RECORDS_URL: ClassVar[str] = 'nextRecordsUrl'
+    OFFSET: ClassVar[str] = 'offset'
+    ORDER: ClassVar[str] = 'order'
+    PAGE_NUM: ClassVar[str] = 'pageNumber'
+    PAGE_SIZE: ClassVar[str] = 'pageSize'
+    REF_ID: ClassVar[str] = 'refid'
+    SORT: ClassVar[str] = 'sort'
+    TEXT: ClassVar[str] = 'text'
+    TYPE: ClassVar[str] = 'type'
+
+    # Common parameter default values
+    DEFAULT_PAGE_NUM: ClassVar[int] = 1
+    DEFAULT_PAGE_SIZE: ClassVar[int] = 100
+
+    # Common parameter threshold values
+    MIN_PAGE_NUM: ClassVar[int] = 1
+    MAX_PAGE_SIZE: ClassVar[int] = 100
+
+    # Chatter parameter names
+    FEED_ELEMENT_TYPE: ClassVar[str] = 'feedElementType'
     MESSAGE_SEGMENTS: ClassVar[str] = 'messageSegments'
+    SUBJECT_ID: ClassVar[str] = 'subjectId'
 
 
 # -----------------------------
@@ -325,7 +348,10 @@ class ResponseKeys:
 
     .. versionadded:: 1.5.0
     """
+    ATTRIBUTES: ClassVar[str] = 'attributes'
     RECORDS: ClassVar[str] = 'records'
+    TOTAL_SIZE: ClassVar[str] = 'totalSize'
+    URL: ClassVar[str] = 'url'
 
 
 # -----------------------------
@@ -337,6 +363,7 @@ class SObjects:
 
     .. versionadded:: 1.5.0
     """
+    KNOWLEDGE: ClassVar[str] = 'Knowledge__kav'
     USER_RECORD_ACCESS: ClassVar[str] = 'UserRecordAccess'
 
 
@@ -345,36 +372,119 @@ class SObjects:
 # -----------------------------
 @dataclass(frozen=True)
 class SObjectFields:
-    """Standard and common field names and similar values relating to Salesforce objects.
+    """Standard and common field names relating to Salesforce objects.
 
     .. versionadded:: 1.5.0
     """
+    # Common field names
+    CREATED_DATE: ClassVar[str] = 'CreatedDate'
     ID: ClassVar[str] = 'Id'
     RECORD_ID: ClassVar[str] = 'RecordId'
     USER_ID: ClassVar[str] = 'UserId'
-    HAS_READ_ACCESS: ClassVar[str] = 'HasReadAccess'
-    HAS_EDIT_ACCESS: ClassVar[str] = 'HasEditAccess'
+
+    # Knowledge__kav field names
+    ARTICLE_NUMBER: ClassVar[str] = 'ArticleNumber'
+    LAST_PUBLISHED_DATE: ClassVar[str] = 'LastPublishedDate'
+    PUBLISH_STATUS: ClassVar[str] = 'PublishStatus'
+    TITLE: ClassVar[str] = 'Title'
+    VALIDATION_STATUS: ClassVar[str] = 'ValidationStatus'
+    VIEW_SCORE: ClassVar[str] = 'ViewScore'
+
+    # Knowledge__kav validation criteria
+    VALID_KNOWLEDGE_SORT_FIELDS: ClassVar[frozenset[str]] = frozenset({
+        LAST_PUBLISHED_DATE,
+        CREATED_DATE,
+        TITLE,
+        VIEW_SCORE,
+    })
+
+    # UserRecordAccess field names
     HAS_DELETE_ACCESS: ClassVar[str] = 'HasDeleteAccess'
-    VALID_ACCESS_CONTROL_FIELDS: ClassVar[frozenset[str]] = frozenset(
-        {HAS_READ_ACCESS, HAS_EDIT_ACCESS, HAS_DELETE_ACCESS}
-    )
+    HAS_EDIT_ACCESS: ClassVar[str] = 'HasEditAccess'
+    HAS_READ_ACCESS: ClassVar[str] = 'HasReadAccess'
+
+    # UserRecordAccess validation criteria
+    VALID_ACCESS_CONTROL_FIELDS: ClassVar[frozenset[str]] = frozenset({
+        HAS_READ_ACCESS,
+        HAS_EDIT_ACCESS,
+        HAS_DELETE_ACCESS,
+    })
+
+
+# --------------------------------
+# Salesforce Object Field Values
+# --------------------------------
+@dataclass(frozen=True)
+class SObjectFieldValues:
+    """Standard and common field values for Salesforce objects.
+
+    .. versionadded:: 1.5.0
+    """
+    # Knowledge__kav
+    ARCHIVED: ClassVar[str] = 'Archived'
+
+
+# -----------------------------
+# SOQL Query Syntax
+# -----------------------------
+@dataclass(frozen=True)
+class SoqlQueries:
+    """Standard query syntax for Salesforce SOQL queries.
+
+    .. versionadded:: 1.5.0
+    """
+    # Ordering / Sorting
+    ORDER_ASC: ClassVar[str] = 'ASC'
+    ORDER_DESC: ClassVar[str] = 'DESC'
+    VALID_ORDER_DIRECTIONS: ClassVar[frozenset[str]] = frozenset({
+        ORDER_ASC,
+        ORDER_DESC,
+    })
+
+
+# -----------------------------
+# Log Messages
+# -----------------------------
+@dataclass(frozen=True)
+class LogMessages:
+    """Common log messages that are utilized in multiple locations throughout the package.
+
+    .. versionadded:: 1.5.0
+    """
+    _DEFAULT_SOBJECT_USED: ClassVar[str] = 'The {sobject} sObject will be used as a specific sObject was not provided'
+    _INVALID_PARAM_VALUE_DEFAULT: ClassVar[str] = 'The {param} value is not valid and will default to {default}'
+    _INVALID_PARAM_VALUE_IGNORE: ClassVar[str] = "The {param} value '{value}' is not valid and will be ignored"
+    _PARAM_EXCEEDS_MAX_VALUE: ClassVar[str] = 'The {param} value exceeds the maximum and will default to {default}'
 
 
 # -----------------------------
 # Exported namespaces
 # -----------------------------
+
+# Common (Public)
 FILE_EXTENSIONS: Final[FileExtensions] = FileExtensions()
+
+# Common (Private)
+_EXCEPTION_CLASSES: Final[ExceptionClasses] = ExceptionClasses()
+_LOG_MESSAGES: Final[LogMessages] = LogMessages()
+
+# Helper Utility
 HELPER_SETTINGS: Final[HelperSettings] = HelperSettings()
+
+# HTTP / API
 API_REQUEST_TYPES: Final[ApiRequestTypes] = ApiRequestTypes()
-HEADERS: Final[Headers] = Headers()
 AUTH_SCHEMES: Final[AuthSchemes] = AuthSchemes()
 CONTENT_TYPES: Final[ContentTypes] = ContentTypes()
 ENCODING_TYPES: Final[EncodingTypes] = EncodingTypes()
+HEADERS: Final[Headers] = Headers()
 LANGUAGES: Final[Languages] = Languages()
-REST_PATHS: Final[RestPaths] = RestPaths()
-QUERY_PARAMS: Final[QueryParams] = QueryParams()
 PAYLOAD_VALUES: Final[PayloadValues] = PayloadValues()
+QUERY_PARAMS: Final[QueryParams] = QueryParams()
 RESPONSE_KEYS: Final[ResponseKeys] = ResponseKeys()
+REST_PATHS: Final[RestPaths] = RestPaths()
+
+# Salesforce Objects (sObjects)
 SOBJECTS: Final[SObjects] = SObjects()
 SOBJECT_FIELDS: Final[SObjectFields] = SObjectFields()
-_EXCEPTION_CLASSES: Final[ExceptionClasses] = ExceptionClasses()
+SOBJECT_FIELD_VALUES: Final[SObjectFieldValues] = SObjectFieldValues()
+SOQL_QUERIES: Final[SoqlQueries] = SoqlQueries()

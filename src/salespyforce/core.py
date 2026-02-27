@@ -6,7 +6,7 @@
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     25 Feb 2026
+:Modified Date:     27 Feb 2026
 """
 
 from __future__ import annotations
@@ -1064,9 +1064,14 @@ class Salesforce(object):
                 article_id: Optional[str] = None,
                 article_details: Optional[dict] = None,
                 sobject: Optional[str] = None,
+                use_knowledge_articles_endpoint: Optional[bool] = None,
         ) -> str:
             """This method retrieves the Validation Status for a given Article ID.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
+
+            .. versionchanged:: 1.5.0
+               The `use_knowledge_articles_endpoint` parameter is now supported, which allows you to specify the
+               REST path to utilize for the API query.
 
             .. versionchanged:: 1.4.0
                This method now returns an empty string rather than a ``None`` value if the ``ValidationStatus`` field
@@ -1079,12 +1084,16 @@ class Salesforce(object):
             :type article_details: dict, None
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
+            :param use_knowledge_articles_endpoint: Optionally use the ``knowledgeArticles`` endpoint rather than ``sobjects``
+                                                    to retrieve the article details (``False`` by default)
+            :type use_knowledge_articles_endpoint: bool, None
             :returns: The validation status as a text string
             :raises: :py:exc:`RuntimeError`,
                      :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
             return knowledge_module.get_validation_status(self.sfdc_object, article_id=article_id,
-                                                          article_details=article_details, sobject=sobject)
+                                                          article_details=article_details, sobject=sobject,
+                                                          use_knowledge_articles_endpoint=use_knowledge_articles_endpoint)
 
         def get_article_metadata(self, article_id: str) -> dict:
             """This method retrieves metadata for a specific knowledge article.

@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   {py:func}`salespyforce.utils.version.get_major_minor_version` functions now attempt to 
   retrieve the version from the `pyproject.toml` file if it cannot be retrieved via the 
   package metadata.
+- The {py:meth}`salespyforce.Salesforce.Knowledge.get_validation_status` method (and underlying function) 
+  now includes the `use_knowledge_articles_endpoint` parameter so you can specify the REST path to utilize.
 - The {py:meth}`salespyforce.Salesforce.Chatter.post_feed_item` and
   {py:meth}`salespyforce.Salesforce.Chatter.post_comment` methods (and their underlying functions) 
   now raise the {py:exc}`~salespyforce.errors.exceptions.MissingRequiredDataError` exception rather 
