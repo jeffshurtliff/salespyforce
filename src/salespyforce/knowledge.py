@@ -46,11 +46,10 @@ def check_for_existing_article(
     :param include_archived: Determines if archived articles should be included (``False`` by default)
     :type include_archived: bool
     :returns: The Article Number, Article ID, or both, if found, or a blank string if not found
+    :raises: :py:exc:`TypeError`
     """
     # Prepare the SOQL query
-    if not sobject:
-        sobject = const.SOBJECTS.KNOWLEDGE
-        logger.debug(const._LOG_MESSAGES._DEFAULT_SOBJECT_USED.format(sobject=sobject))
+    sobject = _validate_knowledge_sobject(sobject)
     query = f"""
         SELECT {const.SOBJECT_FIELDS.ID}, {const.SOBJECT_FIELDS.ARTICLE_NUMBER} 
         FROM {sobject} 
@@ -108,13 +107,7 @@ def get_article_id_from_number(
              :py:exc:`RuntimeError`
     """
     # Ensure the sobject is defined appropriately
-    if sobject and not isinstance(sobject, str):
-        exc_msg = f'The sobject must be a string (provided: {type(sobject)})'
-        logger.error(exc_msg)
-        raise TypeError(exc_msg)
-    if not sobject:
-        sobject = const.SOBJECTS.KNOWLEDGE
-        logger.debug(const._LOG_MESSAGES._DEFAULT_SOBJECT_USED.format(sobject=sobject))
+    sobject = _validate_knowledge_sobject(sobject)
 
     # Construct the SOQL query to perform
     if not isinstance(article_number, str):
@@ -254,16 +247,8 @@ def get_article_details(
     # Define the headers based on the endpoint that will be utilized
     headers = sfdc_object._get_headers(const.HEADER_TYPE_ARTICLES) if use_knowledge_articles_endpoint else None
 
-    # Ensure there are no conflicting parameters
-    if sobject and use_knowledge_articles_endpoint:
-        if sobject == const.SOBJECTS.KNOWLEDGE:
-            info_msg = (f'It is not necessary to define the sObject as {const.SOBJECTS.KNOWLEDGE} when leveraging '
-                        f'the knowledgeArticles endpoint')
-            logger.info(info_msg)
-        else:
-            error_msg = 'You cannot use the knowledgeArticles endpoint with an explicitly defined sObject'
-            logger.error(error_msg)
-            raise errors.exceptions.DataMismatchError(error_msg)
+    # Ensure the sobject is defined appropriately
+    sobject = _validate_knowledge_sobject(sobject, use_knowledge_articles_endpoint)
 
     # Define the endpoint to use in the GET request
     if use_knowledge_articles_endpoint:
@@ -336,6 +321,7 @@ def get_article_metadata(sfdc_object, article_id: str):
     :returns: The article metadata as a dictionary
     :raises: :py:exc:`RuntimeError`
     """
+    # TODO: Replace the REST path below with a constant and update :raises: with correct exceptions
     return sfdc_object.get(f'/services/data/{sfdc_object.version}/knowledgeManagement/articles/{article_id}')
 
 
@@ -350,6 +336,7 @@ def get_article_version(sfdc_object, article_id: str):
     :returns: The version ID for the given master article ID
     :raises: :py:exc:`RuntimeError`
     """
+    # TODO: Replace the REST path below with a constant and update :raises: with correct exceptions
     endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleversions/masterVersions/{article_id}'
     # TODO: Determine what is returned by this API call and see if data should be pruned to just the Version ID
     return sfdc_object.get(endpoint)
@@ -358,7 +345,7 @@ def get_article_version(sfdc_object, article_id: str):
 def get_article_url(
         sfdc_object,
         article_id: Optional[str] = None,
-        article_number=None,
+        article_number: Union[Optional[str], Optional[int]] = None,
         sobject: Optional[str] = None,
 ) -> str:
     """This function constructs the URL to view a knowledge article in Lightning or Classic.
@@ -375,18 +362,20 @@ def get_article_url(
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
     :type sobject: str, None
     :returns: The article URL as a string
-    :raises: :py:exc:`ValueError`
+    :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
     """
-    sobject = 'Knowledge__kav' if sobject is None else sobject
+    sobject = _validate_knowledge_sobject(sobject)
     if not any((article_id, article_number)):
-
-        raise ValueError('An article ID or an article number must be provided to retrieve the article URL.')
+        exc_msg = 'An article ID or an article number must be provided to retrieve the article URL.'
+        raise errors.exceptions.MissingRequiredDataError(exc_msg)
     if article_number and not article_id:
         article_id = get_article_id_from_number(sfdc_object, article_number, sobject)
     segment = '' if sfdc_object.base_url.endswith('/') else '/'
-    if 'lightning' in sfdc_object.base_url or sobject == 'Knowledge__kav':
-        article_url = f'{sfdc_object.base_url}{segment}lightning/r/Knowledge__kav/{article_id}/view'
+    if 'lightning' in sfdc_object.base_url or sobject == const.SOBJECTS.KNOWLEDGE:
+        # TODO: Convert the URL below into a constant
+        article_url = f'{sfdc_object.base_url}{segment}lightning/r/{sobject}/{article_id}/view'
     else:
+        # TODO: Convert the URL below into a constant
         article_url = f'{sfdc_object.base_url}{segment}knowledge/publishing/articleDraftDetail.apexp?id={article_id}'
     return article_url
 
@@ -409,14 +398,15 @@ def create_article(
     :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
     :type full_response: bool
     :returns: The API response or the ID of the article draft
-    :raises: :py:exc:`ValueError`, :py:exc:`TypeError`, :py:exc:`RuntimeError`
+    :raises: :py:exc:`ValueError`,
+             :py:exc:`TypeError`,
+             :py:exc:`RuntimeError`
     """
-    # Get the appropriate sObject to call
-    sobject = 'Knowledge__kav' if sobject is None else sobject
+    # Ensure the sobject is defined appropriately
+    sobject = _validate_knowledge_sobject(sobject)
 
     # Ensure the payload is in the appropriate format
-    if not isinstance(article_data, dict):
-        raise TypeError('The article data must be provided as a dictionary.')
+    _validate_article_data(article_data)
 
     # Ensure that the required fields have been provided
     required_fields = ['Title', 'UrlName']
@@ -425,6 +415,7 @@ def create_article(
             raise ValueError(f'The following required field is missing from the article data: {field}')
 
     # Perform the API call
+    # TODO: Convert the REST path below into a constant
     response = sfdc_object.post(f'/services/data/{sfdc_object.version}/sobjects/{sobject}', payload=article_data)
 
     # Return the full response or just the article ID
@@ -458,12 +449,11 @@ def update_article(
              :py:exc:`TypeError`,
              :py:exc:`RuntimeError`
     """
-    # Get the appropriate sObject to call
-    sobject = 'Knowledge__kav' if sobject is None else sobject
+    # Ensure the sobject is defined appropriately
+    sobject = _validate_knowledge_sobject(sobject)
 
     # Ensure the payload is in the appropriate format
-    if not isinstance(article_data, dict):
-        raise TypeError('The article data must be provided as a dictionary.')
+    _validate_article_data(article_data)
 
     # Ensure that the required fields have been provided
     required_fields = ['Title', 'UrlName']
@@ -543,8 +533,11 @@ def create_draft_from_master_version(
         # TODO: Change to more specific exception class (errors.exceptions.MissingRequiredDataError)
         raise RuntimeError('Need to provide article ID, knowledge article ID, or article data')
 
-    # Get the appropriate sObject to call
-    sobject = const.SOBJECTS.KNOWLEDGE if sobject is None else sobject
+    # Ensure the sobject is defined appropriately
+    sobject = _validate_knowledge_sobject(sobject)
+
+    # Ensure the payload is in the appropriate format
+    _validate_article_data(article_data)
 
     # Get the knowledge article ID as needed
     if not knowledge_article_id:
@@ -691,15 +684,21 @@ def archive_article(sfdc_object, article_id: str):
     return sfdc_object.patch(endpoint, payload)
 
 
-def delete_article_draft(sfdc_object, version_id: str, use_knowledge_management_endpoint: bool = True):
+def delete_article_draft(sfdc_object, version_id: str, sobject: Optional[str] = None,
+                         use_knowledge_management_endpoint: bool = True):
     """This function deletes an unpublished knowledge article draft.
     
+    .. versionchanged:: 1.5.0
+       An optional ``sobject`` parameter can now be passed to specify the sObject against which to query.
+
     .. versionadded:: 1.4.0
     
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
     :type version_id: str
+    :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+    :type sobject: str, None
     :param use_knowledge_management_endpoint: Leverage the ``/knowledgeManagement/articleVersions/masterVersions/``
                                               endpoint rather than the ``/sobjects/Knowledge__kav/`` endpoint
                                               (``True`` by default)
@@ -707,8 +706,76 @@ def delete_article_draft(sfdc_object, version_id: str, use_knowledge_management_
     :returns: The API response from the DELETE request
     :raises: :py:exc:`RuntimeError`
     """
+    # Ensure the sobject is defined appropriately
+    sobject = _validate_knowledge_sobject(sobject)
+
+    # Define the appropriate REST path and perform the API call
     if use_knowledge_management_endpoint:
         endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{version_id}'
     else:
-        endpoint = f'/services/data/{sfdc_object.version}/sobjects/Knowledge__kav/{version_id}'
+        endpoint = f'/services/data/{sfdc_object.version}/sobjects/{sobject}/{version_id}'
     return sfdc_object.delete(endpoint)
+
+
+def _validate_knowledge_sobject(
+        _sobject: Optional[str] = None,
+        _use_knowledge_articles_endpoint: Optional[bool] = None,
+) -> str:
+    """This function validates that a Knowledge sObject exists and supplies the default ``Knowledge__kav``
+       object when missing.
+
+    .. versionadded:: 1.5.0
+
+    :param _sobject: The Knowledge sObject to validate
+    :type _sobject: str, None
+    :param _use_knowledge_articles_endpoint: Determines if the ``knowledgeArticles`` endpoint should be used rather
+                                             than ``sobjects`` to retrieve the article details
+    :type _use_knowledge_articles_endpoint: bool, None
+    :returns: The provided sObject (or the default Knowledge sObject)
+    :raises: :py:exc:`TypeError`,
+             :py:exc:`salespyforce.errors.exceptions.DataMismatchError`
+    """
+    # Ensure that the sObject is a string
+    if _sobject and not isinstance(_sobject, str):
+        exc_msg = f'The sobject must be a string (provided: {type(_sobject)})'
+        logger.error(exc_msg)
+        raise TypeError(exc_msg)
+
+    # Ensure there are no conflicting parameters
+    if _sobject and _use_knowledge_articles_endpoint:
+        if _sobject == const.SOBJECTS.KNOWLEDGE:
+            _info_msg = (f'It is not necessary to define the sObject as {const.SOBJECTS.KNOWLEDGE} when leveraging '
+                         'the knowledgeArticles endpoint')
+            logger.info(_info_msg)
+        else:
+            _error_msg = 'You cannot use the knowledgeArticles endpoint with an explicitly defined sObject'
+            logger.error(_error_msg)
+            raise errors.exceptions.DataMismatchError(_error_msg)
+
+    # Leverage the default sObject (Knowledge__kav) if a specific sObject was not provided
+    elif not _sobject:
+        _sobject = const.SOBJECTS.KNOWLEDGE
+        logger.debug(const._LOG_MESSAGES._DEFAULT_SOBJECT_USED.format(sobject=_sobject))
+    return _sobject
+
+
+def _validate_article_data(_article_data: Optional[dict] = None, _required: bool = False) -> None:
+    """This function validates the article data to ensure it is defined when required and hsa the appropriate type.
+
+    .. versionadded:: 1.5.0
+
+    :param _article_data: The article data to validate
+    :type _article_data: dict, None
+    :param _required: Indicates whether the article data is required (``False`` by default)
+    :type _required: bool
+    :returns: None
+    :raises: :py:exc:`TypeError`,
+             :py:exc:`salespyforce.errors.exceptions.DataMismatchError`
+    """
+    if _required and not _article_data:
+        _error_msg = const._LOG_MESSAGES._MISSING_REQUIRED_DATA.format(data='article data')
+        logger.error(_error_msg)
+        raise errors.exceptions.MissingRequiredDataError(_error_msg)
+    elif _article_data and not isinstance(_article_data, dict):
+        logger.error(const._LOG_MESSAGES._ARTICLE_DATA_TYPE_ERROR)
+        raise TypeError(const._LOG_MESSAGES._ARTICLE_DATA_TYPE_ERROR)

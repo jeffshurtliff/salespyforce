@@ -1133,8 +1133,8 @@ class Salesforce(object):
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
             :returns: The article URL as a string
-            :raises: :py:exc:`ValueError`,
-                     :py:exc:`RuntimeError`
+            :raises: :py:exc:`RuntimeError`,
+                     :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
             return knowledge_module.get_article_url(self.sfdc_object, article_id=article_id,
                                                     article_number=article_number, sobject=sobject)
@@ -1295,13 +1295,19 @@ class Salesforce(object):
             """
             return knowledge_module.archive_article(self.sfdc_object, article_id=article_id)
 
-        def delete_article_draft(self, version_id: str, use_knowledge_management_endpoint: bool = True):
+        def delete_article_draft(self, version_id: str, sobject: Optional[str] = None,
+                                 use_knowledge_management_endpoint: bool = True):
             """This function deletes an unpublished knowledge article draft.
+
+            .. versionchanged:: 1.5.0
+               An optional ``sobject`` parameter can now be passed to specify the sObject against which to query.
 
             .. versionadded:: 1.4.0
 
             :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
             :type version_id: str
+            :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
+            :type sobject: str, None
             :param use_knowledge_management_endpoint: Leverage the ``/knowledgeManagement/articleVersions/masterVersions/``
                                                       endpoint rather than the ``/sobjects/Knowledge__kav/`` endpoint
                                                       (``True`` by default)
@@ -1309,7 +1315,7 @@ class Salesforce(object):
             :returns: The API response from the DELETE request
             :raises: :py:exc:`RuntimeError`
             """
-            return knowledge_module.delete_article_draft(self.sfdc_object, version_id=version_id,
+            return knowledge_module.delete_article_draft(self.sfdc_object, version_id=version_id, sobject=sobject,
                                                          use_knowledge_management_endpoint=use_knowledge_management_endpoint)
 
 
