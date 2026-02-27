@@ -153,7 +153,7 @@ class APIConnectionError(SalesPyForceError):
 
 
 class APIRequestError(SalesPyForceError):
-    """This exception is used for generic API request errors when there isn't a more specific exception."""
+    """This exception is used for generic API request errors when there is not a more specific exception."""
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type='API')
         if not (args or kwargs):
@@ -162,7 +162,7 @@ class APIRequestError(SalesPyForceError):
 
 
 class GETRequestError(SalesPyForceError):
-    """This exception is used for generic GET request errors when there isn't a more specific exception."""
+    """This exception is used for generic GET request errors when there is not a more specific exception."""
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.GET)
         if _EXCEPTION_CLASSES._STATUS_CODE in kwargs or _EXCEPTION_CLASSES._MESSAGE in kwargs:
@@ -176,7 +176,7 @@ class GETRequestError(SalesPyForceError):
 
 
 class PATCHRequestError(SalesPyForceError):
-    """This exception is used for generic PATCH request errors when there isn't a more specific exception."""
+    """This exception is used for generic PATCH request errors when there is not a more specific exception."""
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.PATCH)
         if _EXCEPTION_CLASSES._STATUS_CODE in kwargs or _EXCEPTION_CLASSES._MESSAGE in kwargs:
@@ -190,7 +190,7 @@ class PATCHRequestError(SalesPyForceError):
 
 
 class POSTRequestError(SalesPyForceError):
-    """This exception is used for generic POST request errors when there isn't a more specific exception."""
+    """This exception is used for generic POST request errors when there is not a more specific exception."""
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.POST)
         if _EXCEPTION_CLASSES._STATUS_CODE in kwargs or _EXCEPTION_CLASSES._MESSAGE in kwargs:
@@ -204,7 +204,7 @@ class POSTRequestError(SalesPyForceError):
 
 
 class PUTRequestError(SalesPyForceError):
-    """This exception is used for generic PUT request errors when there isn't a more specific exception."""
+    """This exception is used for generic PUT request errors when there is not a more specific exception."""
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.PUT)
         if _EXCEPTION_CLASSES._STATUS_CODE in kwargs or _EXCEPTION_CLASSES._MESSAGE in kwargs:
@@ -218,7 +218,7 @@ class PUTRequestError(SalesPyForceError):
 
 
 class DELETERequestError(SalesPyForceError):
-    """This exception is used for generic DELETE request errors when there isn't a more specific exception."""
+    """This exception is used for generic DELETE request errors when there is not a more specific exception."""
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.DELETE)
         if _EXCEPTION_CLASSES._STATUS_CODE in kwargs or _EXCEPTION_CLASSES._MESSAGE in kwargs:
@@ -305,7 +305,7 @@ class LookupMismatchError(SalesPyForceError):
 
 
 class NotFoundResponseError(SalesPyForceError):
-    """This exception is used when an API query returns a 404 response and there isn't a more specific class."""
+    """This exception is used when an API query returns a 404 response and there is not a more specific class."""
     def __init__(self, *args, **kwargs):
         default_msg = "The API query returned a 404 response."
         if not (args or kwargs):
@@ -389,7 +389,7 @@ def _construct_api_custom_message(
         _custom_msg = _custom_msg.split(_EXCEPTION_CLASSES._WITH_THE_FOLLOWING_SEGMENT)[0] + "."
     else:
         # Revert back to the default message if a custom message was not provided
-        _custom_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=_request_type)
+        _custom_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=_request_type.upper())
 
     # Return the constructed message
     return _custom_msg
