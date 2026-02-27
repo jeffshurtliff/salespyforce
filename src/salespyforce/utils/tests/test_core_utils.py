@@ -5,7 +5,7 @@
 :Synopsis:       This module is used by pytest to test core utility functions
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff
-:Modified Date:  30 Jan 2026
+:Modified Date:  27 Feb 2026
 """
 
 import os
@@ -169,14 +169,22 @@ def test_get_image_ref_id_parses_query_param():
 def test_download_image_raises_without_input():
     """This function tests download_image when neither URL nor response is provided.
 
+    .. versionchanged:: 1.5.0
+       This test now checks for the :py:exc:`errors.exceptions.MissingRequiredDataError`
+       exception instead of the generic exception class.
+
     .. versionadded:: 1.4.0
     """
-    with pytest.raises(RuntimeError):
+    with pytest.raises(errors.exceptions.MissingRequiredDataError):
         core_utils.download_image()
 
 
 def test_download_image_raises_on_bad_status(monkeypatch, tmp_path):
     """This function tests download_image when the response is unsuccessful.
+
+    .. versionchanged:: 1.5.0
+       This test now checks for the :py:exc:`errors.exceptions.GETRequestError`
+       exception instead of the generic exception class.
 
     .. versionadded:: 1.4.0
     """
@@ -185,7 +193,7 @@ def test_download_image_raises_on_bad_status(monkeypatch, tmp_path):
         content = b""
 
     monkeypatch.setattr(core_utils.requests, "get", lambda *_args, **_kwargs: DummyResponse())
-    with pytest.raises(RuntimeError):
+    with pytest.raises(errors.exceptions.GETRequestError):
         core_utils.download_image(image_url="https://example.com/image", file_path=str(tmp_path))
 
 
