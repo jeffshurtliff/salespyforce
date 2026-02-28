@@ -846,7 +846,7 @@ class Salesforce(object):
 
     class Chatter(object):
         """This class includes methods associated with Salesforce Chatter."""
-        def __init__(self, sfdc_object):
+        def __init__(self, sfdc_object: Salesforce):
             """This method initializes the :py:class:`salespyforce.core.Salesforce.Chatter` inner class object.
 
             :param sfdc_object: The core :py:class:`salespyforce.Salesforce` object
@@ -937,7 +937,7 @@ class Salesforce(object):
 
     class Knowledge(object):
         """This class includes methods associated with Salesforce Knowledge."""
-        def __init__(self, sfdc_object):
+        def __init__(self, sfdc_object: Salesforce):
             """This method initializes the :py:class:`salespyforce.core.Salesforce.Knowledge` inner class object.
 
             :param sfdc_object: The core :py:class:`salespyforce.Salesforce` object

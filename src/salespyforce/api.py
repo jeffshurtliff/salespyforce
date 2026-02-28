@@ -4,7 +4,7 @@
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     25 Feb 2026
+:Modified Date:     27 Feb 2026
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ logger = log_utils.initialize_logging(__name__)
 
 
 def get(
-        sfdc_object,
+        sfdc_object: "Salesforce",
         endpoint: str,
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
@@ -86,7 +86,7 @@ def get(
 
 
 def api_call_with_payload(
-        sfdc_object,
+        sfdc_object: "Salesforce",
         method: str,
         endpoint: str,
         payload: dict,
@@ -169,7 +169,7 @@ def api_call_with_payload(
 
 
 def delete(
-        sfdc_object,
+        sfdc_object: "Salesforce",
         endpoint: str,
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
