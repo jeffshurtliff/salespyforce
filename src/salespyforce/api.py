@@ -23,7 +23,7 @@ logger = log_utils.initialize_logging(__name__)
 
 
 def get(
-        sfdc_object: "Salesforce",
+        sfdc_object,
         endpoint: str,
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
@@ -86,7 +86,7 @@ def get(
 
 
 def api_call_with_payload(
-        sfdc_object: "Salesforce",
+        sfdc_object,
         method: str,
         endpoint: str,
         payload: dict,
@@ -169,7 +169,7 @@ def api_call_with_payload(
 
 
 def delete(
-        sfdc_object: "Salesforce",
+        sfdc_object,
         endpoint: str,
         params: Optional[dict] = None,
         headers: Optional[dict] = None,

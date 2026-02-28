@@ -45,7 +45,7 @@ def _get_endpoint_root_segment(_api_version: str, _site_id: Optional[str] = None
     return const.REST_PATHS.SERVICES_DATA_API_SITE.format(api_version=_api_version, site_segment=_site_segment)
 
 
-def get_my_news_feed(sfdc_object: "Salesforce", site_id: Optional[str] = None):
+def get_my_news_feed(sfdc_object, site_id: Optional[str] = None):
     """This function retrieves the news feed for the user calling the function.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`__)
 
@@ -61,7 +61,7 @@ def get_my_news_feed(sfdc_object: "Salesforce", site_id: Optional[str] = None):
     return sfdc_object.get(endpoint)
 
 
-def get_user_news_feed(sfdc_object: "Salesforce", user_id: str, site_id: Optional[str] = None):
+def get_user_news_feed(sfdc_object, user_id: str, site_id: Optional[str] = None):
     """This function retrieves another user's news feed.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`__)
 
@@ -79,7 +79,7 @@ def get_user_news_feed(sfdc_object: "Salesforce", user_id: str, site_id: Optiona
     return sfdc_object.get(endpoint)
 
 
-def get_group_feed(sfdc_object: "Salesforce", group_id: str, site_id: Optional[str] = None):
+def get_group_feed(sfdc_object, group_id: str, site_id: Optional[str] = None):
     """This function retrieves a group's news feed.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`__)
 
@@ -98,7 +98,7 @@ def get_group_feed(sfdc_object: "Salesforce", group_id: str, site_id: Optional[s
 
 
 def post_feed_item(
-        sfdc_object: "Salesforce",
+        sfdc_object,
         subject_id: str,
         message_text: Optional[str] = None,
         message_segments: Optional[list] = None,
@@ -149,7 +149,7 @@ def post_feed_item(
 
 
 def post_comment(
-        sfdc_object: "Salesforce",
+        sfdc_object,
         feed_element_id: str,
         message_text: Optional[str] = None,
         message_segments: Optional[list] = None,
