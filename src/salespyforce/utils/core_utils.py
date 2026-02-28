@@ -6,7 +6,7 @@
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Feb 2026
+:Modified Date:     28 Feb 2026
 """
 
 from __future__ import annotations
@@ -48,6 +48,72 @@ def url_decode(encoded_string: str) -> str:
     :returns: The unencoded string
     """
     return urllib.parse.unquote_plus(encoded_string)
+
+
+def _ensure_prefix_or_suffix(_eval_string: str, _substring: str,
+                             _starts_with: Optional[bool] = None, _ends_with: Optional[bool] = None) -> str:
+    """This function makes sure a prefix or suffix is found before or after a given string.
+
+    .. versionadded:: 1.5.0
+
+    :param _eval_string: The string to evaluate
+    :type _eval_string: str
+    :param _substring: The substring that should be the prefix or suffix
+    :type _substring: str
+    :param _starts_with: Indicates that the evaluated string should start with the substring (i.e. prefix)
+    :type _starts_with: bool, None
+    :param _ends_with: Indicates that the evaluated string should end with the substring (i.e. suffix)
+    :type _ends_with: bool, None
+    :returns: The string with the prefix or suffix
+    :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
+    """
+    if not any((_starts_with, _ends_with)):
+        _error_msg = const._LOG_MESSAGES._MUST_BE_PROVIDED_ERROR.format(
+            data='_starts_with or _ends_with parameter'
+        )
+        logger.error(_error_msg)
+        raise errors.exceptions.MissingRequiredDataError(_error_msg)
+    if _starts_with and not _eval_string.startswith(_substring):
+        _eval_string = _substring + _eval_string
+    elif _ends_with and not _eval_string.endswith(_substring):
+        _eval_string = _eval_string + _substring
+    return _eval_string
+
+
+def ensure_starts_with(eval_string, prefix):
+    """This function ensures that a string starts with a given prefix.
+
+    .. versionadded:: 1.5.0
+
+    :param eval_string: The string to be evaluated
+    :type eval_string: str
+    :param prefix: The prefix string that must be at the beginning of the evaluated string
+    :type prefix: str
+    :returns: The string with the prefix at the start
+    """
+    return _ensure_prefix_or_suffix(
+        _eval_string=eval_string,
+        _substring=prefix,
+        _starts_with=True,
+    )
+
+
+def ensure_ends_with(eval_string, suffix):
+    """This function ensures that a string ends with a given suffix.
+
+    .. versionadded:: 1.5.0
+
+    :param eval_string: The string to be evaluated
+    :type eval_string: str
+    :param suffix: The suffix string that must be at the end of the evaluated string
+    :type suffix: str
+    :returns: The string with the suffix at the end
+    """
+    return _ensure_prefix_or_suffix(
+        _eval_string=eval_string,
+        _substring=suffix,
+        _ends_with=True,
+    )
 
 
 @deprecated(since='1.4.0', replacement='salespyforce.errors.handlers.display_warning', removal='2.0.0')
