@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   package is not installed.
 - The {py:exc}`salespyforce.errors.exceptions.PATCHRequestError` exception class has
   been added to leverage with PATCH request exceptions.
+- The {py:func}`~salespyforce.utils.core_utils.ensure_starts_with` and 
+  {py:func}`~salespyforce.utils.core_utils.ensure_ends_with` core utility functions have 
+  been added to assist with input validation.
 
 (unreleased-changed)=
 ### Changed
