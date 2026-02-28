@@ -4,7 +4,7 @@
 :Synopsis:          Constants that are utilized throughout the package
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Feb 2026
+:Modified Date:     28 Feb 2026
 """
 
 from __future__ import annotations
@@ -256,6 +256,22 @@ class Languages:
 # Salesforce REST API Endpoints
 # -------------------------------
 @dataclass(frozen=True)
+class Urls:
+    """Common URLs leveraged throughout the package.
+
+    .. versionadded:: 1.5.0
+    """
+    # Common URLs
+    LIGHTNING_RECORD_PAGE = '{base_url}/lightning/r/{sobject}/{record_id}/view'                             # Vars: base_url, sobject, record_id
+
+    # Knowledge URLs
+    CLASSIC_ARTICLE_DRAFT = '{base_url}/knowledge/publishing/articleDraftDetail.apexp?id={article_id}'     # Vars: base_url, article_id
+
+
+# -------------------------------
+# Salesforce REST API Endpoints
+# -------------------------------
+@dataclass(frozen=True)
 class RestPaths:
     """Template paths for Salesforce REST API endpoints.
 
@@ -276,7 +292,7 @@ class RestPaths:
 
     # Chatter REST paths
     CONNECT_COMMUNITIES_SITE: ClassVar[str] = '/connect/communities/{site_id}'
-    CHATTER_FEEDS: ClassVar[str] = '/chatter/feeds'
+    CHATTER_FEEDS: ClassVar[str] = '/chatter/feeds'                                 # Missing SERVICE_DATA_API ?
     CHATTER_MY_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/news/me/feed-elements'
     CHATTER_USER_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/user-profile/{user_id}/feed-elements'
     CHATTER_GROUP_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/record/{group_id}/feed-elements'
@@ -284,7 +300,20 @@ class RestPaths:
     CHATTER_FEED_ELEMENT_COMMENTS: ClassVar[str] = CHATTER_FEED_ELEMENTS + '/{feed_element_id}/capabilities/comments/items'
 
     # Knowledge REST paths
-    ARTICLE_MASTER_VERSION_BY_ID: ClassVar[str] = SERVICES_DATA_API + '/knowledgeManagement/articleVersions/masterVersions/{article_id}'
+    _ARTICLE_ID = '/{article_id}'                                                                           # Vars: article_id
+    _STANDARD_ACTIONS = '/actions/standard'
+    _ACTION_CREATE_DRAFT_ONLINE = _STANDARD_ACTIONS + '/createDraftFromOnlineKnowledgeArticle'
+    _ACTION_PUBLISH_KNOWLEDGE_ARTICLES = _STANDARD_ACTIONS + '/publishKnowledgeArticles'
+    KNOWLEDGE_MANAGEMENT = SERVICES_DATA_API + '/knowledgeManagement'                                       # Vars: api_version
+    KNOWLEDGE_MANAGEMENT_ARTICLES = KNOWLEDGE_MANAGEMENT + '/articles'                                      # Vars: api_version
+    KNOWLEDGE_MANAGEMENT_ARTICLE_BY_ID = KNOWLEDGE_MANAGEMENT_ARTICLES + _ARTICLE_ID                        # Vars: api_version, article_id
+    KNOWLEDGE_MANAGEMENT_ARTICLE_VERSIONS = KNOWLEDGE_MANAGEMENT + '/articleVersions'                       # Vars: api_version
+    KNOWLEDGE_MANAGEMENT_MASTER_VERSIONS = KNOWLEDGE_MANAGEMENT_ARTICLE_VERSIONS + '/masterVersions'        # Vars: api_version
+    ARTICLE_MASTER_VERSION_BY_ID: ClassVar[str] = KNOWLEDGE_MANAGEMENT_MASTER_VERSIONS + _ARTICLE_ID        # Vars: api_version, article_id
+    KNOWLEDGE_ARTICLES: ClassVar[str] = SERVICES_DATA_API + '/support/knowledgeArticles'                    # Vars: api_version
+    KNOWLEDGE_ARTICLES_BY_ID: ClassVar[str] = KNOWLEDGE_ARTICLES + _ARTICLE_ID                              # Vars: api_version, article_id
+    CREATE_DRAFT_FROM_ONLINE_ARTICLE: ClassVar[str] = SERVICES_DATA_API + _ACTION_CREATE_DRAFT_ONLINE       # Vars: api_version
+    PUBLISH_KNOWLEDGE_ARTICLES: ClassVar[str] = SERVICES_DATA_API + _ACTION_PUBLISH_KNOWLEDGE_ARTICLES      # Vars: api_version
 
 
 # --------------------------------------
@@ -502,6 +531,7 @@ class LogMessages:
 
 # Common (Public)
 FILE_EXTENSIONS: Final[FileExtensions] = FileExtensions()
+URLS: Final[Urls] = Urls()
 
 # Common (Private)
 _EXCEPTION_CLASSES: Final[ExceptionClasses] = ExceptionClasses()

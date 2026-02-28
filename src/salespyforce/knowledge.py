@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Feb 2026
+:Modified Date:     28 Feb 2026
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from typing import Optional, Union, Tuple
 from . import errors
 from . import constants as const
 from .utils import log_utils
+from .utils.core_utils import ensure_ends_with
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -214,9 +215,8 @@ def get_articles_list(
 
     # Perform the query
     # TODO: Determine what is returned by this API call and see if data should be pruned to just the list of articles
-    # TODO: Replace the REST path below with a constant
-    return sfdc_object.get(f'/services/data/{sfdc_object.version}/support/knowledgeArticles',
-                           params=params, headers=headers)
+    endpoint = const.REST_PATHS.KNOWLEDGE_ARTICLES.format(api_version=sfdc_object.version)
+    return sfdc_object.get(endpoint, params=params, headers=headers)
 
 
 def get_article_details(
@@ -253,12 +253,16 @@ def get_article_details(
 
     # Define the endpoint to use in the GET request
     if use_knowledge_articles_endpoint:
-        # TODO: Replace the REST path below with a constant
-        endpoint = f'/services/data/{sfdc_object.version}/support/knowledgeArticles/{article_id}'
+        endpoint = const.REST_PATHS.KNOWLEDGE_ARTICLES_BY_ID.format(
+            api_version=sfdc_object.version,
+            article_id=article_id,
+        )
     else:
-        sobject = const.SOBJECTS.KNOWLEDGE if not sobject else sobject
-        # TODO: Replace the REST path below with a constant
-        endpoint = f'/services/data/{sfdc_object.version}/sobjects/{sobject}/{article_id}'
+        endpoint = const.REST_PATHS.SOBJECT_BY_ID.format(
+            api_version=sfdc_object.version,
+            sobject=sobject,
+            record_id=article_id,
+        )
 
     # Perform the query and return the data
     data = sfdc_object.get(endpoint, headers=headers)
@@ -324,8 +328,12 @@ def get_article_metadata(sfdc_object: "Salesforce", article_id: str):
     :returns: The article metadata as a dictionary
     :raises: :py:exc:`RuntimeError`
     """
-    # TODO: Replace the REST path below with a constant and update :raises: with correct exceptions
-    return sfdc_object.get(f'/services/data/{sfdc_object.version}/knowledgeManagement/articles/{article_id}')
+    # TODO: Update :raises: with correct exceptions
+    endpoint = const.REST_PATHS.KNOWLEDGE_ARTICLES_BY_ID.format(
+        api_version=sfdc_object.version,
+        article_id=article_id,
+    )
+    return sfdc_object.get(endpoint)
 
 
 def get_article_version(sfdc_object: "Salesforce", article_id: str):
@@ -339,8 +347,11 @@ def get_article_version(sfdc_object: "Salesforce", article_id: str):
     :returns: The version ID for the given master article ID
     :raises: :py:exc:`RuntimeError`
     """
-    # TODO: Replace the REST path below with a constant and update :raises: with correct exceptions
-    endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleversions/masterVersions/{article_id}'
+    # TODO: Update :raises: with correct exceptions
+    endpoint = const.REST_PATHS.ARTICLE_MASTER_VERSION_BY_ID.format(
+        api_version=sfdc_object.version,
+        article_id=article_id,
+    )
     # TODO: Determine what is returned by this API call and see if data should be pruned to just the Version ID
     return sfdc_object.get(endpoint)
 
@@ -373,13 +384,17 @@ def get_article_url(
         raise errors.exceptions.MissingRequiredDataError(exc_msg)
     if article_number and not article_id:
         article_id = get_article_id_from_number(sfdc_object, article_number, sobject)
-    segment = '' if sfdc_object.base_url.endswith('/') else '/'
     if 'lightning' in sfdc_object.base_url or sobject == const.SOBJECTS.KNOWLEDGE:
-        # TODO: Convert the URL below into a constant
-        article_url = f'{sfdc_object.base_url}{segment}lightning/r/{sobject}/{article_id}/view'
+        article_url = const.URLS.LIGHTNING_RECORD_PAGE.format(
+            base_url=ensure_ends_with(sfdc_object.base_url, '/'),
+            sobject=sobject,
+            record_id=article_id,
+        )
     else:
-        # TODO: Convert the URL below into a constant
-        article_url = f'{sfdc_object.base_url}{segment}knowledge/publishing/articleDraftDetail.apexp?id={article_id}'
+        article_url = const.URLS.CLASSIC_ARTICLE_DRAFT.format(
+            base_url=ensure_ends_with(sfdc_object.base_url, '/'),
+            article_id=article_id,
+        )
     return article_url
 
 
@@ -405,6 +420,7 @@ def create_article(
              :py:exc:`TypeError`,
              :py:exc:`RuntimeError`
     """
+    # TODO: Update :raises: with correct exceptions
     # Ensure the sobject is defined appropriately
     sobject = _validate_knowledge_sobject(sobject)
 
@@ -453,6 +469,7 @@ def update_article(
              :py:exc:`TypeError`,
              :py:exc:`RuntimeError`
     """
+    # TODO: Update :raises: with correct exceptions
     # Ensure the sobject is defined appropriately
     sobject = _validate_knowledge_sobject(sobject)
 
@@ -492,20 +509,22 @@ def create_draft_from_online_article(sfdc_object: "Salesforce", article_id: str,
     :returns: The API response from the POST request
     :raises: :py:exc:`RuntimeError`
     """
+    # TODO: Update :raises: with correct exceptions
     # Define the payload for the API call
     payload = {
         const.QUERY_PARAMS.INPUTS: [
             {
                 const.QUERY_PARAMS.ACTION: const.PAYLOAD_VALUES.EDIT_AS_DRAFT,
                 const.QUERY_PARAMS.UNPUBLISH: unpublish,
-                const.QUERY_PARAMS.ARTICLE_ID: f"{article_id}"
+                const.QUERY_PARAMS.ARTICLE_ID: article_id,
             }
         ]
     }
 
-    # Perform the API call
-    # TODO: Replace the REST path below with a constant
-    endpoint = f'/services/data/{sfdc_object.version}/actions/standard/createDraftFromOnlineKnowledgeArticle'
+    # Define the endpoint and perform the API call
+    endpoint = const.REST_PATHS.CREATE_DRAFT_FROM_ONLINE_ARTICLE.format(
+        api_version=sfdc_object.version
+    )
     return sfdc_object.post(endpoint, payload)
 
 
@@ -539,6 +558,7 @@ def create_draft_from_master_version(
     :returns: The API response or the ID of the article draft
     :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
     """
+    # TODO: Update :raises: with correct exceptions
     if not any((article_id, knowledge_article_id, article_data)):
         error_msg = 'Need to provide article ID, knowledge article ID, or article data'
         logger.error(error_msg)
@@ -557,8 +577,7 @@ def create_draft_from_master_version(
         knowledge_article_id = article_data.get(const.SOBJECT_FIELDS.KNOWLEDGE_ARTICLE_ID)
 
     # Perform the API call to retrieve the new draft ID
-    # TODO: Replace the REST path below with a constant
-    endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions'
+    endpoint = const.REST_PATHS.KNOWLEDGE_MANAGEMENT_MASTER_VERSIONS.format(api_version=sfdc_object.version)
     response = sfdc_object.post(endpoint, {const.QUERY_PARAMS.ARTICLE_ID: knowledge_article_id})
 
     # Return the full response or the draft ID
@@ -588,6 +607,7 @@ def publish_article(
     :returns: A Boolean value indicating the success of the action or the API response from the PATCH request
     :raises: :py:exc:`RuntimeError`
     """
+    # TODO: Update :raises: with correct exceptions
     # Define the payload for the API call
     payload = {
         const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ONLINE
@@ -624,9 +644,9 @@ def publish_multiple_articles(sfdc_object: "Salesforce", article_id_list: list, 
     :raises: :py:exc:`RuntimeError`,
              :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
     """
+    # TODO: Update :raises: with correct exceptions
     # Define the endpoint URI
-    # TODO: Replace the REST path below with a constant
-    endpoint = f'/services/data/{sfdc_object.version}/actions/standard/publishKnowledgeArticles'
+    endpoint = const.REST_PATHS.PUBLISH_KNOWLEDGE_ARTICLES.format(api_version=sfdc_object.version)
 
     # Ensure there is at least one article ID to publish
     validation_error = None
@@ -672,6 +692,7 @@ def assign_data_category(sfdc_object: "Salesforce", article_id: str, category_gr
     :returns: The API response from the POST request
     :raises: :py:exc:`RuntimeError`
     """
+    # TODO: Update :raises: with correct exceptions
     # Define the payload for the API call
     payload = {
         const.SOBJECT_FIELDS.PARENT_ID: article_id,
@@ -700,6 +721,7 @@ def archive_article(sfdc_object: "Salesforce", article_id: str):
     :returns: The API response from the PATCH request
     :raises: :py:exc:`RuntimeError`
     """
+    # TODO: Update :raises: with correct exceptions
     # Define the payload for the API call
     payload = {
         const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ARCHIVED
@@ -735,8 +757,9 @@ def delete_article_draft(sfdc_object: "Salesforce", version_id: str, sobject: Op
     :returns: The API response from the DELETE request
     :raises: :py:exc:`RuntimeError`
     """
+    # TODO: Update :raises: with correct exceptions
     # Ensure the sobject is defined appropriately
-    sobject = _validate_knowledge_sobject(sobject)
+    sobject = _validate_knowledge_sobject(sobject, use_knowledge_management_endpoint)
 
     # Define the appropriate REST path and perform the API call
     if use_knowledge_management_endpoint:
