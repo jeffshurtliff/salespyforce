@@ -292,10 +292,12 @@ class RestPaths:
 
     # Chatter REST paths
     CONNECT_COMMUNITIES_SITE: ClassVar[str] = '/connect/communities/{site_id}'
-    CHATTER_FEEDS: ClassVar[str] = '/chatter/feeds'                                 # Missing SERVICE_DATA_API ?
+    # TODO: See if the constant below is missing the SERVICE_DATA_API prefix
+    CHATTER_FEEDS: ClassVar[str] = '/chatter/feeds'
     CHATTER_MY_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/news/me/feed-elements'
     CHATTER_USER_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/user-profile/{user_id}/feed-elements'
     CHATTER_GROUP_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/record/{group_id}/feed-elements'
+    # TODO: See if the constant below is missing the SERVICE_DATA_API prefix
     CHATTER_FEED_ELEMENTS: ClassVar[str] = '/chatter/feed-elements'
     CHATTER_FEED_ELEMENT_COMMENTS: ClassVar[str] = CHATTER_FEED_ELEMENTS + '/{feed_element_id}/capabilities/comments/items'
 
