@@ -972,7 +972,6 @@ class Salesforce(object):
         ref_id = core_utils.get_image_ref_id(image_url)
 
         # Define the URI and perform the API call
-        image_path = None
         try:
             endpoint = const.REST_PATHS.RICH_TEXT_IMAGE_FIELD_BY_REF_ID.format(
                 api_version=self.version,
