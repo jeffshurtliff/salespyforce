@@ -8,7 +8,7 @@ Please read this document in full before opening an issue or submitting a pull r
 
 ---
 
-# Guiding Principles
+## Guiding Principles
 
 SalesPyForce is built around the following principles:
 
@@ -25,7 +25,7 @@ All contributions must align with these principles.
 
 ---
 
-# Development Workflow Overview
+## Development Workflow Overview
 
 1. Open or reference a GitHub Issue before beginning work.
 2. Use the correct Issue template.
@@ -37,7 +37,7 @@ All contributions must align with these principles.
 
 ---
 
-# Branch Naming Convention
+## Branch Naming Convention
 
 All branches **must** follow the structured prefix system below.
 
@@ -59,7 +59,7 @@ The Issue number must appear immediately after the prefix.
 
 ---
 
-# Issue and Prefix Types
+## Issue and Prefix Types
 
 The sections below explain the different types/categories and when they should be used.
 
@@ -89,7 +89,7 @@ Valid prefixes:
 
 ---
 
-## Feature - User-Visible Capability
+### Feature - User-Visible Capability
 
 | Aspect                     | Value                                                               |
 |----------------------------|---------------------------------------------------------------------|
@@ -99,7 +99,7 @@ Valid prefixes:
 | Label(s)                   | Maintainer: `enhancement`, `maintainer`<br>Requester: `enhancement` |
 | Branch Prefix              | `feature/`                                                          |
 
-### Criteria
+#### Criteria
 
 A change is considered a **feature** when it:
 
@@ -109,14 +109,14 @@ A change is considered a **feature** when it:
 - Requires documentation updates explaining new capability
 - May justify a **minor version bump** under semantic versioning
 
-### Examples
+#### Examples
 
 - `feature/bulk-upsert-support`
 - `feature/typed-response-models`
 - `feature/async-client`
 - `feature/retry-strategy-configuration`
 
-### Litmus Test
+#### Litmus Test
 
 Would a user upgrading the package say:
 
@@ -126,7 +126,7 @@ If yes → `feature/`.
 
 ---
 
-## Fix - Defect / Bug Fix
+### Fix - Defect / Bug Fix
 
 | Aspect                     | Value                                               |
 |----------------------------|-----------------------------------------------------|
@@ -136,7 +136,7 @@ If yes → `feature/`.
 | Label(s)                   | Maintainer: `bug`, `maintainer`<br>Requester: `bug` |
 | Branch Prefix              | `fix/`                                              |
 
-### Criteria
+#### Criteria
 
 A change is considered a **bug** when it:
 
@@ -145,13 +145,13 @@ A change is considered a **bug** when it:
 - Fixes security flaws
 - Addresses incorrect documentation tied to behavior
 
-### Examples
+#### Examples
 
 - `fix/query-pagination-loop`
 - `fix/oauth-token-refresh`
 - `fix/incorrect-error-raising`
 
-### Litmus Test
+#### Litmus Test
 
 Is this correcting something that already *should have worked*?
 
@@ -159,7 +159,7 @@ If yes → `fix/`.
 
 ---
 
-## Refactor - Internal Structural Change (No Behavior Change)
+### Refactor - Internal Structural Change (No Behavior Change)
 
 | Aspect                     | Value                                                         |
 |----------------------------|---------------------------------------------------------------|
@@ -169,7 +169,7 @@ If yes → `fix/`.
 | Label(s)                   | Maintainer: `refactor`, `maintainer`<br>Requester: `refactor` |
 | Branch Prefix              | `refactor/`                                                   |
 
-### Criteria
+#### Criteria
 
 A change is considered a **refactor** when it:
 
@@ -180,14 +180,14 @@ A change is considered a **refactor** when it:
 - Improves testability or maintainability
 - Moves logic into utilities, services, etc.
 
-### Examples
+#### Examples
 
 - `refactor/split-client-module`
 - `refactor/extract-auth-logic`
 - `refactor/standardize-exceptions`
 - `refactor/centralize-constants`
 
-### Litmus Test
+#### Litmus Test
 
 If all tests ran before and after, would behavior be identical?
 
@@ -195,7 +195,7 @@ If yes → `refactor/`.
 
 ---
 
-## Chore - Maintenance, Tooling, or Non-Functional Work
+### Chore - Maintenance, Tooling, or Non-Functional Work
 
 | Aspect                     | Value                                               |
 |----------------------------|-----------------------------------------------------|
@@ -205,7 +205,7 @@ If yes → `refactor/`.
 | Label(s)                   | Maintainer: `chore`, `maintainer`<br>Requester: N/A |
 | Branch Prefix              | `chore/`                                            |
 
-### Criteria
+#### Criteria
 
 A change is considered a **chore** when it:
 
@@ -216,14 +216,14 @@ A change is considered a **chore** when it:
 - Performs minor cleanup not tied to design improvement
 - Updates documentation that does not affect behavior
 
-### Examples
+#### Examples
 
 - `chore/update-dependencies`
 - `chore/poetry-config-cleanup`
 - `chore/add-pre-commit-hooks`
 - `chore/rename-test-files`
 
-### Litmus Test
+#### Litmus Test
 
 Is this maintenance work that does not improve architecture or add capability?
 
@@ -231,7 +231,7 @@ If yes → `chore/`.
 
 ---
 
-## Documentation - Documentation-Only Changes
+### Documentation - Documentation-Only Changes
 
 | Aspect                     | Value                                                                   |
 |----------------------------|-------------------------------------------------------------------------|
@@ -241,7 +241,7 @@ If yes → `chore/`.
 | Label(s)                   | Maintainer: `documentation`, `maintainer`<br>Requester: `documentation` |
 | Branch Prefix              | `docs/`                                                                 |
 
-### Criteria
+#### Criteria
 
 A change is considered **documentation-only** when it:
 
@@ -253,7 +253,7 @@ A change is considered **documentation-only** when it:
 - Updates README content
 - Improves API reference descriptions
 
-### Examples
+#### Examples
 
 - `docs/improve-authentication-guide`
 - `docs/add-bulk-query-example`
@@ -261,13 +261,13 @@ A change is considered **documentation-only** when it:
 - `docs/update-installation-instructions`
 - `docs/add-type-hint-explanations`
 
-### Litmus Test
+#### Litmus Test
 
 Does this change only documentation and not runtime behavior?
 
 If yes → `docs/`.
 
-### Important Distinction
+#### Important Distinction
 
 - Fixing incorrect documentation because behavior was wrong → `fix/`
 - Updating docs because you added new functionality → `feature/`
@@ -275,7 +275,7 @@ If yes → `docs/`.
 
 ---
 
-## Test - Test-Only Changes
+### Test - Test-Only Changes
 
 | Aspect                     | Value                                                       |
 |----------------------------|-------------------------------------------------------------|
@@ -285,7 +285,7 @@ If yes → `docs/`.
 | Label(s)                   | Maintainer: `testing`, `maintainer`<br>Requester: `testing` |
 | Branch Prefix              | `test/`                                                     |
 
-### Criteria
+#### Criteria
 
 A change is considered **test-only** when it:
 
@@ -298,7 +298,7 @@ A change is considered **test-only** when it:
 - Adds security-focused tests
 - Increases coverage percentage without modifying production logic
 
-### Examples
+#### Examples
 
 - `test/add-pagination-edge-cases`
 - `test/increase-auth-coverage`
@@ -306,13 +306,13 @@ A change is considered **test-only** when it:
 - `test/refactor-fixture-structure`
 - `test/improve-mock-isolation`
 
-### Litmus Test
+#### Litmus Test
 
 Does this modify only the test suite and not production code?
 
 If yes → `test/`.
 
-### Advanced OSS Discipline
+#### Advanced OSS Discipline
 
 - Adding regression tests after a bug fix → separate `test/` branch
 - Fix + test together → typically `fix/`
@@ -320,7 +320,7 @@ If yes → `test/`.
 
 ---
 
-## CI - Continuous Integration / Automation
+### CI - Continuous Integration / Automation
 
 | Aspect                     | Value                                             |
 |----------------------------|---------------------------------------------------|
@@ -330,7 +330,7 @@ If yes → `test/`.
 | Label(s)                   | Maintainer: `ci`, `maintainer`<br>Requester: `ci` |
 | Branch Prefix              | `ci/`                                             |
 
-### Criteria
+#### Criteria
 
 A change is considered **CI-related** when it:
 
@@ -343,7 +343,7 @@ A change is considered **CI-related** when it:
 - Modifies RTD build configuration
 - Changes CI-only pre-commit behavior
 
-### Examples
+#### Examples
 
 - `ci/update-python-matrix`
 - `ci/add-codeql-analysis`
@@ -351,13 +351,13 @@ A change is considered **CI-related** when it:
 - `ci/add-bandit-sarif-upload`
 - `ci/improve-coverage-reporting`
 
-### Litmus Test
+#### Litmus Test
 
 Does this change affect only automation or pipelines, not the library itself?
 
 If yes → `ci/`.
 
-### Important Distinction
+#### Important Distinction
 
 - Updating dependency versions in `pyproject.toml` → `chore/`
 - Updating how CI installs dependencies → `ci/`
@@ -368,7 +368,7 @@ Chore is for repository maintenance.
 
 ---
 
-## Security - Security-Related Improvements
+### Security - Security-Related Improvements
 
 | Aspect                     | Value                                                         |
 |----------------------------|---------------------------------------------------------------|
@@ -388,7 +388,7 @@ Chore is for repository maintenance.
 >
 > Do **not** post exploit details, proof-of-concept payloads, secrets, or sensitive environment data in public Issues.
 
-### Criteria
+#### Criteria
 
 A change is considered **security-related** when it:
 
@@ -405,7 +405,7 @@ A change is considered **security-related** when it:
 - Mitigates injection risks
 - Prevents sensitive data exposure in logs
 
-### Examples
+#### Examples
 
 - `security/sanitize-query-input`
 - `security/harden-token-storage`
@@ -413,13 +413,13 @@ A change is considered **security-related** when it:
 - `security/fix-cve-urllib3-2026`
 - `security/prevent-header-injection`
 
-### Litmus Test
+#### Litmus Test
 
 Is this change primarily focused on reducing security risk?
 
 If yes → `security/`.
 
-### Versioning Guidance
+#### Versioning Guidance
 
 Security changes typically justify:
 
@@ -429,7 +429,7 @@ Security changes typically justify:
 
 ---
 
-# Code Standards
+## Code Standards
 
 All contributions must:
 
@@ -442,7 +442,7 @@ All contributions must:
 
 ---
 
-# Testing Requirements
+## Testing Requirements
 
 - All new behavior must include tests.
 - All bug fixes must include regression tests.
@@ -452,7 +452,7 @@ All contributions must:
 
 ---
 
-# Documentation Requirements
+## Documentation Requirements
 
 If you:
 
@@ -464,7 +464,221 @@ Documentation must remain consistent with the published version.
 
 ---
 
-# Security Expectations
+## Documentation Policy and Standards
+
+SalesPyForce documentation must remain clear, user-focused, and free of implementation noise.
+
+The purpose of documentation is to describe the public contract of the library — not its internal structure.
+
+---
+
+### Documentation Philosophy
+
+Documentation should:
+
+- Describe what the library does
+- Explain how to use the public API
+- Clarify behavior and edge cases
+- Document error conditions
+- Provide examples where helpful
+- Reflect observable behavior
+
+Documentation should **not**:
+
+- Describe internal refactors
+- Explain implementation restructuring
+- Document private helper functions
+- Record maintenance history
+- Duplicate CHANGELOG entries
+- Expose internal architectural details unless intentionally public
+
+If a change does not affect users, it should not appear in user-facing documentation.
+
+---
+
+### Public vs Internal API Documentation
+
+Only public interfaces must be documented.
+
+Public API includes:
+
+- Public classes
+- Public methods
+- Public functions
+- Public exceptions
+- Public decorators
+- Documented constants intended for consumer usage
+
+Private or internal items (prefixed with `_`) should not be included in narrative documentation and should not receive version directives.
+
+If a module or constant is internal-only, do not surface it in the docs.
+
+---
+
+### Version Directives Policy
+
+Sphinx directives such as:
+
+- `.. versionadded::`
+- `.. versionchanged::`
+- `.. deprecated::`
+
+Must only be used when:
+
+- Public behavior changes
+- Public signatures change
+- Return values change
+- Exceptions change
+- Default behavior changes
+- Deprecations are introduced
+- Security changes affect behavior
+- Performance characteristics meaningfully change
+
+Do not use version directives for:
+
+- Internal refactors
+- Code reorganization
+- Moving constants
+- Renaming private helpers
+- Documentation wording improvements
+- Test restructuring
+
+Implementation changes belong in the CHANGELOG, not in docstrings.
+
+---
+
+### CHANGELOG vs Documentation
+
+The CHANGELOG records:
+
+- Refactors
+- Dependency updates
+- Maintenance work
+- CI improvements
+- Tooling updates
+- Internal restructuring
+
+The documentation describes:
+
+- Current behavior
+- Current usage
+- Current API contract
+
+Documentation should always describe the present state of the library — not its historical evolution.
+
+---
+
+### Docstring Standards
+
+Docstrings must:
+
+- Follow consistent reStructuredText format
+- Include type hints in signatures (not repeated redundantly)
+- Document parameters and return values clearly
+- Document raised exceptions when applicable
+- Avoid excessive verbosity
+- Avoid implementation detail leakage
+
+Docstrings should explain:
+
+- What the function does
+- What it expects
+- What it returns
+- When it raises exceptions
+- Any important usage caveats
+
+Docstrings should not explain:
+
+- Internal helper calls
+- Refactoring rationale
+- Internal constant usage
+- Code structure
+
+---
+
+### Deprecation Policy
+
+When deprecating a public API:
+
+1. Add a `.. deprecated::` directive.
+2. Document the recommended alternative.
+3. Maintain backward compatibility during the deprecation window.
+4. Update narrative documentation accordingly.
+5. Add CHANGELOG entry under "Deprecated".
+
+Removal of deprecated functionality must align with semantic versioning rules.
+
+---
+
+### Documentation Cleanliness Requirements
+
+Contributors must ensure:
+
+- No dead references
+- No broken cross-references
+- No outdated examples
+- No references to removed APIs
+- No copy/paste errors from prior versions
+
+CI failures due to documentation warnings must be resolved before merging.
+
+---
+
+### Examples and Usage Clarity
+
+Code examples must:
+
+- Be minimal and realistic
+- Use public API only
+- Avoid private attributes
+- Avoid exposing internals
+- Be syntactically correct
+- Prefer clarity over cleverness
+
+Examples should reflect recommended usage patterns.
+
+---
+
+### Security Documentation Guidelines
+
+Documentation must never:
+
+- Include real tokens
+- Include sensitive headers
+- Include private endpoints
+- Show insecure defaults
+
+Security-sensitive examples should use placeholder values.
+
+---
+
+### Stable vs Latest Documentation
+
+The `stable` documentation must reflect the latest release.
+
+The `latest` documentation may reflect unreleased changes, but:
+
+- Must not contradict documented behavior
+- Must remain coherent
+- Must not expose incomplete APIs without clear intent
+
+---
+
+### Documentation Review Standard
+
+Before merging a PR:
+
+- Confirm public API documentation matches code.
+- Confirm new features are documented.
+- Confirm removed behavior is no longer documented.
+- Confirm version directives (if any) are appropriate and necessary.
+- Confirm no internal-only refactors appear in user-facing docs.
+
+Clean documentation is considered part of the public contract of SalesPyForce.
+
+---
+
+## Security Expectations
 
 SalesPyForce interacts with authentication flows and API tokens. Contributions must:
 
@@ -479,7 +693,7 @@ Security-related contributions may receive heightened review scrutiny.
 
 ---
 
-# Pull Request Requirements
+## Pull Request Requirements
 
 Every PR must:
 
@@ -494,7 +708,7 @@ PRs that do not follow naming or structural rules may be closed without review.
 
 ---
 
-# Final Notes
+## Final Notes
 
 Consistency is more important than speed.
 

@@ -16,18 +16,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The {py:func}`salespyforce.utils.version.get_version_from_pyproject` function was 
   added as a fallback method for retrieving the current package version when the 
   package is not installed.
+- The {py:exc}`salespyforce.errors.exceptions.PATCHRequestError` exception class has
+  been added to leverage with PATCH request exceptions.
+- The {py:func}`~salespyforce.utils.core_utils.ensure_starts_with` and 
+  {py:func}`~salespyforce.utils.core_utils.ensure_ends_with` core utility functions have 
+  been added to assist with input validation.
 
 (unreleased-changed)=
 ### Changed
 
+- The constants used by the package have been centralized within the new 
+  {py:mod}`salespyforce.constants` module and the other modules have been updated accordingly.
+- The {py:meth}`~salespyforce.Salesforce.download_image` method now logs errors and raises exceptions 
+  when failing to successfully download an image.
 - The {py:func}`salespyforce.utils.version.get_full_version` and 
   {py:func}`salespyforce.utils.version.get_major_minor_version` functions now attempt to 
   retrieve the version from the `pyproject.toml` file if it cannot be retrieved via the 
   package metadata.
+- The {py:meth}`salespyforce.Salesforce.Knowledge.delete_article_draft` method (and underlying function)
+  now supports the `sobject` parameter to specify the sObject against which to query.
+- The {py:meth}`salespyforce.Salesforce.Knowledge.get_validation_status` method (and underlying function) 
+  now includes the `use_knowledge_articles_endpoint` parameter so you can specify the REST path to utilize.
+- The following methods (and underlying functions) now raise the 
+  {py:exc}`~salespyforce.errors.exceptions.MissingRequiredDataError` exception rather than generic 
+  {py:exc}`RuntimeError` or {py:exc}`ValueError` exceptions when required data is missing:
+  - {py:meth}`salespyforce.Salesforce.Chatter.post_feed_item`
+  - {py:meth}`salespyforce.Salesforce.Chatter.post_comment`
+  - {py:meth}`salespyforce.Salesforce.Knowledge.get_article_url`
+  - {py:meth}`salespyforce.Salesforce.Knowledge.create_draft_from_master_version`
+  - {py:meth}`salespyforce.Salesforce.Knowledge.publish_multiple_articles`
+- The {py:meth}`salespyforce.utils.core_utils.download_image` function now raises more specific 
+  exceptions instead of the generic {py:exc}`RuntimeError` exception.
+  - The {py:exc}`salespyforce.errors.exceptions.MissingRequiredDataError` exception is raised if 
+    neither an image URL nor an API response are provided when calling the function.
+  - The {py:exc}`salespyforce.errors.exceptions.GETRequestError` exception is raised if the GET 
+    request fails to download the image.
+- The {py:func}`salespyforce.utils.helper.import_helper_file` and
+  {py:func}`salespyforce.utils.helper.get_helper_settings` functions now support both ``yml`` and
+  ``yaml`` extensions for YAML files.
 - The documentation for this project has updated to a more modern and intuitive theme,
   layout, and structure. The intent was to be less verbose and instead make the documentation 
   more human-oriented with helpful guides and tutorials.
     - The previous Sphinx content has been preserved in `docs_legacy/` for historical purposes.
+
+(unreleased-removed)=
+### Removed
+
+- The {py:class}`salespyforce.utils.helper.HelperParsing` class has been removed as its functionality 
+  has been replaced by the `YAML_BOOLEAN_MAPPING` constant in the {py:mod}`salespyforce.constants`
+  module.
 
 ---
 (relnotes-1.4.0)=

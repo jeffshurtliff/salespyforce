@@ -5,9 +5,11 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
-:Modified Date:     07 Feb 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     28 Feb 2026
 """
+
+from __future__ import annotations
 
 import re
 import random
@@ -15,22 +17,20 @@ import string
 import os.path
 import warnings
 import urllib.parse
+from typing import Optional
 
 import requests
 
 from . import log_utils
 from .. import errors
+from .. import constants as const
 from ..decorators import deprecated
 
 # Initialize the logger for this module
 logger = log_utils.initialize_logging(__name__)
 
-# Define constants
-SALESFORCE_ID_SUFFIX_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'
-VALID_SALESFORCE_URL_PATTERN = r'^https://[a-zA-Z0-9._-]+\.salesforce\.com(/|$)'
 
-
-def url_encode(raw_string):
+def url_encode(raw_string: str) -> str:
     """This function encodes a string for use in URLs.
 
     :param raw_string: The raw string to be encoded
@@ -40,7 +40,7 @@ def url_encode(raw_string):
     return urllib.parse.quote_plus(raw_string)
 
 
-def url_decode(encoded_string):
+def url_decode(encoded_string: str) -> str:
     """This function decodes a url-encoded string.
 
     :param encoded_string: The url-encoded string
@@ -50,8 +50,74 @@ def url_decode(encoded_string):
     return urllib.parse.unquote_plus(encoded_string)
 
 
+def _ensure_prefix_or_suffix(_eval_string: str, _substring: str,
+                             _starts_with: Optional[bool] = None, _ends_with: Optional[bool] = None) -> str:
+    """This function makes sure a prefix or suffix is found before or after a given string.
+
+    .. versionadded:: 1.5.0
+
+    :param _eval_string: The string to evaluate
+    :type _eval_string: str
+    :param _substring: The substring that should be the prefix or suffix
+    :type _substring: str
+    :param _starts_with: Indicates that the evaluated string should start with the substring (i.e. prefix)
+    :type _starts_with: bool, None
+    :param _ends_with: Indicates that the evaluated string should end with the substring (i.e. suffix)
+    :type _ends_with: bool, None
+    :returns: The string with the prefix or suffix
+    :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
+    """
+    if not any((_starts_with, _ends_with)):
+        _error_msg = const._LOG_MESSAGES._MUST_BE_PROVIDED_ERROR.format(
+            data='_starts_with or _ends_with parameter'
+        )
+        logger.error(_error_msg)
+        raise errors.exceptions.MissingRequiredDataError(_error_msg)
+    if _starts_with and not _eval_string.startswith(_substring):
+        _eval_string = _substring + _eval_string
+    elif _ends_with and not _eval_string.endswith(_substring):
+        _eval_string = _eval_string + _substring
+    return _eval_string
+
+
+def ensure_starts_with(eval_string, prefix):
+    """This function ensures that a string starts with a given prefix.
+
+    .. versionadded:: 1.5.0
+
+    :param eval_string: The string to be evaluated
+    :type eval_string: str
+    :param prefix: The prefix string that must be at the beginning of the evaluated string
+    :type prefix: str
+    :returns: The string with the prefix at the start
+    """
+    return _ensure_prefix_or_suffix(
+        _eval_string=eval_string,
+        _substring=prefix,
+        _starts_with=True,
+    )
+
+
+def ensure_ends_with(eval_string, suffix):
+    """This function ensures that a string ends with a given suffix.
+
+    .. versionadded:: 1.5.0
+
+    :param eval_string: The string to be evaluated
+    :type eval_string: str
+    :param suffix: The suffix string that must be at the end of the evaluated string
+    :type suffix: str
+    :returns: The string with the suffix at the end
+    """
+    return _ensure_prefix_or_suffix(
+        _eval_string=eval_string,
+        _substring=suffix,
+        _ends_with=True,
+    )
+
+
 @deprecated(since='1.4.0', replacement='salespyforce.errors.handlers.display_warning', removal='2.0.0')
-def display_warning(warn_msg):
+def display_warning(warn_msg: str) -> None:
     """This function displays a :py:exc:`UserWarning` message via the :py:mod:`warnings` module.
 
     .. deprecated:: 1.4.0
@@ -64,7 +130,7 @@ def display_warning(warn_msg):
     warnings.warn(warn_msg, UserWarning)
 
 
-def get_file_type(file_path):
+def get_file_type(file_path: str) -> str:
     """This function attempts to identify if a given file path is for a YAML or JSON file.
 
     :param file_path: The full path to the file
@@ -75,10 +141,10 @@ def get_file_type(file_path):
     """
     file_type = 'unknown'
     if os.path.isfile(file_path):
-        if file_path.endswith('.json'):
-            file_type = 'json'
-        elif file_path.endswith('.yml') or file_path.endswith('.yaml'):
-            file_type = 'yaml'
+        if file_path.endswith(const.FILE_EXTENSIONS.DOT_JSON):
+            file_type = const.FILE_EXTENSIONS.JSON
+        elif file_path.endswith(const.FILE_EXTENSIONS.DOT_YML) or file_path.endswith(const.FILE_EXTENSIONS.DOT_YAML):
+            file_type = const.FILE_EXTENSIONS.YAML
         else:
             display_warning(f"Unable to recognize the file type of '{file_path}' by its extension.")
             with open(file_path) as cfg_file:
@@ -87,16 +153,16 @@ def get_file_type(file_path):
                         continue
                     else:
                         if '{' in line:
-                            file_type = 'json'
+                            file_type = const.FILE_EXTENSIONS.JSON
                             break
         if file_type == 'unknown':
             raise errors.exceptions.UnknownFileTypeError(file=file_path)
     else:
-        raise FileNotFoundError(f"Unable to locate the following file: {file_path}")
+        raise FileNotFoundError(f'Unable to locate the following file: {file_path}')
     return file_type
 
 
-def get_random_string(length=32, prefix_string=""):
+def get_random_string(length: int = 32, prefix_string: str = '') -> str:
     """This function returns a random alphanumeric string.
 
     :param length: The length of the string (``32`` by default)
@@ -120,7 +186,7 @@ def get_18_char_id(record_id: str) -> str:
     """
     # Ensure the provided record ID is a string
     if not isinstance(record_id, str):
-        raise ValueError("Salesforce ID must be a string")
+        raise ValueError('Salesforce ID must be a string')
 
     # Return the record ID unchanged if it is already 18 characters in length
     if len(record_id) == 18:
@@ -128,19 +194,19 @@ def get_18_char_id(record_id: str) -> str:
 
     # Ensure the record ID is a valid 15-character value
     if len(record_id) != 15:
-        raise ValueError("Salesforce ID must be 15 or 18 characters long")
+        raise ValueError('Salesforce ID must be 15 or 18 characters long')
 
     # Define the checksum suffix (additional 3 characters)
-    suffix = ""
+    suffix = ''
     for i in range(0, 15, 5):
         chunk = record_id[i:i + 5]
         bitmask = 0
 
         for index, char in enumerate(chunk):
-            if "A" <= char <= "Z":
+            if 'A' <= char <= 'Z':
                 bitmask |= 1 << index
 
-        suffix += SALESFORCE_ID_SUFFIX_ALPHABET[bitmask]
+        suffix += const.SALESFORCE_ID_SUFFIX_ALPHABET[bitmask]
 
     # Return the 18-character ID value
     return record_id + suffix
@@ -178,10 +244,10 @@ def is_valid_salesforce_url(url: str) -> bool:
     :type url: str
     :returns: Boolean value depending on whether the URL meets the criteria
     """
-    return True if isinstance(url, str) and matches_regex_pattern(VALID_SALESFORCE_URL_PATTERN, url) else False
+    return True if isinstance(url, str) and matches_regex_pattern(const.VALID_SALESFORCE_URL_PATTERN, url) else False
 
 
-def get_image_ref_id(image_url):
+def get_image_ref_id(image_url: str) -> str:
     """This function parses an image URL to identify the reference ID (refid) value.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`__,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`__)
@@ -192,28 +258,34 @@ def get_image_ref_id(image_url):
     """
     query_params = urllib.parse.parse_qs(urllib.parse.urlparse(image_url).query)
     # noinspection PyTypeChecker
-    ref_id = query_params.get('refid')
+    ref_id = query_params.get(const.QUERY_PARAMS.REF_ID)
     ref_id = ref_id[0] if not isinstance(ref_id, str) else ref_id
     return ref_id
 
 
-def download_image(image_url=None, file_name=None, file_path=None, response=None, extension='jpeg'):
+def download_image(image_url: Optional[str] = None, file_name: Optional[str] = None, file_path: Optional[str] = None,
+                   response=None, extension: str = const.FILE_EXTENSIONS.JPEG) -> str:
     """This function downloads an image and saves it to a specified directory.
 
+    .. versionchanged:: 1.5.0
+       This function now raises more specific exceptions instead of the generic :py:exc:`RuntimeError` exception.
+
     :param image_url: The absolute URL to the image
-    :type image_url: str
-    :param file_name: The file name including extension as which to save the file
-    :type file_name: str
-    :param file_path: File path where the image file should be saved (default: ``var/images/``)
+    :type image_url: str, None
+    :param file_name: The file name (including extension) to use as the file name (Default: randomly generated)
+    :type file_name: str, None
+    :param file_path: File path where the image file should be saved (Default: ``./``)
     :type file_path: str, None
     :param response: The response of the previously performed API call
-    :param extension: The file extension to use if a file name with extension is not provided
+    :param extension: The file extension to use if a file name with extension is not provided (Default: ``jpeg``)
     :type extension: str
     :returns: The full path to the downloaded image
-    :raises: :py:exc:`RuntimeError`
+    :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`,
+             :py:exc:`salespyforce.errors.exceptions.GETRequestError`
     """
     if not image_url and not response:
-        raise RuntimeError('An image URL or an API response must be provided to download an image.')
+        exc_msg = 'An image URL or an API response must be provided to download an image.'
+        raise errors.exceptions.MissingRequiredDataError(exc_msg)
 
     # Define an appropriate file path
     file_path = './' if not file_path else file_path
@@ -228,7 +300,8 @@ def download_image(image_url=None, file_name=None, file_path=None, response=None
     if not response:
         response = requests.get(image_url)
     if response.status_code != 200:
-        raise RuntimeError(f'The image failed to download with a {response.status_code} status code.')
+        exc_msg = f'The image failed to download with a {response.status_code} status code.'
+        raise errors.exceptions.GETRequestError(exc_msg)
 
     # Export the response data as an image file
     with open(f'{file_path}{file_name}', 'wb') as file:

@@ -3,8 +3,8 @@
 :Module:            salespyforce.api
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5-Codex)
-:Modified Date:     07 Feb 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     01 Mar 2026
 """
 
 from __future__ import annotations
@@ -14,10 +14,9 @@ from typing import Optional
 import requests
 
 from . import errors
+from . import constants as const
 from .utils import core_utils, log_utils
 
-# Define constants
-DEFAULT_API_REQUEST_TIMEOUT = 30
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
@@ -69,7 +68,7 @@ def get(
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Define the API request timeout (using default value if not explicitly defined with parameter)
-    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
+    timeout = const.DEFAULT_API_TIMEOUT_SECONDS if not timeout else timeout
 
     # Perform the API call
     response = requests.get(url, headers=headers, params=params, timeout=timeout)
@@ -139,14 +138,14 @@ def api_call_with_payload(
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Define the API request timeout (using default value if not explicitly defined with parameter)
-    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
+    timeout = const.DEFAULT_API_TIMEOUT_SECONDS if not timeout else timeout
 
     # Perform the API call
-    if method.lower() == 'post':
+    if method.upper() == const.API_REQUEST_TYPES.POST:
         response = requests.post(url, json=payload, headers=headers, params=params, timeout=timeout)
-    elif method.lower() == 'patch':
+    elif method.upper() == const.API_REQUEST_TYPES.PATCH:
         response = requests.patch(url, json=payload, headers=headers, params=params, timeout=timeout)
-    elif method.lower() == 'put':
+    elif method.upper() == const.API_REQUEST_TYPES.PUT:
         response = requests.put(url, json=payload, headers=headers, params=params, timeout=timeout)
     else:
         raise ValueError('The API call method (POST or PATCH or PUT) must be defined')
@@ -155,10 +154,10 @@ def api_call_with_payload(
     if response.status_code >= 300:
         if show_full_error:
             # TODO: Functionalize this segment and figure out how to improve on the approach somehow
-            raise RuntimeError(f'The POST request failed with a {response.status_code} status code.\n'
+            raise RuntimeError(f'The {method.upper()} request failed with a {response.status_code} status code.\n'
                                f'{response.text}')
         else:
-            raise RuntimeError(f'The POST request failed with a {response.status_code} status code.')
+            raise RuntimeError(f'The {method.upper()} request failed with a {response.status_code} status code.')
     # TODO: Break this out into a separate private function so it can be reused and standardized
     if return_json:
         try:
@@ -210,7 +209,7 @@ def delete(
     url = _construct_full_query_url(endpoint, sfdc_object.instance_url)
 
     # Define the API request timeout (using default value if not explicitly defined with parameter)
-    timeout = DEFAULT_API_REQUEST_TIMEOUT if not timeout else timeout
+    timeout = const.DEFAULT_API_TIMEOUT_SECONDS if not timeout else timeout
 
     # Perform the API call
     response = requests.delete(url, headers=headers, params=params, timeout=timeout)
@@ -228,14 +227,20 @@ def delete(
 
 
 def _get_headers(_access_token: str, _header_type: str = 'default') -> dict:
-    """This function returns the appropriate HTTP headers to use for different types of API calls."""
+    """This function returns the appropriate HTTP headers to use for different types of API calls.
+
+    .. versionchanged:: 1.5.0
+       A warning message is now logged if an invalid header type is passed to the function.
+    """
     headers = {
-        'content-type': 'application/json',
-        'accept-encoding': 'gzip',
-        'authorization': f'Bearer {_access_token}'
+        const.HEADERS.CONTENT_TYPE: const.CONTENT_TYPES.JSON,
+        const.HEADERS.ACCEPT_ENCODING: const.ENCODING_TYPES.GZIP,
+        const.HEADERS.AUTHORIZATION: const.AUTH_SCHEMES.BEARER.format(token=_access_token)
     }
     if _header_type == 'articles':
-        headers['accept-language'] = 'en-US'
+        headers[const.HEADERS.ACCEPT_LANGUAGE] = const.LANGUAGES.EN_US
+    elif _header_type not in const.VALID_HEADER_TYPES:
+        logger.warning(f"'{_header_type}' is not a valid header type and the default type/scope will be leveraged")
     return headers
 
 

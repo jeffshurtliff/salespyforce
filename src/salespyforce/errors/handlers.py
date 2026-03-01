@@ -4,17 +4,15 @@
 :Synopsis:          Functions that handle various error situations within the namespace
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     02 Feb 2026
+:Modified Date:     26 Feb 2026
 """
 
 from __future__ import annotations
 
 import sys
-from typing import Final
 import warnings
 
-# Define constants
-_DEFAULT_CATEGORY: Final[type[Warning]] = UserWarning
+from .. import constants as const
 
 
 def eprint(*args, **kwargs) -> None:
@@ -35,7 +33,7 @@ def get_exception_type(exc) -> str:
 def display_warning(
     message: str,
     *,
-    category: type[Warning] = _DEFAULT_CATEGORY,
+    category: type[Warning] = const._DEFAULT_WARNING_CATEGORY,
     stacklevel: int = 2,
 ) -> None:
     """This function emits a warning that points to the caller by default.
