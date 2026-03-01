@@ -4,7 +4,7 @@
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Feb 2026
+:Modified Date:     01 Mar 2026
 """
 
 from __future__ import annotations
@@ -141,11 +141,11 @@ def api_call_with_payload(
     timeout = const.DEFAULT_API_TIMEOUT_SECONDS if not timeout else timeout
 
     # Perform the API call
-    if method.lower() == 'post':
+    if method.upper() == const.API_REQUEST_TYPES.POST:
         response = requests.post(url, json=payload, headers=headers, params=params, timeout=timeout)
-    elif method.lower() == 'patch':
+    elif method.upper() == const.API_REQUEST_TYPES.PATCH:
         response = requests.patch(url, json=payload, headers=headers, params=params, timeout=timeout)
-    elif method.lower() == 'put':
+    elif method.upper() == const.API_REQUEST_TYPES.PUT:
         response = requests.put(url, json=payload, headers=headers, params=params, timeout=timeout)
     else:
         raise ValueError('The API call method (POST or PATCH or PUT) must be defined')
@@ -154,10 +154,10 @@ def api_call_with_payload(
     if response.status_code >= 300:
         if show_full_error:
             # TODO: Functionalize this segment and figure out how to improve on the approach somehow
-            raise RuntimeError(f'The POST request failed with a {response.status_code} status code.\n'
+            raise RuntimeError(f'The {method.upper()} request failed with a {response.status_code} status code.\n'
                                f'{response.text}')
         else:
-            raise RuntimeError(f'The POST request failed with a {response.status_code} status code.')
+            raise RuntimeError(f'The {method.upper()} request failed with a {response.status_code} status code.')
     # TODO: Break this out into a separate private function so it can be reused and standardized
     if return_json:
         try:

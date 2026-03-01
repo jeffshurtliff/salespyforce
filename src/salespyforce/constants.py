@@ -4,7 +4,7 @@
 :Synopsis:          Constants that are utilized throughout the package
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     28 Feb 2026
+:Modified Date:     01 Mar 2026
 """
 
 from __future__ import annotations
@@ -94,6 +94,50 @@ class FileExtensions:
 
 
 # -------------------------------
+# Client Configuration Settings
+# -------------------------------
+@dataclass(frozen=True)
+class ClientSettings:
+    """Fields, values, and other constants relating to the :py:class:`salespyforce.Salesforce`
+    client configuration settings.
+
+    .. versionadded:: 1.5.0
+    """
+    # Connection fields / keys
+    BASE_URL: ClassVar[str] = 'base_url'
+    ENDPOINT_URL: ClassVar[str] = 'endpoint_url'
+    ORG_ID: ClassVar[str] = 'org_id'
+    GRANT_TYPE: ClassVar[str] = 'grant_type'
+    CLIENT_ID: ClassVar[str] = 'client_id'
+    CLIENT_KEY: ClassVar[str] = 'client_key'
+    CLIENT_SECRET: ClassVar[str] = 'client_secret'
+    SECURITY_TOKEN: ClassVar[str] = 'security_token'
+    ACCESS_TOKEN: ClassVar[str] = 'access_token'
+    INSTANCE_URL: ClassVar[str] = 'instance_url'
+    SIGNATURE: ClassVar[str] = 'signature'
+    USERNAME: ClassVar[str] = 'username'
+    PASSWORD: ClassVar[str] = 'password'
+    CONNECTION_INFO_FIELDS: ClassVar[frozenset[str]] = frozenset({
+        USERNAME, PASSWORD, BASE_URL, ENDPOINT_URL,
+        CLIENT_KEY, CLIENT_SECRET, ORG_ID, SECURITY_TOKEN,
+    })
+    
+    # User info fields / keys
+    EMAIL: ClassVar[str] = 'email'
+    IS_INTEGRATION_USER: ClassVar[str] = 'is_salesforce_integration_user'
+    LANGUAGE: ClassVar[str] = 'language'
+    LOCALE: ClassVar[str] = 'locale'
+    NAME: ClassVar[str] = 'name'
+    NICKNAME: ClassVar[str] = 'nickname'
+    USER_ID: ClassVar[str] = 'user_id'
+    USER_TYPE: ClassVar[str] = 'user_type'
+    UTC_OFFSET: ClassVar[str] = 'utcOffset'
+    USER_INFO_BOOL_FIELDS: Final[frozenset[str]] = frozenset({
+        IS_INTEGRATION_USER,
+    })
+
+
+# -------------------------------
 # Helper Configuration Settings
 # -------------------------------
 @dataclass(frozen=True)
@@ -107,15 +151,15 @@ class HelperSettings:
     VALID_HELPER_FILE_TYPES: ClassVar[frozenset[str]] = frozenset({'json', 'yml', 'yaml'})
 
     # Authentication and connection fields
-    CONNECTION: str = 'connection'
-    USERNAME: str = 'username'
-    PASSWORD: str = 'password'
-    ORG_ID: str = 'org_id'
-    BASE_URL: str = 'base_url'
-    ENDPOINT_URL: str = 'endpoint_url'
-    CLIENT_KEY: str = 'client_key'
-    CLIENT_SECRET: str = 'client_secret'
-    SECURITY_TOKEN: str = 'security_token'
+    CONNECTION: ClassVar[str] = 'connection'
+    USERNAME: ClassVar[str] = 'username'
+    PASSWORD: ClassVar[str] = 'password'
+    ORG_ID: ClassVar[str] = 'org_id'
+    BASE_URL: ClassVar[str] = 'base_url'
+    ENDPOINT_URL: ClassVar[str] = 'endpoint_url'
+    CLIENT_KEY: ClassVar[str] = 'client_key'
+    CLIENT_SECRET: ClassVar[str] = 'client_secret'
+    SECURITY_TOKEN: ClassVar[str] = 'security_token'
     CONNECTION_KEYS: ClassVar[frozenset[str]] = frozenset({
         USERNAME, PASSWORD, BASE_URL, ENDPOINT_URL,
         CLIENT_KEY, CLIENT_SECRET, ORG_ID, SECURITY_TOKEN,
@@ -147,11 +191,11 @@ class ApiRequestTypes:
 
     .. versionadded:: 1.5.0
     """
-    GET: str = 'GET'
-    PATCH: str = 'PATCH'
-    POST: str = 'POST'
-    PUT: str = 'PUT'
-    DELETE: str = 'DELETE'
+    GET: ClassVar[str] = 'GET'
+    PATCH: ClassVar[str] = 'PATCH'
+    POST: ClassVar[str] = 'POST'
+    PUT: ClassVar[str] = 'PUT'
+    DELETE: ClassVar[str] = 'DELETE'
 
 
 # -----------------------------
@@ -262,10 +306,10 @@ class Urls:
     .. versionadded:: 1.5.0
     """
     # Common URLs
-    LIGHTNING_RECORD_PAGE = '{base_url}/lightning/r/{sobject}/{record_id}/view'                             # Vars: base_url, sobject, record_id
+    LIGHTNING_RECORD_PAGE: ClassVar[str] = '{base_url}/lightning/r/{sobject}/{record_id}/view'                             # Vars: base_url, sobject, record_id
 
     # Knowledge URLs
-    CLASSIC_ARTICLE_DRAFT = '{base_url}/knowledge/publishing/articleDraftDetail.apexp?id={article_id}'     # Vars: base_url, article_id
+    CLASSIC_ARTICLE_DRAFT: ClassVar[str] = '{base_url}/knowledge/publishing/articleDraftDetail.apexp?id={article_id}'     # Vars: base_url, article_id
 
 
 # -------------------------------
@@ -284,18 +328,27 @@ class RestPaths:
     """
     # General REST paths
     SERVICES_DATA: ClassVar[str] = '/services/data'
-    SERVICES_DATA_API: ClassVar[str] = SERVICES_DATA + '/{api_version}'
-    SERVICES_DATA_API_SITE = SERVICES_DATA_API + '{site_segment}'
-    QUERY: ClassVar[str] = SERVICES_DATA_API + '/query'
-    SOBJECT: ClassVar[str] = SERVICES_DATA_API + '/sobjects/{sobject}'
-    SOBJECT_BY_ID: ClassVar[str] = SOBJECT + '/{record_id}'
+    SERVICES_DATA_API: ClassVar[str] = SERVICES_DATA + '/{api_version}'                                     # Vars: api_version
+    SERVICES_DATA_API_SITE = SERVICES_DATA_API + '{site_segment}'                                           # Vars: api_version, site_segment
+    LIMITS: ClassVar[str] = SERVICES_DATA_API + '/limits'                                                   # Vars: api_version
+    QUERY: ClassVar[str] = SERVICES_DATA_API + '/query'                                                     # Vars: api_version
+    SEARCH: ClassVar[str] = SERVICES_DATA_API + '/search'                                                   # Vars: api_version
+    SOBJECTS: ClassVar[str] = SERVICES_DATA_API + '/sobjects'                                               # Vars: api_version
+    SOBJECT: ClassVar[str] = SOBJECTS + '/{sobject}'                                                        # Vars: api_version, sobject
+    SOBJECT_DESCRIBE: ClassVar[str] = SOBJECT + '/describe'                                                 # Vars: api_version, sobject
+    SOBJECT_BY_ID: ClassVar[str] = SOBJECT + '/{record_id}'                                                 # Vars: api_version, sobject, record_id
+    USER_INFO: ClassVar[str] = '/services/oauth2/userinfo'
+
+    # Image-related paths
+    RICH_TEXT_IMAGE_FIELD: ClassVar[str] = SOBJECT_BY_ID + '/richTextImageFields/{field_name}'              # Vars: api_version, sobject, record_id, field_name
+    RICH_TEXT_IMAGE_FIELD_BY_REF_ID: ClassVar[str] = RICH_TEXT_IMAGE_FIELD + '/{ref_id}'                    # Vars: api_version, sobject, record_id, field_name, ref_id
 
     # Chatter REST paths
-    CONNECT_COMMUNITIES_SITE: ClassVar[str] = '/connect/communities/{site_id}'
+    CONNECT_COMMUNITIES_SITE: ClassVar[str] = '/connect/communities/{site_id}'                              # Vars: site_id
     CHATTER_FEEDS: ClassVar[str] = '/chatter/feeds'
     CHATTER_MY_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/news/me/feed-elements'
-    CHATTER_USER_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/user-profile/{user_id}/feed-elements'
-    CHATTER_GROUP_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/record/{group_id}/feed-elements'
+    CHATTER_USER_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/user-profile/{user_id}/feed-elements'         # Vars: user_id
+    CHATTER_GROUP_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/record/{group_id}/feed-elements'             # VARS: group_id
     CHATTER_FEED_ELEMENTS: ClassVar[str] = '/chatter/feed-elements'
     CHATTER_FEED_ELEMENT_COMMENTS: ClassVar[str] = CHATTER_FEED_ELEMENTS + '/{feed_element_id}/capabilities/comments/items'
 
@@ -404,6 +457,7 @@ class ResponseKeys:
     RECORDS: ClassVar[str] = 'records'
     TOTAL_SIZE: ClassVar[str] = 'totalSize'
     URL: ClassVar[str] = 'url'
+    VERSION: ClassVar[str] = 'version'
 
 
 # -----------------------------
@@ -523,6 +577,7 @@ class LogMessages:
     _MISSING_REQUIRED_DATA: ClassVar[str] = '{data} is missing and must be provided as it is required'
     _MUST_BE_PROVIDED_ERROR: ClassVar[str] = 'The {data} must be provided.'
     _PARAM_EXCEEDS_MAX_VALUE: ClassVar[str] = 'The {param} value exceeds the maximum and will default to {default}'
+    _SOBJECT_PAYLOAD_MUST_BE_DICT: ClassVar[str] = 'The sObject payload must be provided as a dictionary.'
 
 
 # -----------------------------
@@ -536,6 +591,9 @@ URLS: Final[Urls] = Urls()
 # Common (Private)
 _EXCEPTION_CLASSES: Final[ExceptionClasses] = ExceptionClasses()
 _LOG_MESSAGES: Final[LogMessages] = LogMessages()
+
+# Client Settings
+CLIENT_SETTINGS: Final[ClientSettings] = ClientSettings()
 
 # Helper Utility
 HELPER_SETTINGS: Final[HelperSettings] = HelperSettings()
