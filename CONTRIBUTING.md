@@ -447,6 +447,7 @@ All contributions must:
 - All new behavior must include tests.
 - All bug fixes must include regression tests.
 - CI must pass before PR approval.
+- CI enforces a minimum total test coverage threshold of 50%.
 - Tests must be deterministic and isolated.
 - Keep test modules under either `tests/unit/` or `tests/integration/`.
 - Avoid unnecessary mocking when integration tests are more appropriate.

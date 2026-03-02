@@ -35,5 +35,8 @@ If no helper file is available, integration tests are skipped automatically.
 Run coverage locally with:
 
 ```bash
-poetry run pytest --cov-report=xml --cov=salespyforce tests/unit tests/integration --color=yes
+poetry run pytest --cov-report=xml --cov=salespyforce --cov-fail-under=50 tests/unit tests/integration --color=yes
 ```
+
+The `--cov-fail-under=50` threshold matches CI and fails the run if total
+coverage drops below 50%.
