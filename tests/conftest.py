@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-:Module:            salespyforce.utils.tests.conftest
+:Module:            tests.conftest
 :Synopsis:          Configuration for performing unit testing with pytest
 :Usage:             Leveraged by pytest in test modules
 :Example:           ``soql_response = salesforce_unit.soql_query(soql_statement)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     13 Dec 2025
+:Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)
+:Modified Date:  02 Mar 2026
 
-Pytest fixtures for ``salespyforce.utils.tests``.
+Pytest fixtures for ``tests``.
 
 This module centralizes helpers used across the test suite to avoid
 repeated setup in individual test files. It introduces two key fixtures:

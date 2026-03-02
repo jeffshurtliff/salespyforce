@@ -18,6 +18,7 @@ Use Poetry for dependency management and packaging.
 Common commands (prefer these unless the user asks otherwise):
 - Install: `poetry install`
 - Run tests: `poetry run pytest`
+- Test suite location: `tests/` (repository root)
 - Lint/format (if configured in this repo): `poetry run ruff check .` and `poetry run ruff format .`
 - Build: `poetry build`
 
@@ -130,7 +131,7 @@ class Salesforce:
         endpoint_url: str,
         client_id: str,
         client_secret: str,
-        security_token: str | None = None,
+        security_token: Optional[str] = None,
     ) -> None:
         """Initialize the client.
 

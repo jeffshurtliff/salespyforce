@@ -102,6 +102,14 @@ The package can be installed via pip using the syntax below.
 pip install salespyforce --upgrade
 ```
 
+## Development and Testing
+For local development, this repository uses a root-level `tests/` directory.
+
+```sh
+poetry install
+poetry run pytest -q
+```
+
 ## Changelog
 The changelog can be found in the [documentation](https://salespyforce.readthedocs.io) for the 
 [stable](https://salespyforce.readthedocs.io/en/stable/changelog.html) and 

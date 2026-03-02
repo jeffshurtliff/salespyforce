@@ -10,6 +10,7 @@ If you are new to these workflows, follow this order:
 1. Read :doc:`authentication` to configure client credentials safely.
 2. Continue with :doc:`querying` for SOQL and SOSL retrieval patterns.
 3. Finish with :doc:`error-handling` for retries, diagnostics, and exception strategy.
+4. Review :doc:`testing` for local test execution and integration-test opt-in.
 
 This section is designed to help you:
 
@@ -28,3 +29,4 @@ For release history, see the :doc:`../CHANGELOG`.
    authentication
    querying
    error-handling
+   testing

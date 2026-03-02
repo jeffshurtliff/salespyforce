@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-:Module:            salespyforce.utils.tests.resources
+:Module:            tests.resources
 :Synopsis:          Frequently used resources for performing unit testing
-:Usage:             ``from salespyforce.utils.tests import resources``
+:Usage:             ``from tests import resources``
 :Example:           ``exceptions = resources.import_exceptions_module()``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     14 Nov 2025
+:Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)
+:Modified Date:  02 Mar 2026
 """
 
 import os

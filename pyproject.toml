@@ -81,6 +81,10 @@ pydata-sphinx-theme = "^0.15.4"
 myst-parser = "^3.0.1"
 sphinx-favicon = "^1.0.1"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
 [build-system]
 requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"

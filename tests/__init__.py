@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-:Module:         salespyforce.utils.tests
+:Module:         tests
 :Synopsis:       This package includes tests for the salespyforce library.
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff
-:Modified Date:  27 May 2023
+:Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)
+:Modified Date:  02 Mar 2026
 """
