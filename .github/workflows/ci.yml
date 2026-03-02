@@ -76,7 +76,6 @@ jobs:
 
       - name: Coverage (pytest-cov) and report
         run: |
-          poetry run python -m pip install --upgrade pytest-cov
           poetry run pytest --cov-report=xml --cov=salespyforce tests/ --color=yes
 
       - name: Upload coverage to Codecov
