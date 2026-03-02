@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # bandit: skip=B101
 """
-:Module:         tests.test_version_utils
+:Module:         tests.unit.test_version_utils
 :Synopsis:       Pytest suite for salespyforce.utils.version helpers
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)

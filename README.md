@@ -103,7 +103,8 @@ pip install salespyforce --upgrade
 ```
 
 ## Development and Testing
-For local development, this repository uses a root-level `tests/` directory.
+For local development, this repository uses split test directories:
+`tests/unit/` and `tests/integration/`.
 
 ```sh
 poetry install

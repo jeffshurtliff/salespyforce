@@ -448,7 +448,7 @@ All contributions must:
 - All bug fixes must include regression tests.
 - CI must pass before PR approval.
 - Tests must be deterministic and isolated.
-- Keep test modules under the repository root `tests/` directory.
+- Keep test modules under either `tests/unit/` or `tests/integration/`.
 - Avoid unnecessary mocking when integration tests are more appropriate.
 
 ---

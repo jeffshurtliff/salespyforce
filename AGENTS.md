@@ -18,7 +18,7 @@ Use Poetry for dependency management and packaging.
 Common commands (prefer these unless the user asks otherwise):
 - Install: `poetry install`
 - Run tests: `poetry run pytest`
-- Test suite location: `tests/` (repository root)
+- Test suite locations: `tests/unit/` and `tests/integration/` (repository root)
 - Lint/format (if configured in this repo): `poetry run ruff check .` and `poetry run ruff format .`
 - Build: `poetry build`
 

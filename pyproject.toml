@@ -83,7 +83,7 @@ myst-parser = "^3.0.1"
 sphinx-favicon = "^1.0.1"
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests/unit", "tests/integration"]
 pythonpath = ["src"]
 
 [build-system]

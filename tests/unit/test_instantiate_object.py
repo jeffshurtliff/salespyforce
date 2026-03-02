@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # bandit: skip=B101
 """
-:Module:         tests.test_instantiate_object
+:Module:         tests.unit.test_instantiate_object
 :Synopsis:       This module is used by pytest to test instantiating the core object
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)

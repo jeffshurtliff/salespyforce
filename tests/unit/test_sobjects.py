@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # bandit: skip=B101
 """
-:Module:         tests.test_sobjects
+:Module:         tests.unit.test_sobjects
 :Synopsis:       This module is used by pytest to test basic sObject-related methods
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-:Module:            tests.resources
+:Module:            tests.unit.resources
 :Synopsis:          Frequently used resources for performing unit testing
-:Usage:             ``from tests import resources``
+:Usage:             ``from tests.unit import resources``
 :Example:           ``exceptions = resources.import_exceptions_module()``
 :Created By:        Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)

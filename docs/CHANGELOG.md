@@ -60,6 +60,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - The previous Sphinx content has been preserved in `docs_legacy/` for historical purposes.
 - The test suite has been moved from `src/salespyforce/utils/tests/` to the root-level
   `tests/` directory to better align with standard Python project layout practices.
+- The root-level test suite is now organized into `tests/unit/` and
+  `tests/integration/` to separate deterministic unit coverage from opt-in
+  environment-dependent integration coverage.
 
 (unreleased-removed)=
 ### Removed

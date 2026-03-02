@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # bandit: skip=B101
 """
-:Module:         tests.test_soql
+:Module:         tests.unit.test_soql
 :Synopsis:       This module is used by pytest to test performing SOQL queries
 :Created By:     Jeff Shurtliff
 :Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)
