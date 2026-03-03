@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-:Module:            salespyforce.utils.tests.conftest
-:Synopsis:          Configuration for performing unit testing with pytest
+:Module:            tests.conftest
+:Synopsis:          Configuration for performing unit and integration testing with pytest
 :Usage:             Leveraged by pytest in test modules
 :Example:           ``soql_response = salesforce_unit.soql_query(soql_statement)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     13 Dec 2025
+:Last Modified:     Jeff Shurtliff (via GPT-5.3-Codex)
+:Modified Date:     02 Mar 2026
 
-Pytest fixtures for ``salespyforce.utils.tests``.
+Pytest fixtures for ``tests``.
 
 This module centralizes helpers used across the test suite to avoid
-repeated setup in individual test files. It introduces two key fixtures:
+repeated setup in individual test files in both ``tests/unit`` and
+``tests/integration``. It introduces two key fixtures:
 
 * ``salesforce_integration`` — Instantiates the real ``Salesforce``
   client when a helper file is available. Tests using this fixture are
@@ -33,6 +34,7 @@ from types import SimpleNamespace
 from typing import Iterator
 
 import pytest
+import requests
 
 from salespyforce.core import Salesforce
 
@@ -137,9 +139,13 @@ def salesforce_integration(integration_helper_file: Path) -> Iterator[Salesforce
 
     The fixture is session-scoped to avoid repeated authentication and
     to reuse connections across tests. It is intended only for tests
-    marked with ``@pytest.mark.integration``.
+    marked with ``@pytest.mark.integration``. If a network-related
+    connection failure occurs, integration tests are skipped.
     """
-    client = Salesforce(helper=str(integration_helper_file))
+    try:
+        client = Salesforce(helper=str(integration_helper_file))
+    except requests.exceptions.RequestException as error:
+        pytest.skip(f"Unable to establish integration connection: {error}")
     yield client
 
 

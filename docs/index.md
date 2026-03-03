@@ -70,6 +70,7 @@ For a complete walkthrough, see the {doc}`getting-started/quickstart` page.
 - {doc}`guides/authentication`: Credential patterns and helper-file usage
 - {doc}`guides/querying`: SOQL and SOSL examples and best practices
 - {doc}`guides/error-handling`: Exceptions, diagnostics, and recovery patterns
+- {doc}`guides/testing`: Running tests from `tests/unit/` and `tests/integration/`
 
 ### API Reference
 

@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-:Module:            salespyforce.utils.tests.resources
+:Module:            tests.unit.resources
 :Synopsis:          Frequently used resources for performing unit testing
-:Usage:             ``from salespyforce.utils.tests import resources``
+:Usage:             ``from tests.unit import resources``
 :Example:           ``exceptions = resources.import_exceptions_module()``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     14 Nov 2025
+:Last Modified:     Jeff Shurtliff (via GPT-5.3-Codex)
+:Modified Date:     02 Mar 2026
 """
 
 import os
-import sys
 import importlib
 
 import pytest
@@ -71,14 +70,6 @@ def mock_sosl_get(*args, **kwargs):
     })
 
 
-def set_package_path():
-    """This function adds the high-level salespyforce directory to the sys.path list.
-
-    .. versionadded:: 1.1.0
-    """
-    sys.path.insert(0, os.path.abspath('../..'))
-
-
 def import_modules(*modules):
     """This function imports and returns one or more modules to utilize in a unit test.
 
@@ -116,7 +107,6 @@ def get_core_object():
 
     .. versionadded:: 1.1.0
     """
-    set_package_path()
     if secrets_helper_exists():
         sfdc_object = instantiate_with_secrets_helper()
     else:
@@ -137,7 +127,6 @@ def instantiate_with_secrets_helper():
     if not secrets_helper_exists():
         raise FileNotFoundError('The unencrypted GitHub Actions helper file cannot be found.')
     file_name = f'{os.environ.get("HOME")}/secrets/{HELPER_FILE_NAME}'
-    set_package_path()
     core_module = importlib.import_module('salespyforce.core')
     return core_module.Salesforce(helper=file_name)
 
@@ -152,6 +141,5 @@ def instantiate_with_local_helper():
     """
     if not local_helper_exists():
         raise FileNotFoundError('The local helper file cannot be found.')
-    set_package_path()
     core_module = importlib.import_module('salespyforce.core')
     return core_module.Salesforce(helper=f"local/{HELPER_FILE_NAME}")

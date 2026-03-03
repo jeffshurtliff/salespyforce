@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # bandit: skip=B101
 """
-:Module:         salespyforce.utils.tests.test_log_utils
+:Module:         tests.unit.test_log_utils
 :Synopsis:       This module is used by pytest to test the logging functionality
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff
-:Modified Date:  31 Dec 2025
+:Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)
+:Modified Date:  02 Mar 2026
 """
 
 import logging

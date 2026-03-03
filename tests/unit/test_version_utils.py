@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # bandit: skip=B101
 """
-:Module:         salespyforce.utils.tests.test_version_utils
+:Module:         tests.unit.test_version_utils
 :Synopsis:       Pytest suite for salespyforce.utils.version helpers
 :Created By:     Jeff Shurtliff
-:Last Modified:  Anonymous (via GPT-5.2-Codex)
-:Modified Date:  19 Feb 2026
+:Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)
+:Modified Date:  02 Mar 2026
 """
 
 import importlib
