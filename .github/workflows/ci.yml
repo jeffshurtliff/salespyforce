@@ -6,23 +6,27 @@ on:
       - README.md
       - CONTRIBUTING.md
       - AGENTS.md
+      - CLAUDE.md
       - LICENSE
       - .readthedocs.yaml
       - docs/**
       - docs_legacy/**
       - examples/**
       - .github/ISSUE_TEMPLATE/**
+      - .gemini/**
   pull_request:
     paths-ignore:
       - README.md
       - CONTRIBUTING.md
       - AGENTS.md
+      - CLAUDE.md
       - LICENSE
       - .readthedocs.yaml
       - docs/**
       - docs_legacy/**
       - examples/**
       - .github/ISSUE_TEMPLATE/**
+      - .gemini/**
 
 permissions:
   contents: read
