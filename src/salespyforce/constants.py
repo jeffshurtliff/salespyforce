@@ -297,7 +297,7 @@ class Languages:
 
 
 # -------------------------------
-# Salesforce REST API Endpoints
+# Salesforce URLs
 # -------------------------------
 @dataclass(frozen=True)
 class Urls:
