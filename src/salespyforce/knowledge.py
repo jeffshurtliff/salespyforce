@@ -3,8 +3,8 @@
 :Module:            salespyforce.knowledge
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     28 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
 from __future__ import annotations
@@ -616,8 +616,10 @@ def publish_article(
         payload[const.QUERY_PARAMS.VERSION_NUMBER] = const.PAYLOAD_VALUES.NEXT_VERSION
 
     # Perform the API call
-    # TODO: Replace the REST path below with a constant
-    endpoint = f'/services/data/{sfdc_object.version}/knowledgeManagement/articleVersions/masterVersions/{article_id}'
+    endpoint = const.REST_PATHS.ARTICLE_MASTER_VERSION_BY_ID.format(
+        api_version=sfdc_object.version,
+        article_id=article_id,
+    )
     result = sfdc_object.patch(endpoint, payload)
 
     # Return the appropriate value depending on if a full response was requested

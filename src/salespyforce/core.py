@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     01 Mar 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
 from __future__ import annotations
@@ -33,6 +33,9 @@ class Salesforce(object):
     .. versionchanged:: 1.4.0
        The authorized Salesforce org is now queried to determine the latest API version to leverage unless
        explicitly defined with the ``version`` parameter when instantiating the object.
+
+    .. versionchanged:: 1.5.0
+       String helper paths now infer JSON or YAML parsing from the file extension.
 
     :param connection_info: The information for connecting to the Salesforce instance
     :type connection_info: dict, None
@@ -85,11 +88,19 @@ class Salesforce(object):
             if helper:
                 # Parse the helper file contents
                 self.helper_path = helper
-                if any((isinstance(helper, tuple), isinstance(helper, list), isinstance(helper, set))):
+                if isinstance(helper, (tuple, list)):
                     helper_file_path, helper_file_type = helper
+                elif isinstance(helper, set):
+                    valid_file_types = {
+                        const.FILE_EXTENSIONS.JSON,
+                        const.FILE_EXTENSIONS.YAML,
+                        const.FILE_EXTENSIONS.YML,
+                    }
+                    helper_file_type = next((item for item in helper if item in valid_file_types), None)
+                    helper_file_path = next((item for item in helper if item != helper_file_type), None)
                 elif isinstance(helper, str):
-                    # TODO: Verify that JSON-formatted helper files can also be passed to the client
-                    helper_file_path, helper_file_type = (helper, const.FILE_EXTENSIONS.YAML)
+                    helper_file_path = helper
+                    helper_file_type = core_utils.get_file_type(helper_file_path)
                 elif isinstance(helper, dict):
                     helper_file_path, helper_file_type = helper.values()
                 else:
@@ -390,7 +401,7 @@ class Salesforce(object):
             headers: Optional[dict] = None,
             timeout: Optional[int] = None,
             show_full_error: bool = True,
-            return_json: bool = True,
+            return_json: bool = False,
     ):
         """This method performs a PATCH call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -398,6 +409,9 @@ class Salesforce(object):
         .. versionchanged:: 1.4.0
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
            (Timeout is still **30** seconds in this version)
+
+        .. versionchanged:: 1.5.0
+           The default value for ``return_json`` is ``False`` to preserve the published 1.4.0 behavior.
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -411,7 +425,7 @@ class Salesforce(object):
         :type timeout: int, None
         :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
         :type show_full_error: bool
-        :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
+        :param return_json: Determines if the response should be returned in JSON format (defaults to ``False``)
         :returns: The API response in JSON format or as a ``requests`` object
         :raises: :py:exc:`TypeError`,
                  :py:exc:`RuntimeError`,

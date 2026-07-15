@@ -25,6 +25,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (unreleased-changed)=
 ### Changed
 
+- Successful GET, POST, PATCH, PUT, and DELETE responses with empty bodies are now
+  returned as raw response objects instead of being passed to JSON decoding. This
+  prevents successful `204 No Content` DELETE operations from raising JSON decode
+  errors.
+- The {py:meth}`salespyforce.Salesforce.patch` method once again defaults
+  `return_json` to `False`, preserving the public behavior released in version 1.4.0.
+- String helper paths now infer JSON or YAML parsing from their `.json`, `.yml`, or
+  `.yaml` file extensions. Explicit sequence, set, and mapping helper forms remain
+  supported.
+- Knowledge article publishing now uses the centralized
+  `REST_PATHS.ARTICLE_MASTER_VERSION_BY_ID` endpoint template.
+- Regression coverage has been added for API response handling, Knowledge and Chatter
+  endpoint construction, helper file selection, and API request exception messages.
 - The constants used by the package have been centralized within the new 
   {py:mod}`salespyforce.constants` module and the other modules have been updated accordingly.
 - The {py:meth}`~salespyforce.Salesforce.download_image` method now logs errors and raises exceptions 

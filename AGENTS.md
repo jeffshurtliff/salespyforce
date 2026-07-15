@@ -164,7 +164,9 @@ def api_version(self) -> str:
 
 ## Documentation expectations
 
-- If you change a public behavior, update the docstrings and any relevant docs under docs/ (always the changelog.rst file).
+- If you change a public behavior, update the docstrings and any relevant docs under `docs/` (always `docs/CHANGELOG.md`).
+- In Markdown/MyST (`.md`) documentation files, delimit inline code with a single backtick on each side.
+  Do not use reStructuredText-style double-backtick delimiters in Markdown files.
 - When creating a new module, a header block similar to the example below should be included.
 
 ```python
