@@ -570,6 +570,17 @@ Documentation should always describe the present state of the library — not it
 
 ---
 
+### Markdown and MyST Formatting
+
+In Markdown/MyST (`.md`) documentation files, delimit inline code with a single
+backtick on each side. Do not use reStructuredText-style double-backtick delimiters
+in Markdown files.
+
+Double-backtick inline literals remain appropriate in reStructuredText (`.rst`) files
+and reStructuredText-formatted docstrings.
+
+---
+
 ### Docstring Standards
 
 Docstrings must:

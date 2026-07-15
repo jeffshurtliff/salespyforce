@@ -3,8 +3,8 @@
 :Module:            salespyforce.api
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     01 Mar 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
 from __future__ import annotations
@@ -38,6 +38,9 @@ def get(
        The full URL for the API call is now constructed prior to making the call. The provided URL is also
        now evaluated to ensure it is a valid Salesforce URL. Additionally, a global constant is now leveraged
        for the API timeout value instead of hardcoding the value. (Timeout is still **30** seconds in this version)
+
+    .. versionchanged:: 1.5.0
+       Successful responses with empty bodies are returned without attempting JSON conversion.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -79,8 +82,7 @@ def get(
                                f'{response.text}')
         else:
             raise RuntimeError(f'The GET request failed with a {response.status_code} status code.')
-    # TODO: Leverage private function for this section across all API call functions (see TODO in api_call_with_payload)
-    if return_json:
+    if return_json and not _has_empty_response_body(response):
         response = response.json()
     return response
 
@@ -103,6 +105,9 @@ def api_call_with_payload(
        The full URL for the API call is now constructed prior to making the call. The provided URL is also
        now evaluated to ensure it is a valid Salesforce URL. Additionally, a global constant is now leveraged
        for the API timeout value instead of hardcoding the value. (Timeout is still **30** seconds in this version)
+
+    .. versionchanged:: 1.5.0
+       Successful responses with empty bodies are returned without attempting JSON conversion.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -158,8 +163,7 @@ def api_call_with_payload(
                                f'{response.text}')
         else:
             raise RuntimeError(f'The {method.upper()} request failed with a {response.status_code} status code.')
-    # TODO: Break this out into a separate private function so it can be reused and standardized
-    if return_json:
+    if return_json and not _has_empty_response_body(response):
         try:
             response = response.json()
         except Exception as exc:
@@ -179,6 +183,9 @@ def delete(
     """This method performs a DELETE request against the Salesforce instance.
 
     .. versionadded:: 1.4.0
+
+    .. versionchanged:: 1.5.0
+       Successful responses with empty bodies are returned without attempting JSON conversion.
 
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -220,10 +227,25 @@ def delete(
                                f'{response.text}')
         else:
             raise RuntimeError(f'The DELETE request failed with a {response.status_code} status code.')
-    # TODO: Leverage private function for this section across all API call functions (see TODO in api_call_with_payload)
-    if return_json:
+    if return_json and not _has_empty_response_body(response):
         response = response.json()
     return response
+
+
+def _has_empty_response_body(_response) -> bool:
+    """Determine whether a successful API response has an empty body.
+
+    .. versionadded:: 1.5.0
+
+    :param _response: The API response to inspect.
+    :returns: Whether the response has no content to deserialize.
+    """
+    if _response.status_code in (204, 205):
+        return True
+
+    missing_content = object()
+    content = getattr(_response, 'content', missing_content)
+    return content is not missing_content and content in (b'', '')
 
 
 def _get_headers(_access_token: str, _header_type: str = 'default') -> dict:
