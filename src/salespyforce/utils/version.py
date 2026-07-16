@@ -3,15 +3,16 @@
 :Module:            salespyforce.utils.version
 :Synopsis:          Utilities for working with the package version
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     19 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Optional
-from importlib.metadata import version, PackageNotFoundError
+
 try:
     import tomllib  # Python 3.11+
 except ModuleNotFoundError:  # pragma: no cover

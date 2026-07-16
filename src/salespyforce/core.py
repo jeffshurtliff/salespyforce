@@ -17,8 +17,8 @@ from typing import Optional, Union
 import requests
 
 from . import api, errors
-from . import constants as const
 from . import chatter as chatter_module
+from . import constants as const
 from . import knowledge as knowledge_module
 from .utils import core_utils, log_utils
 from .utils.helper import get_helper_settings
@@ -27,7 +27,7 @@ from .utils.helper import get_helper_settings
 logger = log_utils.initialize_logging(__name__)
 
 
-class Salesforce(object):
+class Salesforce:
     """This is the client object for the library (i.e. core object class) that is leveraged to perform API tasks.
 
     .. versionchanged:: 1.4.0
@@ -63,20 +63,21 @@ class Salesforce(object):
     :raises: :py:exc:`TypeError`,
              :py:exc:`RuntimeError`
     """
+
     # Define the function that initializes the object instance (i.e. instantiates the object)
     def __init__(
-            self,
-            connection_info: Optional[dict] = None,
-            version: Optional[str] = None,
-            base_url: Optional[str] = None,
-            org_id: Optional[str] = None,
-            username: Optional[str] = None,
-            password: Optional[str] = None,
-            endpoint_url: Optional[str] = None,
-            client_id: Optional[str] = None,
-            client_secret: Optional[str] = None,
-            security_token: Optional[str] = None,
-            helper: Optional[Union[str, tuple, list, set, dict]] = None,
+        self,
+        connection_info: Optional[dict] = None,
+        version: Optional[str] = None,
+        base_url: Optional[str] = None,
+        org_id: Optional[str] = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        endpoint_url: Optional[str] = None,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+        security_token: Optional[str] = None,
+        helper: Optional[Union[str, tuple, list, set, dict]] = None,
     ) -> None:
         """This method instantiates the core Salesforce client object."""
         # Define the default settings
@@ -114,8 +115,9 @@ class Salesforce(object):
                 connection_info = define_connection_info()
             else:
                 # Compile the connection info from the provided parameters
-                connection_info = compile_connection_info(base_url, org_id, username, password, endpoint_url,
-                                                          client_id, client_secret, security_token)
+                connection_info = compile_connection_info(
+                    base_url, org_id, username, password, endpoint_url, client_id, client_secret, security_token
+                )
 
         # Get the connection information used to connect to the instance
         self.connection_info = connection_info if connection_info is not None else self._get_empty_connection_info()
@@ -211,7 +213,7 @@ class Salesforce(object):
             const.CLIENT_SETTINGS.CLIENT_SECRET: self.connection_info.get(const.CLIENT_SETTINGS.CLIENT_SECRET),
             const.CLIENT_SETTINGS.USERNAME: self.connection_info.get(const.CLIENT_SETTINGS.USERNAME),
             const.CLIENT_SETTINGS.PASSWORD: f'{self.connection_info.get(const.CLIENT_SETTINGS.PASSWORD)}'
-                                            f'{self.connection_info.get(const.CLIENT_SETTINGS.SECURITY_TOKEN)}',
+            f'{self.connection_info.get(const.CLIENT_SETTINGS.SECURITY_TOKEN)}',
         }
         response = requests.post(self.connection_info.get(const.CLIENT_SETTINGS.ENDPOINT_URL), params=params)
         if response.status_code != 200:
@@ -219,10 +221,10 @@ class Salesforce(object):
         return response.json()
 
     def retrieve_current_user_info(
-            self,
-            all_data: bool = False,
-            raise_exc_on_error: bool = False,
-            on_init: bool = False,
+        self,
+        all_data: bool = False,
+        raise_exc_on_error: bool = False,
+        on_init: bool = False,
     ) -> dict:
         """This method retrieves the ``userinfo`` data for the current/running user.
 
@@ -276,13 +278,13 @@ class Salesforce(object):
         return user_info
 
     def get(
-            self,
-            endpoint: str,
-            params: Optional[dict] = None,
-            headers: Optional[dict] = None,
-            timeout: Optional[int] = None,
-            show_full_error: bool = True,
-            return_json: bool = True,
+        self,
+        endpoint: str,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = True,
     ):
         """This method performs a GET request against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -307,19 +309,26 @@ class Salesforce(object):
                  :py:exc:`RuntimeError`,
                  :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
-        return api.get(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
-                       show_full_error=show_full_error, return_json=return_json)
+        return api.get(
+            self,
+            endpoint=endpoint,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+            show_full_error=show_full_error,
+            return_json=return_json,
+        )
 
     def api_call_with_payload(
-            self,
-            method: str,
-            endpoint: str,
-            payload: dict,
-            params: Optional[dict] = None,
-            headers: Optional[dict] = None,
-            timeout: Optional[int] = None,
-            show_full_error: bool = True,
-            return_json: bool = True,
+        self,
+        method: str,
+        endpoint: str,
+        payload: dict,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = True,
     ):
         """This method performs a POST call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -349,19 +358,27 @@ class Salesforce(object):
                  :py:exc:`ValueError`,
                  :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
-        return api.api_call_with_payload(self, method=method, endpoint=endpoint, payload=payload, params=params,
-                                         headers=headers, timeout=timeout, show_full_error=show_full_error,
-                                         return_json=return_json)
+        return api.api_call_with_payload(
+            self,
+            method=method,
+            endpoint=endpoint,
+            payload=payload,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+            show_full_error=show_full_error,
+            return_json=return_json,
+        )
 
     def post(
-            self,
-            endpoint: str,
-            payload: dict,
-            params: Optional[dict] = None,
-            headers: Optional[dict] = None,
-            timeout: Optional[int] = None,
-            show_full_error: bool = True,
-            return_json: bool = True,
+        self,
+        endpoint: str,
+        payload: dict,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = True,
     ):
         """This method performs a POST call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -389,19 +406,27 @@ class Salesforce(object):
                  :py:exc:`ValueError`,
                  :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
-        return api.api_call_with_payload(self, const.API_REQUEST_TYPES.POST, endpoint=endpoint,
-                                         payload=payload, params=params, headers=headers, timeout=timeout,
-                                         show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(
+            self,
+            const.API_REQUEST_TYPES.POST,
+            endpoint=endpoint,
+            payload=payload,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+            show_full_error=show_full_error,
+            return_json=return_json,
+        )
 
     def patch(
-            self,
-            endpoint: str,
-            payload: dict,
-            params: Optional[dict] = None,
-            headers: Optional[dict] = None,
-            timeout: Optional[int] = None,
-            show_full_error: bool = True,
-            return_json: bool = False,
+        self,
+        endpoint: str,
+        payload: dict,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = False,
     ):
         """This method performs a PATCH call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -432,19 +457,27 @@ class Salesforce(object):
                  :py:exc:`ValueError`,
                  :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
-        return api.api_call_with_payload(self, const.API_REQUEST_TYPES.PATCH, endpoint=endpoint,
-                                         payload=payload, params=params, headers=headers, timeout=timeout,
-                                         show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(
+            self,
+            const.API_REQUEST_TYPES.PATCH,
+            endpoint=endpoint,
+            payload=payload,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+            show_full_error=show_full_error,
+            return_json=return_json,
+        )
 
     def put(
-            self,
-            endpoint: str,
-            payload: dict,
-            params: Optional[dict] = None,
-            headers: Optional[dict] = None,
-            timeout: Optional[int] = None,
-            show_full_error: bool = True,
-            return_json: bool = True,
+        self,
+        endpoint: str,
+        payload: dict,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = True,
     ):
         """This method performs a PUT call against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -472,18 +505,26 @@ class Salesforce(object):
                  :py:exc:`ValueError`,
                  :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
-        return api.api_call_with_payload(self, const.API_REQUEST_TYPES.PUT, endpoint=endpoint,
-                                         payload=payload, params=params, headers=headers, timeout=timeout,
-                                         show_full_error=show_full_error, return_json=return_json)
+        return api.api_call_with_payload(
+            self,
+            const.API_REQUEST_TYPES.PUT,
+            endpoint=endpoint,
+            payload=payload,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+            show_full_error=show_full_error,
+            return_json=return_json,
+        )
 
     def delete(
-            self,
-            endpoint: str,
-            params: Optional[dict] = None,
-            headers: Optional[dict] = None,
-            timeout: Optional[int] = None,
-            show_full_error: bool = True,
-            return_json: bool = True,
+        self,
+        endpoint: str,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        timeout: Optional[int] = None,
+        show_full_error: bool = True,
+        return_json: bool = True,
     ):
         """This method performs a DELETE request against the Salesforce instance.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -506,8 +547,15 @@ class Salesforce(object):
                  :py:exc:`RuntimeError`,
                  :py:exc:`salespyforce.errors.exceptions.InvalidURLError`
         """
-        return api.delete(self, endpoint=endpoint, params=params, headers=headers, timeout=timeout,
-                          show_full_error=show_full_error, return_json=return_json)
+        return api.delete(
+            self,
+            endpoint=endpoint,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+            show_full_error=show_full_error,
+            return_json=return_json,
+        )
 
     def get_api_versions(self) -> list:
         """This method returns the API versions for the Salesforce releases.
@@ -531,8 +579,8 @@ class Salesforce(object):
         except Exception as exc:
             exc_type = errors.handlers.get_exception_type(exc)
             logger.warning(
-                f"Failed to retrieve API version due to a(n) {exc_type} exception; defaulting to "
-                f"the fallback version {const.FALLBACK_SFDC_API_VERSION}"
+                f'Failed to retrieve API version due to a(n) {exc_type} exception; defaulting to '
+                f'the fallback version {const.FALLBACK_SFDC_API_VERSION}'
             )
             latest_version = const.FALLBACK_SFDC_API_VERSION
         return latest_version
@@ -677,10 +725,7 @@ class Salesforce(object):
 
         # Use the current/running user's ID if an ID wasn't explicitly provided
         if not user_id:
-            user_id = self._get_cached_user_info(
-                _field=const.CLIENT_SETTINGS.USER_ID,
-                _retrieve_if_missing=True
-            )
+            user_id = self._get_cached_user_info(_field=const.CLIENT_SETTINGS.USER_ID, _retrieve_if_missing=True)
             if user_id:
                 logger.debug(f'Using the User Id {user_id} for the running user as an Id was not specified')
 
@@ -691,12 +736,14 @@ class Salesforce(object):
             raise errors.exceptions.MissingRequiredDataError(error_msg)
 
         # Perform SOQL query for the access data
-        select_fields = ', '.join((
-            const.SOBJECT_FIELDS.RECORD_ID,
-            const.SOBJECT_FIELDS.HAS_READ_ACCESS,
-            const.SOBJECT_FIELDS.HAS_EDIT_ACCESS,
-            const.SOBJECT_FIELDS.HAS_DELETE_ACCESS,
-        ))
+        select_fields = ', '.join(
+            (
+                const.SOBJECT_FIELDS.RECORD_ID,
+                const.SOBJECT_FIELDS.HAS_READ_ACCESS,
+                const.SOBJECT_FIELDS.HAS_EDIT_ACCESS,
+                const.SOBJECT_FIELDS.HAS_DELETE_ACCESS,
+            )
+        )
         query = f"""
             SELECT {select_fields}
             FROM {const.SOBJECTS.USER_RECORD_ACCESS}
@@ -716,10 +763,10 @@ class Salesforce(object):
 
     @staticmethod
     def _eval_user_record_access(
-            _field: str,
-            _record_id: str,
-            _record_access_data: dict,
-            _raise_exc_on_failure: bool = True,
+        _field: str,
+        _record_id: str,
+        _record_access_data: dict,
+        _raise_exc_on_failure: bool = True,
     ) -> bool:
         """This private method checks for an access level given the field and the record access data.
 
@@ -754,12 +801,12 @@ class Salesforce(object):
         return _has_access
 
     def can_access_record(
-            self,
-            access_type: str,
-            record_id: str,
-            user_id: Optional[str] = None,
-            record_access_data: Optional[dict] = None,
-            raise_exc_on_failure: bool = True,
+        self,
+        access_type: str,
+        record_id: str,
+        user_id: Optional[str] = None,
+        record_access_data: Optional[dict] = None,
+        raise_exc_on_failure: bool = True,
     ) -> bool:
         """This method evaluates if a user can access a specific record given the access type.
 
@@ -798,7 +845,7 @@ class Salesforce(object):
 
             # Check to see if record access data was provided and validate that it is a dictionary
             if record_access_data and not isinstance(record_access_data, dict):
-                error_msg = f"The record_access_data provided is Type {type(read_access_field)} but must be a dict"
+                error_msg = f'The record_access_data provided is Type {type(read_access_field)} but must be a dict'
                 logger.error(error_msg)
                 if raise_exc_on_failure:
                     raise errors.exceptions.DataMismatchError(error_msg)
@@ -808,9 +855,12 @@ class Salesforce(object):
                 record_access_data = self.check_user_record_access(record_id=record_id, user_id=user_id)
 
             # Return the access level value
-            can_access = self._eval_user_record_access(_field=read_access_field, _record_id=record_id,
-                                                       _record_access_data=record_access_data,
-                                                       _raise_exc_on_failure=raise_exc_on_failure)
+            can_access = self._eval_user_record_access(
+                _field=read_access_field,
+                _record_id=record_id,
+                _record_access_data=record_access_data,
+                _raise_exc_on_failure=raise_exc_on_failure,
+            )
 
         # Emit a warning if the value is None rather than a boolean
         if can_access is None:
@@ -822,11 +872,11 @@ class Salesforce(object):
         return can_access
 
     def can_read_record(
-            self,
-            record_id: str,
-            user_id: Optional[str] = None,
-            record_access_data: Optional[dict] = None,
-            raise_exc_on_failure: bool = True,
+        self,
+        record_id: str,
+        user_id: Optional[str] = None,
+        record_access_data: Optional[dict] = None,
+        raise_exc_on_failure: bool = True,
     ) -> bool:
         """This method evaluates if a user has access to read a specific record.
 
@@ -843,16 +893,20 @@ class Salesforce(object):
         :returns: Boolean value indicating the access level for the given field
         :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
-        return self.can_access_record(access_type='read', record_id=record_id, user_id=user_id,
-                                      record_access_data=record_access_data,
-                                      raise_exc_on_failure=raise_exc_on_failure)
+        return self.can_access_record(
+            access_type='read',
+            record_id=record_id,
+            user_id=user_id,
+            record_access_data=record_access_data,
+            raise_exc_on_failure=raise_exc_on_failure,
+        )
 
     def can_edit_record(
-            self,
-            record_id: str,
-            user_id: Optional[str] = None,
-            record_access_data: Optional[dict] = None,
-            raise_exc_on_failure: bool = True,
+        self,
+        record_id: str,
+        user_id: Optional[str] = None,
+        record_access_data: Optional[dict] = None,
+        raise_exc_on_failure: bool = True,
     ) -> bool:
         """This method evaluates if a user has access to edit a specific record.
 
@@ -869,16 +923,20 @@ class Salesforce(object):
         :returns: Boolean value indicating the access level for the given field
         :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
-        return self.can_access_record(access_type='edit', record_id=record_id, user_id=user_id,
-                                      record_access_data=record_access_data,
-                                      raise_exc_on_failure=raise_exc_on_failure)
+        return self.can_access_record(
+            access_type='edit',
+            record_id=record_id,
+            user_id=user_id,
+            record_access_data=record_access_data,
+            raise_exc_on_failure=raise_exc_on_failure,
+        )
 
     def can_delete_record(
-            self,
-            record_id: str,
-            user_id: Optional[str] = None,
-            record_access_data: Optional[dict] = None,
-            raise_exc_on_failure: bool = True,
+        self,
+        record_id: str,
+        user_id: Optional[str] = None,
+        record_access_data: Optional[dict] = None,
+        raise_exc_on_failure: bool = True,
     ) -> bool:
         """This method evaluates if a user has access to delete a specific record.
 
@@ -895,9 +953,13 @@ class Salesforce(object):
         :returns: Boolean value indicating the access level for the given field
         :raises: :py:exc:`salespyforce.errors.exceptions.InvalidFieldError`
         """
-        return self.can_access_record(access_type='edit', record_id=record_id, user_id=user_id,
-                                      record_access_data=record_access_data,
-                                      raise_exc_on_failure=raise_exc_on_failure)
+        return self.can_access_record(
+            access_type='edit',
+            record_id=record_id,
+            user_id=user_id,
+            record_access_data=record_access_data,
+            raise_exc_on_failure=raise_exc_on_failure,
+        )
 
     def create_sobject_record(self, sobject: str, payload: dict):
         """This method creates a new record for a specific sObject.
@@ -950,12 +1012,12 @@ class Salesforce(object):
         return response
 
     def download_image(
-            self,
-            image_url: str,
-            record_id: str,
-            field_name: str,
-            file_path: Optional[str] = None,
-            sobject: Optional[str] = None,
+        self,
+        image_url: str,
+        record_id: str,
+        field_name: str,
+        file_path: Optional[str] = None,
+        sobject: Optional[str] = None,
     ) -> str:
         """This method downloads an image using the sObject Rich Text Image Retrieve functionality.
         (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`__,
@@ -1009,14 +1071,14 @@ class Salesforce(object):
                 raise RuntimeError(error_msg)
         except Exception as exc:
             exc_type = errors.handlers.get_exception_type(exc)
-            error_msg = (f'Failed to download the image with refid {ref_id} due to {exc_type} '
-                         f'exception: {exc}')
+            error_msg = f'Failed to download the image with refid {ref_id} due to {exc_type} exception: {exc}'
             logger.error(error_msg)
             raise RuntimeError(error_msg)
         return image_path
 
-    class Chatter(object):
+    class Chatter:
         """This class includes methods associated with Salesforce Chatter."""
+
         def __init__(self, sfdc_object: Salesforce):
             """This method initializes the :py:class:`salespyforce.core.Salesforce.Chatter` inner class object.
 
@@ -1063,12 +1125,12 @@ class Salesforce(object):
             return chatter_module.get_group_feed(self.sfdc_object, group_id=group_id, site_id=site_id)
 
         def post_feed_item(
-                self,
-                subject_id: str,
-                message_text: Optional[str] = None,
-                message_segments: Optional[list] = None,
-                site_id: Optional[str] = None,
-                created_by_id: Optional[str] = None,
+            self,
+            subject_id: str,
+            message_text: Optional[str] = None,
+            message_segments: Optional[list] = None,
+            site_id: Optional[str] = None,
+            created_by_id: Optional[str] = None,
         ):
             """This method publishes a new Chatter feed item.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`__)
@@ -1087,17 +1149,22 @@ class Salesforce(object):
             :raises: :py:exc:`RuntimeError`,
                      :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
-            return chatter_module.post_feed_item(self.sfdc_object, subject_id=subject_id, message_text=message_text,
-                                                 message_segments=message_segments, site_id=site_id,
-                                                 created_by_id=created_by_id)
+            return chatter_module.post_feed_item(
+                self.sfdc_object,
+                subject_id=subject_id,
+                message_text=message_text,
+                message_segments=message_segments,
+                site_id=site_id,
+                created_by_id=created_by_id,
+            )
 
         def post_comment(
-                self,
-                feed_element_id: str,
-                message_text: Optional[str] = None,
-                message_segments: Optional[list] = None,
-                site_id: Optional[str] = None,
-                created_by_id: Optional[str] = None,
+            self,
+            feed_element_id: str,
+            message_text: Optional[str] = None,
+            message_segments: Optional[list] = None,
+            site_id: Optional[str] = None,
+            created_by_id: Optional[str] = None,
         ):
             """This method publishes a comment on a Chatter feed item.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`__)
@@ -1116,12 +1183,18 @@ class Salesforce(object):
             :raises: :py:exc:`RuntimeError`,
                      :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
-            return chatter_module.post_comment(self.sfdc_object, feed_element_id=feed_element_id,
-                                               message_text=message_text, message_segments=message_segments,
-                                               site_id=site_id, created_by_id=created_by_id)
+            return chatter_module.post_comment(
+                self.sfdc_object,
+                feed_element_id=feed_element_id,
+                message_text=message_text,
+                message_segments=message_segments,
+                site_id=site_id,
+                created_by_id=created_by_id,
+            )
 
-    class Knowledge(object):
+    class Knowledge:
         """This class includes methods associated with Salesforce Knowledge."""
+
         def __init__(self, sfdc_object: Salesforce):
             """This method initializes the :py:class:`salespyforce.core.Salesforce.Knowledge` inner class object.
 
@@ -1131,12 +1204,12 @@ class Salesforce(object):
             self.sfdc_object = sfdc_object
 
         def check_for_existing_article(
-                self,
-                title: str,
-                sobject: Optional[str] = None,
-                return_id: bool = False,
-                return_id_and_number: bool = False,
-                include_archived: bool = False,
+            self,
+            title: str,
+            sobject: Optional[str] = None,
+            return_id: bool = False,
+            return_id_and_number: bool = False,
+            include_archived: bool = False,
         ):
             """This method checks to see if an article already exists with a given title and returns its article number.
             (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__.
@@ -1154,16 +1227,20 @@ class Salesforce(object):
             :type include_archived: bool
             :returns: The Article Number, Article ID, or both (if found), or a blank string if not found
             """
-            return knowledge_module.check_for_existing_article(self.sfdc_object, title=title,
-                                                               sobject=sobject, return_id=return_id,
-                                                               return_id_and_number=return_id_and_number,
-                                                               include_archived=include_archived)
+            return knowledge_module.check_for_existing_article(
+                self.sfdc_object,
+                title=title,
+                sobject=sobject,
+                return_id=return_id,
+                return_id_and_number=return_id_and_number,
+                include_archived=include_archived,
+            )
 
         def get_article_id_from_number(
-                self,
-                article_number: Union[str, int],
-                sobject: Optional[str] = None,
-                return_uri: bool = False,
+            self,
+            article_number: Union[str, int],
+            sobject: Optional[str] = None,
+            return_uri: bool = False,
         ) -> str:
             """This method returns the Article ID when an article number is provided.
             (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
@@ -1184,16 +1261,17 @@ class Salesforce(object):
                      :py:exc:`RuntimeError`
             """
             # TODO: Move return_uri functionality (here and in underlying function) to a separate method/function
-            return knowledge_module.get_article_id_from_number(self.sfdc_object, article_number=article_number,
-                                                               sobject=sobject, return_uri=return_uri)
+            return knowledge_module.get_article_id_from_number(
+                self.sfdc_object, article_number=article_number, sobject=sobject, return_uri=return_uri
+            )
 
         def get_articles_list(
-                self,
-                query: Optional[str] = None,
-                sort: Optional[str] = None,
-                order: Optional[str] = None,
-                page_size: int = const.QUERY_PARAMS.DEFAULT_PAGE_SIZE,
-                page_num: int = const.QUERY_PARAMS.DEFAULT_PAGE_NUM,
+            self,
+            query: Optional[str] = None,
+            sort: Optional[str] = None,
+            order: Optional[str] = None,
+            page_size: int = const.QUERY_PARAMS.DEFAULT_PAGE_SIZE,
+            page_num: int = const.QUERY_PARAMS.DEFAULT_PAGE_NUM,
         ) -> list:
             """This method retrieves a list of knowledge articles.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`__)
@@ -1213,14 +1291,15 @@ class Salesforce(object):
             :raises: :py:exc:`RuntimeError`
             """
             # TODO: Update to use constants for page_size and page_num
-            return knowledge_module.get_articles_list(self.sfdc_object, query=query, sort=sort, order=order,
-                                                      page_size=page_size, page_num=page_num)
+            return knowledge_module.get_articles_list(
+                self.sfdc_object, query=query, sort=sort, order=order, page_size=page_size, page_num=page_num
+            )
 
         def get_article_details(
-                self,
-                article_id: str,
-                sobject: Optional[str] = None,
-                use_knowledge_articles_endpoint: Optional[bool] = None,
+            self,
+            article_id: str,
+            sobject: Optional[str] = None,
+            use_knowledge_articles_endpoint: Optional[bool] = None,
         ):
             """This method retrieves details for a single knowledge article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
@@ -1241,15 +1320,19 @@ class Salesforce(object):
             :raises: :py:exc:`RuntimeError`,
                      :py:exc:`salespyforce.errors.exceptions.DataMismatchError`
             """
-            return knowledge_module.get_article_details(self.sfdc_object, article_id=article_id, sobject=sobject,
-                                                        use_knowledge_articles_endpoint=use_knowledge_articles_endpoint)
+            return knowledge_module.get_article_details(
+                self.sfdc_object,
+                article_id=article_id,
+                sobject=sobject,
+                use_knowledge_articles_endpoint=use_knowledge_articles_endpoint,
+            )
 
         def get_validation_status(
-                self,
-                article_id: Optional[str] = None,
-                article_details: Optional[dict] = None,
-                sobject: Optional[str] = None,
-                use_knowledge_articles_endpoint: Optional[bool] = None,
+            self,
+            article_id: Optional[str] = None,
+            article_details: Optional[dict] = None,
+            sobject: Optional[str] = None,
+            use_knowledge_articles_endpoint: Optional[bool] = None,
         ) -> str:
             """This method retrieves the Validation Status for a given Article ID.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
@@ -1276,9 +1359,13 @@ class Salesforce(object):
             :raises: :py:exc:`RuntimeError`,
                      :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
-            return knowledge_module.get_validation_status(self.sfdc_object, article_id=article_id,
-                                                          article_details=article_details, sobject=sobject,
-                                                          use_knowledge_articles_endpoint=use_knowledge_articles_endpoint)
+            return knowledge_module.get_validation_status(
+                self.sfdc_object,
+                article_id=article_id,
+                article_details=article_details,
+                sobject=sobject,
+                use_knowledge_articles_endpoint=use_knowledge_articles_endpoint,
+            )
 
         def get_article_metadata(self, article_id: str) -> dict:
             """This method retrieves metadata for a specific knowledge article.
@@ -1304,10 +1391,10 @@ class Salesforce(object):
             return knowledge_module.get_article_version(self.sfdc_object, article_id=article_id)
 
         def get_article_url(
-                self,
-                article_id: Optional[str] = None,
-                article_number: Optional[Union[str, int]] = None,
-                sobject: Optional[str] = None,
+            self,
+            article_id: Optional[str] = None,
+            article_number: Optional[Union[str, int]] = None,
+            sobject: Optional[str] = None,
         ) -> str:
             """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
@@ -1321,14 +1408,15 @@ class Salesforce(object):
             :raises: :py:exc:`RuntimeError`,
                      :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
-            return knowledge_module.get_article_url(self.sfdc_object, article_id=article_id,
-                                                    article_number=article_number, sobject=sobject)
+            return knowledge_module.get_article_url(
+                self.sfdc_object, article_id=article_id, article_number=article_number, sobject=sobject
+            )
 
         def create_article(
-                self,
-                article_data: dict,
-                sobject: Optional[str] = None,
-                full_response: bool = False,
+            self,
+            article_data: dict,
+            sobject: Optional[str] = None,
+            full_response: bool = False,
         ):
             """This method creates a new knowledge article draft.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`__)
@@ -1337,22 +1425,24 @@ class Salesforce(object):
             :type article_data: dict
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
-            :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
+            :param full_response: Determines if the full API response should be returned instead of the article ID
+                                  (``False`` by default)
             :type full_response: bool
             :returns: The API response or the ID of the article draft
             :raises: :py:exc:`ValueError`,
                      :py:exc:`TypeError`,
                      :py:exc:`RuntimeError`
             """
-            return knowledge_module.create_article(self.sfdc_object, article_data=article_data, sobject=sobject,
-                                                   full_response=full_response)
+            return knowledge_module.create_article(
+                self.sfdc_object, article_data=article_data, sobject=sobject, full_response=full_response
+            )
 
         def update_article(
-                self,
-                record_id: str,
-                article_data: dict,
-                sobject: Optional[str] = None,
-                include_status_code: bool = False,
+            self,
+            record_id: str,
+            article_data: dict,
+            sobject: Optional[str] = None,
+            include_status_code: bool = False,
         ):
             """This method updates an existing knowledge article draft.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`__)
@@ -1370,8 +1460,13 @@ class Salesforce(object):
                      :py:exc:`TypeError`,
                      :py:exc:`RuntimeError`
             """
-            return knowledge_module.update_article(self.sfdc_object, record_id=record_id, article_data=article_data,
-                                                   sobject=sobject, include_status_code=include_status_code)
+            return knowledge_module.update_article(
+                self.sfdc_object,
+                record_id=record_id,
+                article_data=article_data,
+                sobject=sobject,
+                include_status_code=include_status_code,
+            )
 
         def create_draft_from_online_article(self, article_id: str, unpublish: bool = False):
             """This method creates a draft knowledge article from an online article.
@@ -1385,16 +1480,15 @@ class Salesforce(object):
             :returns: The API response from the POST request
             :raises: :py:exc:`RuntimeError`
             """
-            return knowledge_module.create_draft_from_online_article(self.sfdc_object, article_id=article_id,
-                                                                     unpublish=unpublish)
+            return knowledge_module.create_draft_from_online_article(self.sfdc_object, article_id=article_id, unpublish=unpublish)
 
         def create_draft_from_master_version(
-                self,
-                article_id: Optional[str] = None,
-                knowledge_article_id: Optional[str] = None,
-                article_data: Optional[dict] = None,
-                sobject: Optional[str] = None,
-                full_response: bool = False,
+            self,
+            article_id: Optional[str] = None,
+            knowledge_article_id: Optional[str] = None,
+            article_data: Optional[dict] = None,
+            sobject: Optional[str] = None,
+            full_response: bool = False,
         ):
             """This method creates an online version of a master article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`__)
@@ -1411,15 +1505,20 @@ class Salesforce(object):
             :type article_data: dict, None
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
             :type sobject: str, None
-            :param full_response: Determines if the full API response should be returned instead of the article ID (``False`` by default)
+            :param full_response: Determines if the full API response should be returned instead of the article ID
+                                  (``False`` by default)
             :type full_response: bool
             :returns: The API response or the ID of the article draft
             :raises: :py:exc:`RuntimeError`
             """
-            return knowledge_module.create_draft_from_master_version(self.sfdc_object, article_id=article_id,
-                                                                     knowledge_article_id=knowledge_article_id,
-                                                                     article_data=article_data, sobject=sobject,
-                                                                     full_response=full_response)
+            return knowledge_module.create_draft_from_master_version(
+                self.sfdc_object,
+                article_id=article_id,
+                knowledge_article_id=knowledge_article_id,
+                article_data=article_data,
+                sobject=sobject,
+                full_response=full_response,
+            )
 
         def publish_article(self, article_id: str, major_version: bool = True, full_response: bool = False):
             """This method publishes a draft knowledge article as a major or minor version.
@@ -1434,8 +1533,9 @@ class Salesforce(object):
             :returns: A Boolean value indicating the success of the action or the API response from the PATCH request
             :raises: :py:exc:`RuntimeError`
             """
-            return knowledge_module.publish_article(self.sfdc_object, article_id=article_id,
-                                                    major_version=major_version, full_response=full_response)
+            return knowledge_module.publish_article(
+                self.sfdc_object, article_id=article_id, major_version=major_version, full_response=full_response
+            )
 
         def publish_multiple_articles(self, article_id_list: list, major_version: bool = True):
             """This method publishes multiple knowledge article drafts at one time.
@@ -1453,8 +1553,9 @@ class Salesforce(object):
             :raises: :py:exc:`RuntimeError`,
                      :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
             """
-            return knowledge_module.publish_multiple_articles(self.sfdc_object, article_id_list=article_id_list,
-                                                              major_version=major_version)
+            return knowledge_module.publish_multiple_articles(
+                self.sfdc_object, article_id_list=article_id_list, major_version=major_version
+            )
 
         def assign_data_category(self, article_id: str, category_group_name: str, category_name: str):
             """This method assigns a single data category for a knowledge article.
@@ -1471,9 +1572,9 @@ class Salesforce(object):
             :returns: The API response from the POST request
             :raises: :py:exc:`RuntimeError`
             """
-            return knowledge_module.assign_data_category(self.sfdc_object, article_id=article_id,
-                                                         category_group_name=category_group_name,
-                                                         category_name=category_name)
+            return knowledge_module.assign_data_category(
+                self.sfdc_object, article_id=article_id, category_group_name=category_group_name, category_name=category_name
+            )
 
         def archive_article(self, article_id: str):
             """This function archives a published knowledge article.
@@ -1489,10 +1590,10 @@ class Salesforce(object):
             return knowledge_module.archive_article(self.sfdc_object, article_id=article_id)
 
         def delete_article_draft(
-                self,
-                version_id: str,
-                sobject: Optional[str] = None,
-                use_knowledge_management_endpoint: bool = True,
+            self,
+            version_id: str,
+            sobject: Optional[str] = None,
+            use_knowledge_management_endpoint: bool = True,
         ):
             """This function deletes an unpublished knowledge article draft.
 
@@ -1512,8 +1613,12 @@ class Salesforce(object):
             :returns: The API response from the DELETE request
             :raises: :py:exc:`RuntimeError`
             """
-            return knowledge_module.delete_article_draft(self.sfdc_object, version_id=version_id, sobject=sobject,
-                                                         use_knowledge_management_endpoint=use_knowledge_management_endpoint)
+            return knowledge_module.delete_article_draft(
+                self.sfdc_object,
+                version_id=version_id,
+                sobject=sobject,
+                use_knowledge_management_endpoint=use_knowledge_management_endpoint,
+            )
 
 
 def define_connection_info() -> dict:
@@ -1529,20 +1634,21 @@ def define_connection_info() -> dict:
     client_id = input('Enter the Client ID: [] ')
     client_secret = input('Enter the Client Secret: [] ')
     security_token = input('Enter the Security Token: [] ')
-    connection_info = compile_connection_info(base_url, org_id, username, password, endpoint_url,
-                                              client_id, client_secret, security_token)
+    connection_info = compile_connection_info(
+        base_url, org_id, username, password, endpoint_url, client_id, client_secret, security_token
+    )
     return connection_info
 
 
 def compile_connection_info(
-        base_url: str,
-        org_id: str,
-        username: str,
-        password: str,
-        endpoint_url: str,
-        client_id: str,
-        client_secret: str,
-        security_token: str,
+    base_url: str,
+    org_id: str,
+    username: str,
+    password: str,
+    endpoint_url: str,
+    client_id: str,
+    client_secret: str,
+    security_token: str,
 ) -> dict:
     """This function compiles the connection info into a dictionary that can be consumed by the core object.
 

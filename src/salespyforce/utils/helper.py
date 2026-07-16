@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce.utils import helper``
 :Example:           ``helper_settings = helper.get_settings('/tmp/helper.yml', 'yaml')``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     25 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
 from __future__ import annotations
@@ -16,10 +16,10 @@ from typing import Optional
 
 import yaml
 
+from .. import constants as const
+from .. import errors
 from . import log_utils
 from .core_utils import get_file_type
-from .. import errors
-from .. import constants as const
 
 # Initialize logging within the module
 logger = log_utils.initialize_logging(__name__)
@@ -39,7 +39,7 @@ def import_helper_file(file_path: str, file_type: str) -> dict:
     :raises: :py:exc:`FileNotFoundError`,
              :py:exc:`salespyforce.errors.exceptions.InvalidHelperFileTypeError`
     """
-    with open(file_path, 'r') as cfg_file:
+    with open(file_path) as cfg_file:
         if file_type.replace('.', '') in (const.FILE_EXTENSIONS.YML, const.FILE_EXTENSIONS.YAML):
             helper_cfg = yaml.safe_load(cfg_file)
         elif file_type.replace('.', '') == const.FILE_EXTENSIONS.JSON:
@@ -69,8 +69,9 @@ def _get_connection_info(_helper_cfg: dict) -> dict[str, str]:
     return _connection_info
 
 
-def _collect_values(_top_level_keys, _helper_cfg: dict, _helper_dict: Optional[dict] = None,
-                    _ignore_missing: bool = False) -> dict:
+def _collect_values(
+    _top_level_keys, _helper_cfg: dict, _helper_dict: Optional[dict] = None, _ignore_missing: bool = False
+) -> dict:
     """This function loops through a list of top-level keys to collect their corresponding values.
 
     :param _top_level_keys: One or more top-level keys that might be found in the helper config file
@@ -84,7 +85,7 @@ def _collect_values(_top_level_keys, _helper_cfg: dict, _helper_dict: Optional[d
     :returns: A dictionary with the identified key value pairs
     """
     _helper_dict = {} if not _helper_dict else _helper_dict
-    _top_level_keys = (_top_level_keys, ) if isinstance(_top_level_keys, str) else _top_level_keys
+    _top_level_keys = (_top_level_keys,) if isinstance(_top_level_keys, str) else _top_level_keys
     for _key in _top_level_keys:
         if _key in _helper_cfg:
             _key_val = _helper_cfg[_key]
@@ -100,8 +101,9 @@ def _collect_values(_top_level_keys, _helper_cfg: dict, _helper_dict: Optional[d
     return _helper_dict
 
 
-def get_helper_settings(file_path: str, file_type: str = const.FILE_EXTENSIONS.YAML,
-                        defined_settings: Optional[dict] = None) -> dict:
+def get_helper_settings(
+    file_path: str, file_type: str = const.FILE_EXTENSIONS.YAML, defined_settings: Optional[dict] = None
+) -> dict:
     """This function returns a dictionary of the defined helper settings.
 
     .. versionchanged:: 1.5.0

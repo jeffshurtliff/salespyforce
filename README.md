@@ -111,6 +111,23 @@ poetry install
 poetry run pytest -q
 ```
 
+### Development Quality Checks
+
+This repository uses [Ruff](https://docs.astral.sh/ruff/) for linting, import sorting, and formatting.
+The standard maximum line length for this package is `130` characters.
+
+Line-length exceptions should be rare and limited to comments or special cases where wrapping harms readability.
+When an exception is required, use a targeted per-line `# noqa: E501` comment.
+
+```sh
+poetry run ruff check .
+poetry run ruff check . --fix
+poetry run ruff format .
+poetry run ruff format --check .
+```
+
+These checks are enforced in CI via `.github/workflows/ci.yml`.
+
 ## Changelog
 The changelog can be found in the [documentation](https://salespyforce.readthedocs.io) for the 
 [stable](https://salespyforce.readthedocs.io/en/stable/changelog.html) and 

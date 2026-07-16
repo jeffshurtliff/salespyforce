@@ -5,8 +5,8 @@
 :Usage:             Leveraged by pytest in test modules
 :Example:           ``soql_response = salesforce_unit.soql_query(soql_statement)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.3-Codex)
-:Modified Date:     02 Mar 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 
 Pytest fixtures for ``tests``.
 
@@ -39,12 +39,13 @@ import requests
 from salespyforce.core import Salesforce
 
 # Define constants
-HELPER_FILE_NAME = "helper_dm_conn.yml"
+HELPER_FILE_NAME = 'helper_dm_conn.yml'
 
 
 # -----------------------------
 # Pytest configuration hooks
 # -----------------------------
+
 
 def pytest_addoption(parser: pytest.Parser) -> None:
     """This function registers custom CLI options.
@@ -56,10 +57,10 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     network or credential dependencies.
     """
     parser.addoption(
-        "--integration",
-        action="store_true",
+        '--integration',
+        action='store_true',
         default=False,
-        help="run tests that require a Salesforce helper file",
+        help='run tests that require a Salesforce helper file',
     )
 
 
@@ -69,26 +70,22 @@ def pytest_configure(config: pytest.Config) -> None:
     .. versionadded:: 1.4.0
     """
     config.addinivalue_line(
-        "markers",
-        "integration: marks tests that require a real Salesforce org",
+        'markers',
+        'integration: marks tests that require a real Salesforce org',
     )
 
 
-def pytest_collection_modifyitems(
-    config: pytest.Config, items: list[pytest.Item]
-) -> None:
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
     """This function skips integration tests when ``--integration`` is not provided.
 
     .. versionadded:: 1.4.0
     """
-    if config.getoption("--integration"):
+    if config.getoption('--integration'):
         return
 
-    skip_integration = pytest.mark.skip(
-        reason="requires --integration to run against a Salesforce org"
-    )
+    skip_integration = pytest.mark.skip(reason='requires --integration to run against a Salesforce org')
     for item in items:
-        if "integration" in item.keywords:
+        if 'integration' in item.keywords:
             item.add_marker(skip_integration)
 
 
@@ -96,14 +93,15 @@ def pytest_collection_modifyitems(
 # Helper utilities
 # -----------------------------
 
+
 def _find_helper_file() -> Path | None:
     """This function locates a helper file in common locations used by this project.
 
     .. versionadded:: 1.4.0
     """
     helper_locations = [
-        Path(os.environ.get("HOME", "")) / "secrets" / HELPER_FILE_NAME,
-        Path("local") / HELPER_FILE_NAME,
+        Path(os.environ.get('HOME', '')) / 'secrets' / HELPER_FILE_NAME,
+        Path('local') / HELPER_FILE_NAME,
     ]
     for helper_path in helper_locations:
         if helper_path.is_file():
@@ -115,7 +113,8 @@ def _find_helper_file() -> Path | None:
 # Fixtures
 # -----------------------------
 
-@pytest.fixture(scope="session")
+
+@pytest.fixture(scope='session')
 def integration_helper_file() -> Path:
     """This fixture returns the helper file path or skips the test if none is available.
 
@@ -127,11 +126,11 @@ def integration_helper_file() -> Path:
     """
     helper_path = _find_helper_file()
     if helper_path is None:
-        pytest.skip("No Salesforce helper file found for integration tests")
+        pytest.skip('No Salesforce helper file found for integration tests')
     return helper_path
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def salesforce_integration(integration_helper_file: Path) -> Iterator[Salesforce]:
     """This fixture instantiates the real Salesforce client for integration tests.
 
@@ -145,7 +144,7 @@ def salesforce_integration(integration_helper_file: Path) -> Iterator[Salesforce
     try:
         client = Salesforce(helper=str(integration_helper_file))
     except requests.exceptions.RequestException as error:
-        pytest.skip(f"Unable to establish integration connection: {error}")
+        pytest.skip(f'Unable to establish integration connection: {error}')
     yield client
 
 
@@ -162,24 +161,20 @@ def salesforce_unit(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
     """
     # Minimal data used across tests
     sample_urls = {
-        "base_url": "https://example.force.com",
-        "rest_resources": {"metadata": "available"},
-        "org_limits": {"DailyApiRequests": {"Remaining": 15000}},
-        "sobjects": {"sobjects": []},
-        "account": {
-            "objectDescribe": {},
-            "activateable": False,
+        'base_url': 'https://example.force.com',
+        'rest_resources': {'metadata': 'available'},
+        'org_limits': {'DailyApiRequests': {'Remaining': 15000}},
+        'sobjects': {'sobjects': []},
+        'account': {
+            'objectDescribe': {},
+            'activateable': False,
         },
-        "soql_result": {
-            "done": True,
-            "totalSize": 1,
-            "records": [{"Id": "001XX000003NGqqYAG"}],
+        'soql_result': {
+            'done': True,
+            'totalSize': 1,
+            'records': [{'Id': '001XX000003NGqqYAG'}],
         },
-        "sosl_result": {
-            "searchRecords": [
-                {"attributes": {"type": "Account"}, "Id": "001XX000003NGqqYAG"}
-            ]
-        },
+        'sosl_result': {'searchRecords': [{'attributes': {'type': 'Account'}, 'Id': '001XX000003NGqqYAG'}]},
     }
 
     def _create_response(**overrides):
@@ -187,22 +182,20 @@ def salesforce_unit(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
 
         .. versionadded:: 1.4.0
         """
-        response = {"id": "001D000000IqhSLIAZ", "success": True, "errors": []}
+        response = {'id': '001D000000IqhSLIAZ', 'success': True, 'errors': []}
         response.update(overrides)
         return response
 
     stub = SimpleNamespace()
-    stub.base_url = sample_urls["base_url"]
-    stub.get_api_versions = lambda: [{"version": "v65.0"}]
-    stub.get_rest_resources = lambda: sample_urls["rest_resources"]
-    stub.get_org_limits = lambda: sample_urls["org_limits"]
-    stub.get_all_sobjects = lambda: sample_urls["sobjects"]
-    stub.get_sobject = lambda *_args, **_kwargs: sample_urls["account"]
-    stub.describe_object = lambda *_args, **_kwargs: sample_urls["account"]
-    stub.create_sobject_record = (
-        lambda *_args, **_kwargs: _create_response()
-    )
-    stub.soql_query = lambda *_args, **_kwargs: sample_urls["soql_result"]
-    stub.search_string = lambda *_args, **_kwargs: sample_urls["sosl_result"]
+    stub.base_url = sample_urls['base_url']
+    stub.get_api_versions = lambda: [{'version': 'v65.0'}]
+    stub.get_rest_resources = lambda: sample_urls['rest_resources']
+    stub.get_org_limits = lambda: sample_urls['org_limits']
+    stub.get_all_sobjects = lambda: sample_urls['sobjects']
+    stub.get_sobject = lambda *_args, **_kwargs: sample_urls['account']
+    stub.describe_object = lambda *_args, **_kwargs: sample_urls['account']
+    stub.create_sobject_record = lambda *_args, **_kwargs: _create_response()
+    stub.soql_query = lambda *_args, **_kwargs: sample_urls['soql_result']
+    stub.search_string = lambda *_args, **_kwargs: sample_urls['sosl_result']
 
     return stub

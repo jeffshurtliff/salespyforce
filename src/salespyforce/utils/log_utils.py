@@ -5,14 +5,14 @@
 :Usage:             ``from salespyforce.utils import log_utils``
 :Example:           ``logger = log_utils.initialize_logging(__name__)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     31 Dec 2025
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
-import os
-import sys
 import logging
 import logging.handlers
+import os
+import sys
 from pathlib import Path
 
 LOGGING_DEFAULTS = {
@@ -30,20 +30,46 @@ HANDLER_DEFAULTS = {
 }
 
 
-def initialize_logging(logger_name=None, log_level=None, formatter=None, debug=None, no_output=None, file_output=None,
-                       file_log_level=None, log_file=None, overwrite_log_files=None, console_output=None,
-                       console_log_level=None, syslog_output=None, syslog_log_level=None, syslog_address=None,
-                       syslog_port=None):
+def initialize_logging(
+    logger_name=None,
+    log_level=None,
+    formatter=None,
+    debug=None,
+    no_output=None,
+    file_output=None,
+    file_log_level=None,
+    log_file=None,
+    overwrite_log_files=None,
+    console_output=None,
+    console_log_level=None,
+    syslog_output=None,
+    syslog_log_level=None,
+    syslog_address=None,
+    syslog_port=None,
+):
     """This function initializes logging for the salespyforce library."""
     # TODO: Complete the docstring above with parameters
-    logger_name, log_levels, formatter = _apply_defaults(logger_name, formatter, debug, log_level, file_log_level,
-                                                         console_log_level, syslog_log_level)
+    logger_name, log_levels, formatter = _apply_defaults(
+        logger_name, formatter, debug, log_level, file_log_level, console_log_level, syslog_log_level
+    )
     log_level, file_log_level, console_log_level, syslog_log_level = _get_log_levels_from_dict(log_levels)
     logger = logging.getLogger(logger_name)
     logger = _set_logging_level(logger, log_level)
-    logger = _add_handlers(logger, formatter, no_output, file_output, file_log_level, log_file, overwrite_log_files,
-                           console_output, console_log_level, syslog_output, syslog_log_level, syslog_address,
-                           syslog_port)
+    logger = _add_handlers(
+        logger,
+        formatter,
+        no_output,
+        file_output,
+        file_log_level,
+        log_file,
+        overwrite_log_files,
+        console_output,
+        console_log_level,
+        syslog_output,
+        syslog_log_level,
+        syslog_address,
+        syslog_port,
+    )
     return logger
 
 
@@ -53,9 +79,10 @@ class LessThanFilter(logging.Filter):
     .. seealso:: `Zoey Greer <https://stackoverflow.com/users/5124424/zoey-greer>`_ is the original author of
                  this class which was provided on `Stack Overflow <https://stackoverflow.com/a/31459386>`_.
     """
-    def __init__(self, exclusive_maximum, name=""):
+
+    def __init__(self, exclusive_maximum, name=''):
         """This method instantiates the :py:class:`salespyforce.utils.log_utils.LessThanFilter` class object."""
-        super(LessThanFilter, self).__init__(name)
+        super().__init__(name)
         self.max_level = exclusive_maximum
 
     def filter(self, record):
@@ -139,9 +166,21 @@ def _set_logging_level(_logger, _log_level):
     return _logger
 
 
-def _add_handlers(_logger, _formatter, _no_output, _file_output, _file_log_level, _log_file, _overwrite_log_files,
-                  _console_output, _console_log_level, _syslog_output, _syslog_log_level, _syslog_address,
-                  _syslog_port):
+def _add_handlers(
+    _logger,
+    _formatter,
+    _no_output,
+    _file_output,
+    _file_log_level,
+    _log_file,
+    _overwrite_log_files,
+    _console_output,
+    _console_log_level,
+    _syslog_output,
+    _syslog_log_level,
+    _syslog_address,
+    _syslog_port,
+):
     # TODO: Add docstring
     if _no_output or not any((_file_output, _console_output, _syslog_output)):
         _logger.addHandler(logging.NullHandler())

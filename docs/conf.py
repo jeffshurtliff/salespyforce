@@ -17,11 +17,11 @@ from __future__ import annotations
 
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../src'))
 
 import src.salespyforce.utils.version
-
 
 # -- Project information -----------------------------------------------------
 
@@ -128,7 +128,6 @@ html_theme_options = {
         'alt_text': 'SalesPyForce',
     },
     # 'github_url': 'https://github.com/jeffshurtliff/salespyforce',
-
     # Right side of the top navbar
     'navbar_end': ['theme-switcher', 'navbar-icon-links'],
     'icon_links': [
@@ -138,7 +137,6 @@ html_theme_options = {
             'icon': 'fa-brands fa-github',
         }
     ],
-
     # Reasonable code highlighting defaults
     'pygments_light_style': 'tango',
     'pygments_dark_style': 'monokai',
@@ -166,9 +164,7 @@ html_static_path = ['_static']
 autosectionlabel_prefix_document = True
 
 # Suppress 'duplicate label' warnings from the autosection feature
-suppress_warnings = [
-    'autosectionlabel.CHANGELOG'
-]
+suppress_warnings = ['autosectionlabel.CHANGELOG']
 
 
 # -- Options for sphinx-favicon ----------------------------------------------
@@ -192,15 +188,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -210,8 +203,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'salespyforce.tex', SALESPYFORCE_DOC_TITLE,
-     'Jeff Shurtliff', 'manual'),
+    (master_doc, 'salespyforce.tex', SALESPYFORCE_DOC_TITLE, 'Jeff Shurtliff', 'manual'),
 ]
 
 
@@ -219,10 +211,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'salespyforce', SALESPYFORCE_DOC_TITLE,
-     [author], 1)
-]
+man_pages = [(master_doc, 'salespyforce', SALESPYFORCE_DOC_TITLE, [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -231,9 +220,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'salespyforce', SALESPYFORCE_DOC_TITLE,
-     author, 'salespyforce', 'A Python toolset for performing Salesforce API calls',
-     'Miscellaneous'),
+    (
+        master_doc,
+        'salespyforce',
+        SALESPYFORCE_DOC_TITLE,
+        author,
+        'salespyforce',
+        'A Python toolset for performing Salesforce API calls',
+        'Miscellaneous',
+    ),
 ]
 
 

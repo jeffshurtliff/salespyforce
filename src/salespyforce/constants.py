@@ -3,21 +3,20 @@
 :Module:            salespyforce.constants
 :Synopsis:          Constants that are utilized throughout the package
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     01 Mar 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Final, ClassVar, Mapping, Union
-
+from typing import ClassVar, Final, Mapping, Union
 
 # -----------------------------
 # Versioning / Meta
 # -----------------------------
-FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'      # Used if querying the org for the version fails
+FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'  # Used if querying the org for the version fails
 
 
 # --------------------------------------
@@ -25,12 +24,14 @@ FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'      # Used if querying the org f
 # --------------------------------------
 SALESFORCE_ID_SUFFIX_ALPHABET: Final[str] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'
 VALID_SALESFORCE_URL_PATTERN: Final[str] = r'^https://[a-zA-Z0-9._-]+\.salesforce\.com(/|$)'
-YAML_BOOLEAN_MAPPING: Final[Mapping[Union[str, bool], bool]] = MappingProxyType({
-    True: True,
-    False: False,
-    'yes': True,
-    'no': False,
-})
+YAML_BOOLEAN_MAPPING: Final[Mapping[Union[str, bool], bool]] = MappingProxyType(
+    {
+        True: True,
+        False: False,
+        'yes': True,
+        'no': False,
+    }
+)
 
 
 # -----------------------------
@@ -48,6 +49,7 @@ class ExceptionClasses:
 
     .. versionadded:: 1.5.0
     """
+
     # Keyword arguments
     _DATA: str = 'data'
     _FEATURE: str = 'feature'
@@ -80,6 +82,7 @@ class FileExtensions:
 
     .. versionadded:: 1.5.0
     """
+
     # Without delimiter
     JPEG: str = 'jpeg'
     JSON: str = 'json'
@@ -103,6 +106,7 @@ class ClientSettings:
 
     .. versionadded:: 1.5.0
     """
+
     # Connection fields / keys
     BASE_URL: ClassVar[str] = 'base_url'
     ENDPOINT_URL: ClassVar[str] = 'endpoint_url'
@@ -117,11 +121,19 @@ class ClientSettings:
     SIGNATURE: ClassVar[str] = 'signature'
     USERNAME: ClassVar[str] = 'username'
     PASSWORD: ClassVar[str] = 'password'
-    CONNECTION_INFO_FIELDS: ClassVar[frozenset[str]] = frozenset({
-        USERNAME, PASSWORD, BASE_URL, ENDPOINT_URL,
-        CLIENT_KEY, CLIENT_SECRET, ORG_ID, SECURITY_TOKEN,
-    })
-    
+    CONNECTION_INFO_FIELDS: ClassVar[frozenset[str]] = frozenset(
+        {
+            USERNAME,
+            PASSWORD,
+            BASE_URL,
+            ENDPOINT_URL,
+            CLIENT_KEY,
+            CLIENT_SECRET,
+            ORG_ID,
+            SECURITY_TOKEN,
+        }
+    )
+
     # User info fields / keys
     EMAIL: ClassVar[str] = 'email'
     IS_INTEGRATION_USER: ClassVar[str] = 'is_salesforce_integration_user'
@@ -132,9 +144,11 @@ class ClientSettings:
     USER_ID: ClassVar[str] = 'user_id'
     USER_TYPE: ClassVar[str] = 'user_type'
     UTC_OFFSET: ClassVar[str] = 'utcOffset'
-    USER_INFO_BOOL_FIELDS: Final[frozenset[str]] = frozenset({
-        IS_INTEGRATION_USER,
-    })
+    USER_INFO_BOOL_FIELDS: Final[frozenset[str]] = frozenset(
+        {
+            IS_INTEGRATION_USER,
+        }
+    )
 
 
 # -------------------------------
@@ -147,6 +161,7 @@ class HelperSettings:
 
     .. versionadded:: 1.5.0
     """
+
     # Validation criteria
     VALID_HELPER_FILE_TYPES: ClassVar[frozenset[str]] = frozenset({'json', 'yml', 'yaml'})
 
@@ -160,10 +175,18 @@ class HelperSettings:
     CLIENT_KEY: ClassVar[str] = 'client_key'
     CLIENT_SECRET: ClassVar[str] = 'client_secret'
     SECURITY_TOKEN: ClassVar[str] = 'security_token'
-    CONNECTION_KEYS: ClassVar[frozenset[str]] = frozenset({
-        USERNAME, PASSWORD, BASE_URL, ENDPOINT_URL,
-        CLIENT_KEY, CLIENT_SECRET, ORG_ID, SECURITY_TOKEN,
-    })
+    CONNECTION_KEYS: ClassVar[frozenset[str]] = frozenset(
+        {
+            USERNAME,
+            PASSWORD,
+            BASE_URL,
+            ENDPOINT_URL,
+            CLIENT_KEY,
+            CLIENT_SECRET,
+            ORG_ID,
+            SECURITY_TOKEN,
+        }
+    )
 
     # Other configuration fields
     SSL_VERIFY: str = 'ssl_verify'
@@ -176,10 +199,12 @@ DEFAULT_API_TIMEOUT_SECONDS: Final[int] = 30
 DEFAULT_API_MAX_RETRIES: Final[int] = 3
 HEADER_TYPE_DEFAULT: Final[str] = 'default'
 HEADER_TYPE_ARTICLES: Final[str] = 'articles'
-VALID_HEADER_TYPES: Final[frozenset[str]] = frozenset({
-    HEADER_TYPE_DEFAULT,
-    HEADER_TYPE_ARTICLES,
-})
+VALID_HEADER_TYPES: Final[frozenset[str]] = frozenset(
+    {
+        HEADER_TYPE_DEFAULT,
+        HEADER_TYPE_ARTICLES,
+    }
+)
 
 
 # -----------------------------
@@ -191,6 +216,7 @@ class ApiRequestTypes:
 
     .. versionadded:: 1.5.0
     """
+
     GET: ClassVar[str] = 'GET'
     PATCH: ClassVar[str] = 'PATCH'
     POST: ClassVar[str] = 'POST'
@@ -212,6 +238,7 @@ class Headers:
     typographical errors. These values are intended for constructing
     outbound HTTP requests to the Salesforce REST API.
     """
+
     AUTHORIZATION: ClassVar[str] = 'Authorization'
     CONTENT_TYPE: ClassVar[str] = 'Content-Type'
     ACCEPT: ClassVar[str] = 'Accept'
@@ -229,6 +256,7 @@ class AuthSchemes:
 
     .. versionadded:: 1.5.0
     """
+
     BEARER: ClassVar[str] = 'Bearer {token}'
 
 
@@ -244,6 +272,7 @@ class ContentTypes:
     This immutable namespace provides canonical MIME types used when
     sending or receiving data from the Salesforce REST API.
     """
+
     JSON: ClassVar[str] = 'application/json'
 
 
@@ -257,6 +286,7 @@ class EncodingTypes:
 
     .. versionadded:: 1.5.0
     """
+
     GZIP: ClassVar[str] = 'gzip'
     COMPRESS: ClassVar[str] = 'compress'
     DEFLATE: ClassVar[str] = 'deflate'
@@ -282,6 +312,7 @@ class Languages:
     Additional valid IETF language tags may be supplied manually
     when constructing request headers.
     """
+
     EN_US: ClassVar[str] = 'en-US'
     EN_GB: ClassVar[str] = 'en-GB'
     FR_FR: ClassVar[str] = 'fr-FR'
@@ -305,11 +336,16 @@ class Urls:
 
     .. versionadded:: 1.5.0
     """
+
     # Common URLs
-    LIGHTNING_RECORD_PAGE: ClassVar[str] = '{base_url}/lightning/r/{sobject}/{record_id}/view'                             # Vars: base_url, sobject, record_id
+    LIGHTNING_RECORD_PAGE: ClassVar[str] = (
+        '{base_url}/lightning/r/{sobject}/{record_id}/view'  # Vars: base_url, sobject, record_id
+    )
 
     # Knowledge URLs
-    CLASSIC_ARTICLE_DRAFT: ClassVar[str] = '{base_url}/knowledge/publishing/articleDraftDetail.apexp?id={article_id}'     # Vars: base_url, article_id
+    CLASSIC_ARTICLE_DRAFT: ClassVar[str] = (
+        '{base_url}/knowledge/publishing/articleDraftDetail.apexp?id={article_id}'  # Vars: base_url, article_id
+    )
 
 
 # -------------------------------
@@ -326,47 +362,54 @@ class RestPaths:
     codebase. The templates are designed to be formatted with runtime
     values such as ``api_version``, ``sobject``, and ``record_id``.
     """
+
     # General REST paths
     SERVICES_DATA: ClassVar[str] = '/services/data'
-    SERVICES_DATA_API: ClassVar[str] = SERVICES_DATA + '/{api_version}'                                     # Vars: api_version
-    SERVICES_DATA_API_SITE = SERVICES_DATA_API + '{site_segment}'                                           # Vars: api_version, site_segment
-    LIMITS: ClassVar[str] = SERVICES_DATA_API + '/limits'                                                   # Vars: api_version
-    QUERY: ClassVar[str] = SERVICES_DATA_API + '/query'                                                     # Vars: api_version
-    SEARCH: ClassVar[str] = SERVICES_DATA_API + '/search'                                                   # Vars: api_version
-    SOBJECTS: ClassVar[str] = SERVICES_DATA_API + '/sobjects'                                               # Vars: api_version
-    SOBJECT: ClassVar[str] = SOBJECTS + '/{sobject}'                                                        # Vars: api_version, sobject
-    SOBJECT_DESCRIBE: ClassVar[str] = SOBJECT + '/describe'                                                 # Vars: api_version, sobject
-    SOBJECT_BY_ID: ClassVar[str] = SOBJECT + '/{record_id}'                                                 # Vars: api_version, sobject, record_id
+    SERVICES_DATA_API: ClassVar[str] = SERVICES_DATA + '/{api_version}'  # Vars: api_version
+    SERVICES_DATA_API_SITE = SERVICES_DATA_API + '{site_segment}'  # Vars: api_version, site_segment
+    LIMITS: ClassVar[str] = SERVICES_DATA_API + '/limits'  # Vars: api_version
+    QUERY: ClassVar[str] = SERVICES_DATA_API + '/query'  # Vars: api_version
+    SEARCH: ClassVar[str] = SERVICES_DATA_API + '/search'  # Vars: api_version
+    SOBJECTS: ClassVar[str] = SERVICES_DATA_API + '/sobjects'  # Vars: api_version
+    SOBJECT: ClassVar[str] = SOBJECTS + '/{sobject}'  # Vars: api_version, sobject
+    SOBJECT_DESCRIBE: ClassVar[str] = SOBJECT + '/describe'  # Vars: api_version, sobject
+    SOBJECT_BY_ID: ClassVar[str] = SOBJECT + '/{record_id}'  # Vars: api_version, sobject, record_id
     USER_INFO: ClassVar[str] = '/services/oauth2/userinfo'
 
     # Image-related paths
-    RICH_TEXT_IMAGE_FIELD: ClassVar[str] = SOBJECT_BY_ID + '/richTextImageFields/{field_name}'              # Vars: api_version, sobject, record_id, field_name
-    RICH_TEXT_IMAGE_FIELD_BY_REF_ID: ClassVar[str] = RICH_TEXT_IMAGE_FIELD + '/{ref_id}'                    # Vars: api_version, sobject, record_id, field_name, ref_id
+    RICH_TEXT_IMAGE_FIELD: ClassVar[str] = (
+        SOBJECT_BY_ID + '/richTextImageFields/{field_name}'
+    )  # Vars: api_version, sobject, record_id, field_name
+    RICH_TEXT_IMAGE_FIELD_BY_REF_ID: ClassVar[str] = (
+        RICH_TEXT_IMAGE_FIELD + '/{ref_id}'
+    )  # Vars: api_version, sobject, record_id, field_name, ref_id
 
     # Chatter REST paths
-    CONNECT_COMMUNITIES_SITE: ClassVar[str] = '/connect/communities/{site_id}'                              # Vars: site_id
+    CONNECT_COMMUNITIES_SITE: ClassVar[str] = '/connect/communities/{site_id}'  # Vars: site_id
     CHATTER_FEEDS: ClassVar[str] = '/chatter/feeds'
     CHATTER_MY_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/news/me/feed-elements'
-    CHATTER_USER_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/user-profile/{user_id}/feed-elements'         # Vars: user_id
-    CHATTER_GROUP_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/record/{group_id}/feed-elements'             # VARS: group_id
+    CHATTER_USER_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/user-profile/{user_id}/feed-elements'  # Vars: user_id
+    CHATTER_GROUP_NEWS_FEED: ClassVar[str] = CHATTER_FEEDS + '/record/{group_id}/feed-elements'  # VARS: group_id
     CHATTER_FEED_ELEMENTS: ClassVar[str] = '/chatter/feed-elements'
     CHATTER_FEED_ELEMENT_COMMENTS: ClassVar[str] = CHATTER_FEED_ELEMENTS + '/{feed_element_id}/capabilities/comments/items'
 
     # Knowledge REST paths
-    _ARTICLE_ID = '/{article_id}'                                                                           # Vars: article_id
+    _ARTICLE_ID = '/{article_id}'  # Vars: article_id
     _STANDARD_ACTIONS = '/actions/standard'
     _ACTION_CREATE_DRAFT_ONLINE = _STANDARD_ACTIONS + '/createDraftFromOnlineKnowledgeArticle'
     _ACTION_PUBLISH_KNOWLEDGE_ARTICLES = _STANDARD_ACTIONS + '/publishKnowledgeArticles'
-    KNOWLEDGE_MANAGEMENT = SERVICES_DATA_API + '/knowledgeManagement'                                       # Vars: api_version
-    KNOWLEDGE_MANAGEMENT_ARTICLES = KNOWLEDGE_MANAGEMENT + '/articles'                                      # Vars: api_version
-    KNOWLEDGE_MANAGEMENT_ARTICLE_BY_ID = KNOWLEDGE_MANAGEMENT_ARTICLES + _ARTICLE_ID                        # Vars: api_version, article_id
-    KNOWLEDGE_MANAGEMENT_ARTICLE_VERSIONS = KNOWLEDGE_MANAGEMENT + '/articleVersions'                       # Vars: api_version
-    KNOWLEDGE_MANAGEMENT_MASTER_VERSIONS = KNOWLEDGE_MANAGEMENT_ARTICLE_VERSIONS + '/masterVersions'        # Vars: api_version
-    ARTICLE_MASTER_VERSION_BY_ID: ClassVar[str] = KNOWLEDGE_MANAGEMENT_MASTER_VERSIONS + _ARTICLE_ID        # Vars: api_version, article_id
-    KNOWLEDGE_ARTICLES: ClassVar[str] = SERVICES_DATA_API + '/support/knowledgeArticles'                    # Vars: api_version
-    KNOWLEDGE_ARTICLES_BY_ID: ClassVar[str] = KNOWLEDGE_ARTICLES + _ARTICLE_ID                              # Vars: api_version, article_id
-    CREATE_DRAFT_FROM_ONLINE_ARTICLE: ClassVar[str] = SERVICES_DATA_API + _ACTION_CREATE_DRAFT_ONLINE       # Vars: api_version
-    PUBLISH_KNOWLEDGE_ARTICLES: ClassVar[str] = SERVICES_DATA_API + _ACTION_PUBLISH_KNOWLEDGE_ARTICLES      # Vars: api_version
+    KNOWLEDGE_MANAGEMENT = SERVICES_DATA_API + '/knowledgeManagement'  # Vars: api_version
+    KNOWLEDGE_MANAGEMENT_ARTICLES = KNOWLEDGE_MANAGEMENT + '/articles'  # Vars: api_version
+    KNOWLEDGE_MANAGEMENT_ARTICLE_BY_ID = KNOWLEDGE_MANAGEMENT_ARTICLES + _ARTICLE_ID  # Vars: api_version, article_id
+    KNOWLEDGE_MANAGEMENT_ARTICLE_VERSIONS = KNOWLEDGE_MANAGEMENT + '/articleVersions'  # Vars: api_version
+    KNOWLEDGE_MANAGEMENT_MASTER_VERSIONS = KNOWLEDGE_MANAGEMENT_ARTICLE_VERSIONS + '/masterVersions'  # Vars: api_version
+    ARTICLE_MASTER_VERSION_BY_ID: ClassVar[str] = (
+        KNOWLEDGE_MANAGEMENT_MASTER_VERSIONS + _ARTICLE_ID
+    )  # Vars: api_version, article_id
+    KNOWLEDGE_ARTICLES: ClassVar[str] = SERVICES_DATA_API + '/support/knowledgeArticles'  # Vars: api_version
+    KNOWLEDGE_ARTICLES_BY_ID: ClassVar[str] = KNOWLEDGE_ARTICLES + _ARTICLE_ID  # Vars: api_version, article_id
+    CREATE_DRAFT_FROM_ONLINE_ARTICLE: ClassVar[str] = SERVICES_DATA_API + _ACTION_CREATE_DRAFT_ONLINE  # Vars: api_version
+    PUBLISH_KNOWLEDGE_ARTICLES: ClassVar[str] = SERVICES_DATA_API + _ACTION_PUBLISH_KNOWLEDGE_ARTICLES  # Vars: api_version
 
 
 # --------------------------------------
@@ -383,6 +426,7 @@ class QueryParams:
     REST API. Centralizing these values helps prevent typographical
     errors and ensures consistent request construction.
     """
+
     # Common parameter names
     Q: ClassVar[str] = 'q'
     BODY: ClassVar[str] = 'body'
@@ -431,6 +475,7 @@ class PayloadValues:
 
     .. versionadded:: 1.5.0
     """
+
     # Chatter payload values
     FEED_ITEM: ClassVar[str] = 'FeedItem'
     TEXT: ClassVar[str] = 'text'
@@ -453,6 +498,7 @@ class ResponseKeys:
 
     .. versionadded:: 1.5.0
     """
+
     ATTRIBUTES: ClassVar[str] = 'attributes'
     RECORDS: ClassVar[str] = 'records'
     TOTAL_SIZE: ClassVar[str] = 'totalSize'
@@ -469,6 +515,7 @@ class SObjects:
 
     .. versionadded:: 1.5.0
     """
+
     KNOWLEDGE: ClassVar[str] = 'Knowledge__kav'
     KNOWLEDGE_DATA_CATEGORY_SELECTION: ClassVar[str] = 'Knowledge__DataCategorySelection'
     USER_RECORD_ACCESS: ClassVar[str] = 'UserRecordAccess'
@@ -483,6 +530,7 @@ class SObjectFields:
 
     .. versionadded:: 1.5.0
     """
+
     # Common field names
     CREATED_DATE: ClassVar[str] = 'CreatedDate'
     ID: ClassVar[str] = 'Id'
@@ -501,16 +549,20 @@ class SObjectFields:
     VIEW_SCORE: ClassVar[str] = 'ViewScore'
 
     # Knowledge__kav validation criteria
-    REQUIRED_ARTICLE_CREATE_UPDATE_FIELDS: ClassVar[frozenset[str]] = frozenset({
-        TITLE,
-        URL_NAME,
-    })
-    VALID_KNOWLEDGE_SORT_FIELDS: ClassVar[frozenset[str]] = frozenset({
-        LAST_PUBLISHED_DATE,
-        CREATED_DATE,
-        TITLE,
-        VIEW_SCORE,
-    })
+    REQUIRED_ARTICLE_CREATE_UPDATE_FIELDS: ClassVar[frozenset[str]] = frozenset(
+        {
+            TITLE,
+            URL_NAME,
+        }
+    )
+    VALID_KNOWLEDGE_SORT_FIELDS: ClassVar[frozenset[str]] = frozenset(
+        {
+            LAST_PUBLISHED_DATE,
+            CREATED_DATE,
+            TITLE,
+            VIEW_SCORE,
+        }
+    )
 
     # Knowledge__DataCategorySelection field names
     DATA_CATEGORY_GROUP_NAME: ClassVar[str] = 'DataCategoryGroupName'
@@ -522,11 +574,13 @@ class SObjectFields:
     HAS_READ_ACCESS: ClassVar[str] = 'HasReadAccess'
 
     # UserRecordAccess validation criteria
-    VALID_ACCESS_CONTROL_FIELDS: ClassVar[frozenset[str]] = frozenset({
-        HAS_READ_ACCESS,
-        HAS_EDIT_ACCESS,
-        HAS_DELETE_ACCESS,
-    })
+    VALID_ACCESS_CONTROL_FIELDS: ClassVar[frozenset[str]] = frozenset(
+        {
+            HAS_READ_ACCESS,
+            HAS_EDIT_ACCESS,
+            HAS_DELETE_ACCESS,
+        }
+    )
 
 
 # --------------------------------
@@ -538,6 +592,7 @@ class SObjectFieldValues:
 
     .. versionadded:: 1.5.0
     """
+
     # Knowledge__kav
     ARCHIVED: ClassVar[str] = 'Archived'
 
@@ -551,13 +606,16 @@ class SoqlQueries:
 
     .. versionadded:: 1.5.0
     """
+
     # Ordering / Sorting
     ORDER_ASC: ClassVar[str] = 'ASC'
     ORDER_DESC: ClassVar[str] = 'DESC'
-    VALID_ORDER_DIRECTIONS: ClassVar[frozenset[str]] = frozenset({
-        ORDER_ASC,
-        ORDER_DESC,
-    })
+    VALID_ORDER_DIRECTIONS: ClassVar[frozenset[str]] = frozenset(
+        {
+            ORDER_ASC,
+            ORDER_DESC,
+        }
+    )
 
 
 # -----------------------------
@@ -569,6 +627,7 @@ class LogMessages:
 
     .. versionadded:: 1.5.0
     """
+
     _ARTICLE_DATA_TYPE_ERROR: ClassVar[str] = 'The article data must be provided as a dictionary.'
     _DEFAULT_SOBJECT_USED: ClassVar[str] = 'The {sobject} sObject will be used as a specific sObject was not provided'
     _INVALID_PARAM_VALUE_DEFAULT: ClassVar[str] = 'The {param} value is not valid and will default to {default}'

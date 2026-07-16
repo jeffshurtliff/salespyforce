@@ -77,7 +77,11 @@ def test_api_methods_convert_non_empty_json_responses(monkeypatch, api_client, m
     ],
 )
 def test_api_methods_return_raw_successful_empty_responses(
-        monkeypatch, api_client, method, status_code, content,
+    monkeypatch,
+    api_client,
+    method,
+    status_code,
+    content,
 ):
     """Successful empty responses are returned without attempting JSON decoding."""
     response = FakeResponse(status_code=status_code, content=content)

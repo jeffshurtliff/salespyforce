@@ -4,8 +4,8 @@
 :Module:         tests.unit.test_sobjects
 :Synopsis:       This module is used by pytest to test basic sObject-related methods
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)
-:Modified Date:  02 Mar 2026
+:Last Modified:  Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:  15 Jul 2026
 """
 
 import requests
@@ -58,8 +58,6 @@ def test_create_record(monkeypatch, salesforce_unit):
     monkeypatch.setattr(requests, 'post', resources.mock_success_post)
 
     # Perform the mock API call
-    payload = {
-        "Name": "Express Logistics and Transport"
-    }
+    payload = {'Name': 'Express Logistics and Transport'}
     response = salesforce_unit.create_sobject_record('Account', payload)
     assert 'success' in response and response.get('success') is True and 'id' in response

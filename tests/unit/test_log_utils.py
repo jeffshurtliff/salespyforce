@@ -4,8 +4,8 @@
 :Module:         tests.unit.test_log_utils
 :Synopsis:       This module is used by pytest to test the logging functionality
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via GPT-5.3-Codex)
-:Modified Date:  02 Mar 2026
+:Last Modified:  Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:  15 Jul 2026
 """
 
 import logging
@@ -37,7 +37,7 @@ def test_initialize_logging_defaults_to_info_level() -> None:
 
     :returns: None
     """
-    logger_name = "salespyforce.test.default.info"
+    logger_name = 'salespyforce.test.default.info'
     logger = log_utils.initialize_logging(logger_name)
     try:
         assert logger.level == logging.INFO
@@ -54,9 +54,9 @@ def test_initialize_logging_applies_default_level_to_console_handler(caplog: pyt
     :type caplog: class[pytest.LogCaptureFixture]
     :returns: None
     """
-    logger_name = "salespyforce.test.console.default"
+    logger_name = 'salespyforce.test.console.default'
     logger = log_utils.initialize_logging(logger_name, console_output=True)
-    message = "default info message"
+    message = 'default info message'
     try:
         with caplog.at_level(logging.INFO, logger=logger_name):
             logger.info(message)
@@ -64,16 +64,12 @@ def test_initialize_logging_applies_default_level_to_console_handler(caplog: pyt
         stdout_handlers = [
             handler
             for handler in logger.handlers
-            if isinstance(handler, logging.StreamHandler)
-            and getattr(handler, "stream", None) is sys.stdout
+            if isinstance(handler, logging.StreamHandler) and getattr(handler, 'stream', None) is sys.stdout
         ]
         assert stdout_handlers
         for handler in stdout_handlers:
             assert handler.level == logging.INFO
 
-        assert any(
-            record.levelno == logging.INFO and record.message == message
-            for record in caplog.records
-        )
+        assert any(record.levelno == logging.INFO and record.message == message for record in caplog.records)
     finally:
         _cleanup_logger(logger)

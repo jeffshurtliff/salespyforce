@@ -12,7 +12,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from salespyforce import chatter, constants as const, errors
+from salespyforce import chatter, errors
+from salespyforce import constants as const
 
 
 class ChatterClient:
@@ -44,8 +45,7 @@ def test_news_feed_endpoints_support_org_and_site_contexts():
 
     assert client.calls[0][1] == '/services/data/v65.0/chatter/feeds/news/me/feed-elements'
     assert client.calls[1][1] == (
-        '/services/data/v65.0/connect/communities/0DBxx000000001/'
-        'chatter/feeds/user-profile/005xx000000001/feed-elements'
+        '/services/data/v65.0/connect/communities/0DBxx000000001/chatter/feeds/user-profile/005xx000000001/feed-elements'
     )
     assert client.calls[2][1] == '/services/data/v65.0/chatter/feeds/record/0F9xx000000001/feed-elements'
 
@@ -107,8 +107,7 @@ def test_post_comment_uses_site_endpoint_and_message_segments():
 
     _, endpoint, payload = client.calls[0]
     assert endpoint == (
-        '/services/data/v65.0/connect/communities/0DBxx000000001/'
-        'chatter/feed-elements/0D5xx000000001/capabilities/comments/items'
+        '/services/data/v65.0/connect/communities/0DBxx000000001/chatter/feed-elements/0D5xx000000001/capabilities/comments/items'
     )
     assert payload == {
         const.QUERY_PARAMS.BODY: {

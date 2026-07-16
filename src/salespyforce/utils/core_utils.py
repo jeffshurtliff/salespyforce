@@ -5,26 +5,26 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     28 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
 from __future__ import annotations
 
-import re
-import random
-import string
 import os.path
-import warnings
+import random
+import re
+import string
 import urllib.parse
+import warnings
 from typing import Optional
 
 import requests
 
-from . import log_utils
-from .. import errors
 from .. import constants as const
+from .. import errors
 from ..decorators import deprecated
+from . import log_utils
 
 # Initialize the logger for this module
 logger = log_utils.initialize_logging(__name__)
@@ -50,8 +50,9 @@ def url_decode(encoded_string: str) -> str:
     return urllib.parse.unquote_plus(encoded_string)
 
 
-def _ensure_prefix_or_suffix(_eval_string: str, _substring: str,
-                             _starts_with: Optional[bool] = None, _ends_with: Optional[bool] = None) -> str:
+def _ensure_prefix_or_suffix(
+    _eval_string: str, _substring: str, _starts_with: Optional[bool] = None, _ends_with: Optional[bool] = None
+) -> str:
     """This function makes sure a prefix or suffix is found before or after a given string.
 
     .. versionadded:: 1.5.0
@@ -68,9 +69,7 @@ def _ensure_prefix_or_suffix(_eval_string: str, _substring: str,
     :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`
     """
     if not any((_starts_with, _ends_with)):
-        _error_msg = const._LOG_MESSAGES._MUST_BE_PROVIDED_ERROR.format(
-            data='_starts_with or _ends_with parameter'
-        )
+        _error_msg = const._LOG_MESSAGES._MUST_BE_PROVIDED_ERROR.format(data='_starts_with or _ends_with parameter')
         logger.error(_error_msg)
         raise errors.exceptions.MissingRequiredDataError(_error_msg)
     if _starts_with and not _eval_string.startswith(_substring):
@@ -171,7 +170,7 @@ def get_random_string(length: int = 32, prefix_string: str = '') -> str:
     :type prefix_string: str
     :returns: The alphanumeric string
     """
-    return f"{prefix_string}{''.join([random.choice(string.ascii_letters + string.digits) for _ in range(length)])}"
+    return f'{prefix_string}{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(length)])}'
 
 
 def get_18_char_id(record_id: str) -> str:
@@ -199,7 +198,7 @@ def get_18_char_id(record_id: str) -> str:
     # Define the checksum suffix (additional 3 characters)
     suffix = ''
     for i in range(0, 15, 5):
-        chunk = record_id[i:i + 5]
+        chunk = record_id[i : i + 5]
         bitmask = 0
 
         for index, char in enumerate(chunk):
@@ -263,8 +262,13 @@ def get_image_ref_id(image_url: str) -> str:
     return ref_id
 
 
-def download_image(image_url: Optional[str] = None, file_name: Optional[str] = None, file_path: Optional[str] = None,
-                   response=None, extension: str = const.FILE_EXTENSIONS.JPEG) -> str:
+def download_image(
+    image_url: Optional[str] = None,
+    file_name: Optional[str] = None,
+    file_path: Optional[str] = None,
+    response=None,
+    extension: str = const.FILE_EXTENSIONS.JPEG,
+) -> str:
     """This function downloads an image and saves it to a specified directory.
 
     .. versionchanged:: 1.5.0

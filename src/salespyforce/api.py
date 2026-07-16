@@ -13,23 +13,22 @@ from typing import Optional
 
 import requests
 
-from . import errors
 from . import constants as const
+from . import errors
 from .utils import core_utils, log_utils
-
 
 # Initialize logging
 logger = log_utils.initialize_logging(__name__)
 
 
 def get(
-        sfdc_object,
-        endpoint: str,
-        params: Optional[dict] = None,
-        headers: Optional[dict] = None,
-        timeout: Optional[int] = None,
-        show_full_error: bool = True,
-        return_json: bool = True,
+    sfdc_object,
+    endpoint: str,
+    params: Optional[dict] = None,
+    headers: Optional[dict] = None,
+    timeout: Optional[int] = None,
+    show_full_error: bool = True,
+    return_json: bool = True,
 ):
     """This method performs a GET request against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -78,8 +77,7 @@ def get(
     if response.status_code >= 300:
         # TODO: Functionalize this segment and figure out how to improve on the approach somehow
         if show_full_error:
-            raise RuntimeError(f'The GET request failed with a {response.status_code} status code.\n'
-                               f'{response.text}')
+            raise RuntimeError(f'The GET request failed with a {response.status_code} status code.\n{response.text}')
         else:
             raise RuntimeError(f'The GET request failed with a {response.status_code} status code.')
     if return_json and not _has_empty_response_body(response):
@@ -88,15 +86,15 @@ def get(
 
 
 def api_call_with_payload(
-        sfdc_object,
-        method: str,
-        endpoint: str,
-        payload: dict,
-        params: Optional[dict] = None,
-        headers: Optional[dict] = None,
-        timeout: Optional[int] = None,
-        show_full_error: bool = True,
-        return_json: bool = True,
+    sfdc_object,
+    method: str,
+    endpoint: str,
+    payload: dict,
+    params: Optional[dict] = None,
+    headers: Optional[dict] = None,
+    timeout: Optional[int] = None,
+    show_full_error: bool = True,
+    return_json: bool = True,
 ):
     """This method performs a POST call against the Salesforce instance.
     (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
@@ -159,8 +157,7 @@ def api_call_with_payload(
     if response.status_code >= 300:
         if show_full_error:
             # TODO: Functionalize this segment and figure out how to improve on the approach somehow
-            raise RuntimeError(f'The {method.upper()} request failed with a {response.status_code} status code.\n'
-                               f'{response.text}')
+            raise RuntimeError(f'The {method.upper()} request failed with a {response.status_code} status code.\n{response.text}')
         else:
             raise RuntimeError(f'The {method.upper()} request failed with a {response.status_code} status code.')
     if return_json and not _has_empty_response_body(response):
@@ -173,13 +170,14 @@ def api_call_with_payload(
 
 
 def delete(
-        sfdc_object,
-        endpoint: str,
-        params: Optional[dict] = None,
-        headers: Optional[dict] = None,
-        timeout: Optional[int] = None,
-        show_full_error: bool = True,
-        return_json: bool = True):
+    sfdc_object,
+    endpoint: str,
+    params: Optional[dict] = None,
+    headers: Optional[dict] = None,
+    timeout: Optional[int] = None,
+    show_full_error: bool = True,
+    return_json: bool = True,
+):
     """This method performs a DELETE request against the Salesforce instance.
 
     .. versionadded:: 1.4.0
@@ -223,8 +221,7 @@ def delete(
     if response.status_code >= 300:
         if show_full_error:
             # TODO: Functionalize this segment and figure out how to improve on the approach somehow
-            raise RuntimeError(f'The DELETE request failed with a {response.status_code} status code.\n'
-                               f'{response.text}')
+            raise RuntimeError(f'The DELETE request failed with a {response.status_code} status code.\n{response.text}')
         else:
             raise RuntimeError(f'The DELETE request failed with a {response.status_code} status code.')
     if return_json and not _has_empty_response_body(response):
@@ -257,7 +254,7 @@ def _get_headers(_access_token: str, _header_type: str = 'default') -> dict:
     headers = {
         const.HEADERS.CONTENT_TYPE: const.CONTENT_TYPES.JSON,
         const.HEADERS.ACCEPT_ENCODING: const.ENCODING_TYPES.GZIP,
-        const.HEADERS.AUTHORIZATION: const.AUTH_SCHEMES.BEARER.format(token=_access_token)
+        const.HEADERS.AUTHORIZATION: const.AUTH_SCHEMES.BEARER.format(token=_access_token),
     }
     if _header_type == 'articles':
         headers[const.HEADERS.ACCEPT_LANGUAGE] = const.LANGUAGES.EN_US

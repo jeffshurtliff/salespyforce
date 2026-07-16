@@ -38,6 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `REST_PATHS.ARTICLE_MASTER_VERSION_BY_ID` endpoint template.
 - Regression coverage has been added for API response handling, Knowledge and Chatter
   endpoint construction, helper file selection, and API request exception messages.
+- Adopted Ruff for linting, import sorting, and formatting; added project configuration,
+  replaced flake8 validation in CI, and documented the contributor quality checks.
 - The constants used by the package have been centralized within the new 
   {py:mod}`salespyforce.constants` module and the other modules have been updated accordingly.
 - The {py:meth}`~salespyforce.Salesforce.download_image` method now logs errors and raises exceptions 

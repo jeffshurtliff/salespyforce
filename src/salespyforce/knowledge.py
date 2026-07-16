@@ -9,10 +9,10 @@
 
 from __future__ import annotations
 
-from typing import Optional, Union, Tuple
+from typing import Optional, Tuple, Union
 
-from . import errors
 from . import constants as const
+from . import errors
 from .utils import log_utils
 from .utils.core_utils import ensure_ends_with
 
@@ -21,12 +21,12 @@ logger = log_utils.initialize_logging(__name__)
 
 
 def check_for_existing_article(
-        sfdc_object,
-        title: str,
-        sobject: Optional[str] = None,
-        return_id: bool = False,
-        return_id_and_number: bool = False,
-        include_archived: bool = False,
+    sfdc_object,
+    title: str,
+    sobject: Optional[str] = None,
+    return_id: bool = False,
+    return_id_and_number: bool = False,
+    include_archived: bool = False,
 ) -> Union[str, Tuple[str, str]]:
     """This method checks to see if an article already exists with a given title and returns its article number.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
@@ -80,10 +80,10 @@ def check_for_existing_article(
 
 
 def get_article_id_from_number(
-        sfdc_object,
-        article_number: Union[str, int],
-        sobject: Optional[str] = None,
-        return_uri: bool = False,
+    sfdc_object,
+    article_number: Union[str, int],
+    sobject: Optional[str] = None,
+    return_uri: bool = False,
 ) -> str:
     """This method returns the Article ID when an article number is provided.
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
@@ -125,8 +125,10 @@ def get_article_id_from_number(
     if response.get(const.RESPONSE_KEYS.TOTAL_SIZE) > 0:
         if return_uri:
             # TODO: Split out the return_uri functionality into a separate function and method
-            warn_msg = ("The ability to retrieve the article URI/URL rather than the ID (return_uri parameter) will "
-                        "be moved to a separate function/method in a future release")
+            warn_msg = (
+                'The ability to retrieve the article URI/URL rather than the ID (return_uri parameter) will '
+                'be moved to a separate function/method in a future release'
+            )
             logger.warning(warn_msg)
             errors.handlers.display_warning(warn_msg)
             return_value = response[const.RESPONSE_KEYS.RECORDS][0][const.RESPONSE_KEYS.ATTRIBUTES][const.RESPONSE_KEYS.URL]
@@ -140,12 +142,12 @@ def get_article_id_from_number(
 
 
 def get_articles_list(
-        sfdc_object,
-        query: Optional[str] = None,
-        sort: Optional[str] = None,
-        order: Optional[str] = None,
-        page_size: int = const.QUERY_PARAMS.DEFAULT_PAGE_SIZE,      # Default: 20
-        page_num: int = const.QUERY_PARAMS.DEFAULT_PAGE_NUM,        # Default: 1
+    sfdc_object,
+    query: Optional[str] = None,
+    sort: Optional[str] = None,
+    order: Optional[str] = None,
+    page_size: int = const.QUERY_PARAMS.DEFAULT_PAGE_SIZE,  # Default: 20
+    page_num: int = const.QUERY_PARAMS.DEFAULT_PAGE_NUM,  # Default: 1
 ) -> list:
     """This function retrieves a list of knowledge articles.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artlist.htm>`__)
@@ -172,34 +174,30 @@ def get_articles_list(
 
     # Validate the sort parameter and ignore the value if it is invalid
     if sort and sort not in const.SOBJECT_FIELDS.VALID_KNOWLEDGE_SORT_FIELDS:
-        logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_IGNORE.format(
-            param=const.QUERY_PARAMS.SORT,
-            value=sort
-        ))
+        logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_IGNORE.format(param=const.QUERY_PARAMS.SORT, value=sort))
         sort = None
 
     # Validate the order parameter and ignore the value if it is invalid
     if order and order.upper() not in const.SOQL_QUERIES.VALID_ORDER_DIRECTIONS:
-        logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_IGNORE.format(
-            param=const.QUERY_PARAMS.ORDER,
-            value=order
-        ))
+        logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_IGNORE.format(param=const.QUERY_PARAMS.ORDER, value=order))
         order = None
 
     # Validate the page size parameter (Fall back to maximum value rather than default value if maximum is exceeded)
     if page_size > const.QUERY_PARAMS.MAX_PAGE_SIZE:
-        logger.error(const._LOG_MESSAGES._PARAM_EXCEEDS_MAX_VALUE.format(
-            param=const.QUERY_PARAMS.PAGE_SIZE,
-            default=const.QUERY_PARAMS.MAX_PAGE_SIZE
-        ))
+        logger.error(
+            const._LOG_MESSAGES._PARAM_EXCEEDS_MAX_VALUE.format(
+                param=const.QUERY_PARAMS.PAGE_SIZE, default=const.QUERY_PARAMS.MAX_PAGE_SIZE
+            )
+        )
         page_size = const.QUERY_PARAMS.MAX_PAGE_SIZE
 
     # Validate the pageNumber parameter and fall back to default value if it is invalid
     if page_num < const.QUERY_PARAMS.MIN_PAGE_NUM:
-        logger.error(const._LOG_MESSAGES._INVALID_PARAM_VALUE_DEFAULT.format(
-            param=const.QUERY_PARAMS.PAGE_NUM,
-            default=const.QUERY_PARAMS.DEFAULT_PAGE_NUM
-        ))
+        logger.error(
+            const._LOG_MESSAGES._INVALID_PARAM_VALUE_DEFAULT.format(
+                param=const.QUERY_PARAMS.PAGE_NUM, default=const.QUERY_PARAMS.DEFAULT_PAGE_NUM
+            )
+        )
         page_num = const.QUERY_PARAMS.DEFAULT_PAGE_NUM
 
     # Add values to the parameters dictionary if they have been defined
@@ -220,10 +218,10 @@ def get_articles_list(
 
 
 def get_article_details(
-        sfdc_object,
-        article_id: str,
-        sobject: Optional[str] = None,
-        use_knowledge_articles_endpoint: Optional[bool] = None,
+    sfdc_object,
+    article_id: str,
+    sobject: Optional[str] = None,
+    use_knowledge_articles_endpoint: Optional[bool] = None,
 ):
     """This function retrieves details for a single knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
@@ -266,16 +264,17 @@ def get_article_details(
 
     # Perform the query and return the data
     data = sfdc_object.get(endpoint, headers=headers)
-    # TODO: Determine what is returned by this API call and see if data should be pruned to just the article details (for both endpoints)
+    # TODO: Determine what is returned by this API call and see if data should be pruned to just the article details
+    # for both endpoints.
     return data
 
 
 def get_validation_status(
-        sfdc_object,
-        article_id: Optional[str] = None,
-        article_details: Optional[dict] = None,
-        sobject: Optional[str] = None,
-        use_knowledge_articles_endpoint: Optional[bool] = None,
+    sfdc_object,
+    article_id: Optional[str] = None,
+    article_details: Optional[dict] = None,
+    sobject: Optional[str] = None,
+    use_knowledge_articles_endpoint: Optional[bool] = None,
 ) -> str:
     """This function retrieves the Validation Status for a given Article ID.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_knowledge_support_artdetails.htm>`__)
@@ -357,10 +356,10 @@ def get_article_version(sfdc_object, article_id: str):
 
 
 def get_article_url(
-        sfdc_object,
-        article_id: Optional[str] = None,
-        article_number: Union[Optional[str], Optional[int]] = None,
-        sobject: Optional[str] = None,
+    sfdc_object,
+    article_id: Optional[str] = None,
+    article_number: Union[Optional[str], Optional[int]] = None,
+    sobject: Optional[str] = None,
 ) -> str:
     """This function constructs the URL to view a knowledge article in Lightning or Classic.
 
@@ -399,10 +398,10 @@ def get_article_url(
 
 
 def create_article(
-        sfdc_object,
-        article_data: dict,
-        sobject: Optional[str] = None,
-        full_response: bool = False,
+    sfdc_object,
+    article_data: dict,
+    sobject: Optional[str] = None,
+    full_response: bool = False,
 ):
     """This function creates a new knowledge article draft.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`__)
@@ -445,11 +444,11 @@ def create_article(
 
 
 def update_article(
-        sfdc_object,
-        record_id: str,
-        article_data: dict,
-        sobject: Optional[str] = None,
-        include_status_code: bool = False,
+    sfdc_object,
+    record_id: str,
+    article_data: dict,
+    sobject: Optional[str] = None,
+    include_status_code: bool = False,
 ):
     """This function updates an existing knowledge article draft.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`__)
@@ -522,19 +521,17 @@ def create_draft_from_online_article(sfdc_object, article_id: str, unpublish: bo
     }
 
     # Define the endpoint and perform the API call
-    endpoint = const.REST_PATHS.CREATE_DRAFT_FROM_ONLINE_ARTICLE.format(
-        api_version=sfdc_object.version
-    )
+    endpoint = const.REST_PATHS.CREATE_DRAFT_FROM_ONLINE_ARTICLE.format(api_version=sfdc_object.version)
     return sfdc_object.post(endpoint, payload)
 
 
 def create_draft_from_master_version(
-        sfdc_object,
-        article_id: Optional[str] = None,
-        knowledge_article_id: Optional[str] = None,
-        article_data: Optional[dict] = None,
-        sobject: Optional[str] = None,
-        full_response: bool = False,
+    sfdc_object,
+    article_id: Optional[str] = None,
+    knowledge_article_id: Optional[str] = None,
+    article_data: Optional[dict] = None,
+    sobject: Optional[str] = None,
+    full_response: bool = False,
 ):
     """This function creates an online version of a master article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.198.0.knowledge_dev.meta/knowledge_dev/knowledge_REST_edit_online_master.htm>`__)
@@ -588,10 +585,10 @@ def create_draft_from_master_version(
 
 
 def publish_article(
-        sfdc_object,
-        article_id: str,
-        major_version: bool = True,
-        full_response: bool = False,
+    sfdc_object,
+    article_id: str,
+    major_version: bool = True,
+    full_response: bool = False,
 ):
     """This function publishes a draft knowledge article as a major or minor version.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`__)
@@ -609,9 +606,7 @@ def publish_article(
     """
     # TODO: Update :raises: with correct exceptions
     # Define the payload for the API call
-    payload = {
-        const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ONLINE
-    }
+    payload = {const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ONLINE}
     if major_version:
         payload[const.QUERY_PARAMS.VERSION_NUMBER] = const.PAYLOAD_VALUES.NEXT_VERSION
 
@@ -666,10 +661,7 @@ def publish_multiple_articles(sfdc_object, article_id_list: list, major_version:
     # Construct the payload
     payload = {
         const.QUERY_PARAMS.INPUTS: [
-            {
-                const.QUERY_PARAMS.ARTICLE_VERSION_ID_LIST: article_id_list,
-                const.QUERY_PARAMS.PUBLISH_ACTION: action
-            }
+            {const.QUERY_PARAMS.ARTICLE_VERSION_ID_LIST: article_id_list, const.QUERY_PARAMS.PUBLISH_ACTION: action}
         ]
     }
 
@@ -699,7 +691,7 @@ def assign_data_category(sfdc_object, article_id: str, category_group_name: str,
     payload = {
         const.SOBJECT_FIELDS.PARENT_ID: article_id,
         const.SOBJECT_FIELDS.DATA_CATEGORY_GROUP_NAME: category_group_name,
-        const.SOBJECT_FIELDS.DATA_CATEGORY_NAME: category_name
+        const.SOBJECT_FIELDS.DATA_CATEGORY_NAME: category_name,
     }
 
     # Define the endpoint and perform the API call
@@ -725,9 +717,7 @@ def archive_article(sfdc_object, article_id: str):
     """
     # TODO: Update :raises: with correct exceptions
     # Define the payload for the API call
-    payload = {
-        const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ARCHIVED
-    }
+    payload = {const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ARCHIVED}
 
     # Define the endpoint and perform the API call
     endpoint = const.REST_PATHS.ARTICLE_MASTER_VERSION_BY_ID.format(
@@ -737,15 +727,16 @@ def archive_article(sfdc_object, article_id: str):
     return sfdc_object.patch(endpoint, payload)
 
 
-def delete_article_draft(sfdc_object, version_id: str, sobject: Optional[str] = None,
-                         use_knowledge_management_endpoint: bool = True):
+def delete_article_draft(
+    sfdc_object, version_id: str, sobject: Optional[str] = None, use_knowledge_management_endpoint: bool = True
+):
     """This function deletes an unpublished knowledge article draft.
-    
+
     .. versionchanged:: 1.5.0
        An optional ``sobject`` parameter can now be passed to specify the sObject against which to query.
 
     .. versionadded:: 1.4.0
-    
+
     :param sfdc_object: The instantiated SalesPyForce object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
@@ -779,8 +770,8 @@ def delete_article_draft(sfdc_object, version_id: str, sobject: Optional[str] = 
 
 
 def _validate_knowledge_sobject(
-        _sobject: Optional[str] = None,
-        _use_knowledge_articles_endpoint: Optional[bool] = None,
+    _sobject: Optional[str] = None,
+    _use_knowledge_articles_endpoint: Optional[bool] = None,
 ) -> str:
     """This function validates that a Knowledge sObject exists and supplies the default ``Knowledge__kav``
        object when missing.
@@ -805,8 +796,10 @@ def _validate_knowledge_sobject(
     # Ensure there are no conflicting parameters
     if _sobject and _use_knowledge_articles_endpoint:
         if _sobject == const.SOBJECTS.KNOWLEDGE:
-            _info_msg = (f'It is not necessary to define the sObject as {const.SOBJECTS.KNOWLEDGE} when leveraging '
-                         'the knowledgeArticles endpoint')
+            _info_msg = (
+                f'It is not necessary to define the sObject as {const.SOBJECTS.KNOWLEDGE} when leveraging '
+                'the knowledgeArticles endpoint'
+            )
             logger.info(_info_msg)
         else:
             _error_msg = 'You cannot use the knowledgeArticles endpoint with an explicitly defined sObject'

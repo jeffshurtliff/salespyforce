@@ -5,12 +5,12 @@
 :Usage:             ``from tests.unit import resources``
 :Example:           ``exceptions = resources.import_exceptions_module()``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.3-Codex)
-:Modified Date:     02 Mar 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
-import os
 import importlib
+import os
 
 import pytest
 
@@ -24,6 +24,7 @@ class MockResponse:
 
     .. versionadded:: 1.1.0
     """
+
     def __init__(self, json_body, status_code=200):
         self.json_body = json_body
         self.status_code = status_code
@@ -37,11 +38,7 @@ def mock_success_post(*args, **kwargs):
 
     .. versionadded:: 1.1.0
     """
-    return MockResponse({
-        "id": "001D000000IqhSLIAZ",
-        "errors": [],
-        "success": True
-    })
+    return MockResponse({'id': '001D000000IqhSLIAZ', 'errors': [], 'success': True})
 
 
 def mock_error_post(*args, **kwargs):
@@ -49,25 +46,21 @@ def mock_error_post(*args, **kwargs):
 
     .. versionadded:: 1.1.0
     """
-    return MockResponse({
-        "errors": [],
-        "success": False
-    })
+    return MockResponse({'errors': [], 'success': False})
 
 
 def mock_sosl_get(*args, **kwargs):
     """This function works with the `MockedResponse` class to simulate an SOSL response."""
-    return MockResponse({
-        "searchRecords": [
-            {
-                'attributes': {
-                    'type': 'Account',
-                    'url': '/services/data/v57.0/sobjects/Account/0018V00002NeqAxQAJ'
-                },
-                'Id': '0018V00002NeqAxQAJ'
-            }
-        ]
-    })
+    return MockResponse(
+        {
+            'searchRecords': [
+                {
+                    'attributes': {'type': 'Account', 'url': '/services/data/v57.0/sobjects/Account/0018V00002NeqAxQAJ'},
+                    'Id': '0018V00002NeqAxQAJ',
+                }
+            ]
+        }
+    )
 
 
 def import_modules(*modules):
@@ -142,4 +135,4 @@ def instantiate_with_local_helper():
     if not local_helper_exists():
         raise FileNotFoundError('The local helper file cannot be found.')
     core_module = importlib.import_module('salespyforce.core')
-    return core_module.Salesforce(helper=f"local/{HELPER_FILE_NAME}")
+    return core_module.Salesforce(helper=f'local/{HELPER_FILE_NAME}')

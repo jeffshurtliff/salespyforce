@@ -18,7 +18,8 @@ import json
 import pytest
 import yaml
 
-from salespyforce import constants as const, errors
+from salespyforce import constants as const
+from salespyforce import errors
 from salespyforce.core import Salesforce
 
 
@@ -146,7 +147,9 @@ def test_salesforce_helper_string_rejects_unknown_file_type(monkeypatch, tmp_pat
     ],
 )
 def test_salesforce_preserves_explicit_helper_forms(
-        monkeypatch, tmp_path, helper_value_factory,
+    monkeypatch,
+    tmp_path,
+    helper_value_factory,
 ):
     """Explicit sequence and mapping helper forms retain their parser selection."""
     _mock_client_initialization(monkeypatch)

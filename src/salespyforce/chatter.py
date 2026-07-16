@@ -3,16 +3,16 @@
 :Module:            salespyforce.chatter
 :Synopsis:          Defines the Chatter-related functions associated with the Salesforce Connect API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Feb 2026
+:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
+:Modified Date:     15 Jul 2026
 """
 
 from __future__ import annotations
 
 from typing import Optional
 
-from . import errors
 from . import constants as const
+from . import errors
 from .utils import log_utils
 
 # Initialize logging
@@ -98,12 +98,12 @@ def get_group_feed(sfdc_object, group_id: str, site_id: Optional[str] = None):
 
 
 def post_feed_item(
-        sfdc_object,
-        subject_id: str,
-        message_text: Optional[str] = None,
-        message_segments: Optional[list] = None,
-        site_id: Optional[str] = None,
-        created_by_id: Optional[str] = None,
+    sfdc_object,
+    subject_id: str,
+    message_text: Optional[str] = None,
+    message_segments: Optional[list] = None,
+    site_id: Optional[str] = None,
+    created_by_id: Optional[str] = None,
 ):
     """This function publishes a new Chatter feed item.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_feed_item.htm>`__)
@@ -133,28 +133,28 @@ def post_feed_item(
     if not message_segments:
         message_segments = _construct_simple_message_segment(message_text)
     payload = {
-        const.QUERY_PARAMS.BODY: {
-            const.QUERY_PARAMS.MESSAGE_SEGMENTS: message_segments
-        },
+        const.QUERY_PARAMS.BODY: {const.QUERY_PARAMS.MESSAGE_SEGMENTS: message_segments},
         const.QUERY_PARAMS.FEED_ELEMENT_TYPE: const.PAYLOAD_VALUES.FEED_ITEM,
         const.QUERY_PARAMS.SUBJECT_ID: subject_id,
     }
     if created_by_id:
         payload[const.QUERY_PARAMS.CREATED_BY_ID] = created_by_id
     endpoint_root = _get_endpoint_root_segment(sfdc_object.version, site_id)
-    endpoint = f'{endpoint_root}{const.REST_PATHS.CHATTER_FEED_ELEMENTS}?' \
-               f'{const.QUERY_PARAMS.FEED_ELEMENT_TYPE}={const.PAYLOAD_VALUES.FEED_ITEM}&' \
-               f'{const.QUERY_PARAMS.SUBJECT_ID}={subject_id}'
+    endpoint = (
+        f'{endpoint_root}{const.REST_PATHS.CHATTER_FEED_ELEMENTS}?'
+        f'{const.QUERY_PARAMS.FEED_ELEMENT_TYPE}={const.PAYLOAD_VALUES.FEED_ITEM}&'
+        f'{const.QUERY_PARAMS.SUBJECT_ID}={subject_id}'
+    )
     return sfdc_object.post(endpoint=endpoint, payload=payload)
 
 
 def post_comment(
-        sfdc_object,
-        feed_element_id: str,
-        message_text: Optional[str] = None,
-        message_segments: Optional[list] = None,
-        site_id: Optional[str] = None,
-        created_by_id: Optional[str] = None,
+    sfdc_object,
+    feed_element_id: str,
+    message_text: Optional[str] = None,
+    message_segments: Optional[list] = None,
+    site_id: Optional[str] = None,
+    created_by_id: Optional[str] = None,
 ):
     """This function publishes a comment on a Chatter feed item.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_post_comment_to_feed_element.htm>`__)
@@ -185,11 +185,7 @@ def post_comment(
 
     if not message_segments:
         message_segments = _construct_simple_message_segment(message_text)
-    payload = {
-        const.QUERY_PARAMS.BODY: {
-            const.QUERY_PARAMS.MESSAGE_SEGMENTS: message_segments
-        }
-    }
+    payload = {const.QUERY_PARAMS.BODY: {const.QUERY_PARAMS.MESSAGE_SEGMENTS: message_segments}}
     if created_by_id:
         # noinspection PyTypeChecker
         payload[const.QUERY_PARAMS.CREATED_BY_ID] = created_by_id
@@ -205,10 +201,5 @@ def _construct_simple_message_segment(_message_text: str) -> list:
     :type _message_text: str
     :returns: The constructed message segments payload
     """
-    _message_segments = [
-        {
-            const.QUERY_PARAMS.TYPE: const.PAYLOAD_VALUES.TEXT,
-            const.QUERY_PARAMS.TEXT: _message_text
-        }
-    ]
+    _message_segments = [{const.QUERY_PARAMS.TYPE: const.PAYLOAD_VALUES.TEXT, const.QUERY_PARAMS.TEXT: _message_text}]
     return _message_segments

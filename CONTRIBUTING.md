@@ -440,6 +440,29 @@ All contributions must:
 - Avoid adding third-party dependencies unless strongly justified
 - Preserve backward compatibility unless explicitly approved
 
+### Linting and Formatting
+
+SalesPyForce uses [Ruff](https://docs.astral.sh/ruff/) for linting, import sorting, and code formatting.
+The repository standard is a maximum line length of `130` characters.
+
+Line-length policy:
+
+- Keep production code, tests, and normal string expressions at or under 130 characters.
+- Wrap comments and docstrings when doing so preserves readability.
+- Allow an exception only when wrapping would make a comment or special-case expression materially harder to read.
+- Use per-line `# noqa: E501` for approved exceptions instead of broad file-level or global ignores.
+
+Before opening a PR, run:
+
+```bash
+poetry run ruff check .
+poetry run ruff check . --fix
+poetry run ruff format .
+poetry run ruff format --check .
+```
+
+CI enforces these Ruff checks.
+
 ---
 
 ## Testing Requirements
