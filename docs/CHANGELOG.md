@@ -40,6 +40,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   endpoint construction, helper file selection, and API request exception messages.
 - Adopted Ruff for linting, import sorting, and formatting; added project configuration,
   replaced flake8 validation in CI, and documented the contributor quality checks.
+- CI now verifies the security-sensitive dependency versions selected for each Python
+  release, isolates pytest temporary files, and validates built artifacts with Twine.
+- Added prominent README and Sphinx documentation notices that version 1.5.0 is
+  the final release supporting Python 3.9 through 3.11 and that version 2.0.0
+  will require Python 3.12 or newer.
 - The constants used by the package have been centralized within the new 
   {py:mod}`salespyforce.constants` module and the other modules have been updated accordingly.
 - The {py:meth}`~salespyforce.Salesforce.download_image` method now logs errors and raises exceptions 
@@ -85,6 +90,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The {py:class}`salespyforce.utils.helper.HelperParsing` class has been removed as its functionality 
   has been replaced by the `YAML_BOOLEAN_MAPPING` constant in the {py:mod}`salespyforce.constants`
   module.
+
+(unreleased-security)=
+### Security
+
+- Updated `idna` to 3.15 or newer to address CVE-2026-45409 on every supported
+  Python version.
+- Constrained the documentation dependencies to `soupsieve` 2.8.4 or newer to
+  address CVE-2026-49476 and CVE-2026-49477. Soup Sieve remains required
+  transitively by the PyData Sphinx Theme through Beautiful Soup.
+- Constrained development and documentation environments to Pygments 2.20.0 or
+  newer to address CVE-2026-4539.
+- Python 3.10 and newer now require Requests 2.33.0 or newer, urllib3 2.7.0 or
+  newer, and pytest 9.0.3 or newer to address CVE-2026-25645,
+  CVE-2026-44431, CVE-2026-44432, and CVE-2025-71176.
+- Python 3.9 retains the newest compatible Requests, urllib3, and pytest release
+  lines because the corresponding fixed releases require Python 3.10 or newer.
+  SalesPyForce does not use Requests' vulnerable `extract_zipped_paths()` utility
+  or directly invoke urllib3's affected low-level proxy redirect and streaming
+  APIs. pytest is development-only, and the Python 3.9 CI jobs use an isolated,
+  owner-only temporary directory on ephemeral runners.
+- Version 1.5.0 is the final SalesPyForce release supporting Python versions below
+  3.12. The next release line will remove these Python 3.9 dependency exceptions
+  when it raises the minimum supported Python version to 3.12.
 
 ---
 (relnotes-1.4.0)=

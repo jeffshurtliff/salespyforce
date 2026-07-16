@@ -61,6 +61,45 @@ jobs:
       - name: Install project (with dev dependencies)
         run: poetry install --with dev --no-interaction --no-ansi
 
+      - name: Verify security dependency versions
+        run: |
+          poetry run python - <<'PY'
+          import sys
+          from importlib.metadata import version
+
+          from packaging.version import Version
+
+          installed = {
+              package: Version(version(package))
+              for package in (
+                  'idna',
+                  'Pygments',
+                  'pytest',
+                  'requests',
+                  'soupsieve',
+                  'twine',
+                  'urllib3',
+              )
+          }
+
+          if sys.version_info[:2] == (3, 9):
+              assert Version('2.32.5') <= installed['requests'] < Version('2.33.0')
+              assert Version('2.6.3') <= installed['urllib3'] < Version('2.7.0')
+              assert Version('8.4.2') <= installed['pytest'] < Version('9')
+          else:
+              assert installed['requests'] >= Version('2.33.0')
+              assert installed['urllib3'] >= Version('2.7.0')
+              assert installed['pytest'] >= Version('9.0.3')
+
+          assert installed['idna'] >= Version('3.15')
+          assert installed['Pygments'] >= Version('2.20.0')
+          assert installed['soupsieve'] >= Version('2.8.4')
+          assert installed['twine'] >= Version('6.2.0')
+
+          for package, installed_version in installed.items():
+              print(f'{package}=={installed_version}')
+          PY
+
       - name: Decrypt the helper configuration file
         run: ./.github/scripts/decrypt_helper.sh
         env:
@@ -73,11 +112,13 @@ jobs:
 
       - name: Run tests
         run: |
-          poetry run pytest -q
+          umask 077
+          poetry run pytest --basetemp="${RUNNER_TEMP}/salespyforce-pytest" -q
 
       - name: Coverage (pytest-cov) and report
         run: |
-          poetry run pytest --cov-report=xml --cov=salespyforce --cov-fail-under=50 tests/unit tests/integration --color=yes
+          umask 077
+          poetry run pytest --basetemp="${RUNNER_TEMP}/salespyforce-pytest" --cov-report=xml --cov=salespyforce --cov-fail-under=50 tests/unit tests/integration --color=yes
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -89,6 +130,7 @@ jobs:
       - name: Build sdist and wheel (Poetry)
         run: |
           poetry build
+          poetry run twine check dist/*
 
   bandit:
     name: Bandit (security static analysis)

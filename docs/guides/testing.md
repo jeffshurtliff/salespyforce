@@ -9,6 +9,12 @@ SalesPyForce tests are organized into:
 
 Install dependencies and run all tests:
 
+```{warning}
+SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
+
+SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
+```
+
 ```bash
 poetry install
 poetry run pytest -q

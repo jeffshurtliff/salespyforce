@@ -26,6 +26,12 @@ This library requires the following:
 - A Salesforce org (Production or Sandbox or Playground)
 - A Salesforce user that has API privileges in the Salesforce org
 
+```{warning}
+SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
+
+SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
+```
+
 ## License and Support
 
 SalesPyForce is available under the MIT License, which allows for free use, modification, 
