@@ -96,6 +96,11 @@ salespyforce is a Python toolkit focused on interacting with Salesforce APIs, wi
 that centralizes authentication, version selection, and access to helper feature sets (Chatter, Knowledge).
 
 ## Installation
+
+> [!IMPORTANT]
+> SalesPyForce `1.5.0` is the final release that supports Python `3.9`, `3.10`, and `3.11`.<br>
+> SalesPyForce `2.0.0` and newer will require Python `3.12+`.
+
 The package can be installed via pip using the syntax below.
 
 ```sh

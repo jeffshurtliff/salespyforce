@@ -2,15 +2,17 @@
 # Keep this file minimal; dev/test deps should live in Poetry groups.
 
 # Primary runtime dependencies for the library
-requests>=2.32.5
-PyYAML>=6,<7
-tomli; python_version < "3.11"
+requests>=2.32.5,<2.33.0; python_version < "3.10"
+requests>=2.33.0,<3; python_version >= "3.10"
+PyYAML>=6.0.3,<7
+tomli>=2.0.0; python_version < "3.11"
 
-# Minimum urllib3 version to avoid CVE-2024-37891
-urllib3>=1.26.19,<3
+# Python 3.9 cannot install the urllib3 releases containing the 2026 security fixes.
+urllib3>=2.6.3,<2.7.0; python_version < "3.10"
+urllib3>=2.7.0,<3; python_version >= "3.10"
 
-# Minimum idna version to avoid CVE-2024-3651
-idna>=3.7,<4
+# Minimum idna version to avoid CVE-2024-3651 and CVE-2026-45409
+idna>=3.15,<4
 
 # Minimum certifi version to mitigate CA removals (e-Tugra, GLOBALTRUST)
 certifi>=2024.7.4

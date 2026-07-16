@@ -47,9 +47,11 @@ classifiers = [
 
 dependencies = [
     "PyYAML>=6.0.3,<7",
-    "requests>=2.32.5",
-    "urllib3>=1.26.19,<3",  # Explicit pin to avoid CVE-2024-37891
-    "idna>=3.7,<4",         # Explicit pin to avoid CVE-2024-3651
+    "requests>=2.32.5,<2.33.0; python_version < '3.10'",
+    "requests>=2.33.0,<3; python_version >= '3.10'",
+    "urllib3>=2.6.3,<2.7.0; python_version < '3.10'",
+    "urllib3>=2.7.0,<3; python_version >= '3.10'",
+    "idna>=3.15,<4",
     "certifi>=2024.7.4",    # Explicit pin to mitigate CA removals (e-Tugra, GLOBALTRUST)
 
     # Backport of tomllib for Python < 3.11
@@ -74,7 +76,10 @@ packages = [
 include = ["LICENSE", "README.md"]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.2"
+pytest = [
+    { version = ">=8.4.2,<9", python = ">=3.9,<3.10" },
+    { version = ">=9.0.3,<10", python = ">=3.10" },
+]
 pytest-cov = "^7.0.0"
 bandit = { version = "^1.7.8", extras = ["sarif"] }
 Sphinx = "^7.4.7"
@@ -82,6 +87,9 @@ pydata-sphinx-theme = "^0.15.4"
 myst-parser = "^3.0.1"
 sphinx-favicon = "^1.0.1"
 ruff = "^0.15.8"
+soupsieve = ">=2.8.4,<3"
+pygments = ">=2.20.0,<3"
+twine = ">=6.2.0,<7"
 
 [tool.ruff]
 target-version = "py39"

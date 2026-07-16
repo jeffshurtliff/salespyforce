@@ -21,6 +21,12 @@ CHANGELOG
 - Supported Python versions: 3.9+
 - License: MIT
 
+```{warning}
+SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
+
+SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
+```
+
 ## What You Can Do
 
 With SalesPyForce, you can:
