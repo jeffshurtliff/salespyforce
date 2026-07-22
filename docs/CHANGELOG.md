@@ -13,6 +13,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (unreleased-added)=
 ### Added
 
+No unreleased additions at this time.
+
+(unreleased-changed)=
+### Changed
+
+No unreleased changes at this time.
+
+---
+(relnotes-1.5.0)=
+## [1.5.0] - 2026-07-22
+
+This release adds new utilities, improves API and Knowledge behavior, centralizes
+package constants, modernizes documentation and quality tooling, and refreshes
+security-sensitive dependency constraints.
+
+```{warning}
+SalesPyForce `1.5.0` is the final release supporting Python 3.9, 3.10, and 3.11.
+
+SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
+```
+
+(relnotes-1.5.0-added)=
+### Added
+
 - The {py:func}`salespyforce.utils.version.get_version_from_pyproject` function was 
   added as a fallback method for retrieving the current package version when the 
   package is not installed.
@@ -22,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   {py:func}`~salespyforce.utils.core_utils.ensure_ends_with` core utility functions have 
   been added to assist with input validation.
 
-(unreleased-changed)=
+(relnotes-1.5.0-changed)=
 ### Changed
 
 - Successful GET, POST, PATCH, PUT, and DELETE responses with empty bodies are now
@@ -72,8 +96,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - The {py:exc}`salespyforce.errors.exceptions.GETRequestError` exception is raised if the GET 
     request fails to download the image.
 - The {py:func}`salespyforce.utils.helper.import_helper_file` and
-  {py:func}`salespyforce.utils.helper.get_helper_settings` functions now support both ``yml`` and
-  ``yaml`` extensions for YAML files.
+  {py:func}`salespyforce.utils.helper.get_helper_settings` functions now support both `yml` and
+  `yaml` extensions for YAML files.
 - The documentation for this project has updated to a more modern and intuitive theme,
   layout, and structure. The intent was to be less verbose and instead make the documentation 
   more human-oriented with helpful guides and tutorials.
@@ -84,14 +108,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `tests/integration/` to separate deterministic unit coverage from opt-in
   environment-dependent integration coverage.
 
-(unreleased-removed)=
+(relnotes-1.5.0-removed)=
 ### Removed
 
 - The {py:class}`salespyforce.utils.helper.HelperParsing` class has been removed as its functionality 
   has been replaced by the `YAML_BOOLEAN_MAPPING` constant in the {py:mod}`salespyforce.constants`
   module.
 
-(unreleased-security)=
+(relnotes-1.5.0-security)=
 ### Security
 
 - Updated `idna` to 3.15 or newer to address CVE-2026-45409 on every supported
@@ -150,7 +174,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and `current_user_info` (dict) for use in client API calls as default parameter values.
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_validation_status` method has been updated
   to use a more specific exception class, and to return an empty string on lookup failures 
-  versus a ``None`` value.
+  versus a `None` value.
 - The {py:meth}`salespyforce.Salesforce.Knowledge.get_article_details` method now accepts the 
   optional `use_knowledge_articles_endpoint` parameter, which forces the `knowledgeArticles` 
   endpoint to be used for the GET request rather than the `sobjects` endpoint.
@@ -277,7 +301,8 @@ features and functionality.
 
 
 <!-- The reference definitions are listed below -->
-[Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/1.4.0...HEAD
+[Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.2.2...1.3.0
 [1.2.2]: https://github.com/jeffshurtliff/salespyforce/compare/1.2.1...1.2.2

@@ -99,7 +99,7 @@ that centralizes authentication, version selection, and access to helper feature
 
 > [!IMPORTANT]
 > SalesPyForce `1.5.0` is the final release that supports Python `3.9`, `3.10`, and `3.11`.<br>
-> SalesPyForce `2.0.0` and newer will require Python `3.12+`.
+> SalesPyForce `2.0.0` and newer will require Python `3.12` or newer.
 
 The package can be installed via pip using the syntax below.
 
@@ -134,8 +134,8 @@ poetry run ruff format --check .
 These checks are enforced in CI via `.github/workflows/ci.yml`.
 
 ## Changelog
-The changelog can be found in the [documentation](https://salespyforce.readthedocs.io) for the 
-[stable](https://salespyforce.readthedocs.io/en/stable/changelog.html) and 
+The changelog can be found in the [documentation](https://salespyforce.readthedocs.io) for the
+[stable](https://salespyforce.readthedocs.io/en/stable/CHANGELOG.html) and
 [latest](https://salespyforce.readthedocs.io/en/latest/CHANGELOG.html) versions.
 
 ## Usage
