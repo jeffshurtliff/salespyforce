@@ -75,6 +75,7 @@ jobs:
                   'Pygments',
                   'pytest',
                   'requests',
+                  'setuptools',
                   'soupsieve',
                   'twine',
                   'urllib3',
@@ -84,6 +85,7 @@ jobs:
           assert installed['requests'] >= Version('2.33.0')
           assert installed['urllib3'] >= Version('2.7.0')
           assert installed['pytest'] >= Version('9.0.3')
+          assert installed['setuptools'] >= Version('83.0.0')
           assert installed['idna'] >= Version('3.15')
           assert installed['Pygments'] >= Version('2.20.0')
           assert installed['soupsieve'] >= Version('2.8.4')

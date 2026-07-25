@@ -79,6 +79,7 @@ ruff = "^0.15.8"
 soupsieve = ">=2.8.4,<3"
 pygments = ">=2.20.0,<3"
 twine = ">=6.2.0,<7"
+setuptools = ">=83.0.0"
 
 [tool.ruff]
 target-version = "py312"
