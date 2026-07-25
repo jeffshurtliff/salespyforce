@@ -26,6 +26,13 @@ No unreleased additions at this time.
 - Updated CI, Read the Docs, maintained documentation, and Ruff configuration for
   the Python 3.12+ support baseline.
 
+(unreleased-security)=
+### Security
+
+- Constrained development environments to setuptools 83.0.0 or newer to address
+  the `MANIFEST.in` exclusion bypass caused by Unicode normalization collisions
+  in source distributions on macOS.
+
 ---
 (relnotes-1.5.0)=
 ## [1.5.0] - 2026-07-22
