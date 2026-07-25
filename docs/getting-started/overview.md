@@ -22,14 +22,14 @@ such as:
 
 This library requires the following:
 
-- Python version 3.9 or above (version 3.14 not yet officially supported)
+- Python version 3.12 or 3.13
 - A Salesforce org (Production or Sandbox or Playground)
 - A Salesforce user that has API privileges in the Salesforce org
 
 ```{warning}
-SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
+SalesPyForce `2.0.0` and newer require Python 3.12 or newer.
 
-SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
+SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
 ```
 
 ## License and Support

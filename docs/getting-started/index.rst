@@ -12,16 +12,16 @@ If you are new to the library, follow this order:
 
 Before you begin, make sure you have:
 
-- Python 3.9+
+- Python 3.12 or 3.13
 - Access to a Salesforce org
 - A Salesforce user with API permissions
 - Connected App credentials (client key/secret) and security token as needed
 
 .. important::
 
-   SalesPyForce ``1.5.0`` is the final release that supports Python 3.9, 3.10, and 3.11.
+   SalesPyForce ``2.0.0`` and newer require Python 3.12 or newer.
 
-   SalesPyForce ``2.0.0`` and newer will require Python 3.12 or newer.
+   SalesPyForce ``1.5.0`` is the final release that supports Python 3.9, 3.10, and 3.11.
 
 For deeper task-based walkthroughs after setup, continue to the :doc:`../guides/index` section.
 For method and exception details, see the :doc:`../reference/index` section.

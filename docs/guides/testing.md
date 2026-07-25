@@ -7,12 +7,12 @@ SalesPyForce tests are organized into:
 
 ## Run the Test Suite
 
-Install dependencies and run all tests:
+Install dependencies and run all tests with Python 3.12 or 3.13:
 
 ```{warning}
-SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
+SalesPyForce `2.0.0` and newer require Python 3.12 or newer.
 
-SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
+SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
 ```
 
 ```bash
