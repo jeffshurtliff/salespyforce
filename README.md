@@ -39,7 +39,7 @@ A Python toolset for performing Salesforce API calls
         <td>Code Coverage</td>
         <td>
             <a href="https://codecov.io/gh/jeffshurtliff/salespyforce">
-                <img src="https://codecov.io/gh/jeffshurtliff/salespyforce/branch/master/graph/badge.svg" />
+                <img src="https://codecov.io/gh/jeffshurtliff/salespyforce/branch/master/graph/badge.svg" alt="Code Coverage Badge">
             </a>
         </td>
     </tr>
@@ -47,7 +47,7 @@ A Python toolset for performing Salesforce API calls
         <td>Documentation</td>
         <td>
             <a href="https://salespyforce.readthedocs.io/en/latest/?badge=latest">
-                <img src="https://readthedocs.org/projects/salespyforce/badge/?version=latest" alt="Documentation Status" />
+                <img src="https://readthedocs.org/projects/salespyforce/badge/?version=latest" alt="Documentation Status">
             </a>
         </td>
     </tr>
@@ -98,8 +98,8 @@ that centralizes authentication, version selection, and access to helper feature
 ## Installation
 
 > [!IMPORTANT]
-> SalesPyForce `1.5.0` is the final release that supports Python `3.9`, `3.10`, and `3.11`.<br>
-> SalesPyForce `2.0.0` and newer will require Python `3.12` or newer.
+> SalesPyForce `2.0.0` and newer require Python `3.12` or newer.<br>
+> SalesPyForce `1.5.0` is the final release that supports Python `3.9`, `3.10`, and `3.11`.
 
 The package can be installed via pip using the syntax below.
 

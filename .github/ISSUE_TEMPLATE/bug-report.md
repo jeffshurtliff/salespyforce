@@ -58,7 +58,7 @@ Please include a **minimal, reproducible example**.
 Please complete the following information:
 
 - **SalesPyForce version**:
-- **Python version** (e.g. 3.9.18):
+- **Python version** (e.g. 3.12.7):
 - **Operating system**:
 - **Installation method**:
   - [ ] pip

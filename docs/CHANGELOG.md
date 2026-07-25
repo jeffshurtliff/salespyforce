@@ -18,7 +18,13 @@ No unreleased additions at this time.
 (unreleased-changed)=
 ### Changed
 
-No unreleased changes at this time.
+- Dropped Python 3.9, 3.10, and 3.11 support; SalesPyForce 2.x supports Python 3.12
+  and 3.13.
+- Simplified security-sensitive dependency constraints after dropping older Python
+  support, including modern Requests, urllib3, and pytest floors and removal of the
+  `tomli` backport.
+- Updated CI, Read the Docs, maintained documentation, and Ruff configuration for
+  the Python 3.12+ support baseline.
 
 ---
 (relnotes-1.5.0)=
@@ -29,9 +35,9 @@ package constants, modernizes documentation and quality tooling, and refreshes
 security-sensitive dependency constraints.
 
 ```{warning}
-SalesPyForce `1.5.0` is the final release supporting Python 3.9, 3.10, and 3.11.
+SalesPyForce `2.0.0` and newer require Python 3.12 or newer.
 
-SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
+SalesPyForce `1.5.0` is the final release supporting Python 3.9, 3.10, and 3.11.
 ```
 
 (relnotes-1.5.0-added)=
@@ -68,7 +74,7 @@ SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
   release, isolates pytest temporary files, and validates built artifacts with Twine.
 - Added prominent README and Sphinx documentation notices that version 1.5.0 is
   the final release supporting Python 3.9 through 3.11 and that version 2.0.0
-  will require Python 3.12 or newer.
+  requires Python 3.12 or newer.
 - The constants used by the package have been centralized within the new 
   {py:mod}`salespyforce.constants` module and the other modules have been updated accordingly.
 - The {py:meth}`~salespyforce.Salesforce.download_image` method now logs errors and raises exceptions 
@@ -135,8 +141,8 @@ SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
   APIs. pytest is development-only, and the Python 3.9 CI jobs use an isolated,
   owner-only temporary directory on ephemeral runners.
 - Version 1.5.0 is the final SalesPyForce release supporting Python versions below
-  3.12. The next release line will remove these Python 3.9 dependency exceptions
-  when it raises the minimum supported Python version to 3.12.
+  3.12. Version 2.0.0 removes these Python 3.9 dependency exceptions and raises
+  the minimum supported Python version to 3.12.
 
 ---
 (relnotes-1.4.0)=

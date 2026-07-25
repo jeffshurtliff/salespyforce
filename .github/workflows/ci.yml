@@ -39,9 +39,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          # Default OS/Python matrix for 3.9+
+          # Default OS/Python matrix for the Python versions supported by SalesPyForce 2.x.
           os: [ ubuntu-latest, macos-latest ]
-          python-version: [ "3.9", "3.10", "3.11", "3.12", "3.13" ]
+          python-version: [ "3.12", "3.13" ]
 
     steps:
       - name: Check out
@@ -64,7 +64,6 @@ jobs:
       - name: Verify security dependency versions
         run: |
           poetry run python - <<'PY'
-          import sys
           from importlib.metadata import version
 
           from packaging.version import Version
@@ -82,15 +81,9 @@ jobs:
               )
           }
 
-          if sys.version_info[:2] == (3, 9):
-              assert Version('2.32.5') <= installed['requests'] < Version('2.33.0')
-              assert Version('2.6.3') <= installed['urllib3'] < Version('2.7.0')
-              assert Version('8.4.2') <= installed['pytest'] < Version('9')
-          else:
-              assert installed['requests'] >= Version('2.33.0')
-              assert installed['urllib3'] >= Version('2.7.0')
-              assert installed['pytest'] >= Version('9.0.3')
-
+          assert installed['requests'] >= Version('2.33.0')
+          assert installed['urllib3'] >= Version('2.7.0')
+          assert installed['pytest'] >= Version('9.0.3')
           assert installed['idna'] >= Version('3.15')
           assert installed['Pygments'] >= Version('2.20.0')
           assert installed['soupsieve'] >= Version('2.8.4')

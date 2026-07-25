@@ -18,13 +18,13 @@ CHANGELOG
 
 - Purpose: Simplify Salesforce REST API interactions in Python
 - Primary interface: `salespyforce.Salesforce`
-- Supported Python versions: 3.9+
+- Supported Python versions: 3.12 and 3.13
 - License: MIT
 
 ```{warning}
-SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
+SalesPyForce `2.0.0` and newer require Python 3.12 or newer.
 
-SalesPyForce `2.0.0` and newer will require Python 3.12 or newer.
+SalesPyForce `1.5.0` is the final release that supports Python 3.9, 3.10, and 3.11.
 ```
 
 ## What You Can Do
