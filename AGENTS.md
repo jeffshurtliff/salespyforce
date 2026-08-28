@@ -235,6 +235,54 @@ def api_version(self) -> str:
     """The Salesforce API version in use."""
 ```
 
+### Version directives (`versionadded` / `versionchanged`)
+
+Public functions, methods, classes, decorators, and exceptions carry Sphinx
+version directives in their docstrings so the API reference shows when each entry
+point appeared or last changed.
+
+- **New public callable** → add `.. versionadded:: X.Y.Z`.
+- **Changed public callable** (behavior, signature, parameters, return value,
+  raised exceptions, or defaults) → add `.. versionchanged:: X.Y.Z` with a short
+  note describing what changed. Keep any existing directives and append the new
+  one.
+- Always use the **stable** version the change will ship in — never the
+  in-development version string. Derive it from the `version` field in
+  `pyproject.toml` by dropping any dev/pre-release suffix:
+  - `2.0.0.dev0` → `2.0.0`
+  - `2.1.0rc1` / `2.1.0.rc0` → `2.1.0`
+  - `2.0.3` (already stable) → `2.0.3`
+- Place the directive(s) at the end of the docstring, after the field list
+  (`:param:` / `:returns:` / `:raises:`), separated by a blank line.
+- Private/internal items (leading underscore) do not get version directives.
+- Pure internal refactors, renames, and doc-wording fixes do not get version
+  directives — record those in `docs/CHANGELOG.md` instead.
+
+```python
+def bulk_upsert(records: list[dict], external_id: str) -> dict:
+    """Upsert records by their external ID.
+
+    :param records: The records to upsert.
+    :param external_id: The external ID field name.
+    :returns: The Salesforce composite response.
+    :raises ValueError: If `records` is empty.
+
+    .. versionadded:: 2.0.0
+    """
+```
+
+When that function is later changed, append (do not replace) a
+`.. versionchanged::` line:
+
+```python
+    :raises ValueError: If `records` is empty.
+
+    .. versionadded:: 2.0.0
+    .. versionchanged:: 2.1.0
+       Added retry handling for transient `503` responses.
+    """
+```
+
 ## Tests
 
 - Test suites live at the repository root under `tests/unit/` and
@@ -259,7 +307,9 @@ def api_version(self) -> str:
   CHANGELOG, not in narrative docs or version directives.
 - Use Sphinx version directives (`.. versionadded::`, `.. versionchanged::`,
   `.. deprecated::`) only for changes to public behavior, signatures, return
-  values, exceptions, or defaults.
+  values, exceptions, or defaults. Every new or changed public callable needs
+  one — see "Version directives" under "Docstrings" for the exact rule and which
+  version number to use.
 - In Markdown/MyST (`.md`) files, delimit inline code with a single backtick on
   each side. Do not use reStructuredText-style double-backtick delimiters in
   Markdown files (double backticks remain correct in `.rst` files and reST
@@ -333,6 +383,8 @@ Before handing work back or opening a PR:
 2. `poetry run ruff format --check .`
 3. `poetry run pytest -q`
 4. Docstrings and `docs/` updated for any public-behavior change.
-5. `docs/CHANGELOG.md` `[Unreleased]` updated for any user-facing change.
-6. Header blocks updated on changed files only.
-7. No secrets or real credentials added to tracked files.
+5. `.. versionadded::` / `.. versionchanged::` (stable version) added to every new
+   or changed public callable.
+6. `docs/CHANGELOG.md` `[Unreleased]` updated for any user-facing change.
+7. Header blocks updated on changed files only.
+8. No secrets or real credentials added to tracked files.

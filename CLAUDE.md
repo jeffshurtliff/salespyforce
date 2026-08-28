@@ -57,6 +57,10 @@ into code/docs/commit messages, or add real credentials to any tracked file. Use
 
 - Plan non-trivial changes before editing; this project values small, localized,
   well-tested diffs over broad refactors.
+- When you add or change a public function/method/class, add the
+  `.. versionadded::` / `.. versionchanged::` directive using the **stable**
+  version derived from `pyproject.toml` (e.g. `2.0.0.dev0` → `2.0.0`). See
+  `AGENTS.md` → "Version directives".
 - `/code-review` before opening a PR catches the correctness and cleanup issues
   reviewers here look for.
 - Follow the pre-submit checklist in `AGENTS.md` before wrapping up.
