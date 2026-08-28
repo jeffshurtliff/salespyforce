@@ -64,7 +64,7 @@ jobs:
       - name: Verify security dependency versions
         run: |
           poetry run python - <<'PY'
-          from importlib.metadata import version
+          from importlib.metadata import PackageNotFoundError, version
 
           from packaging.version import Version
 
@@ -90,6 +90,17 @@ jobs:
           assert installed['Pygments'] >= Version('2.20.0')
           assert installed['soupsieve'] >= Version('2.8.4')
           assert installed['twine'] >= Version('6.2.0')
+
+          # cryptography is a development-only dependency (transitive via twine ->
+          # keyring -> SecretStorage); enforce the CVE-2026-69247 floor where present.
+          try:
+              cryptography_version = Version(version('cryptography'))
+          except PackageNotFoundError:
+              cryptography_version = None
+
+          if cryptography_version is not None:
+              assert cryptography_version >= Version('50.0.0')
+              installed['cryptography'] = cryptography_version
 
           for package, installed_version in installed.items():
               print(f'{package}=={installed_version}')

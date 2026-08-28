@@ -32,6 +32,11 @@ No unreleased additions at this time.
 - Constrained development environments to setuptools 83.0.0 or newer to address
   the `MANIFEST.in` exclusion bypass caused by Unicode normalization collisions
   in source distributions on macOS.
+- Constrained development environments to `cryptography` 50.0.0 or newer to address
+  CVE-2026-69247 (GHSA-g6cj-pr64-35w5), a Bleichenbacher oracle in PKCS#7
+  `EnvelopedData` decryption. Cryptography is a development-only dependency pulled
+  in transitively through Twine's keyring integration and is not used at runtime
+  by SalesPyForce.
 
 ---
 (relnotes-1.5.0)=

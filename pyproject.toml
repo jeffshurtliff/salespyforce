@@ -80,6 +80,7 @@ soupsieve = ">=2.8.4,<3"
 pygments = ">=2.20.0,<3"
 twine = ">=6.2.0,<7"
 setuptools = ">=83.0.0"
+cryptography = ">=50.0.0"    # Transitive via twine -> keyring -> SecretStorage; pinned for CVE-2026-69247
 
 [tool.ruff]
 target-version = "py312"
