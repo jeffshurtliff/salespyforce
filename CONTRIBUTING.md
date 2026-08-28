@@ -570,6 +570,23 @@ Do not use version directives for:
 
 Implementation changes belong in the CHANGELOG, not in docstrings.
 
+#### `versionadded` and `versionchanged` in docstrings
+
+- Every **new** public function, method, class, decorator, or exception must
+  include a `.. versionadded:: X.Y.Z` directive in its docstring.
+- Every **change** to an existing public callable (behavior, signature,
+  parameters, return value, raised exceptions, or defaults) must add a
+  `.. versionchanged:: X.Y.Z` directive with a brief note describing the change.
+  Keep prior directives in place and append the new one.
+- `X.Y.Z` is always the **stable** version the change will be released in, not
+  the in-development version. Derive it from the `version` in `pyproject.toml` by
+  removing any `.devN`, `aN`, `bN`, `rcN`, or `.postN` suffix:
+  - `2.0.0.dev0` → `.. versionadded:: 2.0.0`
+  - `2.1.0rc1` → `.. versionchanged:: 2.1.0`
+- Place the directive(s) at the end of the docstring, after the field list,
+  separated by a blank line.
+- Do not add version directives to private/internal (`_`-prefixed) items.
+
 ---
 
 ### CHANGELOG vs Documentation
@@ -612,6 +629,8 @@ Docstrings must:
 - Include type hints in signatures (not repeated redundantly)
 - Document parameters and return values clearly
 - Document raised exceptions when applicable
+- Carry `.. versionadded::` / `.. versionchanged::` directives for new or changed
+  public callables (see "Version Directives Policy" above)
 - Avoid excessive verbosity
 - Avoid implementation detail leakage
 
