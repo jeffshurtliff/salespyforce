@@ -11,6 +11,7 @@ patterns, query workflows, error handling, and the complete API reference.
 getting-started/index
 guides/index
 reference/index
+maintainers/releasing
 CHANGELOG
 ```
 
