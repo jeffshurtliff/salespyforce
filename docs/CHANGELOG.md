@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (unreleased-added)=
 ### Added
 
-No unreleased additions at this time.
+- Added the `docs/maintainers/releasing.md` document with maintainer instructions for
+  preparing a stable release for distribution.
 
 (unreleased-changed)=
 ### Changed
