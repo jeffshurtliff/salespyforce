@@ -11,7 +11,7 @@ patterns, query workflows, error handling, and the complete API reference.
 getting-started/index
 guides/index
 reference/index
-maintainers/releasing
+maintainers/index
 CHANGELOG
 ```
 
@@ -84,6 +84,10 @@ For a complete walkthrough, see the {doc}`getting-started/quickstart` page.
 - {doc}`reference/client`: `Salesforce` class and client-facing modules
 - {doc}`reference/utilities`: Utility functions and helpers
 - {doc}`reference/exceptions`: Exception classes and error helpers
+
+### Maintainers
+
+- {doc}`maintainers/releasing`: Preparing and publishing stable package releases
 
 ### Project Information
 
