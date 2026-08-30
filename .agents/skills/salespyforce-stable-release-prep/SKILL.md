@@ -62,6 +62,10 @@ a prerelease suffix is acceptable only when the intended target is unambiguous, 
 as `2.0.0.dev0` to `2.0.0`. Never invent an issue number, reuse an existing tag or PyPI version, 
 or guess the next development version.
 
+The issue number refers to the release's dedicated tracking issue, opened from the **Maintainer 
+Release** template (`.github/ISSUE_TEMPLATE/maintainer-release.md`) with the `chore/` branch prefix. 
+If no such issue exists, treat the issue number as unresolved and ask for it rather than proceeding.
+
 Treat an unavailable remote or PyPI check as unresolved rather than proof that the version is unused. 
 Do not open `local/`, `.env`, home-directory secret stores, decrypted helpers, or encrypted credential 
 material merely to check release readiness.

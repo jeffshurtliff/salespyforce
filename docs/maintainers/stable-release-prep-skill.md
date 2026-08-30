@@ -18,6 +18,19 @@ root, so this placement makes the skill available throughout the checkout. See
 [OpenAI's skill documentation](https://learn.chatgpt.com/docs/build-skills) for
 current discovery and invocation behavior.
 
+Claude Code discovers project skills under `.claude/skills/<name>/SKILL.md`
+instead. The repository exposes the same skill to Claude Code through a symlink:
+
+```text
+.claude/skills/salespyforce-stable-release-prep -> ../../.agents/skills/salespyforce-stable-release-prep
+```
+
+The symlink keeps a single canonical copy of `SKILL.md`, the inspector script,
+and the agent metadata; there is nothing to keep in sync between the two paths.
+Contributors on filesystems without symlink support (for example a Windows
+checkout without symlinks enabled) can still direct any agent to read
+`.agents/skills/salespyforce-stable-release-prep/SKILL.md` manually.
+
 It is repository-owned and contains no credentials, private helper data, local
 filesystem paths, or maintainer-specific environment configuration.
 
@@ -39,7 +52,9 @@ Before invocation, confirm that:
 
 - the repository is available in a clean working tree;
 - the intended release work has been merged into `master`;
-- a maintainer chore issue and exact stable version have been identified;
+- a **Maintainer Release** tracking issue
+  (`.github/ISSUE_TEMPLATE/maintainer-release.md`) has been opened and the exact
+  stable version has been identified;
 - Poetry and the project's development dependencies are installed; and
 - read-only access to GitHub and PyPI is available for duplicate-version checks.
 
@@ -57,6 +72,11 @@ Use $salespyforce-stable-release-prep to prepare SalesPyForce 2.0.0 from
 2.0.0.dev0 using issue #123. Complete all local preparation and validation,
 then stop before staging, committing, pushing, tagging, or publishing anything.
 ```
+
+In Codex, reference the skill with `$salespyforce-stable-release-prep` as shown
+above. In Claude Code, invoke it with `/salespyforce-stable-release-prep` or let
+it trigger automatically from a matching request; the same version and issue
+details still need to be supplied.
 
 Replace the example values with the approved release values. Supplying the
 previous stable tag is optional when it can be established unambiguously from
@@ -151,10 +171,16 @@ import the client successfully.
 
 When the release workflow changes, update these sources together:
 
-- `.agents/skills/salespyforce-stable-release-prep/SKILL.md`;
+- `.agents/skills/salespyforce-stable-release-prep/SKILL.md` (the canonical copy;
+  the `.claude/skills/` entry is a symlink and needs no separate edit);
 - the included artifact inspector when archive rules change;
+- `.github/ISSUE_TEMPLATE/maintainer-release.md` when the release phases or
+  authorization checkpoints change;
 - {doc}`releasing`; and
 - this usage guide.
+
+If the skill directory is ever renamed or moved, update the
+`.claude/skills/salespyforce-stable-release-prep` symlink target to match.
 
 Validate the skill structure with the agent platform's skill validator when one
 is available. Always run Ruff against the Python helper, build the Sphinx
