@@ -229,6 +229,26 @@ Is this maintenance work that does not improve architecture or add capability?
 
 If yes → `chore/`.
 
+#### Special Case: Cutting a Release
+
+Preparing and publishing a stable release is a chore, but it has its own
+maintainer issue template, **Maintainer Release**
+(`.github/ISSUE_TEMPLATE/maintainer-release.md`), because the generic
+**Maintainer Chore** template does not capture the release phases or the
+publication authorization checkpoints.
+
+| Aspect                     | Value                                                      |
+|----------------------------|------------------------------------------------------------|
+| Issue Template: Maintainer | Maintainer Release                                         |
+| Issue Template: Requester  | N/A                                                        |
+| Issue Subject Prefix       | `[CHORE]`                                                  |
+| Label(s)                   | Maintainer: `chore`, `maintainer`<br>Requester: N/A        |
+| Branch Prefix              | `chore/` (e.g. `chore/123-prepare-2.0.0-release`)          |
+
+Every release must be tracked by one such issue before its branch is created.
+The full procedure is in the maintainer release runbook at
+`docs/maintainers/releasing.md`.
+
 ---
 
 ### Documentation - Documentation-Only Changes

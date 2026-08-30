@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   preparing a stable release for distribution.
 - Added the repository-owned `$salespyforce-stable-release-prep` skill and
   maintainer usage guide for repeatable, approval-gated stable release preparation.
+  The skill is discoverable by both Codex (`.agents/skills/`) and Claude Code
+  (`.claude/skills/`, symlinked to the canonical copy).
+- Added a **Maintainer Release** issue template
+  (`.github/ISSUE_TEMPLATE/maintainer-release.md`) and made a dedicated release
+  tracking issue a required prerequisite in the maintainer release runbook.
 
 (unreleased-changed)=
 ### Changed

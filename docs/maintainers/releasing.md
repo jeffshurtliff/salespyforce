@@ -49,9 +49,13 @@ PREVIOUS_TAG=1.5.0
 RELEASE_VERSION=2.0.0
 RELEASE_TAG="$RELEASE_VERSION"
 RELEASE_DATE=2026-08-28
-ISSUE_NUMBER=123
+ISSUE_NUMBER=123  # the Maintainer Release tracking issue; see section 1
 RELEASE_BRANCH="chore/${ISSUE_NUMBER}-prepare-${RELEASE_VERSION}-release"
 ```
+
+`ISSUE_NUMBER` refers to the dedicated release tracking issue opened in
+[section 1](#1-perform-the-preflight-review). Open that issue first if it does
+not exist yet.
 
 Confirm these conventions rather than assuming them when copying this guide:
 
@@ -85,6 +89,77 @@ different commit. The uploaded archives, tag, and GitHub Release must all
 represent the same primary-branch commit.
 
 ## 1. Perform the preflight review
+
+### Open the release tracking issue
+
+Every release must be tracked by its own GitHub issue before any branch, commit,
+or pull request is created. This follows the repository's standard rule that work
+begins from an issue whose number appears in the branch name
+(`CONTRIBUTING.md` → "Development Workflow Overview"). The issue is the single
+record that ties together the preparation pull request, the tag, the PyPI upload,
+and the GitHub Release, and it is where each publication authorization is granted
+and checked off.
+
+A release is a specialized maintenance chore, so it uses the `chore/` branch
+prefix and the `[CHORE]` subject prefix, but it has its own issue template
+because the generic **Maintainer Chore** template is intentionally lightweight
+and does not capture the release phases or the authorization checkpoints.
+
+Use the **Maintainer Release** template
+(`.github/ISSUE_TEMPLATE/maintainer-release.md`). Open it from *Issues → New
+issue → Maintainer Release*, or with GitHub CLI:
+
+```bash
+gh issue create \
+  --repo "$GITHUB_REPOSITORY" \
+  --template maintainer-release.md \
+  --title "[CHORE] Prepare SalesPyForce ${RELEASE_VERSION} stable release"
+```
+
+Fill in the template with the resolved release facts. A representative body is:
+
+```markdown
+## Release Summary
+
+Promote the active development version to a stable release and publish it.
+
+- Current version (from): `2.0.0.dev0`
+- Target stable version (to): `2.0.0`
+- Target release date: `2026-08-28`
+
+## Motivation
+
+SalesPyForce 2.x drops Python 3.9–3.11, modernizes security-sensitive
+dependency floors, and adds the maintainer release runbook and prep skill. That
+work is merged on `master` and ready to ship.
+
+## Release Facts to Confirm
+
+- PyPI / distribution name: `salespyforce`
+- Primary branch: `master`
+- Previous reachable stable tag: `1.5.0`
+- Target tag (bare, annotated): `2.0.0`
+- Release branch: `chore/123-prepare-2.0.0-release`
+- Next development version (after release): `2.0.1.dev0`
+- Supported Python: 3.12 and 3.13 (from `pyproject.toml` and CI)
+
+## Change Set Since Last Stable Tag
+
+- Dropped Python 3.9/3.10/3.11 support (#NN)
+- Raised Requests, urllib3, cryptography, setuptools, and pytest floors (#NN)
+- Added the release runbook, usage guide, and `$salespyforce-stable-release-prep`
+  skill (#NN)
+```
+
+Leave the template's **Authorization Checkpoints** and **Checklist** sections in
+place and tick each box as the corresponding step is completed and approved.
+
+After the issue exists, record its number for the rest of this runbook:
+
+```bash
+ISSUE_NUMBER=123
+RELEASE_BRANCH="chore/${ISSUE_NUMBER}-prepare-${RELEASE_VERSION}-release"
+```
 
 ### Confirm the release scope
 
@@ -133,8 +208,9 @@ An expected `404` produces curl exit status `22`.
 
 ### Start from the current primary branch
 
-Follow the repository's issue, branch, and pull-request policy. For SalesPyForce,
-create a maintainer chore issue and branch from `master`:
+Follow the repository's issue, branch, and pull-request policy. With the
+**Maintainer Release** tracking issue from above already open, branch from
+`master` using its issue number:
 
 ```bash
 git switch "$PRIMARY_BRANCH"
@@ -691,6 +767,8 @@ clear advisory or changelog note.
 
 ## Definition of done
 
+- [ ] A **Maintainer Release** tracking issue recorded the release, and each
+  publication authorization was granted and checked off on it.
 - [ ] Stable version is present in every authoritative version source.
 - [ ] `Unreleased` is empty but retains its category skeleton and placeholders.
 - [ ] The new dated changelog section and comparison links are correct.
