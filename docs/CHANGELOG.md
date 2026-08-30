@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added the `docs/maintainers/releasing.md` document with maintainer instructions for
   preparing a stable release for distribution.
+- Added the repository-owned `$salespyforce-stable-release-prep` skill and
+  maintainer usage guide for repeatable, approval-gated stable release preparation.
 
 (unreleased-changed)=
 ### Changed
@@ -26,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `tomli` backport.
 - Updated CI, Read the Docs, maintained documentation, and Ruff configuration for
   the Python 3.12+ support baseline.
+- Corrected the release wheel smoke-test procedure to separate dependency-free
+  metadata validation from dependency-aware public API import validation.
 
 (unreleased-security)=
 ### Security

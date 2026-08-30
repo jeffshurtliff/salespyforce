@@ -88,6 +88,7 @@ For a complete walkthrough, see the {doc}`getting-started/quickstart` page.
 ### Maintainers
 
 - {doc}`maintainers/releasing`: Preparing and publishing stable package releases
+- {doc}`maintainers/stable-release-prep-skill`: Using the repository-owned release-preparation skill
 
 ### Project Information
 

@@ -9,6 +9,10 @@ project metadata in `pyproject.toml`, release notes in `docs/CHANGELOG.md`, and
 GitHub Actions CI. Adapt the values and repository-specific checks before using
 this guide in another project.
 
+For agent-assisted SalesPyForce preparation, see
+{doc}`stable-release-prep-skill`. This runbook remains the authoritative release
+procedure.
+
 > **Important:** PyPI filenames cannot be replaced after upload, and published
 > versions should be treated as immutable. Read through the entire runbook and
 > resolve every failed check before uploading anything.
@@ -363,22 +367,36 @@ Confirm that:
   configuration, caches, or unrelated generated files; and
 - `twine check --strict` passes for every artifact.
 
-### Smoke-test the wheel in a clean environment
+### Smoke-test the wheel in clean environments
 
 Use the distribution name, not necessarily the import name, for the metadata
-assertion:
+assertion. First install the wheel without dependencies so the metadata check is
+isolated from dependency resolution:
 
 ```bash
-RELEASE_SMOKE_DIR=$(mktemp -d)
-python3 -m venv "$RELEASE_SMOKE_DIR"
-"$RELEASE_SMOKE_DIR/bin/python" -m pip install --no-deps dist/*.whl
-"$RELEASE_SMOKE_DIR/bin/python" -c \
+RELEASE_METADATA_SMOKE_DIR=$(mktemp -d)
+python3 -m venv "$RELEASE_METADATA_SMOKE_DIR"
+"$RELEASE_METADATA_SMOKE_DIR/bin/python" -m pip install --no-deps dist/*.whl
+"$RELEASE_METADATA_SMOKE_DIR/bin/python" -c \
   "from importlib.metadata import version; assert version('${PYPI_PROJECT}') == '${RELEASE_VERSION}'"
 ```
 
-Also run a small public-API import or functional smoke test appropriate to the
-package. CI should cover every supported Python version; the local smoke test is
-an additional artifact check, not a substitute for CI.
+Use a second clean environment for the public-API smoke test. Install the wheel
+normally so its declared runtime dependencies are present:
+
+```bash
+RELEASE_IMPORT_SMOKE_DIR=$(mktemp -d)
+python3 -m venv "$RELEASE_IMPORT_SMOKE_DIR"
+"$RELEASE_IMPORT_SMOKE_DIR/bin/python" -m pip install dist/*.whl
+"$RELEASE_IMPORT_SMOKE_DIR/bin/python" -c \
+  "from salespyforce import Salesforce; assert Salesforce is not None"
+```
+
+Adapt the final import or functional check to the package's public API. Do not
+require a package import in the `--no-deps` environment when importing the
+package legitimately requires declared runtime dependencies. CI should cover
+every supported Python version; these local smoke tests are additional artifact
+checks, not substitutes for CI.
 
 ### Review the complete diff
 

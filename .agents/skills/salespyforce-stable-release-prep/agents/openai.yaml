@@ -1,0 +1,4 @@
+interface:
+  display_name: "SalesPyForce Stable Release Prep"
+  short_description: "Prepare validated SalesPyForce stable releases"
+  default_prompt: "Use $salespyforce-stable-release-prep to prepare SalesPyForce for its next stable release."
