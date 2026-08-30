@@ -12,6 +12,8 @@ Recommended starting point:
 
 1. Use :doc:`releasing` when promoting a development version to a stable release
    and publishing it to PyPI and GitHub.
+2. Use :doc:`stable-release-prep-skill` when an agent will perform the reversible
+   preparation and validation work before the publication checkpoints.
 
 Before beginning a maintainer procedure, confirm that you have:
 
@@ -30,3 +32,4 @@ repository's ``CONTRIBUTING.md`` file. For published release history, see the
    :hidden:
 
    releasing
+   stable-release-prep-skill
