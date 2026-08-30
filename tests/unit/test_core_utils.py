@@ -4,8 +4,8 @@
 :Module:         tests.unit.test_core_utils
 :Synopsis:       This module is used by pytest to test core utility functions
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:  15 Jul 2026
+:Last Modified:  Jeff Shurtliff (via claude-sonnet-5)
+:Modified Date:  30 Aug 2026
 """
 
 import os
@@ -28,16 +28,6 @@ def test_url_encode_and_decode_round_trip():
     assert '%26' in encoded and '+' in encoded
     decoded = core_utils.url_decode(encoded)
     assert decoded == raw_string
-
-
-def test_display_warning_emits_userwarning():
-    """This function tests that display_warning emits a UserWarning.
-
-    .. versionadded:: 1.4.0
-    """
-    warn_msg = 'testing warning'
-    with pytest.warns(UserWarning, match=warn_msg):
-        core_utils.display_warning(warn_msg)
 
 
 def test_get_file_type_detects_json_extension(tmp_path):

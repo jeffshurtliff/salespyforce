@@ -13,6 +13,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (unreleased-added)=
 ### Added
 
+No unreleased additions at this time.
+
+(unreleased-changed)=
+### Changed
+
+No unreleased changes at this time.
+
+(unreleased-security)=
+### Security
+
+No unreleased security updates at this time.
+
+---
+(relnotes-2.0.0)=
+## [2.0.0] - 2026-08-30
+
+SalesPyForce 2.0.0 is the first stable release of the 2.x line. It drops support
+for Python 3.9, 3.10, and 3.11, modernizes security-sensitive dependency
+constraints, and adds the maintainer release runbook and the repeatable stable
+release preparation skill.
+
+```{warning}
+SalesPyForce `2.0.0` and newer require Python `3.12` or newer. SalesPyForce
+`1.5.0` is the final release that supports Python `3.9`, `3.10`, and `3.11`.
+```
+
+(relnotes-2.0.0-added)=
+### Added
+
 - Added the `docs/maintainers/releasing.md` document with maintainer instructions for
   preparing a stable release for distribution.
 - Added the repository-owned `$salespyforce-stable-release-prep` skill and
@@ -23,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`.github/ISSUE_TEMPLATE/maintainer-release.md`) and made a dedicated release
   tracking issue a required prerequisite in the maintainer release runbook.
 
-(unreleased-changed)=
+(relnotes-2.0.0-changed)=
 ### Changed
 
 - Dropped Python 3.9, 3.10, and 3.11 support; SalesPyForce 2.x supports Python 3.12
@@ -36,7 +65,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Corrected the release wheel smoke-test procedure to separate dependency-free
   metadata validation from dependency-aware public API import validation.
 
-(unreleased-security)=
+(relnotes-2.0.0-removed)=
+### Removed
+
+- Removed the deprecated {py:func}`salespyforce.utils.core_utils.display_warning`
+  function, which was deprecated in 1.4.0 and scheduled for removal in 2.0.0. Use
+  {py:func}`salespyforce.errors.handlers.display_warning` instead.
+
+(relnotes-2.0.0-security)=
 ### Security
 
 - Constrained development environments to setuptools 83.0.0 or newer to address
@@ -329,7 +365,8 @@ features and functionality.
 
 
 <!-- The reference definitions are listed below -->
-[Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.2.2...1.3.0

@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:     15 Jul 2026
+:Last Modified:     Jeff Shurtliff (via claude-sonnet-5)
+:Modified Date:     30 Aug 2026
 """
 
 from __future__ import annotations
@@ -16,14 +16,12 @@ import random
 import re
 import string
 import urllib.parse
-import warnings
 from typing import Optional
 
 import requests
 
 from .. import constants as const
 from .. import errors
-from ..decorators import deprecated
 from . import log_utils
 
 # Initialize the logger for this module
@@ -115,20 +113,6 @@ def ensure_ends_with(eval_string, suffix):
     )
 
 
-@deprecated(since='1.4.0', replacement='salespyforce.errors.handlers.display_warning', removal='2.0.0')
-def display_warning(warn_msg: str) -> None:
-    """This function displays a :py:exc:`UserWarning` message via the :py:mod:`warnings` module.
-
-    .. deprecated:: 1.4.0
-       Use :py:func:`salespyforce.errors.handlers.display_warning` instead.
-
-    :param warn_msg: The message to be displayed
-    :type warn_msg: str
-    :returns: None
-    """
-    warnings.warn(warn_msg, UserWarning)
-
-
 def get_file_type(file_path: str) -> str:
     """This function attempts to identify if a given file path is for a YAML or JSON file.
 
@@ -145,7 +129,7 @@ def get_file_type(file_path: str) -> str:
         elif file_path.endswith(const.FILE_EXTENSIONS.DOT_YML) or file_path.endswith(const.FILE_EXTENSIONS.DOT_YAML):
             file_type = const.FILE_EXTENSIONS.YAML
         else:
-            display_warning(f"Unable to recognize the file type of '{file_path}' by its extension.")
+            errors.handlers.display_warning(f"Unable to recognize the file type of '{file_path}' by its extension.")
             with open(file_path) as cfg_file:
                 for line in cfg_file:
                     if line.startswith('#'):
