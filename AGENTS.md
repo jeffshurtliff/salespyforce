@@ -12,7 +12,8 @@ Tool-specific notes live in thin companion files that point back here and add
 only what is unique to that tool:
 
 - `CLAUDE.md` — Claude Code
-- `.gemini/settings.json` — Gemini CLI (configured to read this file as its context)
+- `GEMINI.md` — Antigravity / Gemini CLI
+- `.gemini/settings.json` — Gemini CLI (configured to read `GEMINI.md` as its context)
 
 Rule of thumb for keeping things in sync: if guidance applies to more than one
 tool, it belongs **here**, not in a companion file. Companion files should stay
