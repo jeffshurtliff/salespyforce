@@ -13,8 +13,9 @@ The skill is stored at:
 .agents/skills/salespyforce-stable-release-prep/
 ```
 
-Codex scans `.agents/skills` from the working directory through the repository
-root, so this placement makes the skill available throughout the checkout. See
+Codex and Antigravity scan `.agents/skills` from the working directory through the
+repository root, so this placement makes the skill available throughout the
+checkout. See
 [OpenAI's skill documentation](https://learn.chatgpt.com/docs/build-skills) for
 current discovery and invocation behavior.
 
@@ -76,7 +77,9 @@ then stop before staging, committing, pushing, tagging, or publishing anything.
 In Codex, reference the skill with `$salespyforce-stable-release-prep` as shown
 above. In Claude Code, invoke it with `/salespyforce-stable-release-prep` or let
 it trigger automatically from a matching request; the same version and issue
-details still need to be supplied.
+details still need to be supplied. In Antigravity, the skill is automatically
+discovered under `.agents/skills/` and can be invoked directly or triggered on
+demand.
 
 Replace the example values with the approved release values. Supplying the
 previous stable tag is optional when it can be established unambiguously from

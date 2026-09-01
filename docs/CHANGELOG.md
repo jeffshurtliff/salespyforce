@@ -13,12 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (unreleased-added)=
 ### Added
 
-No unreleased additions at this time.
+- Added `GEMINI.md` companion guide to support Antigravity and Gemini CLI workflows.
 
 (unreleased-changed)=
 ### Changed
 
-No unreleased changes at this time.
+- Updated `AGENTS.md`, `.gemini/settings.json`, and maintainer skill documentation
+  to reference `GEMINI.md` and Antigravity support.
 
 (unreleased-security)=
 ### Security
