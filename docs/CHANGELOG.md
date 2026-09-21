@@ -13,15 +13,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (unreleased-added)=
 ### Added
 
-- Added `GEMINI.md` companion guide to support Antigravity and Gemini CLI workflows.
+No unreleased additions at this time.
 
 (unreleased-changed)=
+### Changed
+
+No unreleased changes at this time.
+
+(unreleased-security)=
+### Security
+
+No unreleased security updates at this time.
+
+---
+(relnotes-2.0.1)=
+## [2.0.1] - 2026-09-20
+
+SalesPyForce 2.0.1 is a patch release that raises the `soupsieve` dev-dependency
+floor to address two security advisories and adds contributor-guide support for
+Antigravity and Gemini CLI. There are no runtime API changes.
+
+(relnotes-2.0.1-added)=
+### Added
+
+- Added `GEMINI.md` companion guide to support Antigravity and Gemini CLI workflows.
+
+(relnotes-2.0.1-changed)=
 ### Changed
 
 - Updated `AGENTS.md`, `.gemini/settings.json`, and maintainer skill documentation
   to reference `GEMINI.md` and Antigravity support.
 
-(unreleased-security)=
+(relnotes-2.0.1-security)=
 ### Security
 
 - Raised the `soupsieve` dev-dependency floor to `>=2.9.0` (locked at 2.9.2) to address
@@ -367,7 +390,8 @@ features and functionality.
 
 
 <!-- The reference definitions are listed below -->
-[Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.1...HEAD
+[2.0.1]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.3.0...1.4.0
