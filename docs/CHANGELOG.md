@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 (unreleased-security)=
 ### Security
 
-No unreleased security updates at this time.
+- Raised the `soupsieve` dev-dependency floor to `>=2.9.0` (locked at 2.9.2) to address
+  CVE-2026-85999 and CVE-2026-86000.
 
 ---
 (relnotes-2.0.0)=
