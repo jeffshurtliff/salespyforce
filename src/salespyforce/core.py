@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:     15 Jul 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     24 Sep 2026
 """
 
 from __future__ import annotations
@@ -205,7 +205,8 @@ class Salesforce:
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
         :returns: The API call response with the authorization information
-        :raises: :py:exc:`RuntimeError`
+        :raises RuntimeError: If Salesforce returns an unsuccessful response
+        :raises requests.exceptions.Timeout: If the authentication request times out
         """
         params = {
             const.CLIENT_SETTINGS.GRANT_TYPE: const.CLIENT_SETTINGS.PASSWORD,
@@ -215,7 +216,11 @@ class Salesforce:
             const.CLIENT_SETTINGS.PASSWORD: f'{self.connection_info.get(const.CLIENT_SETTINGS.PASSWORD)}'
             f'{self.connection_info.get(const.CLIENT_SETTINGS.SECURITY_TOKEN)}',
         }
-        response = requests.post(self.connection_info.get(const.CLIENT_SETTINGS.ENDPOINT_URL), params=params)
+        response = requests.post(
+            self.connection_info.get(const.CLIENT_SETTINGS.ENDPOINT_URL),
+            params=params,
+            timeout=const.DEFAULT_API_TIMEOUT_SECONDS,
+        )
         if response.status_code != 200:
             raise RuntimeError(f'Failed to connect to the Salesforce instance.\n{response.text}')
         return response.json()
