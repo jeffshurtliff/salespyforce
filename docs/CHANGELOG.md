@@ -18,7 +18,7 @@ No unreleased additions at this time.
 (unreleased-changed)=
 ### Changed
 
-No unreleased changes at this time.
+- Added a default timeout to Salesforce API requests to prevent connections from waiting indefinitely.
 
 (unreleased-security)=
 ### Security

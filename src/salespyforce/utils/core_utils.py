@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via claude-sonnet-5)
-:Modified Date:     30 Aug 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     24 Sep 2026
 """
 
 from __future__ import annotations
@@ -268,8 +268,9 @@ def download_image(
     :param extension: The file extension to use if a file name with extension is not provided (Default: ``jpeg``)
     :type extension: str
     :returns: The full path to the downloaded image
-    :raises: :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError`,
-             :py:exc:`salespyforce.errors.exceptions.GETRequestError`
+    :raises salespyforce.errors.exceptions.MissingRequiredDataError: If an image URL and API response are both missing
+    :raises salespyforce.errors.exceptions.GETRequestError: If Salesforce does not return a 200 response
+    :raises requests.exceptions.Timeout: If the GET request for the image times out
     """
     if not image_url and not response:
         exc_msg = 'An image URL or an API response must be provided to download an image.'
@@ -285,8 +286,8 @@ def download_image(
         file_name += extension
 
     # Perform the API call if not supplied
-    if not response:
-        response = requests.get(image_url)
+    if image_url and not response:
+        response = requests.get(image_url, timeout=const.DEFAULT_API_TIMEOUT_SECONDS)
     if response.status_code != 200:
         exc_msg = f'The image failed to download with a {response.status_code} status code.'
         raise errors.exceptions.GETRequestError(exc_msg)
