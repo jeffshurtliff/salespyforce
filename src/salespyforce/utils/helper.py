@@ -5,28 +5,27 @@
 :Usage:             ``from salespyforce.utils import helper``
 :Example:           ``helper_settings = helper.get_settings('/tmp/helper.yml', 'yaml')``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:     15 Jul 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     27 Sep 2026
 """
 
 from __future__ import annotations
 
 import json
-from typing import Optional
+import logging
+from typing import Any
 
 import yaml
 
 from .. import constants as const
 from .. import errors
-from . import log_utils
 from .core_utils import get_file_type
 
-# Initialize logging within the module
-logger = log_utils.initialize_logging(__name__)
+logger = logging.getLogger(__name__)
 
 
-def import_helper_file(file_path: str, file_type: str) -> dict:
-    """This function imports a YAML (.yml, .yaml) or JSON (.json) helper config file.
+def import_helper_file(file_path: str, file_type: str) -> dict[str, Any]:
+    """Imports a YAML (.yml, .yaml) or JSON (.json) helper config file.
 
     .. versionchanged:: 1.5.0
        The ``file_type`` parameter now accepts both ``yaml`` and ``yml`` as file extensions for YAML.
@@ -36,8 +35,9 @@ def import_helper_file(file_path: str, file_type: str) -> dict:
     :param file_type: Defines the file type as ``yaml``, ``yml``, or ``json``
     :type file_type: str
     :returns: The parsed configuration data
-    :raises: :py:exc:`FileNotFoundError`,
-             :py:exc:`salespyforce.errors.exceptions.InvalidHelperFileTypeError`
+    :rtype: dict[str, Any]
+    :raises FileNotFoundError: If the helper file is not found at the path provided
+    :raises salespyforce.errors.exceptions.InvalidHelperFileTypeError: If the helper file extension is invalid
     """
     with open(file_path) as cfg_file:
         if file_type.replace('.', '') in (const.FILE_EXTENSIONS.YML, const.FILE_EXTENSIONS.YAML):
@@ -45,66 +45,18 @@ def import_helper_file(file_path: str, file_type: str) -> dict:
         elif file_type.replace('.', '') == const.FILE_EXTENSIONS.JSON:
             helper_cfg = json.load(cfg_file)
         else:
+            logger.error(const._LOG_MESSAGES._INVALID_HELPER_FILE_TYPE)
             raise errors.exceptions.InvalidHelperFileTypeError()
     logger.info(f'The helper file {file_path} was imported successfully.')
     return helper_cfg
 
 
-def _convert_yaml_to_bool(_yaml_bool_value: str) -> bool:
-    """This function converts the 'yes' and 'no' YAML values to traditional Boolean values."""
-    _true_values = ['yes', 'true']
-    if _yaml_bool_value.lower() in _true_values:
-        _bool_value = True
-    else:
-        _bool_value = False
-    return _bool_value
-
-
-def _get_connection_info(_helper_cfg: dict) -> dict[str, str]:
-    """This function parses any connection information found in the helper file."""
-    _connection_info = {}
-    for _key in const.HELPER_SETTINGS.CONNECTION_KEYS:
-        if _key in _helper_cfg[const.HELPER_SETTINGS.CONNECTION]:
-            _connection_info[_key] = _helper_cfg[const.HELPER_SETTINGS.CONNECTION][_key]
-    return _connection_info
-
-
-def _collect_values(
-    _top_level_keys, _helper_cfg: dict, _helper_dict: Optional[dict] = None, _ignore_missing: bool = False
-) -> dict:
-    """This function loops through a list of top-level keys to collect their corresponding values.
-
-    :param _top_level_keys: One or more top-level keys that might be found in the helper config file
-    :type _top_level_keys: list, tuple, set, str
-    :param _helper_cfg: The configuration parsed from the helper configuration file
-    :type _helper_cfg: dict
-    :param _helper_dict: A predefined dictionary to which the key value pairs should be added
-    :type _helper_dict: dict, None
-    :param _ignore_missing: Indicates whether fields with null values should be ignored (``False`` by default)
-    :type _ignore_missing: bool
-    :returns: A dictionary with the identified key value pairs
-    """
-    _helper_dict = {} if not _helper_dict else _helper_dict
-    _top_level_keys = (_top_level_keys,) if isinstance(_top_level_keys, str) else _top_level_keys
-    for _key in _top_level_keys:
-        if _key in _helper_cfg:
-            _key_val = _helper_cfg[_key]
-            if _key_val in const.YAML_BOOLEAN_MAPPING:
-                _key_val = const.YAML_BOOLEAN_MAPPING.get(_key_val)
-            _helper_dict[_key] = _key_val
-        elif _key == const.HELPER_SETTINGS.SSL_VERIFY:
-            # Verify SSL certificates by default unless explicitly set to false
-            _helper_dict[_key] = True
-        else:
-            if not _ignore_missing:
-                _helper_dict[_key] = None
-    return _helper_dict
-
-
 def get_helper_settings(
-    file_path: str, file_type: str = const.FILE_EXTENSIONS.YAML, defined_settings: Optional[dict] = None
-) -> dict:
-    """This function returns a dictionary of the defined helper settings.
+    file_path: str,
+    file_type: str = const.FILE_EXTENSIONS.YAML,
+    defined_settings: dict | None = None,
+) -> dict[str, Any]:
+    """Returns a dictionary of the defined helper settings.
 
     .. versionchanged:: 1.5.0
        The ``file_type`` parameter now accepts both ``yaml`` and ``yml`` as file extensions for YAML.
@@ -114,9 +66,11 @@ def get_helper_settings(
     :param file_type: Defines the helper configuration file as a ``yaml`` file (default) or a ``json`` file
     :type file_type: str
     :param defined_settings: Core object settings (if any) defined via the ``defined_settings`` parameter
-    :type defined_settings: dict, None
+    :type defined_settings: dict, optional
     :returns: Dictionary of helper variables
-    :raises: :py:exc:`salespyforce.errors.exceptions.InvalidHelperFileTypeError`
+    :rtype: dict[str, Any]
+    :raises FileNotFoundError: If the helper file is not found at the path provided
+    :raises salespyforce.errors.exceptions.InvalidHelperFileTypeError: If the helper file extension is invalid
     """
     # Initialize the helper_settings dictionary
     helper_settings = {}
@@ -141,3 +95,58 @@ def get_helper_settings(
 
     # Return the helper_settings dictionary
     return helper_settings
+
+
+def _convert_yaml_to_bool(_yaml_bool_value: str) -> bool:
+    """Converts the 'yes' and 'no' YAML values to traditional Boolean values."""
+    _true_values = ['yes', 'true']
+    if _yaml_bool_value.lower() in _true_values:
+        _bool_value = True
+    else:
+        _bool_value = False
+    return _bool_value
+
+
+def _get_connection_info(_helper_cfg: dict) -> dict[str, str]:
+    """Parses any connection information found in the helper file."""
+    _connection_info = {}
+    for _key in const.HELPER_SETTINGS.CONNECTION_KEYS:
+        if _key in _helper_cfg[const.HELPER_SETTINGS.CONNECTION]:
+            _connection_info[_key] = _helper_cfg[const.HELPER_SETTINGS.CONNECTION][_key]
+    return _connection_info
+
+
+def _collect_values(
+    _top_level_keys,
+    _helper_cfg: dict,
+    _helper_dict: dict | None = None,
+    _ignore_missing: bool = False,
+) -> dict[str, Any]:
+    """Loops through a list of top-level keys to collect their corresponding values.
+
+    :param _top_level_keys: One or more top-level keys that might be found in the helper config file
+    :type _top_level_keys: list, tuple, set, str
+    :param _helper_cfg: The configuration parsed from the helper configuration file
+    :type _helper_cfg: dict
+    :param _helper_dict: A predefined dictionary to which the key value pairs should be added
+    :type _helper_dict: dict, optional
+    :param _ignore_missing: Indicates whether fields with null values should be ignored (``False`` by default)
+    :type _ignore_missing: bool
+    :returns: A dictionary with the identified key value pairs
+    :rtype: dict[str, Any]
+    """
+    _helper_dict = {} if not _helper_dict else _helper_dict
+    _top_level_keys = (_top_level_keys,) if isinstance(_top_level_keys, str) else _top_level_keys
+    for _key in _top_level_keys:
+        if _key in _helper_cfg:
+            _key_val = _helper_cfg[_key]
+            if _key_val in const.YAML_BOOLEAN_MAPPING:
+                _key_val = const.YAML_BOOLEAN_MAPPING.get(_key_val)
+            _helper_dict[_key] = _key_val
+        elif _key == const.HELPER_SETTINGS.SSL_VERIFY:
+            # Verify SSL certificates by default unless explicitly set to false
+            _helper_dict[_key] = True
+        else:
+            if not _ignore_missing:
+                _helper_dict[_key] = None
+    return _helper_dict

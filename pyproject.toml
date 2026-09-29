@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------
 [project]
 name = "salespyforce"
-version = "2.0.2.dev0"
+version = "2.1.0.dev0"
 description = "A Python toolset for performing Salesforce API calls"
 readme = "README.md"
 requires-python = ">=3.12,<3.14.0"
