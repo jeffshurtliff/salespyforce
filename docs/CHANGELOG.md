@@ -20,33 +20,33 @@ No unreleased additions at this time.
 
 - The docstrings across the codebase were rewritten to align with current best practices and to 
   provide additional clarity and improve user experience.
-- The :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception is now raised instead of the 
-  generic :py:exc:`RuntimeError` exception if a GET request does not return a successful response.
+- The {py:exc}`~salespyforce.errors.exceptions.GETRequestError` exception is now raised instead of the 
+  generic {py:exc}`RuntimeError` exception if a GET request does not return a successful response.
   - Similar changes have also been implemented for POST, PATCH, PUT, and DELETE requests.
-- The :py:meth:`salespyforce.Salesforce.Knowledge.get_articles_list` method (and the underlying
-  :py:func:`salespyforce.knowledge.get_articles_list` function) can now return a ``list`` of article 
+- The {py:meth}`salespyforce.Salesforce.Knowledge.get_articles_list` method (and the underlying
+  {py:func}`salespyforce.knowledge.get_articles_list` function) can now return a ``list`` of article 
   data (default) or the full API response in JSON format.
-- The :py:meth:`salespyforce.Salesforce.Knowledge.get_validation_status` method (and the underlying
-  :py:func:`salespyforce.knowledge.get_validation_status` function) will now raise a :py:exc:`TypeError` 
+- The {py:meth}`salespyforce.Salesforce.Knowledge.get_validation_status` method (and the underlying
+  {py:func}`salespyforce.knowledge.get_validation_status` function) will now raise a {py:exc}`TypeError` 
   exception if the article details are an invalid data type and cannot be parsed.
-- Fixed an issue in :py:func:`salespyforce.knowledge.update_article` and
-  :py:func:`salespyforce.knowledge.publish_article` where API responses for PATCH requests were being 
+- Fixed an issue in {py:func}`salespyforce.knowledge.update_article` and
+  {py:func}`salespyforce.knowledge.publish_article` where API responses for PATCH requests were being 
   incorrectly converted to JSON format.
-- The :py:func:`salespyforce.knowledge.publish_multiple_articles` function now always returns the full 
+- The {py:func}`salespyforce.knowledge.publish_multiple_articles` function now always returns the full 
   :py:class:`requests.Response` object for the API response.
-- The :py:exc:`salespyforce.errors.exceptions.DataMismatchError` exception is now raised when posting a
+- The {py:exc}`~salespyforce.errors.exceptions.DataMismatchError` exception is now raised when posting a
   Chatter feed item or comment if both message text and message segments are provided, or if provided 
   message segments are not properly structured.
-- The :py:func:`salespyforce.knowledge.archive_article` function can now return a Boolean value indicating 
+- The {py:func}`salespyforce.knowledge.archive_article` function can now return a Boolean value indicating 
   whether the archival was successful (default), or the full API response from the PATCH request.
-- Updated :py:func:`salespyforce.utils.core_utils.get_random_string` to use the cryptographically secure 
+- Updated {py:func}`salespyforce.utils.core_utils.get_random_string` to use the cryptographically secure 
   ``secrets`` module instead of the standard ``random`` module and included additional validations.
-- The :py:func:`salespyforce.utils.core_utils.get_18_char_id` function now raises a :py:exc:`TypeError`
-  exception instead of :py:exc:`ValueError` if the record ID provided is not a string.
+- The {py:func}`salespyforce.utils.core_utils.get_18_char_id` function now raises a {py:exc}`TypeError`
+  exception instead of {py:exc}`ValueError` if the record ID provided is not a string.
 - Updated how loggers are initialized in each module to ensure proper logging functionality.
 - Added a default timeout to Salesforce API requests to prevent connections from waiting indefinitely.
 - Type hints and docstrings have been updated globally to reflect current best practices.
-- POST, PATCH, and PUT requests made through :py:func:`salespyforce.api.api_call_with_payload` now
+- POST, PATCH, and PUT requests made through {py:func}`salespyforce.api.api_call_with_payload` now
   raise the JSON decoding exception if a non-empty response body is not valid JSON, consistent with
   GET and DELETE requests, rather than printing a message and returning the raw response.
 - Disabled the Ruff ``E501`` (line too long) lint rule in ``pyproject.toml`` and removed the
@@ -54,7 +54,7 @@ No unreleased additions at this time.
   length for code, and has been applied to the modules that were not yet compliant.
 - Updated the unit tests for the API, core utilities, and Knowledge modules to reflect the
   method-specific request exceptions, the ``secrets``-based random string generation, the
-  :py:exc:`TypeError` raised for non-string record IDs, and the ``return_json`` argument passed
+  {py:exc}`TypeError` raised for non-string record IDs, and the ``return_json`` argument passed
   when publishing articles.
 
 (unreleased-security)=
