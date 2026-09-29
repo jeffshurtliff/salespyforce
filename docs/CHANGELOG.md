@@ -33,7 +33,7 @@ No unreleased additions at this time.
   {py:func}`salespyforce.knowledge.publish_article` where API responses for PATCH requests were being 
   incorrectly converted to JSON format.
 - The {py:func}`salespyforce.knowledge.publish_multiple_articles` function now always returns the full 
-  :py:class:`requests.Response` object for the API response.
+  {py:class}`requests.Response` object for the API response.
 - The {py:exc}`~salespyforce.errors.exceptions.DataMismatchError` exception is now raised when posting a
   Chatter feed item or comment if both message text and message segments are provided, or if provided 
   message segments are not properly structured.
