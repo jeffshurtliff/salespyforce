@@ -3,8 +3,8 @@
 :Module:            salespyforce.constants
 :Synopsis:          Constants that are utilized throughout the package
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:     15 Jul 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     28 Sep 2026
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from typing import ClassVar, Final, Mapping, Union
 # -----------------------------
 # Versioning / Meta
 # -----------------------------
-FALLBACK_SFDC_API_VERSION: Final[str] = '65.0'  # Used if querying the org for the version fails
+FALLBACK_SFDC_API_VERSION: Final[str] = '67.0'  # Used if querying the org for the version fails
 
 
 # --------------------------------------
@@ -628,15 +628,20 @@ class LogMessages:
     .. versionadded:: 1.5.0
     """
 
+    _API_REQUEST_EMPTY_OR_INVALID: ClassVar[str] = 'The {method} request returned an empty or invalid response.'
+    _API_RESPONSE_UNSUCCESSFUL: ClassVar[str] = 'A successful response was not returned by Salesforce.'
     _ARTICLE_DATA_TYPE_ERROR: ClassVar[str] = 'The article data must be provided as a dictionary.'
     _DEFAULT_SOBJECT_USED: ClassVar[str] = 'The {sobject} sObject will be used as a specific sObject was not provided'
+    _INVALID_HELPER_FILE_TYPE: ClassVar[str] = "The helper configuration file can only have the 'yml', 'yaml', or 'json' file type."  # noqa: E501
     _INVALID_PARAM_VALUE_DEFAULT: ClassVar[str] = 'The {param} value is not valid and will default to {default}'
     _INVALID_PARAM_VALUE_IGNORE: ClassVar[str] = "The {param} value '{value}' is not valid and will be ignored"
     _MISSING_ARTICLE_FIELD_ERROR: ClassVar[str] = 'The following required field is missing from the article data: {field}'
     _MISSING_REQUIRED_DATA: ClassVar[str] = '{data} is missing and must be provided as it is required'
     _MUST_BE_PROVIDED_ERROR: ClassVar[str] = 'The {data} must be provided.'
+    _NOT_FOUND_IN_API_RESPONSE: ClassVar[str] = '{data} was not found in the API response.'
     _PARAM_EXCEEDS_MAX_VALUE: ClassVar[str] = 'The {param} value exceeds the maximum and will default to {default}'
     _SOBJECT_PAYLOAD_MUST_BE_DICT: ClassVar[str] = 'The sObject payload must be provided as a dictionary.'
+    _UNKNOWN_FILE_TYPE: ClassVar[str] = 'The file type of the given file path cannot be identified.'
 
 
 # -----------------------------

@@ -3,38 +3,36 @@
 :Module:            salespyforce.utils.version
 :Synopsis:          Utilities for working with the package version
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5)
-:Modified Date:     24 Jul 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     27 Sep 2026
 """
 
 from __future__ import annotations
 
+import logging
 import tomllib
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import Optional
 
-from . import log_utils
-
-# Initialize logging
-logger = log_utils.initialize_logging(__name__)
+logger = logging.getLogger(__name__)
 
 
 def get_full_version() -> str:
-    """This function returns the current full version of the ``salespyforce`` package.
-
-    .. versionchanged:: 1.5.0
-       The function will now attempt to retrieve the version from the ``pyproject.toml``
-       file if it cannot be retrieved via the package metadata.
+    """Returns the current full version of the ``salespyforce`` package.
 
     .. versionchanged:: 1.4.0
        The function now retrieves the version from the package metadata,
        rather than from the ``__version__`` special variable.
 
+    .. versionchanged:: 1.5.0
+       The function will now attempt to retrieve the version from the ``pyproject.toml``
+       file if it cannot be retrieved via the package metadata.
+
     The package version is retrieved from the installed package metadata, which is
     populated from the ``version`` field in ``pyproject.toml``.
 
     :returns: The current package version as a string
+    :rtype: str
     """
     try:
         return version('salespyforce')
@@ -45,19 +43,20 @@ def get_full_version() -> str:
         return get_version_from_pyproject()
 
 
-def get_major_minor_version(full_version: Optional[str] = None) -> str:
-    """Return the current major.minor (i.e., X.Y) version of the package.
-
-    .. versionchanged:: 1.5.0
-       The function now accepts an optional full version if already defined.
+def get_major_minor_version(full_version: str | None = None) -> str:
+    """Returns the current major.minor (i.e., X.Y) version of the package.
 
     .. versionchanged:: 1.4.0
        The function utilizes the :py:func:`salespyforce.utils.version.get_full_version`
        function to get the package version rather than using ``__version__``.
 
+    .. versionchanged:: 1.5.0
+       The function now accepts an optional full version if already defined.
+
     :param full_version: The full package version (e.g. X.Y.Z)
-    :type full_version: str, None
+    :type full_version: str, optional
     :returns: The current package version (X.Y) as a string
+    :rtype: str
     """
     if not full_version:
         full_version = get_full_version()
@@ -67,14 +66,15 @@ def get_major_minor_version(full_version: Optional[str] = None) -> str:
     return full_version
 
 
-def get_version_from_pyproject(pyproject_path: Optional[str] = None) -> str:
-    """This function retrieves the current version from the pyproject.toml file.
+def get_version_from_pyproject(pyproject_path: str | None = None) -> str:
+    """Retrieves the current version from the pyproject.toml file.
 
     .. versionadded:: 1.5.0
 
-    :param pyproject_path: The path to the pyproject.toml file (optional)
-    :type pyproject_path: str, None
+    :param pyproject_path: The path to the pyproject.toml file
+    :type pyproject_path: str, optional
     :returns: The current package version as a string
+    :rtype: str
     """
     path = Path(pyproject_path) if pyproject_path else Path(__file__).resolve().parents[3] / 'pyproject.toml'
 

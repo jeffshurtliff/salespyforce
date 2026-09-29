@@ -3,15 +3,13 @@
 :Module:            salespyforce.errors.exceptions
 :Synopsis:          Collection of exception classes relating to the SalesPyForce library
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:     15 Jul 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     27 Sep 2026
 """
 
 from __future__ import annotations
 
-from typing import Optional, Union
-
-from ..constants import _EXCEPTION_CLASSES, API_REQUEST_TYPES
+from ..constants import _EXCEPTION_CLASSES, _LOG_MESSAGES, API_REQUEST_TYPES
 
 # -----------------------------
 # Base Exception
@@ -31,7 +29,7 @@ class SalesPyForceError(Exception):
 
 
 class CurrentlyUnsupportedError(SalesPyForceError):
-    """This exception is used when a feature or functionality being used is currently unsupported."""
+    """Used when a feature or functionality being used is currently unsupported."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'This feature is currently unsupported at this time.'
@@ -46,7 +44,7 @@ class CurrentlyUnsupportedError(SalesPyForceError):
 
 
 class DataMismatchError(SalesPyForceError):
-    """This exception is used when there is a mismatch between two data sources."""
+    """Used when there is a mismatch between two data sources."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'A data mismatch was found with the data sources.'
@@ -69,7 +67,7 @@ class DataMismatchError(SalesPyForceError):
 
 
 class InvalidParameterError(SalesPyForceError):
-    """This exception is used when an invalid parameter is provided."""
+    """Used when an invalid parameter is provided."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'The parameter that was provided is invalid.'
@@ -82,7 +80,7 @@ class InvalidParameterError(SalesPyForceError):
 
 
 class InvalidFieldError(SalesPyForceError):
-    """This exception is used when an invalid field is provided."""
+    """Used when an invalid field is provided."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'The field that was provided is invalid.'
@@ -95,7 +93,7 @@ class InvalidFieldError(SalesPyForceError):
 
 
 class InvalidURLError(SalesPyForceError):
-    """This exception is used when a provided URL is invalid."""
+    """Used when a provided URL is invalid."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'The provided URL is invalid'
@@ -108,7 +106,7 @@ class InvalidURLError(SalesPyForceError):
 
 
 class MissingRequiredDataError(SalesPyForceError):
-    """This exception is used when a function or method is missing one or more required arguments."""
+    """Used when a function or method is missing one or more required arguments."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'Missing one or more required parameters'
@@ -133,10 +131,10 @@ class MissingRequiredDataError(SalesPyForceError):
 
 
 class UnknownFileTypeError(SalesPyForceError):
-    """This exception is used when a file type for a given file cannot be identified."""
+    """Used when a file type for a given file cannot be identified."""
 
     def __init__(self, *args, **kwargs):
-        default_msg = 'The file type of the given file path cannot be identified.'
+        default_msg = _LOG_MESSAGES._UNKNOWN_FILE_TYPE
         if not (args or kwargs):
             args = (default_msg,)
         elif _EXCEPTION_CLASSES._FILE in kwargs:
@@ -152,7 +150,7 @@ class UnknownFileTypeError(SalesPyForceError):
 
 
 class APIConnectionError(SalesPyForceError):
-    """This exception is used when the API query could not be completed due to connection aborts and/or timeouts."""
+    """Used when the API query could not be completed due to connection aborts and/or timeouts."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'The API query could not be completed due to connection aborts and/or timeouts.'
@@ -162,7 +160,7 @@ class APIConnectionError(SalesPyForceError):
 
 
 class APIRequestError(SalesPyForceError):
-    """This exception is used for generic API request errors when there is not a more specific exception."""
+    """Used for generic API request errors when there is not a more specific exception."""
 
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type='API')
@@ -172,7 +170,7 @@ class APIRequestError(SalesPyForceError):
 
 
 class GETRequestError(SalesPyForceError):
-    """This exception is used for generic GET request errors when there is not a more specific exception."""
+    """Used for generic GET request errors when there is not a more specific exception."""
 
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.GET)
@@ -189,7 +187,7 @@ class GETRequestError(SalesPyForceError):
 
 
 class PATCHRequestError(SalesPyForceError):
-    """This exception is used for generic PATCH request errors when there is not a more specific exception."""
+    """Used for generic PATCH request errors when there is not a more specific exception."""
 
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.PATCH)
@@ -206,7 +204,7 @@ class PATCHRequestError(SalesPyForceError):
 
 
 class POSTRequestError(SalesPyForceError):
-    """This exception is used for generic POST request errors when there is not a more specific exception."""
+    """Used for generic POST request errors when there is not a more specific exception."""
 
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.POST)
@@ -223,7 +221,7 @@ class POSTRequestError(SalesPyForceError):
 
 
 class PUTRequestError(SalesPyForceError):
-    """This exception is used for generic PUT request errors when there is not a more specific exception."""
+    """Used for generic PUT request errors when there is not a more specific exception."""
 
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.PUT)
@@ -240,7 +238,7 @@ class PUTRequestError(SalesPyForceError):
 
 
 class DELETERequestError(SalesPyForceError):
-    """This exception is used for generic DELETE request errors when there is not a more specific exception."""
+    """Used for generic DELETE request errors when there is not a more specific exception."""
 
     def __init__(self, *args, **kwargs):
         default_msg = _EXCEPTION_CLASSES._API_DEFAULT_MSG.format(type=API_REQUEST_TYPES.DELETE)
@@ -257,7 +255,7 @@ class DELETERequestError(SalesPyForceError):
 
 
 class FeatureNotConfiguredError(SalesPyForceError):
-    """This exception is used when an API request fails because a feature is not configured."""
+    """Used when an API request fails because a feature is not configured."""
 
     def __init__(self, *args, **kwargs):
         exc_msg = 'The feature is not configured.'
@@ -275,7 +273,7 @@ class FeatureNotConfiguredError(SalesPyForceError):
 
 
 class InvalidEndpointError(SalesPyForceError):
-    """This exception is used when an invalid API endpoint / service is provided."""
+    """Used when an invalid API endpoint / service is provided."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'The supplied endpoint for the API is not recognized.'
@@ -285,7 +283,7 @@ class InvalidEndpointError(SalesPyForceError):
 
 
 class InvalidLookupTypeError(SalesPyForceError):
-    """This exception is used when an invalid API lookup type is provided."""
+    """Used when an invalid API lookup type is provided."""
 
     def __init__(self, *args, **kwargs):
         default_msg = (
@@ -298,7 +296,7 @@ class InvalidLookupTypeError(SalesPyForceError):
 
 
 class InvalidPayloadValueError(SalesPyForceError):
-    """This exception is used when an invalid value is provided for a payload field."""
+    """Used when an invalid value is provided for a payload field."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'An invalid payload value was provided.'
@@ -316,7 +314,7 @@ class InvalidPayloadValueError(SalesPyForceError):
 
 
 class InvalidRequestTypeError(SalesPyForceError):
-    """This exception is used when an invalid API request type is provided."""
+    """Used when an invalid API request type is provided."""
 
     def __init__(self, *args, **kwargs):
         default_msg = (
@@ -329,7 +327,7 @@ class InvalidRequestTypeError(SalesPyForceError):
 
 
 class LookupMismatchError(SalesPyForceError):
-    """This exception is used when a lookup value doesn't match the supplied lookup type."""
+    """Used when a lookup value does not match the supplied lookup type."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'The supplied lookup type for the API does not match the value that was provided.'
@@ -339,7 +337,7 @@ class LookupMismatchError(SalesPyForceError):
 
 
 class NotFoundResponseError(SalesPyForceError):
-    """This exception is used when an API query returns a 404 response and there is not a more specific class."""
+    """Used when an API query returns a 404 response and there is not a more specific class."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'The API query returned a 404 response.'
@@ -349,7 +347,7 @@ class NotFoundResponseError(SalesPyForceError):
 
 
 class PayloadMismatchError(SalesPyForceError):
-    """This exception is used when more than one payload is supplied for an API request."""
+    """Used when more than one payload is supplied for an API request."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'More than one payload was provided for the API call when only one is permitted.'
@@ -367,17 +365,17 @@ class PayloadMismatchError(SalesPyForceError):
 
 
 class InvalidHelperFileTypeError(SalesPyForceError, ValueError):
-    """This exception is used when an invalid file type is provided for the helper file."""
+    """Used when an invalid file type is provided for the helper file."""
 
     def __init__(self, *args, **kwargs):
-        default_msg = "The helper configuration file can only have the 'yml', 'yaml', or 'json' file type."
+        default_msg = _LOG_MESSAGES._INVALID_HELPER_FILE_TYPE
         if not (args or kwargs):
             args = (default_msg,)
         super().__init__(*args)
 
 
 class InvalidHelperArgumentsError(SalesPyForceError):
-    """This exception is used when the helper function was supplied arguments instead of keyword arguments."""
+    """Used when the helper function was supplied arguments instead of keyword arguments."""
 
     def __init__(self, *args, **kwargs):
         default_msg = "The helper configuration file only accepts basic keyword arguments. (e.g. arg_name='arg_value')"
@@ -387,7 +385,7 @@ class InvalidHelperArgumentsError(SalesPyForceError):
 
 
 class HelperFunctionNotFoundError(SalesPyForceError):
-    """This exception is used when a function referenced in the helper config file does not exist."""
+    """Used when a function referenced in the helper config file does not exist."""
 
     def __init__(self, *args, **kwargs):
         default_msg = 'The function referenced in the helper configuration file could not be found.'
@@ -397,9 +395,11 @@ class HelperFunctionNotFoundError(SalesPyForceError):
 
 
 def _construct_api_custom_message(
-    _request_type: str, _message: Optional[str] = None, _status_code: Union[Optional[str], Optional[int]] = None
+    _request_type: str,
+    _message: str | None = None,
+    _status_code: str | int | None = None,
 ) -> str:
-    """This function constructions the exception message for an API-related exception class.
+    """Constructions the exception message for an API-related exception class.
 
     .. versionadded:: 1.5.0
 
@@ -408,8 +408,9 @@ def _construct_api_custom_message(
     :param _message: A specific message to append to the base message (optional)
     :type _message: str
     :param _status_code: The status code returned from the API request (optional)
-    :type _status_code: str, int, None
+    :type _status_code: str, int, optional
     :returns: The constructed custom message to use when raising the exception
+    :rtype: str
     """
     # Define the base custom message
     _custom_msg = _EXCEPTION_CLASSES._API_CUSTOM_MSG.format(type=_request_type.upper())

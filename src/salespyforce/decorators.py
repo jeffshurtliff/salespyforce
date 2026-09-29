@@ -3,15 +3,15 @@
 :Module:            salespyforce.decorators
 :Synopsis:          Decorators that can be used to include additional functionality with functions and methods
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:     15 Jul 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     25 Sep 2026
 """
 
 from __future__ import annotations
 
 import functools
 import warnings
-from typing import Any, Callable, Optional, Type, TypeVar
+from typing import Any, Callable, Type, TypeVar
 
 # Define the function Type bound to Callable
 F = TypeVar('F', bound=Callable[..., Any])
@@ -20,8 +20,8 @@ F = TypeVar('F', bound=Callable[..., Any])
 def deprecated(
     *,
     since: str,
-    replacement: Optional[str] = None,
-    removal: Optional[str] = None,
+    replacement: str | None = None,
+    removal: str | None = None,
     category: Type[Warning] = DeprecationWarning,
     stacklevel: int = 2,
 ) -> Callable[[F], F]:
@@ -31,10 +31,10 @@ def deprecated(
 
     :param since: Version when deprecation started
     :type since: str
-    :param replacement: Suggested replacement usage (string)
-    :type replacement: str, None
-    :param removal: Version when it will be removed (optional)
-    :type removal: str, None
+    :param replacement: Suggested replacement usage
+    :type replacement: str, optional
+    :param removal: Version when it will be removed
+    :type removal: str, optional
     :param category: Warning category (default: :py:exc:`DeprecationWarning`)
     :type category: type[Warning]
     :param stacklevel: Warning stacklevel (default: ``2``)

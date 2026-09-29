@@ -4,7 +4,7 @@
 :Synopsis:          Functions that handle various error situations within the namespace
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     26 Feb 2026
+:Modified Date:     27 Sep 2026
 """
 
 from __future__ import annotations
@@ -16,16 +16,17 @@ from .. import constants as const
 
 
 def eprint(*args, **kwargs) -> None:
-    """This function behaves the same as the ``print()`` function but is leveraged to print errors to ``sys.stderr``."""
+    """Behaves the same as the ``print()`` function but is leveraged to print errors to ``sys.stderr``."""
     print(*args, file=sys.stderr, **kwargs)
 
 
 def get_exception_type(exc) -> str:
-    """This function returns the exception type (e.g. ``RuntimeError``, ``TypeError``, etc.) for a given exception.
+    """Returns the exception type (e.g. ``RuntimeError``, ``TypeError``, etc.) for a given exception.
 
     .. versionadded:: 1.4.0
 
     :returns: The exception type as a string
+    :rtype: str
     """
     return type(exc).__name__
 
@@ -36,7 +37,7 @@ def display_warning(
     category: type[Warning] = const._DEFAULT_WARNING_CATEGORY,
     stacklevel: int = 2,
 ) -> None:
-    """This function emits a warning that points to the caller by default.
+    """Emits a warning that points to the caller by default.
 
     .. versionadded:: 1.4.0
 

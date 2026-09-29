@@ -3,9 +3,13 @@
 :Module:            salespyforce
 :Synopsis:          This is the ``__init__`` module for the salespyforce package
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:     15 Jul 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     27 Sep 2026
 """
+
+from __future__ import annotations
+
+from typing import Any
 
 from . import core
 from .core import Salesforce
@@ -18,17 +22,27 @@ __version__ = version.get_full_version()
 
 
 # Allow the core.define_connection_info() function to be executed directly
-def define_connection_info():
-    """This function prompts the user for the connection information.
+def define_connection_info() -> dict:
+    """Prompts the user for the connection information.
 
     :returns: The connection info in a dictionary
+    :rtype: dict
     """
     return core.define_connection_info()
 
 
 # Allow the core.compile_connection_info() function to be executed directly
-def compile_connection_info(base_url, org_id, username, password, endpoint_url, client_id, client_secret, security_token):
-    """This function compiles the connection info into a dictionary that can be consumed by the core object.
+def compile_connection_info(
+        base_url: str,
+        org_id: str,
+        username: str,
+        password: str,
+        endpoint_url: str,
+        client_id: str,
+        client_secret: str,
+        security_token: str,
+) -> dict[Any, Any]:
+    """Compiles the connection info into a dictionary that can be consumed by the core object.
 
     :param base_url: The base URL of the Salesforce instance
     :type base_url: str
@@ -47,7 +61,15 @@ def compile_connection_info(base_url, org_id, username, password, endpoint_url, 
     :param security_token: The Security Token for the Salesforce instance
     :type security_token: str
     :returns: The connection info in a dictionary
+    :rtype: dict
     """
     return core.compile_connection_info(
-        base_url, org_id, username, password, endpoint_url, client_id, client_secret, security_token
+        base_url=base_url,
+        org_id=org_id,
+        username=username,
+        password=password,
+        endpoint_url=endpoint_url,
+        client_id=client_id,
+        client_secret=client_secret,
+        security_token=security_token,
     )
