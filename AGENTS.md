@@ -63,10 +63,9 @@ regenerate `poetry.lock` through Poetry.
 Ruff handles linting, import sorting, and formatting. Key settings (see
 `pyproject.toml` for the source of truth):
 
-- Line length: `130` characters. Keep code, tests, and normal strings at or under
-  this. Wrap comments and docstrings when it helps readability.
-- Use a targeted per-line `# noqa: E501` for the rare approved exception; never a
-  file-level or global ignore.
+- Line length: `130` characters. `ruff format` wraps code to this width. The
+  line-too-long lint rule (`E501`) is disabled, so long strings, comments, and
+  docstrings are not flagged; still wrap them when it helps readability.
 - Format style: single quotes, spaces, LF line endings.
 - `docs_legacy/` is excluded from Ruff and is retained for reference only — do
   not modify it.

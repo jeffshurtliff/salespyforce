@@ -4,15 +4,15 @@
 :Module:         tests.unit.test_api
 :Synopsis:       Tests low-level Salesforce API request and response handling
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:  15 Jul 2026
+:Last Modified:  Jeff Shurtliff (via claude-opus-5-5)
+:Modified Date:  29 Sep 2026
 """
 
 from types import SimpleNamespace
 
 import pytest
 
-from salespyforce import api
+from salespyforce import api, errors
 from salespyforce.core import Salesforce
 
 
@@ -114,13 +114,26 @@ def test_return_json_false_returns_raw_response(monkeypatch, api_client):
     assert response.json_calls == 0
 
 
+REQUEST_ERRORS = {
+    'get': errors.exceptions.GETRequestError,
+    'post': errors.exceptions.POSTRequestError,
+    'patch': errors.exceptions.PATCHRequestError,
+    'put': errors.exceptions.PUTRequestError,
+    'delete': errors.exceptions.DELETERequestError,
+}
+
+
 @pytest.mark.parametrize('method', ['get', 'post', 'patch', 'put', 'delete'])
 def test_api_methods_preserve_error_status_behavior(monkeypatch, api_client, method):
-    """Non-success status codes continue to raise RuntimeError."""
+    """Non-success status codes raise the method-specific request exception.
+
+    .. versionchanged:: 2.1.0
+       The test now expects the method-specific request exception instead of :py:exc:`RuntimeError`.
+    """
     response = FakeResponse(status_code=400, content=b'bad request')
     monkeypatch.setattr(api.requests, method, lambda *_args, **_kwargs: response)
 
-    with pytest.raises(RuntimeError, match=f'The {method.upper()} request failed with a 400 status code'):
+    with pytest.raises(REQUEST_ERRORS[method], match=f'The {method.upper()} request failed with a 400 status code'):
         if method == 'get':
             api.get(api_client, '/services/data')
         elif method == 'delete':
@@ -152,20 +165,22 @@ def test_delete_preserves_malformed_non_empty_json_behavior(monkeypatch, api_cli
         api.delete(api_client, '/services/data/example')
 
 
-def test_payload_call_preserves_malformed_non_empty_json_behavior(monkeypatch, api_client, capsys):
-    """Payload calls continue to return raw malformed non-empty responses."""
+def test_payload_call_preserves_malformed_non_empty_json_behavior(monkeypatch, api_client):
+    """Payload calls surface malformed non-empty JSON conversion errors.
+
+    .. versionchanged:: 2.1.0
+       The test now expects the JSON conversion error to be raised rather than the raw response to be returned.
+    """
     response = FakeResponse(content=b'not-json', json_error=ValueError('invalid JSON'))
     monkeypatch.setattr(api.requests, 'post', lambda *_args, **_kwargs: response)
 
-    result = api.api_call_with_payload(
-        api_client,
-        'post',
-        '/services/data/example',
-        {'Name': 'Example'},
-    )
-
-    assert result is response
-    assert 'Failed to convert the API response to JSON format' in capsys.readouterr().out
+    with pytest.raises(ValueError, match='invalid JSON'):
+        api.api_call_with_payload(
+            api_client,
+            'post',
+            '/services/data/example',
+            {'Name': 'Example'},
+        )
 
 
 def test_salesforce_patch_defaults_to_raw_response(monkeypatch, api_client):

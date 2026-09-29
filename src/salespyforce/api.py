@@ -3,8 +3,8 @@
 :Module:            salespyforce.api
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     28 Sep 2026
+:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
+:Modified Date:     29 Sep 2026
 """
 
 from __future__ import annotations
@@ -242,9 +242,9 @@ def delete(
 
 
 def _raise_exception_for_failed_request(
-        _api_method: str,
-        _response: requests.Response,
-        _show_full_error: bool = True,
+    _api_method: str,
+    _response: requests.Response,
+    _show_full_error: bool = True,
 ) -> None:
     """Raises an appropriate exception for a failed API request.
 

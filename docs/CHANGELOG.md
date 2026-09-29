@@ -46,6 +46,16 @@ No unreleased additions at this time.
 - Updated how loggers are initialized in each module to ensure proper logging functionality.
 - Added a default timeout to Salesforce API requests to prevent connections from waiting indefinitely.
 - Type hints and docstrings have been updated globally to reflect current best practices.
+- POST, PATCH, and PUT requests made through :py:func:`salespyforce.api.api_call_with_payload` now
+  raise the JSON decoding exception if a non-empty response body is not valid JSON, consistent with
+  GET and DELETE requests, rather than printing a message and returning the raw response.
+- Disabled the Ruff ``E501`` (line too long) lint rule in ``pyproject.toml`` and removed the
+  now-unnecessary ``# noqa: E501`` comment; ``ruff format`` still enforces the 130-character line
+  length for code, and has been applied to the modules that were not yet compliant.
+- Updated the unit tests for the API, core utilities, and Knowledge modules to reflect the
+  method-specific request exceptions, the ``secrets``-based random string generation, the
+  :py:exc:`TypeError` raised for non-string record IDs, and the ``return_json`` argument passed
+  when publishing articles.
 
 (unreleased-security)=
 ### Security

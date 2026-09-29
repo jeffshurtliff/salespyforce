@@ -4,8 +4,8 @@
 :Module:         tests.unit.test_core_utils
 :Synopsis:       This module is used by pytest to test core utility functions
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via claude-sonnet-5)
-:Modified Date:  30 Aug 2026
+:Last Modified:  Jeff Shurtliff (via claude-opus-5-5)
+:Modified Date:  29 Sep 2026
 """
 
 import os
@@ -89,9 +89,11 @@ def test_get_random_string_returns_expected_length(monkeypatch):
     """This function tests get_random_string length and prefix handling.
 
     .. versionadded:: 1.4.0
+
+    .. versionchanged:: 2.1.0
+       The test no longer patches the ``random`` module, which the function no longer uses.
     """
     alphabet = 'abc123'
-    monkeypatch.setattr(core_utils, 'random', core_utils.random)
     monkeypatch.setattr(
         core_utils,
         'string',
@@ -137,8 +139,11 @@ def test_non_string_id_input_raises_error():
     """This function tests to ensure passing a non-string to the get_18_char_id function raises an exception.
 
     .. versionadded:: 1.4.0
+
+    .. versionchanged:: 2.1.0
+       The test now expects a :py:exc:`TypeError` exception rather than :py:exc:`ValueError`.
     """
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         core_utils.get_18_char_id(12345)
 
 

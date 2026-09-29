@@ -4,8 +4,8 @@
 :Module:         tests.unit.test_knowledge
 :Synopsis:       Tests Salesforce Knowledge endpoint and validation behavior
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:  15 Jul 2026
+:Last Modified:  Jeff Shurtliff (via claude-opus-5-5)
+:Modified Date:  29 Sep 2026
 """
 
 from types import SimpleNamespace
@@ -17,13 +17,18 @@ from salespyforce import errors, knowledge
 
 
 def test_publish_article_uses_centralized_master_version_endpoint():
-    """Knowledge publishing formats the centralized master-version endpoint."""
+    """Knowledge publishing formats the centralized master-version endpoint.
+
+    .. versionchanged:: 2.1.0
+       The test now verifies that the PATCH request disables JSON conversion.
+    """
     captured = {}
     response = SimpleNamespace(status_code=204)
 
-    def patch(endpoint, payload):
+    def patch(endpoint, payload, return_json=True):
         captured['endpoint'] = endpoint
         captured['payload'] = payload
+        captured['return_json'] = return_json
         return response
 
     client = SimpleNamespace(version='v65.0', patch=patch)
@@ -39,16 +44,22 @@ def test_publish_article_uses_centralized_master_version_endpoint():
         const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ONLINE,
         const.QUERY_PARAMS.VERSION_NUMBER: const.PAYLOAD_VALUES.NEXT_VERSION,
     }
+    assert captured['return_json'] is False
 
 
 def test_publish_article_returns_full_response_for_minor_version():
-    """Knowledge publishing can return the raw response and omit the major-version field."""
+    """Knowledge publishing can return the raw response and omit the major-version field.
+
+    .. versionchanged:: 2.1.0
+       The test now verifies that the PATCH request disables JSON conversion.
+    """
     captured = {}
     response = SimpleNamespace(status_code=204)
 
-    def patch(endpoint, payload):
+    def patch(endpoint, payload, return_json=True):
         captured['endpoint'] = endpoint
         captured['payload'] = payload
+        captured['return_json'] = return_json
         return response
 
     client = SimpleNamespace(version='v65.0', patch=patch)
@@ -64,6 +75,7 @@ def test_publish_article_returns_full_response_for_minor_version():
     assert captured['payload'] == {
         const.QUERY_PARAMS.PUBLISH_STATUS: const.PAYLOAD_VALUES.ONLINE,
     }
+    assert captured['return_json'] is False
 
 
 def test_validate_knowledge_sobject_supplies_default():
