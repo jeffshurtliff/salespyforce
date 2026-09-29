@@ -3,8 +3,8 @@
 :Module:            salespyforce.knowledge
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Sep 2026
+:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
+:Modified Date:     29 Sep 2026
 """
 
 from __future__ import annotations
@@ -567,9 +567,9 @@ def update_article(
 
 
 def create_draft_from_online_article(
-        sfdc_object,
-        article_id: str,
-        unpublish: bool = False,
+    sfdc_object,
+    article_id: str,
+    unpublish: bool = False,
 ) -> dict[str, Any]:
     """Creates a draft knowledge article from an online article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`__)
@@ -714,9 +714,9 @@ def publish_article(
 
 
 def publish_multiple_articles(
-        sfdc_object,
-        article_id_list: list,
-        major_version: bool = True,
+    sfdc_object,
+    article_id_list: list,
+    major_version: bool = True,
 ) -> requests.Response:
     """Publishes multiple knowledge article drafts at one time.
     (`Reference <https://developer.salesforce.com/docs/platform/api-action/guide/actions-obj-knowledge.html#publish-knowledge-articles>`__)
@@ -769,10 +769,10 @@ def publish_multiple_articles(
 
 
 def assign_data_category(
-        sfdc_object,
-        article_id: str,
-        category_group_name: str,
-        category_name: str,
+    sfdc_object,
+    article_id: str,
+    category_group_name: str,
+    category_name: str,
 ) -> dict[str, Any]:
     """Assigns a single data category for a knowledge article.
     (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`__)
@@ -809,9 +809,9 @@ def assign_data_category(
 
 
 def archive_article(
-        sfdc_object,
-        article_id: str,
-        full_response: bool = False,
+    sfdc_object,
+    article_id: str,
+    full_response: bool = False,
 ) -> bool | requests.Response:
     """Archives a published knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`__)
@@ -852,9 +852,9 @@ def archive_article(
 
 def delete_article_draft(
     sfdc_object,
-        version_id: str,
-        sobject: str | None = None,
-        use_knowledge_management_endpoint: bool = True,
+    version_id: str,
+    sobject: str | None = None,
+    use_knowledge_management_endpoint: bool = True,
 ) -> requests.Response:
     """Deletes an unpublished knowledge article draft.
 
@@ -946,8 +946,8 @@ def _validate_knowledge_sobject(
 
 
 def _validate_article_data(
-        _article_data: dict | None = None,
-        _required: bool = False,
+    _article_data: dict | None = None,
+    _required: bool = False,
 ) -> None:
     """Validates the article data to ensure it is defined when required and hsa the appropriate type.
 

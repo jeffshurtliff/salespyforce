@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     28 Sep 2026
+:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
+:Modified Date:     29 Sep 2026
 """
 
 from __future__ import annotations
@@ -116,8 +116,10 @@ class Salesforce:
                     self._helper_settings = get_helper_settings(helper_file_path, helper_file_type)
                     connection_info = self._parse_helper_connection_info()
                 else:
-                    exc_msg = ('The helper_file_path and helper_file_type arguments must both be strings '
-                               f'(Provided: {type(helper_file_path).__name__} and {type(helper_file_type).__name__})')
+                    exc_msg = (
+                        'The helper_file_path and helper_file_type arguments must both be strings '
+                        f'(Provided: {type(helper_file_path).__name__} and {type(helper_file_type).__name__})'
+                    )
                     logger.error(exc_msg)
                     raise errors.exceptions.InvalidHelperArgumentsError(exc_msg)
             elif not any((base_url, org_id, username, password, endpoint_url, client_id, client_secret, security_token)):
@@ -179,8 +181,8 @@ class Salesforce:
         return _connection_info
 
     def _get_headers(
-            self,
-            _header_type: str = const.HEADER_TYPE_DEFAULT,
+        self,
+        _header_type: str = const.HEADER_TYPE_DEFAULT,
     ) -> dict[str, str]:
         """Returns the appropriate HTTP headers to use for different types of API calls.
 
@@ -195,9 +197,9 @@ class Salesforce:
         return api._get_headers(_access_token=self.access_token, _header_type=_header_type)
 
     def _get_cached_user_info(
-            self,
-            _field: str,
-            _retrieve_if_missing: bool = False,
+        self,
+        _field: str,
+        _retrieve_if_missing: bool = False,
     ) -> str | bool | None:
         """Attempts to retrieve a value for a given field in the cached ``userinfo`` data and
            optionally queries the API as needed to retrieve the data when not found.
@@ -237,7 +239,7 @@ class Salesforce:
            instead of a generic :py:exc:`RuntimeError` exception.
 
         :returns: The API call response with the authorization information
-        :raises RuntimeError: If Salesforce returns an unsuccessful response
+        :raises salespyforce.errors.exceptions.POSTRequestError: If Salesforce returns an unsuccessful response
         :raises requests.exceptions.Timeout: If the authentication request times out
         :raises requests.exceptions.JSONDecodeError: If the response body does not contain valid JSON
         """
@@ -446,38 +448,38 @@ class Salesforce:
         return_json: bool = True,
     ) -> dict[str, Any] | requests.Response:
         """Performs a POST call against the Salesforce instance.
-        (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
+            (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
-        .. versionchanged:: 1.4.0
-           A global constant is now leveraged for the API timeout value instead of hardcoding the value.
-           (Timeout is still **30** seconds in this version)
+            .. versionchanged:: 1.4.0
+               A global constant is now leveraged for the API timeout value instead of hardcoding the value.
+               (Timeout is still **30** seconds in this version)
 
-        .. versionchanged:: 2.1.0
-           The function now fails with the :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception rather
-           than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
+            .. versionchanged:: 2.1.0
+               The function now fails with the :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception rather
+               than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
-    :param endpoint: The API endpoint to query
-    :type endpoint: str
-    :param payload: The payload to leverage in the API call
-    :type payload: dict
-    :param params: The query parameters (where applicable)
-    :type params: dict, optional
-    :param headers: Specific API headers to use when performing the API call
-    :type headers: dict, optional
-    :param timeout: The timeout period in seconds (defaults to ``30``)
-    :type timeout: int, optional
-    :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
-    :type show_full_error: bool
-    :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
-    :type return_json: bool
-    :returns: The API response in JSON format or as a ``requests.response`` object
-    :rtype: dict[str, Any], requests.Response
-    :raises TypeError: If an invalid data type is supplied for a parameter value
-    :raises ValueError: If an invalid API call method is supplied
-    :raises salespyforce.errors.exceptions.POSTRequestError: If POST request does not return a successful response
-    :raises salespyforce.errors.exceptions.InvalidURLError: If an invalid URL is provided
-    :raises requests.exceptions.Timeout: If the API request times out
-    :raises requests.exceptions.JSONDecodeError: If the response body does not contain valid JSON
+        :param endpoint: The API endpoint to query
+        :type endpoint: str
+        :param payload: The payload to leverage in the API call
+        :type payload: dict
+        :param params: The query parameters (where applicable)
+        :type params: dict, optional
+        :param headers: Specific API headers to use when performing the API call
+        :type headers: dict, optional
+        :param timeout: The timeout period in seconds (defaults to ``30``)
+        :type timeout: int, optional
+        :param show_full_error: Determines if the full error message should be displayed (defaults to ``True``)
+        :type show_full_error: bool
+        :param return_json: Determines if the response should be returned in JSON format (defaults to ``True``)
+        :type return_json: bool
+        :returns: The API response in JSON format or as a ``requests.response`` object
+        :rtype: dict[str, Any], requests.Response
+        :raises TypeError: If an invalid data type is supplied for a parameter value
+        :raises ValueError: If an invalid API call method is supplied
+        :raises salespyforce.errors.exceptions.POSTRequestError: If POST request does not return a successful response
+        :raises salespyforce.errors.exceptions.InvalidURLError: If an invalid URL is provided
+        :raises requests.exceptions.Timeout: If the API request times out
+        :raises requests.exceptions.JSONDecodeError: If the response body does not contain valid JSON
         """
         return api.api_call_with_payload(
             self,
@@ -789,10 +791,10 @@ class Salesforce:
         return core_utils.get_18_char_id(record_id=record_id)
 
     def soql_query(
-            self,
-            query: str,
-            replace_quotes: bool = True,
-            next_records_url: bool = False,
+        self,
+        query: str,
+        replace_quotes: bool = True,
+        next_records_url: bool = False,
     ) -> dict[str, Any]:
         """Performs a SOQL query and returns the results in JSON format.
         (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
@@ -1837,9 +1839,9 @@ class Salesforce:
             )
 
         def publish_multiple_articles(
-                self,
-                article_id_list: list,
-                major_version: bool = True,
+            self,
+            article_id_list: list,
+            major_version: bool = True,
         ) -> requests.Response:
             """Publishes multiple knowledge article drafts at one time.
             (`Reference <https://developer.salesforce.com/docs/platform/api-action/guide/actions-obj-knowledge.html#publish-knowledge-articles>`__)
@@ -1869,10 +1871,10 @@ class Salesforce:
             )
 
         def assign_data_category(
-                self,
-                article_id: str,
-                category_group_name: str,
-                category_name: str,
+            self,
+            article_id: str,
+            category_group_name: str,
+            category_name: str,
         ) -> dict[str, Any]:
             """Assigns a single data category for a knowledge article.
             (`Reference <https://itsmemohit.medium.com/quick-win-15-salesforce-knowledge-rest-apis-bb0725b2040e>`__)
@@ -1899,9 +1901,9 @@ class Salesforce:
             )
 
         def archive_article(
-                self,
-                article_id: str,
-                full_response: bool = False,
+            self,
+            article_id: str,
+            full_response: bool = False,
         ) -> bool | requests.Response:
             """Archives a published knowledge article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_archive_master_version.htm>`__)

@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Sep 2026
+:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
+:Modified Date:     29 Sep 2026
 """
 
 from __future__ import annotations
@@ -49,10 +49,10 @@ def url_decode(encoded_string: str) -> str:
 
 
 def _ensure_prefix_or_suffix(
-        _eval_string: str,
-        _substring: str,
-        _starts_with: bool | None = None,
-        _ends_with: bool | None = None,
+    _eval_string: str,
+    _substring: str,
+    _starts_with: bool | None = None,
+    _ends_with: bool | None = None,
 ) -> str:
     """Ensures that a prefix or suffix is found before or after a given string.
 
@@ -214,7 +214,7 @@ def get_18_char_id(record_id: str) -> str:
     # Define the checksum suffix (additional 3 characters)
     suffix = ''
     for i in range(0, 15, 5):
-        chunk = record_id[i: i + 5]
+        chunk = record_id[i : i + 5]
         bitmask = 0
 
         for index, char in enumerate(chunk):
@@ -227,12 +227,7 @@ def get_18_char_id(record_id: str) -> str:
     return record_id + suffix
 
 
-def matches_regex_pattern(
-        pattern: str,
-        text: str,
-        full_match: bool = False,
-        must_start_with: bool = False
-) -> bool:
+def matches_regex_pattern(pattern: str, text: str, full_match: bool = False, must_start_with: bool = False) -> bool:
     """Compares a text string against a regex pattern and determines whether they match.
 
     .. versionadded:: 1.4.0
@@ -286,11 +281,11 @@ def get_image_ref_id(image_url: str) -> str:
 
 
 def download_image(
-        image_url: str | None = None,
-        file_name: str | None = None,
-        file_path: str | None = None,
-        response: requests.Response | None = None,
-        extension: str = const.FILE_EXTENSIONS.JPEG,
+    image_url: str | None = None,
+    file_name: str | None = None,
+    file_path: str | None = None,
+    response: requests.Response | None = None,
+    extension: str = const.FILE_EXTENSIONS.JPEG,
 ) -> str:
     """Downloads an image and saves it to a specified directory.
 

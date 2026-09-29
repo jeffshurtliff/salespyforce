@@ -3,8 +3,8 @@
 :Module:            salespyforce
 :Synopsis:          This is the ``__init__`` module for the salespyforce package
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     27 Sep 2026
+:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
+:Modified Date:     29 Sep 2026
 """
 
 from __future__ import annotations
@@ -33,14 +33,14 @@ def define_connection_info() -> dict:
 
 # Allow the core.compile_connection_info() function to be executed directly
 def compile_connection_info(
-        base_url: str,
-        org_id: str,
-        username: str,
-        password: str,
-        endpoint_url: str,
-        client_id: str,
-        client_secret: str,
-        security_token: str,
+    base_url: str,
+    org_id: str,
+    username: str,
+    password: str,
+    endpoint_url: str,
+    client_id: str,
+    client_secret: str,
+    security_token: str,
 ) -> dict[Any, Any]:
     """Compiles the connection info into a dictionary that can be consumed by the core object.
 

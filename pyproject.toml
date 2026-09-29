@@ -90,7 +90,7 @@ extend-exclude = ["docs_legacy"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
-ignore = ["UP006", "UP007", "UP009", "UP035", "UP045"]
+ignore = ["E501", "UP006", "UP007", "UP009", "UP035", "UP045"]
 
 [tool.ruff.format]
 quote-style = "single"
