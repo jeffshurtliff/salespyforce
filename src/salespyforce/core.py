@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
-:Modified Date:     29 Sep 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     30 Sep 2026
 """
 
 from __future__ import annotations
@@ -61,8 +61,6 @@ class Salesforce:
     :type helper: str, tuple, list, set, dict, optional
     :returns: The instantiated client object
     :rtype: Salesforce
-    :raises: :py:exc:`TypeError`,
-             :py:exc:`RuntimeError`
     :raises TypeError: If the helper argument is not a tuple, string, list, set or dict
     :raises salespyforce.errors.exceptions.InvalidHelperArgumentsError: If the helper argument is not usable
     """
@@ -770,7 +768,9 @@ class Salesforce:
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm>`__)
 
         :returns: The list of all available REST resources for the Salesforce org
-        :raises: :py:exc:`RuntimeError`
+        :raises salespyforce.errors.exceptions.GETRequestError: If Salesforce does not return a successful response
+        :raises requests.exceptions.Timeout: If the API request times out
+        :raises requests.exceptions.JSONDecodeError: If the response body does not contain valid JSON
         """
         endpoint = const.REST_PATHS.SERVICES_DATA_API.format(api_version=self.version)
         return self.get(endpoint)
