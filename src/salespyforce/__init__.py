@@ -3,13 +3,11 @@
 :Module:            salespyforce
 :Synopsis:          This is the ``__init__`` module for the salespyforce package
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
+:Last Modified:     Jeff Shurtliff (via GPT-6.1 Sol)
 :Modified Date:     05 Nov 2026
 """
 
 from __future__ import annotations
-
-from typing import Any
 
 from . import core
 from .core import Salesforce

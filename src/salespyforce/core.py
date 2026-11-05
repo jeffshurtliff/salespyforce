@@ -5,7 +5,7 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
+:Last Modified:     Jeff Shurtliff (via GPT-6.1 Sol)
 :Modified Date:     05 Nov 2026
 """
 
@@ -2102,6 +2102,7 @@ def compile_connection_info(
     :returns: The connection info in a dictionary
     :rtype: dict[str, str]
     """
+
     def _convert_none_to_empty_string(_value: str | None) -> str:
         """Converts a None value to an empty string and returns the value.
 

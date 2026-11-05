@@ -90,6 +90,8 @@ invalid JSON from POST, PATCH, and PUT requests raises the JSON decoding excepti
   when publishing articles.
 - Updated the fallback Salesforce API version from `65.0` to `67.0`.
 - Invalid helper path or file-type values now raise `InvalidHelperArgumentsError`.
+- The package-level and core `compile_connection_info` functions now normalize
+  `None` connection values to empty strings while preserving supplied strings.
 - Empty or non-dictionary Knowledge article responses now raise `GETRequestError`.
 - `get_image_ref_id` now returns the string `"None"` when a URL has no `refid` parameter.
 - Aligned API version directives with the actual 2.0.2 release and updated error-handling guidance.
