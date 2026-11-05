@@ -4,8 +4,8 @@
 :Module:         tests.unit.test_core_utils
 :Synopsis:       This module is used by pytest to test core utility functions
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via claude-opus-5-5)
-:Modified Date:  29 Sep 2026
+:Last Modified:  Jeff Shurtliff (via GPT-6.1 Sol)
+:Modified Date:  05 Nov 2026
 """
 
 import os
@@ -90,7 +90,7 @@ def test_get_random_string_returns_expected_length(monkeypatch):
 
     .. versionadded:: 1.4.0
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The test no longer patches the ``random`` module, which the function no longer uses.
     """
     alphabet = 'abc123'
@@ -140,7 +140,7 @@ def test_non_string_id_input_raises_error():
 
     .. versionadded:: 1.4.0
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The test now expects a :py:exc:`TypeError` exception rather than :py:exc:`ValueError`.
     """
     with pytest.raises(TypeError):

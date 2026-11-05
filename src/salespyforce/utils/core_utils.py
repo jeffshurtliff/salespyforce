@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
-:Modified Date:     29 Sep 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     05 Nov 2026
 """
 
 from __future__ import annotations
@@ -159,7 +159,7 @@ def get_file_type(file_path: str) -> str:
 def get_random_string(length: int = 32, prefix_string: str = '') -> str:
     """Returns a random alphanumeric string.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The function now uses the cryptographically secure ``secrets`` module rather than the ``random`` module,
        and also now validates that the length is at least one character.
 
@@ -185,7 +185,7 @@ def get_18_char_id(record_id: str) -> str:
 
     .. versionadded:: 1.4.0
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        A :py:exc:`TypeError` is now raised instead of :py:exc:`ValueError` if the record ID is not a string.
 
     :param record_id: The Salesforce record ID to convert (or return unchanged if already 18 characters)
@@ -269,6 +269,9 @@ def get_image_ref_id(image_url: str) -> str:
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`__,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`__)
 
+    .. versionchanged:: 2.0.2
+       Return the string "None" when the URL has no refid parameter instead of failing during indexing.
+
     :param image_url: The URL of an image from within Salesforce
     :type image_url: str
     :returns: The reference ID (``refid``) value
@@ -291,6 +294,9 @@ def download_image(
 
     .. versionchanged:: 1.5.0
        This function now raises more specific exceptions instead of the generic :py:exc:`RuntimeError` exception.
+
+    .. versionchanged:: 2.0.2
+       Image GET requests now use a 30-second timeout.
 
     :param image_url: The absolute URL to the image
     :type image_url: str, optional

@@ -5,8 +5,8 @@
 :Usage:             ``from salespyforce import Salesforce``
 :Example:           ``sfdc = Salesforce(helper=helper_file_path)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff
-:Modified Date:     30 Sep 2026
+:Last Modified:     Jeff Shurtliff (via GPT-6.1 Sol)
+:Modified Date:     05 Nov 2026
 """
 
 from __future__ import annotations
@@ -36,6 +36,9 @@ class Salesforce:
 
     .. versionchanged:: 1.5.0
        String helper paths now infer JSON or YAML parsing from the file extension.
+
+    .. versionchanged:: 2.0.2
+       Helper path and file-type values must be strings. The fallback API version is now 67.0.
 
     :param connection_info: The information for connecting to the Salesforce instance
     :type connection_info: dict, optional
@@ -232,9 +235,10 @@ class Salesforce:
         """Connects to the Salesforce instance to obtain the access token.
         (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
-        .. versionchanged:: 2.1.0
+        .. versionchanged:: 2.0.2
            A failed API call now raises a :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception
            instead of a generic :py:exc:`RuntimeError` exception.
+           Authentication requests now use a 30-second timeout.
 
         :returns: The API call response with the authorization information
         :raises salespyforce.errors.exceptions.POSTRequestError: If Salesforce returns an unsuccessful response
@@ -337,7 +341,7 @@ class Salesforce:
         .. versionchanged:: 1.5.0
            Successful responses with empty bodies are returned without attempting JSON conversion.
 
-        .. versionchanged:: 2.1.0
+        .. versionchanged:: 2.0.2
            The function now fails with the :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception rather
            than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -393,7 +397,7 @@ class Salesforce:
         .. versionchanged:: 1.5.0
            Successful responses with empty bodies are returned without attempting JSON conversion.
 
-        .. versionchanged:: 2.1.0
+        .. versionchanged:: 2.0.2
            Failed API requests now return more specific exceptions in place of the generic :py:exc:`RuntimeError` exception.
 
         :param method: The API method (``post``, ``put``, or ``patch``)
@@ -448,13 +452,14 @@ class Salesforce:
         """Performs a POST call against the Salesforce instance.
             (`Reference <https://jereze.com/code/authentification-salesforce-rest-api-python/>`__)
 
-            .. versionchanged:: 1.4.0
-               A global constant is now leveraged for the API timeout value instead of hardcoding the value.
-               (Timeout is still **30** seconds in this version)
+        .. versionchanged:: 1.4.0
+           A global constant is now leveraged for the API timeout value instead of hardcoding the value.
+           (Timeout is still **30** seconds in this version)
 
-            .. versionchanged:: 2.1.0
-               The function now fails with the :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception rather
-               than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
+        .. versionchanged:: 2.0.2
+           The function now fails with the :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception rather
+           than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
+
 
         :param endpoint: The API endpoint to query
         :type endpoint: str
@@ -511,7 +516,7 @@ class Salesforce:
         .. versionchanged:: 1.5.0
            The default value for ``return_json`` is ``False`` to preserve the published 1.4.0 behavior.
 
-        .. versionchanged:: 2.1.0
+        .. versionchanged:: 2.0.2
            The function now fails with the :py:exc:`salespyforce.errors.exceptions.PATCHRequestError` exception rather
            than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -567,7 +572,7 @@ class Salesforce:
            A global constant is now leveraged for the API timeout value instead of hardcoding the value.
            (Timeout is still **30** seconds in this version)
 
-        .. versionchanged:: 2.1.0
+        .. versionchanged:: 2.0.2
            The function now fails with the :py:exc:`salespyforce.errors.exceptions.PUTRequestError` exception rather
            than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -622,7 +627,7 @@ class Salesforce:
         .. versionchanged:: 1.5.0
            Successful responses with empty bodies are returned without attempting JSON conversion.
 
-        .. versionchanged:: 2.1.0
+        .. versionchanged:: 2.0.2
            The function now fails with the :py:exc:`salespyforce.errors.exceptions.DELETERequestError` exception rather
            than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -660,6 +665,9 @@ class Salesforce:
         """Returns the API versions for the Salesforce releases.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm>`__)
 
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
         :returns: A list containing the API metadata from the ``/services/data`` endpoint.
         :raises TypeError: If an invalid data type is supplied for a parameter value
         :raises salespyforce.errors.exceptions.GETRequestError: If Salesforce does not return a successful response
@@ -695,6 +703,9 @@ class Salesforce:
 
         .. versionadded:: 1.1.0
 
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
         :returns: The Salesforce org governor limits data
         :raises TypeError: If an invalid data type is supplied for a parameter value
         :raises salespyforce.errors.exceptions.GETRequestError: If Salesforce does not return a successful response
@@ -708,6 +719,9 @@ class Salesforce:
     def get_all_sobjects(self) -> dict[str, Any]:
         """Returns a list of all Salesforce objects (i.e. sObjects) within a JSON response.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_describeGlobal.htm>`__)
+
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
         :returns: The list of all Salesforce objects within a JSON API response
         :rtype: dict[str, Any]
@@ -724,6 +738,9 @@ class Salesforce:
         """Returns basic information or the full (describe) information for a specific sObject.
         (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info_get.htm>`__,
         `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm>`__)
+
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
         :param object_name: The name of the Salesforce object
         :type object_name: str
@@ -752,6 +769,9 @@ class Salesforce:
         """Returns the full (describe) information for a specific sObject.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm>`__)
 
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
         :param object_name: The name of the Salesforce object
         :type object_name: str
         :returns: The Salesforce object data
@@ -766,6 +786,9 @@ class Salesforce:
     def get_rest_resources(self):
         """Returns a list of all available REST resources.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_discoveryresource.htm>`__)
+
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
         :returns: The list of all available REST resources for the Salesforce org
         :raises salespyforce.errors.exceptions.GETRequestError: If Salesforce does not return a successful response
@@ -800,6 +823,9 @@ class Salesforce:
         (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm>`__,
         `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_soql_sosl_intro.htm>`__)
 
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
         :param query: The SOQL query to perform
         :type query: str
         :param replace_quotes: Determines if double-quotes should be replaced with single-quotes (``True`` by default)
@@ -829,6 +855,9 @@ class Salesforce:
 
         .. versionadded:: 1.1.0
 
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
         :param string_to_search: The string for which to search
         :type string_to_search: str
         :returns: The SOSL response data in JSON format
@@ -847,6 +876,9 @@ class Salesforce:
         """This method checks the Read, Edit, and Delete access for a given record and user.
 
         .. versionadded:: 1.4.0
+
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
         :param record_id: The ``Id`` value of the record against which to check the user access
         :type record_id: str
@@ -1113,6 +1145,9 @@ class Salesforce:
         """Creates a new record for a specific sObject.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`__)
 
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
         :param sobject: The sObject under which to create the new record
         :type sobject: str
         :param payload: The JSON payload with the record details
@@ -1139,6 +1174,9 @@ class Salesforce:
     def update_sobject_record(self, sobject: str, record_id: str, payload: dict):
         """Updates an existing sObject record.
         (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`__)
+
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
         :param sobject: The sObject under which to update the record
         :type sobject: str
@@ -1183,6 +1221,9 @@ class Salesforce:
 
         .. versionchanged:: 1.5.0
            Errors are now logged and Exceptions are raised when downloading the image fails.
+
+        .. versionchanged:: 2.0.2
+           Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
         :param image_url: The URL for the image to be downloaded
         :type image_url: str
@@ -1252,7 +1293,7 @@ class Salesforce:
             """Retrieves the news feed for the user calling the function.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`__)
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                The function now fails with the :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception rather
                than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -1270,7 +1311,7 @@ class Salesforce:
             """Retrieves another user's news feed.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`__)
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                The function now fails with the :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception rather
                than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -1290,7 +1331,7 @@ class Salesforce:
             """Retrieves a group's news feed.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`__)
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                The function now fails with the :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception rather
                than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -1321,7 +1362,7 @@ class Salesforce:
                The function now raises the :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception
                rather than the generic :py:exc:`RuntimeError` exception.
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                The function now fails with the :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception rather
                than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response, and
                fails with the :py:exc:`salespyforce.errors.exceptions.DataMismatchError` exception if both message text and
@@ -1371,7 +1412,7 @@ class Salesforce:
                It also now raises the :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception rather
                than the generic :py:exc:`RuntimeError` exception.
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                The method now fails with the :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception rather
                than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response, and
                fails with the :py:exc:`salespyforce.errors.exceptions.DataMismatchError` exception if both message text and
@@ -1470,6 +1511,9 @@ class Salesforce:
                The ability to retrieve the article URI/URL rather than the ID will be moved to a separate function in
                a future release.
 
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
             :param article_number: The Article Number to query
             :type article_number: str, int
             :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
@@ -1507,8 +1551,10 @@ class Salesforce:
             .. versionchanged:: 1.4.0
                The errors now log as errors via the logger rather than to the stderr console.
 
-            .. versionchanged:: 2.1.0
-               It is now possible to return the list of articles (default) or the full API response in JSON format.
+            .. versionchanged:: 2.0.2
+               Returns the list of articles instead of the full JSON response. Use
+               :py:func:`salespyforce.knowledge.get_articles_list` with ``full_json_response=True``
+               to retrieve the full JSON response.
 
             :param query: A SOQL query with which to filter the results (optional)
             :type query: str, optional
@@ -1522,7 +1568,7 @@ class Salesforce:
             :param page_num: The starting page number (``1`` by default)
             :type page_num: int
             :returns: The list of retrieved knowledge articles
-            :rtype: list[dict], dict[str, Any]
+            :rtype: list[dict]
             :raises salespyforce.errors.exceptions.GETRequestError: If Salesforce does not return a successful, valid response
             :raises requests.exceptions.Timeout: If the API request times out
             :raises requests.exceptions.JSONDecodeError: If the response body does not contain valid JSON
@@ -1549,6 +1595,10 @@ class Salesforce:
                A logic issue was resolved and the new optional ``use_knowledge_articles_endpoint`` parameter can
                now be set to force the ``knowledgeArticles`` endpoint to be used for the GET request rather than
                the ``sobjects`` endpoint.
+
+            .. versionchanged:: 2.0.2
+               Empty or non-dictionary article responses now raise GETRequestError. Failed API requests now raise
+               method-specific request exceptions instead of RuntimeError.
 
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str
@@ -1592,7 +1642,7 @@ class Salesforce:
                The `use_knowledge_articles_endpoint` parameter is now supported, which allows you to specify the
                REST path to utilize for the API query.
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                A :py:exc:`TypeError` exception is now raised if the article details is not the appropriate data type.
 
             :param article_id: The Article ID for which to retrieve details
@@ -1624,6 +1674,9 @@ class Salesforce:
             """Retrieves metadata for a specific knowledge article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`__)
 
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str
             :returns: The article metadata as a dictionary
@@ -1638,6 +1691,9 @@ class Salesforce:
             """Retrieves the version ID for a given master article ID.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`__)
 
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str
             :returns: The version ID for the given master article ID
@@ -1651,13 +1707,16 @@ class Salesforce:
         def get_article_url(
             self,
             article_id: str | None = None,
-            article_number: Optional[Union[str, int]] = None,
+            article_number: str | int | None = None,
             sobject: str | None = None,
         ) -> str:
             """Constructs the URL to view a knowledge article in Lightning or Classic.
 
             .. versionchanged:: 1.2.0
                Changed when lightning URLs are defined and fixed an issue with extraneous slashes.
+
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
             :param article_id: The Article ID for which to retrieve details
             :type article_id: str, optional
@@ -1686,6 +1745,9 @@ class Salesforce:
         ) -> str | dict[str, Any]:
             """Creates a new knowledge article draft.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`__)
+
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
             :param article_data: The article data used to populate the article
             :type article_data: dict
@@ -1720,7 +1782,7 @@ class Salesforce:
             """Updates an existing knowledge article draft.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`__)
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                Fixed an issue where the PATCH response was being incorrectly converted to JSON format.
 
             :param record_id: The ID of the article draft record to be updated
@@ -1752,6 +1814,9 @@ class Salesforce:
             """Creates a draft knowledge article from an online article.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`__)
 
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
             :param article_id: The ID of the online article from which to create the draft
             :type article_id: str
             :param unpublish: Determines if the online article should be unpublished when the draft is created (``False`` by default)
@@ -1782,6 +1847,9 @@ class Salesforce:
             .. versionchanged:: 1.5.0
                The :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception class is now raised when
                required parameters are missing instead of the generic :py:exc:`RuntimeError` exception.
+
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
             :param article_id: The Article ID from which to create the draft
             :type article_id: str, optional
@@ -1816,7 +1884,7 @@ class Salesforce:
             """Publishes a draft knowledge article as a major or minor version.
             (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`__)
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                Fixed an issue where the PATCH response was being incorrectly converted to JSON format.
 
             :param article_id: The Article ID to publish
@@ -1850,7 +1918,7 @@ class Salesforce:
                The :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception class is now raised
                when required parameters are missing instead of a more generic exception.
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                The full ``requests.Response`` object is now always returned.
 
             :param article_id_list: A list of Article IDs to be published
@@ -1881,6 +1949,9 @@ class Salesforce:
 
             .. versionadded:: 1.2.0
 
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
             :param article_id: The ID of the article to update
             :type article_id: str
             :param category_group_name: The unique Data Category Group Name
@@ -1910,7 +1981,7 @@ class Salesforce:
 
             .. versionadded:: 1.3.0
 
-            .. versionchanged:: 2.1.0
+            .. versionchanged:: 2.0.2
                It is now possible to return a Boolean value indicating whether the archival was successful (default), or
                the full API response from the PATCH request.
 
@@ -1942,6 +2013,9 @@ class Salesforce:
 
             .. versionchanged:: 1.5.0
                An optional ``sobject`` parameter can now be passed to specify the sObject against which to query.
+
+            .. versionchanged:: 2.0.2
+               Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
             :param version_id: The 15-character or 18-character ``Id`` (Knowledge Article Version ID) value
             :type version_id: str
@@ -1995,44 +2069,55 @@ def define_connection_info() -> dict:
 
 
 def compile_connection_info(
-    base_url: str,
-    org_id: str,
-    username: str,
-    password: str,
-    endpoint_url: str,
-    client_id: str,
-    client_secret: str,
-    security_token: str,
-) -> dict:
+    base_url: str | None,
+    org_id: str | None,
+    username: str | None,
+    password: str | None,
+    endpoint_url: str | None,
+    client_id: str | None,
+    client_secret: str | None,
+    security_token: str | None,
+) -> dict[str, str]:
     """Compiles the connection info into a dictionary that can be consumed by the core object.
 
+    .. versionchanged:: 2.0.2
+       The function parameters now accept strings and None values and the latter get converted to empty strings.
+
     :param base_url: The base URL of the Salesforce instance
-    :type base_url: str
+    :type base_url: str, optional
     :param org_id: The Org ID of the Salesforce instance
-    :type org_id: str
+    :type org_id: str, optional
     :param username: The username of the API user
-    :type username: str
+    :type username: str, optional
     :param password: The password of the API user
-    :type password: str
+    :type password: str, optional
     :param endpoint_url: The endpoint URL for the Salesforce instance
-    :type endpoint_url: str
+    :type endpoint_url: str, optional
     :param client_id: The Client ID for the Salesforce instance
-    :type client_id: str
+    :type client_id: str, optional
     :param client_secret: The Client Secret for the Salesforce instance
-    :type client_secret: str
+    :type client_secret: str, optional
     :param security_token: The Security Token for the Salesforce instance
-    :type security_token: str
+    :type security_token: str, optional
     :returns: The connection info in a dictionary
-    :rtype: dict[str, Any]
+    :rtype: dict[str, str]
     """
+
+    def _convert_none_to_empty_string(_value: str | None) -> str:
+        """Converts a None value to an empty string and returns the value.
+
+        .. versionadded:: 2.0.2
+        """
+        return _value if isinstance(_value, str) else ''
+
     connection_info = {
-        'base_url': base_url,
-        'org_id': org_id,
-        'username': username,
-        'password': password,
-        'endpoint_url': endpoint_url,
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'security_token': security_token,
+        'base_url': _convert_none_to_empty_string(base_url),
+        'org_id': _convert_none_to_empty_string(org_id),
+        'username': _convert_none_to_empty_string(username),
+        'password': _convert_none_to_empty_string(password),
+        'endpoint_url': _convert_none_to_empty_string(endpoint_url),
+        'client_id': _convert_none_to_empty_string(client_id),
+        'client_secret': _convert_none_to_empty_string(client_secret),
+        'security_token': _convert_none_to_empty_string(security_token),
     }
     return connection_info

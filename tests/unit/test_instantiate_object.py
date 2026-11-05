@@ -4,8 +4,8 @@
 :Module:         tests.unit.test_instantiate_object
 :Synopsis:       This module is used by pytest to test instantiating the core object
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via GPT-5.5-codex)
-:Modified Date:  15 Jul 2026
+:Last Modified:  Jeff Shurtliff (via GPT-6.1 Sol)
+:Modified Date:  05 Nov 2026
 
 These tests rely on the ``salesforce_unit`` fixture defined in
 ``conftest.py`` to keep them fast and deterministic. When you want to
@@ -18,9 +18,54 @@ import json
 import pytest
 import yaml
 
+import salespyforce
 from salespyforce import constants as const
-from salespyforce import errors
+from salespyforce import core, errors
 from salespyforce.core import Salesforce
+
+
+@pytest.mark.parametrize('compiler', [salespyforce.compile_connection_info, core.compile_connection_info])
+def test_compile_connection_info_normalizes_missing_values(compiler):
+    """Both entry points preserve supplied strings and normalize missing values."""
+    connection = compiler(
+        base_url='https://example.my.salesforce.com',
+        org_id=None,
+        username='user@example.invalid',
+        password=None,
+        endpoint_url='https://example.my.salesforce.com/services/oauth2/token',
+        client_id='xxxxx',
+        client_secret=None,
+        security_token='',
+    )
+
+    assert connection == {
+        'base_url': 'https://example.my.salesforce.com',
+        'org_id': '',
+        'username': 'user@example.invalid',
+        'password': '',
+        'endpoint_url': 'https://example.my.salesforce.com/services/oauth2/token',
+        'client_id': 'xxxxx',
+        'client_secret': '',
+        'security_token': '',
+    }
+
+
+@pytest.mark.parametrize('compiler', [salespyforce.compile_connection_info, core.compile_connection_info])
+def test_compile_connection_info_accepts_all_missing_values(compiler):
+    """Missing connection fields produce eight empty strings without authentication."""
+    connection = compiler(None, None, None, None, None, None, None, None)
+
+    assert set(connection) == {
+        'base_url',
+        'org_id',
+        'username',
+        'password',
+        'endpoint_url',
+        'client_id',
+        'client_secret',
+        'security_token',
+    }
+    assert set(connection.values()) == {''}
 
 
 def test_instantiate_core_object(salesforce_unit):

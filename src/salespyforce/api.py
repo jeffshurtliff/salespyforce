@@ -3,8 +3,8 @@
 :Module:            salespyforce.api
 :Synopsis:          Defines the basic functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
-:Modified Date:     29 Sep 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     05 Nov 2026
 """
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ def get(
     .. versionchanged:: 1.5.0
        Successful responses with empty bodies are returned without attempting JSON conversion.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The function now fails with the :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception rather
        than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -111,8 +111,9 @@ def api_call_with_payload(
     .. versionchanged:: 1.5.0
        Successful responses with empty bodies are returned without attempting JSON conversion.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        Failed API requests now return more specific exceptions in place of the generic :py:exc:`RuntimeError` exception.
+       Invalid JSON in non-empty POST, PATCH, and PUT responses now raises the JSON decoding exception.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -193,7 +194,7 @@ def delete(
     .. versionchanged:: 1.5.0
        Successful responses with empty bodies are returned without attempting JSON conversion.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The function now fails with the :py:exc:`salespyforce.errors.exceptions.DELETERequestError` exception rather
        than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -247,8 +248,6 @@ def _raise_exception_for_failed_request(
     _show_full_error: bool = True,
 ) -> None:
     """Raises an appropriate exception for a failed API request.
-
-    .. versionadded:: 2.1.0
 
     :param _api_method: The API method of the request (e.g. GET, POST, etc.)
     :type _api_method: str
