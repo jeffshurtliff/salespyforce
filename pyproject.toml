@@ -3,11 +3,12 @@
 # --------------------------------------------------------------------
 [project]
 name = "salespyforce"
-version = "2.1.0.dev0"
+version = "2.0.2"
 description = "A Python toolset for performing Salesforce API calls"
 readme = "README.md"
 requires-python = ">=3.12,<3.14.0"
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
     { name = "Jeff Shurtliff", email = "jeff@shurt.us" }
 ]
@@ -19,10 +20,6 @@ keywords = ["salesforce", "sfdc", "sfdx", "api", "rest", "tooling", "python"]
 classifiers = [
     # Project maturity
     "Development Status :: 5 - Production/Stable",
-
-    # License
-    "License :: OSI Approved :: MIT License",
-    "License :: Freely Distributable",
 
     # Intended audience and environment
     "Intended Audience :: Information Technology",
@@ -45,9 +42,9 @@ classifiers = [
 dependencies = [
     "PyYAML>=6.0.3,<7",
     "requests>=2.33.0,<3",
-    "urllib3>=2.7.0,<3",
+    "urllib3>=2.8.0,<3",
     "idna>=3.15,<4",
-    "certifi>=2024.7.4",    # Explicit pin to mitigate CA removals (e-Tugra, GLOBALTRUST)
+    "certifi>=2026.10.18",    # Minimum version removes compromised emSign root CAs
 ]
 
 [project.urls]
@@ -79,7 +76,7 @@ ruff = "^0.15.8"
 soupsieve = ">=2.9.0,<3"
 pygments = ">=2.20.0,<3"
 twine = ">=6.2.0,<7"
-setuptools = ">=83.0.0"
+setuptools = ">=84.1.0"
 cryptography = ">=50.0.0"    # Transitive via twine -> keyring -> SecretStorage; pinned for CVE-2026-69247
 
 [tool.ruff]
@@ -102,5 +99,5 @@ testpaths = ["tests/unit", "tests/integration"]
 pythonpath = ["src"]
 
 [build-system]
-requires = ["poetry-core>=1.2.0"]
+requires = ["poetry-core>=2.2.0"]
 build-backend = "poetry.core.masonry.api"

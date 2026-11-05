@@ -18,6 +18,9 @@ No unreleased additions at this time.
 (unreleased-changed)=
 ### Changed
 
+- Modernized package license metadata to use the SPDX `MIT` expression and explicit
+  `license-files`, removed deprecated license classifiers, and raised the build-backend
+  minimum to `poetry-core>=2.2.0` for PEP 639 support.
 - The docstrings across the codebase were rewritten to align with current best practices and to 
   provide additional clarity and improve user experience.
 - The {py:exc}`~salespyforce.errors.exceptions.GETRequestError` exception is now raised instead of the 
@@ -60,7 +63,13 @@ No unreleased additions at this time.
 (unreleased-security)=
 ### Security
 
-No unreleased security updates at this time.
+- Raised the `certifi` runtime-dependency floor to `>=2026.10.18` (locked at 2026.10.23)
+  to address [GHSA-6q48-6c7w-9gw2](https://github.com/advisories/GHSA-6q48-6c7w-9gw2).
+- Raised the `urllib3` runtime-dependency floor to `>=2.8.0,<3` (locked at 2.8.0)
+  to address CVE-2026-97687, CVE-2026-97688, and CVE-2026-97689.
+- Raised the `setuptools` dev-dependency floor to `>=84.1.0` (locked at 84.2.1)
+  to address [GHSA-xmj3-9gf7-h52w](https://github.com/advisories/GHSA-xmj3-9gf7-h52w).
+- Updated CI security dependency checks to enforce the patched minimum versions.
 
 ---
 (relnotes-2.0.1)=
