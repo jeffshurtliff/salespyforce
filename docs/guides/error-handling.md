@@ -15,8 +15,9 @@ See [Authentication](authentication.md) and [Quickstart](../getting-started/quic
 
 In current `salespyforce` releases, API failures can appear in a few forms:
 
-- `RuntimeError` from API helper methods when Salesforce returns HTTP status
-  `>= 300` (for example, `get()`, `post()`, `patch()`, `put()`, `delete()`).
+- Method-specific `GETRequestError`, `POSTRequestError`, `PATCHRequestError`,
+  `PUTRequestError`, or `DELETERequestError` when Salesforce returns HTTP status
+  `>= 300`. These exceptions inherit from `SalesPyForceError`.
 - `requests` exceptions (for example, connection or timeout errors) can bubble
   up directly in places where they are not wrapped.
 - Library-specific exceptions from
@@ -35,9 +36,9 @@ For reference details, see [Exception Classes](../reference/exceptions.rst) and
 
 Use a layered `try/except` approach:
 
-- Catch library-specific exceptions first for validation and misuse cases.
+- Catch method-specific request exceptions for unsuccessful HTTP responses.
+- Catch other library-specific exceptions for validation and misuse cases.
 - Catch `requests.RequestException` next for transport/network failures.
-- Catch `RuntimeError` for HTTP error responses surfaced by current API methods.
 - Add a final broad fallback to ensure your application does not silently fail.
 
 ```python
@@ -49,18 +50,26 @@ from salespyforce.errors import exceptions as spf_exc
 
 logger = logging.getLogger(__name__)
 
+HTTP_REQUEST_ERRORS = (
+    spf_exc.GETRequestError,
+    spf_exc.POSTRequestError,
+    spf_exc.PATCHRequestError,
+    spf_exc.PUTRequestError,
+    spf_exc.DELETERequestError,
+)
+
 sfdc = Salesforce(helper="/path/to/helper.yml")
 
 try:
     result = sfdc.soql_query("SELECT Id, Name FROM Account LIMIT 5")
+except HTTP_REQUEST_ERRORS as exc:
+    logger.error("Salesforce API returned an error response: %s", exc)
+    raise
 except spf_exc.SalesPyForceError as exc:
     logger.error("SalesPyForce validation/domain error: %s", exc)
     raise
 except requests.RequestException as exc:
     logger.error("Network/transport error calling Salesforce: %s", exc)
-    raise
-except RuntimeError as exc:
-    logger.error("Salesforce API returned an error response: %s", exc)
     raise
 except Exception as exc:
     logger.exception("Unexpected failure: %s", exc)
@@ -98,16 +107,27 @@ import time
 import requests
 
 from salespyforce import Salesforce
+from salespyforce.errors import exceptions as spf_exc
+
+HTTP_REQUEST_ERRORS = (
+    spf_exc.GETRequestError,
+    spf_exc.POSTRequestError,
+    spf_exc.PATCHRequestError,
+    spf_exc.PUTRequestError,
+    spf_exc.DELETERequestError,
+)
 
 
 def call_with_retry(func, *, attempts=4, base_delay=0.5, max_delay=8.0):
     for attempt in range(1, attempts + 1):
         try:
             return func()
+        except requests.exceptions.JSONDecodeError:
+            raise
         except requests.RequestException:
             if attempt == attempts:
                 raise
-        except RuntimeError as exc:
+        except HTTP_REQUEST_ERRORS as exc:
             message = str(exc)
             transient = any(code in message for code in (" 429 ", " 500 ", " 502 ", " 503 ", " 504 "))
             if not transient or attempt == attempts:
@@ -154,6 +174,7 @@ Reference utility APIs: [Utilities](../reference/utilities.rst).
 ## Timeouts
 
 The API helper methods support a `timeout` parameter (default `30` seconds).
+Authentication and image-download requests also use a `30`-second timeout.
 Tune this per operation:
 
 - Lower timeout for frequent, interactive reads.
@@ -171,7 +192,7 @@ result = sfdc.get(
 
 ## Practical Checklist
 
-- Use targeted exception handling (`SalesPyForceError`, `requests`, `RuntimeError`).
+- Use targeted exception handling for method-specific errors, `SalesPyForceError`, and `requests` exceptions.
 - Implement retry with exponential backoff + jitter for transient failures.
 - Restrict retries to operations that are safe in your business context.
 - Set explicit timeouts for long-running or latency-sensitive operations.

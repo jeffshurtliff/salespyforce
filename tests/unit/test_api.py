@@ -4,8 +4,8 @@
 :Module:         tests.unit.test_api
 :Synopsis:       Tests low-level Salesforce API request and response handling
 :Created By:     Jeff Shurtliff
-:Last Modified:  Jeff Shurtliff (via claude-opus-5-5)
-:Modified Date:  29 Sep 2026
+:Last Modified:  Jeff Shurtliff (via GPT-6.1 Sol)
+:Modified Date:  05 Nov 2026
 """
 
 from types import SimpleNamespace
@@ -127,7 +127,7 @@ REQUEST_ERRORS = {
 def test_api_methods_preserve_error_status_behavior(monkeypatch, api_client, method):
     """Non-success status codes raise the method-specific request exception.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The test now expects the method-specific request exception instead of :py:exc:`RuntimeError`.
     """
     response = FakeResponse(status_code=400, content=b'bad request')
@@ -168,7 +168,7 @@ def test_delete_preserves_malformed_non_empty_json_behavior(monkeypatch, api_cli
 def test_payload_call_preserves_malformed_non_empty_json_behavior(monkeypatch, api_client):
     """Payload calls surface malformed non-empty JSON conversion errors.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The test now expects the JSON conversion error to be raised rather than the raw response to be returned.
     """
     response = FakeResponse(content=b'not-json', json_error=ValueError('invalid JSON'))

@@ -3,8 +3,8 @@
 :Module:            salespyforce.knowledge
 :Synopsis:          Defines the Knowledge-related functions associated with the Salesforce API
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via claude-opus-5-5)
-:Modified Date:     29 Sep 2026
+:Last Modified:     Jeff Shurtliff
+:Modified Date:     05 Nov 2026
 """
 
 from __future__ import annotations
@@ -103,6 +103,9 @@ def get_article_id_from_number(
     .. versionchanged:: 1.4.0
        A logic issue has been fixed and improved to make this function more robust and stable.
 
+    .. versionchanged:: 2.0.2
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_number: The Article Number to query
@@ -168,7 +171,7 @@ def get_articles_list(
     .. versionchanged:: 1.4.0
        The errors now log as errors via the logger rather than to the stderr console.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        It is now possible to return the list of articles (default) or the full API response in JSON format.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
@@ -264,6 +267,10 @@ def get_article_details(
        A logic issue was resolved and the new optional ``use_knowledge_articles_endpoint`` parameter can now be set to
        force the ``knowledgeArticles`` endpoint to be used for the GET request rather than the ``sobjects`` endpoint.
 
+    .. versionchanged:: 2.0.2
+       Empty or non-dictionary article responses now raise GETRequestError.
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
@@ -329,20 +336,20 @@ def get_validation_status(
        The `use_knowledge_articles_endpoint` parameter is now supported, which allows you to specify the
        REST path to utilize for the API query.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        A :py:exc:`TypeError` exception is now raised if the article details is not the appropriate data type.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
-    :type article_id: str, None
+    :type article_id: str, optional
     :param article_details: The dictionary of article details for the given article
-    :type article_details: dict, None
+    :type article_details: dict, optional
     :param sobject: The Salesforce object to query (``Knowledge__kav`` by default)
-    :type sobject: str, None
+    :type sobject: str, optional
     :param use_knowledge_articles_endpoint: Optionally use the ``knowledgeArticles`` endpoint rather than ``sobjects``
                                             to retrieve the article details (``False`` by default)
-    :type use_knowledge_articles_endpoint: bool, None
+    :type use_knowledge_articles_endpoint: bool, optional
     :returns: The validation status as a text string
     :rtype: str
     :raises TypeError: If the article details are an invalid data type and cannot be parsed
@@ -372,6 +379,9 @@ def get_article_metadata(sfdc_object, article_id: str) -> dict[str, Any]:
     """Retrieves metadata for a specific knowledge article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_metadata.htm>`__)
 
+    .. versionchanged:: 2.0.2
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The Article ID for which to retrieve details
@@ -392,6 +402,9 @@ def get_article_metadata(sfdc_object, article_id: str) -> dict[str, Any]:
 def get_article_version(sfdc_object, article_id: str):
     """Retrieves the version ID for a given master article ID.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_retrieve_article_version.htm>`__)
+
+    .. versionchanged:: 2.0.2
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -468,6 +481,9 @@ def create_article(
     """Creates a new knowledge article draft.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm>`__)
 
+    .. versionchanged:: 2.0.2
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_data: The article data used to populate the article
@@ -518,7 +534,7 @@ def update_article(
     """Updates an existing knowledge article draft.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm>`__)
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        Fixed an issue where the PATCH response was being incorrectly converted to JSON format.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
@@ -574,6 +590,9 @@ def create_draft_from_online_article(
     """Creates a draft knowledge article from an online article.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/actions_obj_knowledge.htm#createDraftFromOnlineKnowledgeArticle>`__)
 
+    .. versionchanged:: 2.0.2
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The ID of the online article from which to create the draft
@@ -616,6 +635,9 @@ def create_draft_from_master_version(
     .. versionchanged:: 1.5.0
        The :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception class is now raised when
        required parameters are missing instead of the generic :py:exc:`RuntimeError` exception.
+
+    .. versionchanged:: 2.0.2
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
@@ -678,7 +700,7 @@ def publish_article(
     """Publishes a draft knowledge article as a major or minor version.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_REST_publish_master_version.htm>`__)
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        Fixed an issue where the PATCH response was being incorrectly converted to JSON format.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
@@ -725,7 +747,7 @@ def publish_multiple_articles(
        The :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception class is now raised
        when required parameters are missing instead of a more generic exception.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The full ``requests.Response`` object is now always returned.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
@@ -779,6 +801,9 @@ def assign_data_category(
 
     .. versionadded:: 1.2.0
 
+    .. versionchanged:: 2.0.2
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
+
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]
     :param article_id: The ID of the article to update
@@ -818,7 +843,7 @@ def archive_article(
 
     .. versionadded:: 1.3.0
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        It is now possible to return a Boolean value indicating whether the archival was successful (default), or
        the full API response from the PATCH request.
 
@@ -862,6 +887,9 @@ def delete_article_draft(
 
     .. versionchanged:: 1.5.0
        An optional ``sobject`` parameter can now be passed to specify the sObject against which to query.
+
+    .. versionchanged:: 2.0.2
+       Failed API requests now raise method-specific request exceptions instead of RuntimeError.
 
     :param sfdc_object: The instantiated ``salespyforce.Salesforce`` object
     :type sfdc_object: class[salespyforce.Salesforce]

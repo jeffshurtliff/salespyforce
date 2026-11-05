@@ -4,7 +4,7 @@
 :Synopsis:          Defines the Chatter-related functions associated with the Salesforce Connect API
 :Created By:        Jeff Shurtliff
 :Last Modified:     Jeff Shurtliff
-:Modified Date:     28 Sep 2026
+:Modified Date:     05 Nov 2026
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ def get_my_news_feed(sfdc_object, site_id: str | None = None) -> dict[str, Any]:
     """Retrieves the news feed for the user calling the function.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_news_feed.htm>`__)
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The function now fails with the :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception rather
        than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -45,7 +45,7 @@ def get_user_news_feed(sfdc_object, user_id: str, site_id: str | None = None) ->
     """Retrieves another user's news feed.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_user_profile_feed.htm>`__)
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The function now fails with the :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception rather
        than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -70,7 +70,7 @@ def get_group_feed(sfdc_object, group_id: str, site_id: str | None = None):
     """Retrieves a group's news feed.
     (`Reference <https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/quickreference_get_group_feed.htm>`__)
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The function now fails with the :py:exc:`salespyforce.errors.exceptions.GETRequestError` exception rather
        than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response.
 
@@ -106,7 +106,7 @@ def post_feed_item(
        The function now raises the :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception rather
        than the generic :py:exc:`RuntimeError` exception.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The function now fails with the :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception rather
        than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response, and
        fails with the :py:exc:`salespyforce.errors.exceptions.DataMismatchError` exception if both message text and
@@ -166,7 +166,7 @@ def post_comment(
        It also now raises the :py:exc:`salespyforce.errors.exceptions.MissingRequiredDataError` exception rather
        than the generic :py:exc:`RuntimeError` exception.
 
-    .. versionchanged:: 2.1.0
+    .. versionchanged:: 2.0.2
        The function now fails with the :py:exc:`salespyforce.errors.exceptions.POSTRequestError` exception rather
        than the generic :py:exc:`RuntimeError` exception if the request does not return a successful response, and
        fails with the :py:exc:`salespyforce.errors.exceptions.DataMismatchError` exception if both message text and
@@ -236,8 +236,6 @@ def _construct_message_segments(
     _message_segments: list[dict] | None = None,
 ) -> list[dict]:
     """Constructs the message segments payload when necessary or raises exception for missing or mismatched data.
-
-    .. versionadded:: 2.1.0
 
     :param _message_text: Plaintext to be used as the message body (Cannot be used if message segments are provided)
     :type _message_text: str, optional
