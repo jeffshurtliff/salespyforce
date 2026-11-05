@@ -7,26 +7,38 @@ on:
       - CONTRIBUTING.md
       - AGENTS.md
       - CLAUDE.md
+      - GEMINI.md
       - LICENSE
-      - .readthedocs.yaml
       - docs/**
       - docs_legacy/**
       - examples/**
-      - .github/ISSUE_TEMPLATE/**
+      - .agents/**
+      - .claude/**
+      - .codex/**
+      - .entire/**
       - .gemini/**
+      - .github/ISSUE_TEMPLATE/**
+      - .gitignore
+      - .readthedocs.yaml
   pull_request:
     paths-ignore:
       - README.md
       - CONTRIBUTING.md
       - AGENTS.md
       - CLAUDE.md
+      - GEMINI.md
       - LICENSE
-      - .readthedocs.yaml
       - docs/**
       - docs_legacy/**
       - examples/**
-      - .github/ISSUE_TEMPLATE/**
+      - .agents/**
+      - .claude/**
+      - .codex/**
+      - .entire/**
       - .gemini/**
+      - .github/ISSUE_TEMPLATE/**
+      - .gitignore
+      - .readthedocs.yaml
 
 permissions:
   contents: read
