@@ -18,7 +18,8 @@ No unreleased additions at this time.
 (unreleased-changed)=
 ### Changed
 
-No unreleased changes at this time.
+- Clarified the contributor and agent guidance to keep each callable's version
+  directives together above its parameter, return, and exception fields.
 
 (unreleased-security)=
 ### Security

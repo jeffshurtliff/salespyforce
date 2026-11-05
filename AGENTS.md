@@ -252,8 +252,17 @@ point appeared or last changed.
   - `2.0.0.dev0` → `2.0.0`
   - `2.1.0rc1` / `2.1.0.rc0` → `2.1.0`
   - `2.0.3` (already stable) → `2.0.3`
-- Place the directive(s) at the end of the docstring, after the field list
-  (`:param:` / `:returns:` / `:raises:`), separated by a blank line.
+- Keep all version directives for a callable together in one block after the
+  summary and any explanatory prose, **before** the field list (`:param:` /
+  `:type:` / `:returns:` / `:rtype:` / `:raises:`). This includes `versionadded`,
+  `versionchanged`, and `deprecated` directives.
+- Preserve existing version history and append new directives within that same
+  block. Do not split a callable's version history between locations above and
+  below its field list. Separate the version block from the prose and field list
+  with blank lines.
+- This placement is the repository convention; it is not a Sphinx requirement.
+  Apply it to docstrings changed for the task without performing an unrelated
+  codebase-wide relocation.
 - Private/internal items (leading underscore) do not get version directives.
 - Pure internal refactors, renames, and doc-wording fixes do not get version
   directives — record those in `docs/CHANGELOG.md` instead.
@@ -262,24 +271,30 @@ point appeared or last changed.
 def bulk_upsert(records: list[dict], external_id: str) -> dict:
     """Upsert records by their external ID.
 
+    .. versionadded:: 2.0.0
+
     :param records: The records to upsert.
     :param external_id: The external ID field name.
     :returns: The Salesforce composite response.
     :raises ValueError: If `records` is empty.
-
-    .. versionadded:: 2.0.0
     """
 ```
 
 When that function is later changed, append (do not replace) a
-`.. versionchanged::` line:
+`.. versionchanged::` directive in the same block, above the field list:
 
 ```python
-    :raises ValueError: If `records` is empty.
+    """Upsert records by their external ID.
 
     .. versionadded:: 2.0.0
+
     .. versionchanged:: 2.1.0
        Added retry handling for transient `503` responses.
+
+    :param records: The records to upsert.
+    :param external_id: The external ID field name.
+    :returns: The Salesforce composite response.
+    :raises ValueError: If `records` is empty.
     """
 ```
 

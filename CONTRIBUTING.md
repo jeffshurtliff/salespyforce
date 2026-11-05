@@ -603,8 +603,15 @@ Implementation changes belong in the CHANGELOG, not in docstrings.
   removing any `.devN`, `aN`, `bN`, `rcN`, or `.postN` suffix:
   - `2.0.0.dev0` → `.. versionadded:: 2.0.0`
   - `2.1.0rc1` → `.. versionchanged:: 2.1.0`
-- Place the directive(s) at the end of the docstring, after the field list,
-  separated by a blank line.
+- Keep all version directives (`versionadded`, `versionchanged`, and `deprecated`)
+  together in one block after the summary and explanatory prose, before the
+  parameter, type, return, and exception field lists. Separate the block from the
+  prose and field lists with blank lines.
+- Append new version directives within the existing version-history block;
+  never split a callable's version history above and below its field lists.
+  This is a repository convention, not a Sphinx requirement. Apply it to
+  docstrings changed for the task; a codebase-wide relocation requires a
+  separate request.
 - Do not add version directives to private/internal (`_`-prefixed) items.
 
 ---
