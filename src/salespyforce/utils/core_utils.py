@@ -5,7 +5,7 @@
 :Usage:             ``from salespyforce.utils import core_utils``
 :Example:           ``encoded_string = core_utils.encode_url(decoded_string)``
 :Created By:        Jeff Shurtliff
-:Last Modified:     Jeff Shurtliff (via GPT-6)
+:Last Modified:     Jeff Shurtliff
 :Modified Date:     05 Nov 2026
 """
 
@@ -159,6 +159,10 @@ def get_file_type(file_path: str) -> str:
 def get_random_string(length: int = 32, prefix_string: str = '') -> str:
     """Returns a random alphanumeric string.
 
+    .. versionchanged:: 2.0.2
+       The function now uses the cryptographically secure ``secrets`` module rather than the ``random`` module,
+       and also now validates that the length is at least one character.
+
     :param length: The length of the string (``32`` by default)
     :type length: int
     :param prefix_string: A string to which the random string should be appended
@@ -166,10 +170,6 @@ def get_random_string(length: int = 32, prefix_string: str = '') -> str:
     :returns: The alphanumeric string
     :rtype: str
     :raises ValueError: If the specified length is not at least one character
-
-    .. versionchanged:: 2.0.2
-       The function now uses the cryptographically secure ``secrets`` module rather than the ``random`` module,
-       and also now validates that the length is at least one character.
     """
     if length < 1:
         exc_msg = 'String length must be at least one character'
@@ -185,15 +185,15 @@ def get_18_char_id(record_id: str) -> str:
 
     .. versionadded:: 1.4.0
 
+    .. versionchanged:: 2.0.2
+       A :py:exc:`TypeError` is now raised instead of :py:exc:`ValueError` if the record ID is not a string.
+
     :param record_id: The Salesforce record ID to convert (or return unchanged if already 18 characters)
     :type record_id: str
     :returns: The 18-character Salesforce record ID as a string
     :rtype: str
     :raises TypeError: If the Salesforce record ID provided is not a string
     :raises ValueError: If the Salesforce record ID provided is not 15 or 18 characters in length
-
-    .. versionchanged:: 2.0.2
-       A :py:exc:`TypeError` is now raised instead of :py:exc:`ValueError` if the record ID is not a string.
     """
     # Ensure the provided record ID is a string
     if not isinstance(record_id, str):
@@ -269,13 +269,13 @@ def get_image_ref_id(image_url: str) -> str:
     (`Reference 1 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_rich_text_image_retrieve.htm>`__,
     `Reference 2 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_rich_text_image_retrieve.htm>`__)
 
+    .. versionchanged:: 2.0.2
+       Return the string "None" when the URL has no refid parameter instead of failing during indexing.
+
     :param image_url: The URL of an image from within Salesforce
     :type image_url: str
     :returns: The reference ID (``refid``) value
     :rtype: str
-
-    .. versionchanged:: 2.0.2
-       Return the string "None" when the URL has no refid parameter instead of failing during indexing.
     """
     query_params = urllib.parse.parse_qs(urllib.parse.urlparse(image_url).query)
     ref_id = query_params.get(const.QUERY_PARAMS.REF_ID)
@@ -295,6 +295,9 @@ def download_image(
     .. versionchanged:: 1.5.0
        This function now raises more specific exceptions instead of the generic :py:exc:`RuntimeError` exception.
 
+    .. versionchanged:: 2.0.2
+       Image GET requests now use a 30-second timeout.
+
     :param image_url: The absolute URL to the image
     :type image_url: str, optional
     :param file_name: The file name (including extension) to use as the file name (Default: randomly generated)
@@ -310,9 +313,6 @@ def download_image(
     :raises salespyforce.errors.exceptions.MissingRequiredDataError: If an image URL and API response are both missing
     :raises salespyforce.errors.exceptions.GETRequestError: If Salesforce does not return a successful response
     :raises requests.exceptions.Timeout: If the GET request for the image times out
-
-    .. versionchanged:: 2.0.2
-       Image GET requests now use a 30-second timeout.
     """
     if not any((image_url, response)):
         exc_msg = 'An image URL or an API response must be provided to download an image.'
