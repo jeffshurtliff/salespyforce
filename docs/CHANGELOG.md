@@ -24,7 +24,17 @@ No unreleased additions at this time.
 (unreleased-security)=
 ### Security
 
-No unreleased security updates at this time.
+- Raised the `soupsieve` dev-dependency floor to `>=4.0` (locked at 4.1.1) and the
+  documentation build requirement to `soupsieve>=4.0,<5` to address four Dependabot
+  alerts ([GHSA-4j63-6c4x-wfg4](https://github.com/advisories/GHSA-4j63-6c4x-wfg4),
+  [GHSA-mmhr-3c5m-f64f](https://github.com/advisories/GHSA-mmhr-3c5m-f64f),
+  [GHSA-7g44-g9rc-x53w](https://github.com/advisories/GHSA-7g44-g9rc-x53w), and
+  [GHSA-6655-6qjp-jx7x](https://github.com/advisories/GHSA-6655-6qjp-jx7x)) covering
+  denial-of-service issues in CSS selector parsing and matching. `soupsieve` is used
+  only for the documentation and development tooling and is not a runtime dependency
+  of the published package.
+- Raised the minimum `soupsieve` version enforced by the CI "Verify security dependency
+  versions" step to `4.0`.
 
 ---
 (relnotes-2.0.2)=
