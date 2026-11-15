@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------
 [project]
 name = "salespyforce"
-version = "2.0.2"
+version = "2.0.3.dev0"
 description = "A Python toolset for performing Salesforce API calls"
 readme = "README.md"
 requires-python = ">=3.12,<3.14.0"
@@ -73,7 +73,7 @@ pydata-sphinx-theme = "^0.15.4"
 myst-parser = "^3.0.1"
 sphinx-favicon = "^1.0.1"
 ruff = "^0.15.8"
-soupsieve = ">=2.9.0,<3"
+soupsieve = ">=4.0,<5"
 pygments = ">=2.20.0,<3"
 twine = ">=6.2.0,<7"
 setuptools = ">=84.1.0"
