@@ -2,9 +2,9 @@
 name: CI Request
 about: Request a CI/workflow improvement or report a non-code pipeline issue for SalesPyForce
 title: "[CI] <short, descriptive summary>"
+type: Feature
 labels: ci
-assignees: ''
-
+assignees: []
 ---
 
 ## CI Request Summary

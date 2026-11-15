@@ -2,6 +2,7 @@
 name: Maintainer CI
 about: Internal CI, automation, or workflow updates for SalesPyForce
 title: "[CI] <brief description>"
+type: Task
 labels: maintainer, ci
 assignees: []
 ---

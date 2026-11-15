@@ -2,6 +2,7 @@
 name: Maintainer Chore
 about: Internal chore tracking for SalesPyForce maintainers
 title: "[CHORE] <brief description>"
+type: Task
 labels: maintainer, chore
 assignees: []
 ---

@@ -2,9 +2,9 @@
 name: Test Request
 about: Request new or improved test coverage for SalesPyForce
 title: "[TEST] <short, descriptive summary>"
+type: Feature
 labels: testing
-assignees: ''
-
+assignees: []
 ---
 
 ## Test Request Summary

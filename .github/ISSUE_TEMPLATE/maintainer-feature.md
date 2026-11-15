@@ -2,6 +2,7 @@
 name: Maintainer Feature
 about: Internal feature tracking for SalesPyForce maintainers
 title: "[FEATURE] <brief description>"
+type: Feature
 labels: maintainer, enhancement
 assignees: []
 ---
