@@ -403,3 +403,8 @@ Before handing work back or opening a PR:
 6. `docs/CHANGELOG.md` `[Unreleased]` updated for any user-facing change.
 7. Header blocks updated on changed files only.
 8. No secrets or real credentials added to tracked files.
+
+<!-- entire-agent:begin -->
+Read .entire/agent-guide.md for this repository's workflow, source inspection, and verification guidance.
+@.entire/agent-guide.md
+<!-- entire-agent:end -->

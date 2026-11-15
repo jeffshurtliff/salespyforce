@@ -64,3 +64,8 @@ into code/docs/commit messages, or add real credentials to any tracked file. Use
 - `/code-review` before opening a PR catches the correctness and cleanup issues
   reviewers here look for.
 - Follow the pre-submit checklist in `AGENTS.md` before wrapping up.
+
+<!-- entire-agent:begin -->
+Read .entire/agent-guide.md for this repository's workflow, source inspection, and verification guidance.
+@.entire/agent-guide.md
+<!-- entire-agent:end -->
