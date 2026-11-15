@@ -2,6 +2,7 @@
 name: Maintainer Refactor
 about: Internal refactor tracking for SalesPyForce maintainers
 title: "[REFACTOR] <brief description>"
+type: Task
 labels: maintainer, refactor
 assignees: []
 ---

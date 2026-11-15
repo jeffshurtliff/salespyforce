@@ -2,9 +2,9 @@
 name: Feature Request
 about: Suggest a new feature or enhancement for SalesPyForce
 title: "[FEATURE] <short, descriptive summary>"
+type: Feature
 labels: enhancement
-assignees: ''
-
+assignees: []
 ---
 
 ## Feature Summary

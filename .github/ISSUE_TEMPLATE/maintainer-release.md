@@ -2,6 +2,7 @@
 name: Maintainer Release
 about: Internal tracking for preparing and publishing a SalesPyForce stable release
 title: "[CHORE] Prepare SalesPyForce <version> stable release"
+type: Task
 labels: maintainer, chore
 assignees: []
 ---

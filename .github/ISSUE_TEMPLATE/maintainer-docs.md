@@ -2,6 +2,7 @@
 name: Maintainer Docs
 about: Internal documentation updates for SalesPyForce
 title: "[DOCS] <brief description>"
+type: Task
 labels: maintainer, documentation
 assignees: []
 ---

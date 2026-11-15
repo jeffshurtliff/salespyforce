@@ -2,9 +2,9 @@
 name: Bug Report
 about: Report a bug or unexpected behavior in SalesPyForce
 title: "[BUG] <short, descriptive summary>"
+type: Bug
 labels: bug
-assignees: ''
-
+assignees: []
 ---
 
 ## Bug Description

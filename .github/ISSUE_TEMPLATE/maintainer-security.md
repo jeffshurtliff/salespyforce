@@ -2,6 +2,7 @@
 name: Maintainer Security
 about: Internal security tracking and hardening work for SalesPyForce maintainers
 title: "[SECURITY] <brief description>"
+type: Task
 labels: maintainer, security
 assignees: []
 ---

@@ -2,9 +2,9 @@
 name: Refactor Request
 about: Suggest an internal refactor or maintainability improvement for SalesPyForce
 title: "[REFACTOR] <short, descriptive summary>"
+type: Feature
 labels: refactor
-assignees: ''
-
+assignees: []
 ---
 
 ## Refactor Summary

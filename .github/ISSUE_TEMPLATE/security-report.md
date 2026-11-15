@@ -2,9 +2,9 @@
 name: Security Report
 about: Report a potential security concern in SalesPyForce (public fallback; sanitize details)
 title: "[SECURITY] <short, sanitized summary>"
+type: Bug
 labels: security
-assignees: ''
-
+assignees: []
 ---
 
 ## Important: Public Issue Warning

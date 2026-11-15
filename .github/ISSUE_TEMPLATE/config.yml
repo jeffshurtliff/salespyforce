@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability (private)
+    url: https://github.com/jeffshurtliff/salespyforce/security/advisories/new
+    about: Report suspected vulnerabilities privately. Do not open a public issue or include credentials, org IDs, or sensitive data.
+  - name: Project Documentation
+    url: https://salespyforce.readthedocs.io/en/stable/
+    about: Primary documentation for the SalesPyForce project which includes tutorials, references, and maintenance information.
+  - name: Salesforce REST API Developer Guide
+    url: https://developer.salesforce.com/docs/platform/api-rest/guide/intro-what-is-rest-api.html
+    about: Questions about the API itself belong to Salesforce, not this SDK. Check the official docs first.

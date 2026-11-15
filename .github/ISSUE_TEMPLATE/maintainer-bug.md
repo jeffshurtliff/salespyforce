@@ -2,6 +2,7 @@
 name: Maintainer Bug
 about: Internal bug tracking for SalesPyForce maintainers
 title: "[BUG] <brief description>"
+type: Bug
 labels: maintainer, bug
 assignees: []
 ---
