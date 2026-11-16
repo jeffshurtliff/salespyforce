@@ -18,10 +18,28 @@ No unreleased additions at this time.
 (unreleased-changed)=
 ### Changed
 
+No unreleased changes at this time.
+
+(unreleased-security)=
+### Security
+
+No unreleased security updates at this time.
+
+---
+(relnotes-2.0.3)=
+## [2.0.3] - 2026-11-15
+
+SalesPyForce 2.0.3 addresses four `soupsieve` dependency security advisories that
+affect the documentation and development tooling. There are no changes to the public
+API, and Python 3.12 and 3.13 remain supported.
+
+(relnotes-2.0.3-changed)=
+### Changed
+
 - Clarified the contributor and agent guidance to keep each callable's version
   directives together above its parameter, return, and exception fields.
 
-(unreleased-security)=
+(relnotes-2.0.3-security)=
 ### Security
 
 - Raised the `soupsieve` dev-dependency floor to `>=4.0` (locked at 4.1.1) and the
@@ -483,7 +501,8 @@ features and functionality.
 
 
 <!-- The reference definitions are listed below -->
-[Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.2...HEAD
+[Unreleased]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.3...HEAD
+[2.0.3]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/jeffshurtliff/salespyforce/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/jeffshurtliff/salespyforce/compare/1.5.0...2.0.0
