@@ -26,7 +26,7 @@ work and stop if it cannot be isolated safely.
 
 - Distribution and import package: `salespyforce`
 - Version source: static `[project].version` in `pyproject.toml`
-- Primary branch: `master`
+- Primary branch: `main`
 - Release branch: `chore/<issue>-prepare-<version>-release`
 - Stable tag: bare version such as `2.0.0`, created as an annotated tag
 - Changelog: `docs/CHANGELOG.md`, including unique MyST targets and comparison links
@@ -75,7 +75,7 @@ material merely to check release readiness.
 Follow runbook sections 1 through 5 and complete all local preparation checks before handing off:
 
 1. Review the full change set since the prior stable tag and confirm release scope.
-2. Establish the clean release branch from current `master` according to the issue policy.
+2. Establish the clean release branch from current `main` according to the issue policy.
 3. Promote the exact stable version with `poetry version`; never edit `poetry.lock` manually or refresh dependencies incidentally.
 4. Move `Unreleased` entries into the dated release section, reset the existing category skeleton with placeholders, rename MyST targets, and update comparison links.
 5. Search maintained source, docs, workflows, tests, examples, and metadata for stale prerelease wording. Preserve historical references.

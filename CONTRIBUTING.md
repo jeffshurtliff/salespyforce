@@ -29,7 +29,7 @@ All contributions must align with these principles.
 
 1. Open or reference a GitHub Issue before beginning work.
 2. Use the correct Issue template.
-3. Create a properly-prefixed branch from `master`.
+3. Create a properly-prefixed branch from `main`.
 4. Include the Issue number in the branch name.
 5. Write or update tests as appropriate.
 6. Update documentation when necessary.

@@ -44,7 +44,7 @@ into code/docs/commit messages, or add real credentials to any tracked file. Use
 
 ## Git
 
-- Work on a branch, never directly on `master`. Branch prefixes and the
+- Work on a branch, never directly on `main`. Branch prefixes and the
   issue-number convention are in `CONTRIBUTING.md` (`feature/`, `fix/`,
   `refactor/`, `chore/`, `docs/`, `test/`, `ci/`, `security/`).
 - Do not commit or push unless the user asks.

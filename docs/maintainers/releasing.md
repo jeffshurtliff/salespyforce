@@ -44,7 +44,7 @@ SalesPyForce and must be updated for each release.
 ```bash
 PYPI_PROJECT=salespyforce
 GITHUB_REPOSITORY=jeffshurtliff/salespyforce
-PRIMARY_BRANCH=master
+PRIMARY_BRANCH=main
 PREVIOUS_TAG=1.5.0
 RELEASE_VERSION=2.0.0
 RELEASE_TAG="$RELEASE_VERSION"
@@ -61,7 +61,7 @@ Confirm these conventions rather than assuming them when copying this guide:
 
 | Setting | SalesPyForce convention | Common alternative |
 | --- | --- | --- |
-| Primary branch | `master` | `main` |
+| Primary branch | `main` | `master` |
 | Stable tag | `2.0.0` | `v2.0.0` |
 | Version source | `[project].version` in `pyproject.toml` | Dynamic version or package module |
 | Changelog | `docs/CHANGELOG.md` | Root-level `CHANGELOG.md` |
@@ -131,12 +131,12 @@ Promote the active development version to a stable release and publish it.
 
 SalesPyForce 2.x drops Python 3.9–3.11, modernizes security-sensitive
 dependency floors, and adds the maintainer release runbook and prep skill. That
-work is merged on `master` and ready to ship.
+work is merged on `main` and ready to ship.
 
 ## Release Facts to Confirm
 
 - PyPI / distribution name: `salespyforce`
-- Primary branch: `master`
+- Primary branch: `main`
 - Previous reachable stable tag: `1.5.0`
 - Target tag (bare, annotated): `2.0.0`
 - Release branch: `chore/123-prepare-2.0.0-release`
@@ -210,7 +210,7 @@ An expected `404` produces curl exit status `22`.
 
 Follow the repository's issue, branch, and pull-request policy. With the
 **Maintainer Release** tracking issue from above already open, branch from
-`master` using its issue number:
+`main` using its issue number:
 
 ```bash
 git switch "$PRIMARY_BRANCH"

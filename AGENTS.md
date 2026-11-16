@@ -367,7 +367,7 @@ scripts):
 
 `CONTRIBUTING.md` has the full rules; the essentials:
 
-- Branch from `master`; never commit directly to `master`.
+- Branch from `main`; never commit directly to `main`.
 - Branch names: `<prefix>/<issue-number>-short-description`, where `<prefix>` is
   one of `feature/`, `fix/`, `refactor/`, `chore/`, `docs/`, `test/`, `ci/`,
   `security/`.

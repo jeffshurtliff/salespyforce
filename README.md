@@ -21,9 +21,9 @@ A Python toolset for performing Salesforce API calls
     <tr>
         <td>Build Status</td>
         <td>
-            <a href="https://github.com/jeffshurtliff/salespyforce/blob/master/.github/workflows/ci.yml">
+            <a href="https://github.com/jeffshurtliff/salespyforce/blob/main/.github/workflows/ci.yml">
                 <img alt="GitHub Workflow Status" 
-                src="https://img.shields.io/github/actions/workflow/status/jeffshurtliff/salespyforce/ci.yml?branch=master">
+                src="https://img.shields.io/github/actions/workflow/status/jeffshurtliff/salespyforce/ci.yml?branch=main">
             </a>
         </td>
     </tr>
@@ -39,7 +39,7 @@ A Python toolset for performing Salesforce API calls
         <td>Code Coverage</td>
         <td>
             <a href="https://codecov.io/gh/jeffshurtliff/salespyforce">
-                <img src="https://codecov.io/gh/jeffshurtliff/salespyforce/branch/master/graph/badge.svg" alt="Code Coverage Badge">
+                <img src="https://codecov.io/gh/jeffshurtliff/salespyforce/branch/main/graph/badge.svg" alt="Code Coverage Badge">
             </a>
         </td>
     </tr>
@@ -62,7 +62,7 @@ A Python toolset for performing Salesforce API calls
     <tr>
         <td>License</td>
         <td>
-            <a href="https://github.com/jeffshurtliff/salespyforce/blob/master/LICENSE">
+            <a href="https://github.com/jeffshurtliff/salespyforce/blob/main/LICENSE">
                 <img alt="License (GitHub)" src="https://img.shields.io/github/license/jeffshurtliff/salespyforce">
             </a>
         </td>
@@ -220,7 +220,7 @@ sfdc = Salesforce(helper=HELPER_FILE)
 The documentation is located here: [https://salespyforce.readthedocs.io/en/stable/](https://salespyforce.readthedocs.io/en/stable/)
 
 ## License
-[MIT License](https://github.com/jeffshurtliff/salespyforce/blob/master/LICENSE)
+[MIT License](https://github.com/jeffshurtliff/salespyforce/blob/main/LICENSE)
 
 ## Reporting Issues
 Issues can be reported within the [GitHub repository](https://github.com/jeffshurtliff/salespyforce/issues).
