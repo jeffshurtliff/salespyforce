@@ -52,7 +52,7 @@ release window, particularly when continuing beyond local preparation.
 Before invocation, confirm that:
 
 - the repository is available in a clean working tree;
-- the intended release work has been merged into `master`;
+- the intended release work has been merged into `main`;
 - a **Maintainer Release** tracking issue
   (`.github/ISSUE_TEMPLATE/maintainer-release.md`) has been opened and the exact
   stable version has been identified;
@@ -143,7 +143,7 @@ of {doc}`releasing` and revalidate its prerequisites.
 
 Candidate archives built before the preparation pull request is merged must
 never be reused for publication. Publication artifacts must be rebuilt from the
-exact, synchronized, CI-verified commit on `master`.
+exact, synchronized, CI-verified commit on `main`.
 
 ## Artifact inspector
 

@@ -38,7 +38,7 @@ Examples:
 Resolve every value before starting; do not guess.
 
 - PyPI / distribution name: `salespyforce`
-- Primary branch: `master`
+- Primary branch: `main`
 - Previous reachable stable tag: `X.Y.Z`
 - Target tag (bare, annotated): `X.Y.Z`
 - Release branch: `chore/<this-issue>-prepare-<version>-release`
@@ -77,7 +77,7 @@ here when granted:
 Preparation (reversible):
 
 - [ ] Release scope and version confirmed; target version absent from PyPI and GitHub
-- [ ] Clean release branch created from current `master`
+- [ ] Clean release branch created from current `main`
 - [ ] Version promoted with `poetry version`; `poetry.lock` handled deliberately
 - [ ] `docs/CHANGELOG.md` finalized (dated section, reset `Unreleased` skeleton,
       renamed MyST targets, updated comparison links)
@@ -90,7 +90,7 @@ Preparation (reversible):
 
 Publication (each gated by the checkpoints above):
 
-- [ ] Preparation PR merged; required CI green on the exact `master` commit
+- [ ] Preparation PR merged; required CI green on the exact `main` commit
 - [ ] Artifacts rebuilt from the merged commit (candidate archives never reused)
 - [ ] Annotated tag created on the verified commit and pushed
 - [ ] Draft GitHub Release created with verified artifacts and `SHA256SUMS`
